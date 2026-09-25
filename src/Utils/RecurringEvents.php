@@ -179,8 +179,9 @@ class RecurringEvents {
 						$end_date = DataValueFactory::getInstance()->newDataValueByType( '_dat', $value );
 						break;
 					case 'limit':
-						// Override default limit with query specific limit
-						$this->defaultNumRecurringEvents = (int)$value;
+						// Override default limit with query specific limit, but never
+						// beyond the maximum so the cap applies without an end date too
+						$this->defaultNumRecurringEvents = min( (int)$value, $this->maxNumRecurringEvents );
 						break;
 					case 'unit':
 						$unit = $value;

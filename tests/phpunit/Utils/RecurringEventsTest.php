@@ -124,10 +124,32 @@ class RecurringEventsTest extends TestCase {
 		$parameters = new ParserParameterProcessor( $params );
 
 		$instance = new RecurringEvents();
+		$instance->setMaxNumRecurringEvents( 500 );
 		$instance->parse( $parameters->toArray() );
 
 		$this->assertCount(
 			$expected['count'],
+			$instance->getDates()
+		);
+	}
+
+	public function testLimitAboveMaximumIsCappedWhenNoEndDate() {
+		$maxNumRecurringEvents = 5;
+
+		$parameters = new ParserParameterProcessor( [
+			'property=Has date',
+			'start=January 1, 2010',
+			'unit=day',
+			'period=1',
+			'limit=50',
+		] );
+
+		$instance = new RecurringEvents();
+		$instance->setMaxNumRecurringEvents( $maxNumRecurringEvents );
+		$instance->parse( $parameters->toArray() );
+
+		$this->assertCount(
+			$maxNumRecurringEvents + 1,
 			$instance->getDates()
 		);
 	}
