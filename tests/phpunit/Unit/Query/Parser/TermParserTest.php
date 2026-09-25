@@ -47,6 +47,28 @@ class TermParserTest extends TestCase {
 		);
 	}
 
+	public function testNormalCompactExpressionStillExpandsToTheExpectedQueryString() {
+		$this->assertSame(
+			'[[in:foo]] && [[in:bar]]',
+			( new TermParser() )->parse( 'in:(foo && bar)' )
+		);
+	}
+
+	public function testCompactExpressionsBeyondTheExpansionCapAreLeftUnexpanded() {
+		// The parser expands at most 1000 compact `in:(...)` expressions per
+		// term. A term carrying more must not expand them all, so the parsing
+		// work stays bounded instead of growing with the number of expressions.
+		$term = implode(
+			'&&',
+			array_map( static fn ( int $i ): string => "in:(v$i)", range( 1, 1005 ) )
+		);
+
+		$this->assertSame(
+			1000,
+			preg_match_all( '/\[\[in:v\d+\]\]/', ( new TermParser() )->parse( $term ) )
+		);
+	}
+
 	public function termProvider() {
 		yield [
 			'in:foo',

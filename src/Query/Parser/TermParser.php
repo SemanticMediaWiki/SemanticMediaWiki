@@ -20,6 +20,13 @@ namespace SMW\Query\Parser;
 class TermParser {
 
 	/**
+	 * Upper bound on the number of compact `in:(...)`/`has:(...)` expressions
+	 * expanded per term. Expansion past this bound is skipped so a term packed
+	 * with compact expressions cannot force an unbounded amount of parsing work.
+	 */
+	private const MAX_COMPACT_EXPRESSIONS = 1000;
+
+	/**
 	 * @var array
 	 */
 	private array $standard_prefix = [ 'in:', 'phrase:', 'not:', 'has:', 'category:' ];
@@ -196,39 +203,51 @@ class TermParser {
 			return;
 		}
 
-		preg_match_all( "/$exp:\((.*?)\)/", $term, $matches );
+		$expanded = 0;
 
-		foreach ( $matches[0] as $match ) {
-			$orig = $match;
-			$match = str_replace( "$exp:(", '', $match );
+		// Rewrite every compact expression in a single pass so the work stays
+		// linear in the term length, and stop after MAX_COMPACT_EXPRESSIONS so a
+		// term packed with compact expressions cannot force unbounded parsing.
+		$term = preg_replace_callback(
+			"/$exp:\((.*?)\)/",
+			static function ( array $m ) use ( $exp, $pattern, &$expanded ): string {
+				$expanded++;
 
-			if ( substr( $match, -1 ) === ')' ) {
-				$match = substr( $match, 0, -1 );
-			}
-
-			$terms = preg_split(
-				"/(in:)|(phrase:)|(not:)|(has:)|(category:)$pattern|(&&)|(AND)|(OR)|(\|\|)|(\()|(\)|(\[\[))/",
-				$match,
-				-1,
-				PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY
-			);
-
-			$replace = '';
-
-			foreach ( $terms as $t ) {
-				$t = trim( $t );
-
-				if ( in_array( $t, [ '&&', 'AND', '||', 'OR' ] ) ) {
-					$replace .= " $t ";
-				} elseif ( $t === ')' ) {
-					$replace .= "$t";
-				} else {
-					$replace .= "$exp:$t";
+				if ( $expanded > self::MAX_COMPACT_EXPRESSIONS ) {
+					return $m[0];
 				}
-			}
 
-			$term = str_replace( $orig, $replace, $term );
-		}
+				$match = str_replace( "$exp:(", '', $m[0] );
+
+				if ( substr( $match, -1 ) === ')' ) {
+					$match = substr( $match, 0, -1 );
+				}
+
+				$terms = preg_split(
+					"/(in:)|(phrase:)|(not:)|(has:)|(category:)$pattern|(&&)|(AND)|(OR)|(\|\|)|(\()|(\)|(\[\[))/",
+					$match,
+					-1,
+					PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY
+				);
+
+				$replace = '';
+
+				foreach ( $terms as $t ) {
+					$t = trim( $t );
+
+					if ( in_array( $t, [ '&&', 'AND', '||', 'OR' ] ) ) {
+						$replace .= " $t ";
+					} elseif ( $t === ')' ) {
+						$replace .= "$t";
+					} else {
+						$replace .= "$exp:$t";
+					}
+				}
+
+				return $replace;
+			},
+			$term
+		) ?? $term;
 	}
 
 }
