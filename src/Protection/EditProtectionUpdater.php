@@ -145,6 +145,17 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 	}
 
 	private function doUpdateRestrictions( $isEditProtected ): void {
+		// Applying or lifting the annotation-driven protection is a privileged
+		// action: only the configured `editProtectionRight` (or the generic
+		// `protect` right) may change restrictions. `WikiPage::doUpdateRestrictions`
+		// performs no authorization of its own, so without this gate any editor
+		// able to add `[[Is edit protected::true]]` could impose indefinite
+		// protection at a right they do not hold.
+		if ( !$this->userMayChangeProtection() ) {
+			$this->log( __METHOD__ . ' skipped, author lacks the required right' );
+			return;
+		}
+
 		$protections = [];
 		$expiry = [];
 
@@ -174,6 +185,17 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 			$reason,
 			$this->user
 		);
+	}
+
+	private function userMayChangeProtection(): bool {
+		if ( $this->user === null || !is_string( $this->editProtectionRight ) ) {
+			return false;
+		}
+
+		$permissionManager = MediaWikiServices::getInstance()->getPermissionManager();
+
+		return $permissionManager->userHasRight( $this->user, $this->editProtectionRight )
+			|| $permissionManager->userHasRight( $this->user, 'protect' );
 	}
 
 	private function log( string $message, array $context = [] ): void {

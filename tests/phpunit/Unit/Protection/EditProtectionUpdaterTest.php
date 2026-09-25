@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\Protection;
 
+use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
@@ -89,6 +90,8 @@ class EditProtectionUpdaterTest extends TestCase {
 	}
 
 	public function testDoUpdateFromWithNoRestrictionsAnActiveEditProtection() {
+		$this->grantEditProtectionRight( true );
+
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 
 		$this->wikiPage->expects( $this->once() )
@@ -130,6 +133,8 @@ class EditProtectionUpdaterTest extends TestCase {
 	}
 
 	public function testDoUpdateFromWithRestrictionsButNoTrueEditProtection() {
+		$this->grantEditProtectionRight( true );
+
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -248,6 +253,92 @@ class EditProtectionUpdaterTest extends TestCase {
 			'Status already set, no update required',
 			$this->spyLogger->getMessagesAsString()
 		);
+	}
+
+	public function testAuthorWithoutEditProtectionRightDoesNotApplyProtection() {
+		$this->grantEditProtectionRight( false );
+
+		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
+
+		$this->wikiPage->expects( $this->once() )
+			->method( 'getTitle' )
+			->willReturn( $subject->getTitle() );
+
+		$this->wikiPage->expects( $this->never() )
+			->method( 'doUpdateRestrictions' );
+
+		$semanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+
+		$semanticData->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->willReturn( [ $this->dataItemFactory->newDIBoolean( true ) ] );
+
+		$instance = new EditProtectionUpdater(
+			$this->wikiPage,
+			$this->user
+		);
+
+		$instance->setEditProtectionRight( 'smw-pageedit' );
+
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
+		$instance->doUpdateFrom( $semanticData );
+	}
+
+	public function testAuthorWithEditProtectionRightAppliesProtection() {
+		$this->grantEditProtectionRight( true );
+
+		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
+
+		$this->wikiPage->expects( $this->once() )
+			->method( 'getTitle' )
+			->willReturn( $subject->getTitle() );
+
+		$this->wikiPage->expects( $this->once() )
+			->method( 'doUpdateRestrictions' );
+
+		$semanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+
+		$semanticData->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->willReturn( [ $this->dataItemFactory->newDIBoolean( true ) ] );
+
+		$instance = new EditProtectionUpdater(
+			$this->wikiPage,
+			$this->user
+		);
+
+		$instance->setEditProtectionRight( 'smw-pageedit' );
+
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
+		$instance->doUpdateFrom( $semanticData );
+
+		$this->assertStringContainsString(
+			'add protection on edit, move',
+			$this->spyLogger->getMessagesAsString()
+		);
+	}
+
+	private function grantEditProtectionRight( bool $granted ): void {
+		$this->testEnvironment->redefineMediaWikiService( 'PermissionManager', function () use ( $granted ) {
+			$permissionManager = $this->getMockBuilder( PermissionManager::class )
+				->disableOriginalConstructor()
+				->getMock();
+
+			$permissionManager->method( 'userHasRight' )
+				->willReturn( $granted );
+
+			return $permissionManager;
+		} );
 	}
 
 }
