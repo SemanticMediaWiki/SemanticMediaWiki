@@ -429,17 +429,7 @@ class TableResultPrinter extends ResultPrinter {
 	 * @since 7.2.0
 	 */
 	private function getValueSeparator( int $outputMode ): string {
-		$sep = $this->params['sep'];
-
-		if ( $outputMode === SMW_OUTPUT_WIKI ) {
-			return $sep;
-		}
-
-		if ( preg_match( '#^\s*<br\s*/?>\s*$#i', $sep ) ) {
-			return $sep;
-		}
-
-		return htmlspecialchars( $sep, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' );
+		return SeparatorEscaper::escape( $this->params['sep'], $outputMode );
 	}
 
 	/**
