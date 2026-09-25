@@ -109,7 +109,11 @@ class TaskFactory {
 			case 'insert-job':
 				return new InsertJobTask( $this->jobFactory );
 			case 'run-joblist':
-				return new JobListTask( $this->jobQueue );
+				$postEditUpdate = $this->settings->get( 'smwgPostEditUpdate' );
+				return new JobListTask(
+					$this->jobQueue,
+					is_array( $postEditUpdate ) ? ( $postEditUpdate['run-jobs'] ?? [] ) : []
+				);
 		}
 
 		$services = $this->getHookServices();

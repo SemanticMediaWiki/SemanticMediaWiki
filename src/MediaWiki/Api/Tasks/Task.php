@@ -37,6 +37,34 @@ abstract class Task {
 	}
 
 	/**
+	 * Serialized subject the caller must be authorized to edit before this
+	 * task runs, or null when the task gates on the global
+	 * getRequiredPermission() right instead.
+	 *
+	 * A task that acts on a caller-supplied page returns that page here so the
+	 * `smwtask` module authorizes the caller against the specific page, rather
+	 * than a wiki-wide right an unprivileged (including anonymous) caller may
+	 * hold regardless of the page it names.
+	 *
+	 * @since 7.3.1
+	 */
+	public function getAuthorizationSubject( array $parameters ): ?string {
+		return null;
+	}
+
+	/**
+	 * Whether the caller-supplied parameters name only work this task may
+	 * perform on the caller's behalf. The `smwtask` module refuses the request
+	 * when this returns false, so a task can reject parameters it must not act
+	 * on regardless of the caller's authority over the subject.
+	 *
+	 * @since 7.3.1
+	 */
+	public function requestedWorkIsPermitted( array $parameters ): bool {
+		return true;
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param array $parameters

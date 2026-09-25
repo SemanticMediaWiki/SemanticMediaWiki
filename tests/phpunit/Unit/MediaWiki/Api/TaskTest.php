@@ -6,9 +6,10 @@ use MediaWiki\Api\ApiMain;
 use MediaWiki\Api\ApiUsageException;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\HookContainer\HookContainer;
+use MediaWiki\Permissions\Authority;
 use MediaWiki\Permissions\SimpleAuthority;
 use MediaWiki\Request\FauxRequest;
-use MediaWiki\Title\Title;
+use MediaWiki\Tests\Unit\Permissions\MockAuthorityTrait;
 use MediaWiki\User\UserIdentityValue;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Task;
@@ -35,6 +36,8 @@ use Wikimedia\ObjectCache\BagOStuff;
  * @author mwjames
  */
 class TaskTest extends TestCase {
+
+	use MockAuthorityTrait;
 
 	private $apiFactory;
 	private $testEnvironment;
@@ -68,7 +71,7 @@ class TaskTest extends TestCase {
 		);
 	}
 
-	public function testUpdateTask() {
+	public function testUpdateTaskRunsForCallerAuthorizedToEditSubject() {
 		$updateJob = $this->getMockBuilder( UpdateJob::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -85,17 +88,47 @@ class TaskTest extends TestCase {
 			->willReturn( $updateJob );
 
 		$instance = new Task(
-			$this->apiFactory->newApiMain( [
+			$this->newApiMainWithEditAuthority(
+				[
 					'action'   => 'smwtask',
 					'task'     => 'update',
 					'params'   => json_encode( [ 'subject' => 'Foo#0##', 'ref' => [ 'Bar' ] ] ),
 					'token'    => 'foo'
-				]
+				],
+				true
 			),
 			'smwtask',
 			$this->newRealTaskFactory( null, null, null, $jobFactory )
 		);
 
+		$instance->execute();
+	}
+
+	public function testUpdateTaskRefusedForCallerNotAuthorizedToEditSubject() {
+		$jobFactory = $this->getMockBuilder( JobFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// The forced store update must never run for a title the caller may
+		// not edit.
+		$jobFactory->expects( $this->never() )
+			->method( 'newUpdateJob' );
+
+		$instance = new Task(
+			$this->newApiMainWithEditAuthority(
+				[
+					'action'   => 'smwtask',
+					'task'     => 'update',
+					'params'   => json_encode( [ 'subject' => 'Foo#0##', 'ref' => [ 'Bar' ] ] ),
+					'token'    => 'foo'
+				],
+				false
+			),
+			'smwtask',
+			$this->newRealTaskFactory( null, null, null, $jobFactory )
+		);
+
+		$this->expectException( ApiUsageException::class );
 		$instance->execute();
 	}
 
@@ -184,11 +217,7 @@ class TaskTest extends TestCase {
 		$instance->execute();
 	}
 
-	public function testRunJobListTask() {
-		$title = $this->getMockBuilder( Title::class )
-			->disableOriginalConstructor()
-			->getMock();
-
+	public function testRunJobListTaskRunsForCallerAuthorizedToEditSubject() {
 		$jobQueue = $this->getMockBuilder( JobQueue::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -199,7 +228,7 @@ class TaskTest extends TestCase {
 			->willReturn( [ '--job-done' ] );
 
 		$instance = new Task(
-			$this->apiFactory->newApiMain(
+			$this->newApiMainWithEditAuthority(
 				[
 					'action'   => 'smwtask',
 					'task'     => 'run-joblist',
@@ -210,12 +239,79 @@ class TaskTest extends TestCase {
 						]
 					),
 					'token'    => 'foo'
-				]
+				],
+				true
 			),
 			'smwtask',
 			$this->newRealTaskFactory( null, $jobQueue )
 		);
 
+		$instance->execute();
+	}
+
+	public function testRunJobListTaskRefusedForCallerNotAuthorizedToEditSubject() {
+		$jobQueue = $this->getMockBuilder( JobQueue::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// A caller that may not edit the subject must not pop and run queued
+		// jobs.
+		$jobQueue->expects( $this->never() )
+			->method( 'runFromQueue' );
+
+		$instance = new Task(
+			$this->newApiMainWithEditAuthority(
+				[
+					'action'   => 'smwtask',
+					'task'     => 'run-joblist',
+					'params'   => json_encode(
+						[
+							'subject' => 'Foo#0##',
+							'jobs' => [ 'FooJob' => 1 ]
+						]
+					),
+					'token'    => 'foo'
+				],
+				false
+			),
+			'smwtask',
+			$this->newRealTaskFactory( null, $jobQueue )
+		);
+
+		$this->expectException( ApiUsageException::class );
+		$instance->execute();
+	}
+
+	public function testRunJobListTaskRefusedForJobTypeOutsideThePostEditAllowlist() {
+		$jobQueue = $this->getMockBuilder( JobQueue::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// A job type the post-edit process never emits must not be run, even
+		// for a caller authorized to edit the subject.
+		$jobQueue->expects( $this->never() )
+			->method( 'runFromQueue' );
+
+		$instance = new Task(
+			$this->newApiMainWithEditAuthority(
+				[
+					'action'   => 'smwtask',
+					'task'     => 'run-joblist',
+					'params'   => json_encode(
+						[
+							'subject' => 'Foo#0##',
+							'jobs' => [ 'smw.parserCachePurgeJob' => 1 ]
+						]
+					),
+					'token'    => 'foo'
+				],
+				true
+			),
+			'smwtask',
+			$this->newRealTaskFactory( null, $jobQueue )
+		);
+
+		$this->expectException( ApiUsageException::class );
 		$instance->execute();
 	}
 
@@ -336,13 +432,49 @@ class TaskTest extends TestCase {
 			->getMock();
 
 		$settings->method( 'get' )
-			->willReturnCallback( static fn ( string $key ) => $key === 'smwgCacheUsage' ? [] : null );
+			->willReturnCallback( static fn ( string $key ) => match ( $key ) {
+				'smwgCacheUsage' => [],
+				'smwgPostEditUpdate' => [ 'run-jobs' => [ 'FooJob' => 1 ] ],
+				default => null,
+			} );
 
 		$hookContainer = $this->getMockBuilder( HookContainer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		return new TaskFactory( $store, $jobQueue, $cache, $settings, $jobFactory, $hookContainer );
+	}
+
+	/**
+	 * Builds the module with a request context whose authority holds the
+	 * wiki-wide `edit` right but can edit the requested page only when
+	 * $canEditSubject is true, driving the object-level authorization the
+	 * tasks depend on.
+	 */
+	private function newApiMainWithEditAuthority( array $params, bool $canEditSubject ): ApiMain {
+		$context = new RequestContext();
+		$context->setRequest( new FauxRequest( $params, true ) );
+		$context->setAuthority( $this->authorityAllowingEdit( $canEditSubject ) );
+
+		return new ApiMain( $context, true );
+	}
+
+	/**
+	 * The wiki-wide `edit` right is always held, as an anonymous caller does on
+	 * a default wiki; only authority over the specific page varies. This is the
+	 * boundary the fix enforces: holding `edit` globally must not authorize
+	 * forcing work for a page the caller may not edit.
+	 */
+	private function authorityAllowingEdit( bool $canEditSubject ): Authority {
+		return $this->mockAnonAuthority(
+			static function ( string $permission, $target = null ) use ( $canEditSubject ) {
+				if ( $permission !== 'edit' ) {
+					return true;
+				}
+
+				return $target === null ? true : $canEditSubject;
+			}
+		);
 	}
 
 }

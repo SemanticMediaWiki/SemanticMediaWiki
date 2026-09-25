@@ -5,6 +5,9 @@ namespace SMW\MediaWiki\Api;
 use MediaWiki\Api\ApiBase;
 use MediaWiki\Api\ApiMain;
 use MediaWiki\Context\RequestContext;
+use SMW\DataItems\WikiPage;
+use SMW\Exception\DataItemException;
+use SMW\MediaWiki\Api\Tasks\Task as TaskHandler;
 use Wikimedia\ParamValidator\ParamValidator;
 
 /**
@@ -58,10 +61,10 @@ class Task extends ApiBase {
 
 		$task = $this->taskFactory->newByType( $params['task'], $this->getUser() );
 
-		// Authorize before running: each task declares the right it needs.
-		// This module is not otherwise access-controlled. `needsToken( 'csrf' )`
-		// is satisfied by the public anonymous token and does not gate on rights.
-		$this->checkUserRightsAny( $task->getRequiredPermission() );
+		// Authorize before running. This module is not otherwise
+		// access-controlled: `needsToken( 'csrf' )` is satisfied by the public
+		// anonymous token and does not gate on rights.
+		$this->authorizeTask( $task, $parameters );
 
 		// If the `uselang` isn't set then inject the language from the
 		// logged-in user
@@ -81,6 +84,39 @@ class Task extends ApiBase {
 			'task',
 			$results
 		);
+	}
+
+	/**
+	 * Authorize the caller for a task. A task that acts on a caller-supplied
+	 * page (via getAuthorizationSubject) is authorized against that specific
+	 * page, so a caller cannot drive the task for a title it may not edit
+	 * merely by holding a wiki-wide right. Every other task gates on its
+	 * global getRequiredPermission() right.
+	 */
+	private function authorizeTask( TaskHandler $task, array $parameters ): void {
+		$subject = $task->getAuthorizationSubject( $parameters );
+
+		if ( $subject === null ) {
+			$this->checkUserRightsAny( $task->getRequiredPermission() );
+		} else {
+			try {
+				$title = WikiPage::doUnserialize( $subject )->getTitle();
+			} catch ( DataItemException ) {
+				$title = null;
+			}
+
+			if ( $title === null ) {
+				$this->dieWithError( [ 'smw-api-invalid-parameters' ] );
+			}
+
+			if ( !$this->getAuthority()->authorizeWrite( 'edit', $title ) ) {
+				$this->dieWithError( 'apierror-permissiondenied-generic', 'permissiondenied' );
+			}
+		}
+
+		if ( !$task->requestedWorkIsPermitted( $parameters ) ) {
+			$this->dieWithError( 'apierror-permissiondenied-generic', 'permissiondenied' );
+		}
 	}
 
 	/**
