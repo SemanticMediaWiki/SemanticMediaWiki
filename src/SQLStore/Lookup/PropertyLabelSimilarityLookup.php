@@ -20,6 +20,13 @@ use SMW\Store;
 class PropertyLabelSimilarityLookup {
 
 	/**
+	 * Upper bound on the property pool loaded for the comparison. matchLabels()
+	 * is O(n^2) over this pool, so it must never grow with the whole property
+	 * table; requests for an unbounded or larger pool are clamped to this.
+	 */
+	private const MAX_LIMIT = 100;
+
+	/**
 	 * @var int|float
 	 */
 	private $threshold = 50;
@@ -280,10 +287,25 @@ class PropertyLabelSimilarityLookup {
 			->orderBy( 'smw_sort' )
 			->caller( __METHOD__ );
 
-		if ( $requestOptions !== null && $requestOptions->getLimit() > 0 ) {
-			$queryBuilder->limit( $requestOptions->getLimit() );
-			$queryBuilder->offset( max( $requestOptions->getOffset(), 0 ) );
+		// Always apply a bounded LIMIT. A requested limit outside 1..MAX_LIMIT,
+		// including the unbounded 0 or a negative value, falls back to MAX_LIMIT
+		// so a non-positive limit can no longer load the entire property table
+		// into the O(n^2) comparison.
+		$limit = self::MAX_LIMIT;
+		$offset = 0;
+
+		if ( $requestOptions !== null ) {
+			$requestedLimit = $requestOptions->getLimit();
+
+			if ( $requestedLimit > 0 && $requestedLimit < self::MAX_LIMIT ) {
+				$limit = $requestedLimit;
+			}
+
+			$offset = max( $requestOptions->getOffset(), 0 );
 		}
+
+		$queryBuilder->limit( $limit );
+		$queryBuilder->offset( $offset );
 
 		$res = $queryBuilder->fetchResultSet();
 

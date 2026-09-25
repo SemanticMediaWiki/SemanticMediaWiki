@@ -104,6 +104,61 @@ class PropertyLabelSimilarityLookupTest extends TestCase {
 		);
 	}
 
+	public function testZeroLimitAppliesBoundedPropertyPoolLimit() {
+		// A requested limit of 0 (or negative) must not skip the SQL LIMIT and
+		// pull the whole property table into the O(n^2) label comparison; the
+		// property pool is capped to a bounded maximum instead.
+		$row = new stdClass;
+		$row->smw_title = 'Foo';
+
+		$capturedLimits = [];
+		$whereConditions = [];
+		$capturedSelects = [];
+		$capturedTables = [];
+		$capturedUseIndex = [];
+
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder(
+				[ $row ],
+				$whereConditions,
+				$capturedSelects,
+				$capturedTables,
+				$capturedUseIndex,
+				$capturedLimits
+			) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $connection );
+
+		$propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new PropertyLabelSimilarityLookup(
+			$this->store,
+			$propertySpecificationLookup
+		);
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->setLimit( 0 );
+
+		$instance->compareAndFindLabels( $requestOptions );
+
+		$this->assertCount(
+			1,
+			$capturedLimits,
+			'a bounded SQL LIMIT must be applied when the requested limit is 0'
+		);
+		$this->assertGreaterThan( 0, $capturedLimits[0] );
+		$this->assertLessThanOrEqual( 100, $capturedLimits[0] );
+	}
+
 	public function testCompareAndFindLabelsWithExemption() {
 		$row1 = new stdClass;
 		$row1->smw_title = 'Foo';
