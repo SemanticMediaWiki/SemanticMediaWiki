@@ -241,6 +241,8 @@ class SchemaContentFormatter {
 		} else {
 			if ( !$this->isYaml ) {
 				$text = json_encode( json_decode( $text ), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT );
+			} else {
+				$text = htmlspecialchars( $text );
 			}
 		}
 

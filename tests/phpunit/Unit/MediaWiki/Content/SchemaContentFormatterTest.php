@@ -141,6 +141,49 @@ class SchemaContentFormatterTest extends TestCase {
 		);
 	}
 
+	public function testMarkupSchemaDescriptionDoesNotRenderAsRawTagInYamlDump() {
+		$schema = $this->newSchemaReturningEmptyValues();
+
+		$text = "type: FOO\ndescription: \"<img src=x onerror=alert(1)>\"\n";
+
+		$instance = new SchemaContentFormatter(
+			$this->store
+		);
+
+		$instance->isYaml( true );
+
+		$html = $instance->getText( $text, $schema, [] );
+
+		$this->assertStringNotContainsString(
+			'<img',
+			$html
+		);
+
+		$this->assertStringContainsString(
+			'onerror=alert(1)',
+			$html
+		);
+	}
+
+	public function testBenignYamlSchemaDescriptionIsShownAsText() {
+		$schema = $this->newSchemaReturningEmptyValues();
+
+		$text = "type: FOO\ndescription: Just plain text\n";
+
+		$instance = new SchemaContentFormatter(
+			$this->store
+		);
+
+		$instance->isYaml( true );
+
+		$html = $instance->getText( $text, $schema, [] );
+
+		$this->assertStringContainsString(
+			'description: Just plain text',
+			$html
+		);
+	}
+
 	public function testMarkupSchemaTagRendersEscapedInSummaryTable() {
 		$schema = $this->newSchemaReturningTags( [ '<img src=x onerror=alert(1)>' ] );
 
