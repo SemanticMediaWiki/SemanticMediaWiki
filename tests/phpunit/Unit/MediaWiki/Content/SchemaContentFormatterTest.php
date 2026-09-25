@@ -102,6 +102,57 @@ class SchemaContentFormatterTest extends TestCase {
 		);
 	}
 
+	public function testMarkupSchemaDescriptionDoesNotRenderAsRawTagInJsonDump() {
+		$schema = $this->newSchemaReturningEmptyValues();
+
+		$text = '{"type":"FOO","description":"<img src=x onerror=alert(1)>"}';
+
+		$instance = new SchemaContentFormatter(
+			$this->store
+		);
+
+		$html = $instance->getText( $text, $schema, [] );
+
+		$this->assertStringNotContainsString(
+			'<img',
+			$html
+		);
+
+		$this->assertStringContainsString(
+			'onerror=alert(1)',
+			$html
+		);
+	}
+
+	public function testBenignSchemaDescriptionRoundTripsAsValidPrettyJson() {
+		$schema = $this->newSchemaReturningEmptyValues();
+
+		$text = '{"type":"FOO","description":"Just plain text"}';
+
+		$instance = new SchemaContentFormatter(
+			$this->store
+		);
+
+		$html = $instance->getText( $text, $schema, [] );
+
+		$this->assertStringContainsString(
+			'"description": "Just plain text"',
+			$html
+		);
+	}
+
+	private function newSchemaReturningEmptyValues() {
+		$schema = $this->getMockBuilder( Schema::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schema->expects( $this->any() )
+			->method( 'get' )
+			->willReturnCallback( [ $this, 'schema_get' ] );
+
+		return $schema;
+	}
+
 	public function testGetUsage_Empty() {
 		$schema = $this->getMockBuilder( Schema::class )
 			->disableOriginalConstructor()
