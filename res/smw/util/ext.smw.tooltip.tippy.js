@@ -46,6 +46,48 @@
 		return head + top + '<div class="tippy-content-container ' + theme + '">' + content + '</div>' + bottom;
 	}
 
+	// A `.smw-highlighter` span, its `data-*` attributes and its `.smwttcontent`
+	// text are all authorable through wikitext, and their values flow into the
+	// assembled tooltip markup. Parse that markup in an inert `<template>`, where
+	// no script runs and no resource loads, then drop script-bearing elements and
+	// event-handler or javascript:/data: URL attributes. The sanitised nodes are
+	// returned for tippy to adopt via appendChild rather than being assigned as an
+	// innerHTML string, so they are never re-serialised: benign formatting the
+	// wiki itself produces stays intact while a planted payload cannot execute.
+	var blockedElement = /^(SCRIPT|STYLE|IFRAME|FRAME|FRAMESET|OBJECT|EMBED|APPLET|LINK|META|BASE|FORM|INPUT|BUTTON|TEXTAREA|SELECT|OPTION|SVG|MATH|TEMPLATE|NOSCRIPT)$/;
+	var blockedUrl = /^(javascript|vbscript|data):/i;
+	var urlAttribute = /^(href|src|xlink:href|action|formaction|poster|background|data)$/;
+
+	var sanitize = function ( html ) {
+		var template = document.createElement( 'template' );
+		template.innerHTML = html;
+
+		var elements = template.content.querySelectorAll( '*' );
+
+		for ( var i = 0; i < elements.length; i++ ) {
+			var element = elements[ i ];
+
+			if ( blockedElement.test( element.nodeName.toUpperCase() ) ) {
+				element.parentNode.removeChild( element );
+				continue;
+			}
+
+			var attributes = element.attributes;
+
+			for ( var j = attributes.length - 1; j >= 0; j-- ) {
+				var name = attributes[ j ].name;
+				var lowerName = name.toLowerCase();
+				var value = attributes[ j ].value.replace( /[\u0000- ]+/g, '' );
+
+				if ( lowerName.indexOf( 'on' ) === 0 || ( urlAttribute.test( lowerName ) && blockedUrl.test( value ) ) ) {
+					element.removeAttribute( name );
+				}
+			}
+		}
+
+		return template.content;
+	}
+
 	var options = {
 		target: '.smw-highlighter',
 		allowHTML: true,
@@ -165,7 +207,7 @@
 				}
 
 				tip.setContent(
-					container( title, content, tip )
+					sanitize( container( title, content, tip ) )
 				);
 			}
 
