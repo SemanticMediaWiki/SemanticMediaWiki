@@ -268,8 +268,8 @@ class rebuildFulltextSearchTable extends Maintenance {
 
 			$log = [
 				'Action' => $this->hasOption( 'optimize' )
-					? "table optimization"
-					: $chunked ? "chunked rebuild" : "single-run rebuild",
+					? 'table optimization'
+					: ( $chunked ? 'chunked rebuild' : 'single-run rebuild' ),
 				'Memory used' => $runtimeValues['memory-used'],
 				'Time used' => $runtimeValues['humanreadable-time']
 			];
