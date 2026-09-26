@@ -397,7 +397,7 @@ class rebuildFulltextSearchTable extends Maintenance {
 
 		$this->messageReporter->reportMessage(
 			"\n   ... stopped because of `--max-time`. The rebuild is not complete yet.\n" .
-			"   Resume with: -n=$batchSize -s=$resumeSid\n"
+			"   Resume with: -n $batchSize -s $resumeSid\n"
 		);
 	}
 
