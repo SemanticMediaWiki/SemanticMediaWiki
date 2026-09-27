@@ -364,6 +364,7 @@ class rebuildFulltextSearchTable extends Maintenance {
 			$title,
 			[ 'fromSid' => $fromSid, 'batchSize' => $batchSize ]
 		);
+		$job->setParameter( 'mode', 'chunked' );
 
 		$job->insert();
 

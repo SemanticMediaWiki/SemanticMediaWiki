@@ -91,7 +91,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 						'class' => $this->isApiTask() ? 'smw-admin-api-job-task' : '',
 						'data-job' => 'smw.fulltextSearchTableRebuild',
 						'data-subject' => $subject->getHash(),
-						'data-parameters' => json_encode( [ 'mode' => '' ] )
+						'data-parameters' => json_encode( [ 'mode' => 'chunked' ] )
 					]
 				);
 		} elseif ( $this->hasFeature( SMW_ADM_FULLT ) ) {
