@@ -5,8 +5,10 @@ namespace SMW\MediaWiki\Jobs;
 use MediaWiki\Title\Title;
 use SMW\MediaWiki\Job;
 use SMW\MediaWiki\JobFactory;
+use SMW\Services\ServicesFactory;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\Store;
+use Throwable;
 
 /**
  * @license GPL-2.0-or-later
@@ -54,7 +56,11 @@ class FulltextSearchTableRebuildJob extends Job {
 			$searchTableRebuilder->rebuild();
 		} else {
 			// default, including 'chunked' mode
-			$this->rebuildChunk( $searchTableRebuilder );
+			try {
+				$this->rebuildChunk( $searchTableRebuilder );
+			} catch ( Throwable $e ) {
+				return false;
+			}
 		}
 
 		return true;
@@ -73,13 +79,22 @@ class FulltextSearchTableRebuildJob extends Job {
 	 * (default: \SearchTableRebuilder::DEFAULT_BATCH_SIZE).
 	 *
 	 * @param \SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder $searchTableRebuilder
+	 *
+	 * @return void
+	 * @throws Throwable
 	 */
 	private function rebuildChunk( $searchTableRebuilder ): void {
 		$fromSid = max( 0, (int)$this->getParameter( 's', 0 ) );
 		$batchSize = (int)$this->getParameter( 'n', $searchTableRebuilder::DEFAULT_BATCH_SIZE );
 		$batchSize = $batchSize > 0 ? $batchSize : $searchTableRebuilder::DEFAULT_BATCH_SIZE;
 
-		$nextSid = $searchTableRebuilder->rebuildChunk( $fromSid, $batchSize );
+		try {
+			$nextSid = $searchTableRebuilder->rebuildChunk( $fromSid, $batchSize );
+		} catch ( Throwable $e ) {
+			// To do: notify that the chunk starting at
+			// `-s $fromSid` failed
+			throw $e;
+		}
 
 		if ( $nextSid === null ) {
 			return;

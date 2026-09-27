@@ -247,8 +247,8 @@ class rebuildFulltextSearchTable extends Maintenance {
 
 		if ( $chunked ) {
 			$result = true;
-			$resumeSid = $searchTableRebuilder->rebuildInChunks( $fromSid, $batchSize, $maxTime );
-			$this->reportChunkedResult( $resumeSid, $batchSize );
+			[ $resumeSid, $status ] = $searchTableRebuilder->rebuildInChunks( $fromSid, $batchSize, $maxTime );
+			$this->reportChunkedResult( $resumeSid, $batchSize, $status );
 		} else {
 			$result = $searchTableRebuilder->rebuild();
 		}
@@ -273,9 +273,12 @@ class rebuildFulltextSearchTable extends Maintenance {
 				'Memory used' => $runtimeValues['memory-used'],
 				'Time used' => $runtimeValues['humanreadable-time']
 			];
+			if ( $chunked && ( $status === 'failure' || $status === 'cannot rebuild' ) ) {
+				$log['Error'] = $status;
+			}
 			if ( $chunked && $resumeSid !== null ) {
-				// If rebuild stopped because of --max-time, log
-				// the info needed with which to resume.
+				// If rebuild stopped e.g. because of --max-time,
+				// log the info needed with which to resume.
 				$log['Next ID'] = $resumeSid;
 				$log['Batch size'] = $batchSize;
 			}
@@ -387,19 +390,27 @@ class rebuildFulltextSearchTable extends Maintenance {
 	 *
 	 * @since 7.3.1
 	 *
-	 * @param ?int $resumeSid The subject ID to resume from, or null if the rebuild is complete.
+	 * @param ?int $resumeSid The subject ID to resume from, or null if the rebuild is complete (or could not be run).
 	 * @param int $batchSize
+	 * @param string $status 'success', 'failure' or 'cannot rebuild'
 	 */
-	private function reportChunkedResult( ?int $resumeSid, int $batchSize ): void {
+	private function reportChunkedResult( ?int $resumeSid, int $batchSize, string $status = 'success' ): void {
 		if ( $resumeSid === null ) {
-			$this->messageReporter->reportMessage( "\n   ... done.\n" );
+			$txt = $status === 'cannot rebuild' ? 'stopped. Could not rebuild' : 'done';
+			$this->messageReporter->reportMessage( "\n   ... $txt.\n" );
 			return;
 		}
-
-		$this->messageReporter->reportMessage(
-			"\n   ... stopped because of `--max-time`. The rebuild is not complete yet.\n" .
-			"   Resume with: -n $batchSize -s $resumeSid\n"
-		);
+		if ( $status === 'success' ) {
+			$this->messageReporter->reportMessage(
+				"\n   ... stopped because of `--max-time`. The rebuild is not complete yet.\n" .
+				"   Resume with: -n $batchSize -s $resumeSid\n"
+			);
+		} elseif( $status === 'failure' ) {
+			$this->messageReporter->reportMessage(
+				"\n   ... stopped because of an unexpected failure. The rebuild is not complete yet.\n" .
+				"   Retry with: -n $batchSize -s $resumeSid\n"
+			);
+		}
 	}
 
 }

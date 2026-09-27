@@ -150,6 +150,7 @@ class SearchTableRebuilder {
 	 * @param int $fromSid First subject ID of the chunk (inclusive)
 	 * @param int $batchSize Number of subject IDs in the chunk
 	 *
+	 * @throws Throwable
 	 * @return int|null The `$fromSid` for the next chunk, or null if
 	 * the last chunk has been processed or the index cannot be rebuilt
 	 */
@@ -216,23 +217,35 @@ class SearchTableRebuilder {
 	 * @param int $maxRuntime Maximum runtime in seconds, after which
 	 * no further chunk is started; 0 for no limit (default)
 	 *
-	 * @return int|null the `$fromSid` with which to resume, or null if
-	 * the rebuild has been completed
+	 * @return array[<int|null>, <string>] The first item is the `$fromSid`
+	 * with which to resume, or null (if the rebuild has been completed or
+	 * the table updater is disabled); the second reports on the status of
+	 * the rebuild: 'success', 'failure' or 'cannot rebuild'.
 	 */
 	public function rebuildInChunks(
 		int $fromSid = 0,
 		int $batchSize = self::DEFAULT_BATCH_SIZE,
 		int $maxRuntime = 0
-	): ?int {
+	): array {
 		if ( !$this->canRebuild() ) {
-			return null;
+			return [ null, 'cannot rebuild' ];
 		}
 
 		// Rebuild
+		$status = 'success';
 		$start = microtime( true );
 		$cursor = $fromSid;
 		while ( $cursor !== null ) {
-			$cursor = $this->rebuildChunk( $cursor, $batchSize );
+			try {
+				$cursor = $this->rebuildChunk( $cursor, $batchSize );
+			} catch ( Throwable $e ) {
+				$this->messageReporter->reportMessage(
+					"\nChunk starting at -s $cursor failed: " . $e->getMessage() . "\n"
+				);
+				// Don't throw
+				$status = 'failure';
+				break;
+			}
 			if ( $cursor !== null && $maxRuntime > 0 && ( microtime( true ) - $start ) >= $maxRuntime ) {
 				break;
 			}
@@ -252,7 +265,7 @@ class SearchTableRebuilder {
 			);
 		}
 
-		return $cursor;
+		return [ $cursor, $status ];
 	}
 
 	/**
