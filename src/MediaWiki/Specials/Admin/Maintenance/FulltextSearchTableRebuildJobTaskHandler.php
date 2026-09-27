@@ -136,7 +136,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 			'smw.fulltextSearchTableRebuild',
 			SpecialPage::getTitleFor( 'SMWAdmin' ),
 			[
-				'mode' => 'full'
+				'mode' => 'chunked'
 			]
 		);
 
