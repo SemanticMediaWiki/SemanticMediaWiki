@@ -22,6 +22,7 @@ class RebuildFulltextSearchTableTest extends SMWIntegrationTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
+		$this->testEnvironment->addConfiguration( 'smwgEnabledFulltextSearch', true );
 		$this->runnerFactory  = $this->testEnvironment::getUtilityFactory()->newRunnerFactory();
 		$this->spyMessageReporter = $this->testEnvironment::getUtilityFactory()->newSpyMessageReporter();
 	}
@@ -44,7 +45,7 @@ class RebuildFulltextSearchTableTest extends SMWIntegrationTestCase {
 		$maintenanceRunner->run();
 
 		$this->assertStringContainsString(
-			'The script rebuilds the search index',
+			'script is used to rebuild or optimise the search index',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
@@ -111,7 +112,5 @@ class RebuildFulltextSearchTableTest extends SMWIntegrationTestCase {
 			$jobQueueGroup->get( 'smw.fulltextSearchTableRebuild' )->getSize()
 		);
 	}
-
-	
 
 }

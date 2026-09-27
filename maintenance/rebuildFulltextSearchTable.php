@@ -350,7 +350,7 @@ class rebuildFulltextSearchTable extends Maintenance {
 	/**
 	 * Inserts a single job into the job queue, reports to the
 	 * CLI and optionally, writes to the maintenance log.
-	 * 
+	 *
 	 * @since 7.3.1
 	 */
 	private function queueRebuildJob( JobFactory $jobFactory, int $fromSid, int $batchSize ): void {

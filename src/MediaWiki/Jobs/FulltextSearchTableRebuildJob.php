@@ -82,14 +82,14 @@ class FulltextSearchTableRebuildJob extends Job {
 		$nextSid = $searchTableRebuilder->rebuildChunk( $fromSid, $batchSize );
 
 		if ( $nextSid === null ) {
- 			return;
- 		}
+			return;
+		}
 
 		$job = $this->jobFactory->newFulltextSearchTableRebuildJob(
 			$this->getTitle(),
 			[ 's' => $nextSid, 'n' => $batchSize ]
 		);
- 
+
 		$job->insert();
 	}
 
