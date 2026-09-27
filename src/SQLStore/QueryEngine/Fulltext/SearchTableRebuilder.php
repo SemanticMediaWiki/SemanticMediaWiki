@@ -11,6 +11,7 @@ use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Utils\PeriodicStatsFlusher;
+use Throwable;
 
 /**
  * @license GPL-2.0-or-later
@@ -165,15 +166,24 @@ class SearchTableRebuilder {
 		// Read first, then write
 		$texts = $this->collectTextsBySidRange( $fromSid, $toSid );
 
-		// Remove index entries from the chunk. The period between
-		// this and repopulation must be kept as short as possible!
-		$this->searchTableUpdater->deleteBySidRange( $fromSid, $toSid );
+		// Using MW's section transaction methods to prevent possible
+		// outages from causing empty or incomplete ranges
+		$this->connection->beginSectionTransaction( __METHOD__ );
+		try {
+			// Period between removing entries from the chunk and
+			// repopulation must be kept as short as possible!
+			$this->searchTableUpdater->deleteBySidRange( $fromSid, $toSid );
 
-		foreach ( $texts as $key => $parts ) {
-			[ $sid, $pid ] = explode( ':', $key, 2 );
+			foreach ( $texts as $key => $parts ) {
+				[ $sid, $pid ] = explode( ':', $key, 2 );
+				$this->searchTableUpdater->insert( $sid, $pid );
+				$this->searchTableUpdater->update( $sid, $pid, implode( ' ', $parts ) );
+			}
 
-			$this->searchTableUpdater->insert( $sid, $pid );
-			$this->searchTableUpdater->update( $sid, $pid, implode( ' ', $parts ) );
+			$this->connection->endSectionTransaction( __METHOD__ );
+		} catch ( Throwable $e ) {
+			$this->connection->cancelSectionTransaction( __METHOD__ );
+			throw $e;
 		}
 
 		if ( $maxSid > 0 ) {

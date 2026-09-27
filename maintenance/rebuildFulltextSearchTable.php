@@ -50,7 +50,7 @@ class rebuildFulltextSearchTable extends Maintenance {
 		$this->addOption( 'v', 'Show additional (verbose) information about the progress', false );
 		$this->addOption( 'quick', 'Suppress abort operation', false );
 		// @since 7.3.1: 'n', 's', 'max-time', 'use-job'
-		$this->addOption( 'n', 'Batch size. The rebuild will be done in consecutive chunks of this many subject IDs (default ' . SearchTableRebuilder::DEFAULT_BATCH_SIZE . ') instead of rebuilding the index in one pass. The index is not purged, but each chunk replaces its own entries. Can be combined with `-s` and unless `--job-queue` is used, with `--max-time`.', false, true );
+		$this->addOption( 'n', 'Batch size. The rebuild will be done in consecutive chunks of this many subject IDs (default ' . SearchTableRebuilder::DEFAULT_BATCH_SIZE . ') instead of rebuilding the index in one pass. The index is not purged, but each chunk replaces its own entries. Can be combined with `-s` and unless `--use-job` is used, with `--max-time`.', false, true );
 		$this->addOption( 's', 'Subject ID (`s_id`) to start with (default 0). If an earlier run was stopped, the value reported by that run can be used to resume the rebuild.', false, true );
 		$this->addOption( 'max-time', 'Maximum run time in seconds. The script will not start another chunk after this and reports the subject ID to resume with (`-s`), if any.', false, true );
 		$this->addOption( 'use-job', 'Instead of running the rebuild, insert one `smw.fulltextSearchTableRebuild` job into the job queue and return immediately. On each invocation, the job processes one chunk of `-n` subject IDs and re-queues itself for the next one until the rebuild is complete. Process jobs with your job runner, e.g. `php maintenance/run.php runJobs --type=smw.fulltextSearchTableRebuild --maxjobs=500`. Combine `--use-job` with `-n` / `-s` to control the batch size / starting point. Cannot be combined with `--max-time`.', false );
@@ -150,26 +150,26 @@ class rebuildFulltextSearchTable extends Maintenance {
 
 		// Abort under some conditions
 		if ( $chunked && ( $batchSize < 1 || $fromSid < 0 || $maxTime < 0 ) ) {
-			$this->maintenanceLogger->logFromArray( [ 'Error' => 'Incorrect parameters' ] );
+			$this->maintenanceLogger?->logFromArray( [ 'Error' => 'Incorrect parameters' ] );
 			$this->fatalError(
 				$cliMsgFormatter->wordwrap( [ "`-n` must be at least 1; `-s` and `--max-time` must not be negative." ] )
 			);
 		}
 		if ( $useJobQueue && $this->hasOption( 'max-time' ) ) {
 			// @DG should this be fatal?
-			$this->maintenanceLogger->logFromArray( [ 'Error' => 'Incorrect parameters' ] );
+			$this->maintenanceLogger?->logFromArray( [ 'Error' => 'Incorrect parameters' ] );
 			$this->fatalError(
 				$cliMsgFormatter->wordwrap( [ "Aborted because `--max-time` has no effect with `--use-job`. Omit `--max-time` and consider using `-n` instead to set the window for each queued job." ] )
 			);
 		}
 		if ( $this->hasOption( 'optimize' ) && $useJobQueue ) {
-			$this->maintenanceLogger->logFromArray( [ 'Error' => 'Incorrect parameters' ] );
+			$this->maintenanceLogger?->logFromArray( [ 'Error' => 'Incorrect parameters' ] );
 			$this->fatalError(
 				$cliMsgFormatter->wordwrap( [ "Aborted because `--optimize` does not support `--use-job`." ] )
 			);
 		}
 		if ( $this->hasOption( 'optimize' ) && $chunked ) {
-			$this->maintenanceLogger->logFromArray( [ 'Error' => 'Incorrect parameters' ] );
+			$this->maintenanceLogger?->logFromArray( [ 'Error' => 'Incorrect parameters' ] );
 			$this->fatalError(
 				$cliMsgFormatter->wordwrap( [ "Aborted because `--optimize` does not support batch mode parameters." ] )
 			);
@@ -193,8 +193,7 @@ class rebuildFulltextSearchTable extends Maintenance {
 		if ( $this->hasOption( 'optimize' ) ) {
 			// @since 7.3.1
 			$text = [
-				"The index table is not purged.",
-				"This process inserts a single job into the job queue to run table optimization (`OPTIMIZE TABLE`) without touching the index data."
+				"This process runs table optimization (`OPTIMIZE TABLE`) without purging or touching the index.",
 			];
 		} elseif ( $useJobQueue ) {
 			// @since 7.3.1

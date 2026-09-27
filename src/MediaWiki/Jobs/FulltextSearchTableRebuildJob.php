@@ -87,7 +87,7 @@ class FulltextSearchTableRebuildJob extends Job {
 
 		$job = $this->jobFactory->newFulltextSearchTableRebuildJob(
 			$this->getTitle(),
-			[ 'fromSid' => $nextSid, 'batchSize' => $batchSize ]
+			[ 's' => $nextSid, 'n' => $batchSize ]
 		);
  
 		$job->insert();
