@@ -50,9 +50,9 @@ class rebuildFulltextSearchTable extends Maintenance {
 		$this->addOption( 'v', 'Show additional (verbose) information about the progress', false );
 		$this->addOption( 'quick', 'Suppress abort operation', false );
 		// @since 7.3.1: 'n', 's', 'max-time', 'use-job'
-		$this->addOption( 'n', 'Batch size: rebuild in chunks of this many subject IDs (default ' . SearchTableRebuilder::DEFAULT_BATCH_SIZE . ') instead of purging and rebuilding the index in one pass. The index is not purged: each chunk replaces its own entries instead.', false, true );
-		$this->addOption( 's', 'Subject ID to start with (default 0) in batch mode, e.g. the value reported by an earlier run that was stopped.', false, true );
-		$this->addOption( 'max-time', 'Maximum run time in seconds. The script will not start another chunk after this and reports the subject ID to resume with (`-s`).', false, true );
+		$this->addOption( 'n', 'Batch size. The rebuild will be done in consecutive chunks of this many subject IDs (default ' . SearchTableRebuilder::DEFAULT_BATCH_SIZE . ') instead of rebuilding the index in one pass. The index is not purged, but each chunk replaces its own entries. Can be combined with `-s` and unless `--job-queue` is used, with `--max-time`.', false, true );
+		$this->addOption( 's', 'Subject ID (`s_id`) to start with (default 0). If an earlier run was stopped, the value reported by that run can be used to resume the rebuild.', false, true );
+		$this->addOption( 'max-time', 'Maximum run time in seconds. The script will not start another chunk after this and reports the subject ID to resume with (`-s`), if any.', false, true );
 		$this->addOption( 'use-job', 'Instead of running the rebuild, insert one `smw.fulltextSearchTableRebuild` job into the job queue and return immediately. On each invocation, the job processes one chunk of `-n` subject IDs and re-queues itself for the next one until the rebuild is complete. Process jobs with your job runner, e.g. `php maintenance/run.php runJobs --type=smw.fulltextSearchTableRebuild --maxjobs=500`. Combine `--use-job` with `-n` / `-s` to control the batch size / starting point. Cannot be combined with `--max-time`.', false );
 	}
 
