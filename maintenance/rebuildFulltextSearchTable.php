@@ -98,12 +98,13 @@ class rebuildFulltextSearchTable extends Maintenance {
 			$cliMsgFormatter->section( 'About' )
 		);
 
+		// General description. Cf. smw-admin-fulltext-intro (i18n)
 		$text = [
-			"The script rebuilds the search index from property tables that",
-			"support a fulltext search. Any change of the index rules (altered",
+			"This script is used to rebuild or optimise the search index from property tables that support a full-text search, or defer the rebuild to the job queue.",
+			"Any change of the index rules (altered",
 			"stopwords, new stemmer etc.) and/or a newly added or altered table",
-			"requires to run this script again to ensure that the index complies",
-			"with the rules set forth by the SQL back-end or Sanitizer."
+			"requires running this script again to ensure that the index complies",
+			"with the rules set forth by the SQL back-end or TextSanitizer."
 		];
 
 		$this->messageReporter->reportMessage(
@@ -199,7 +200,7 @@ class rebuildFulltextSearchTable extends Maintenance {
 			// @since 7.3.1
 			$text = [
 				"This process does not purge the index table or execute the rebuild.",
-				"What it does instead is insert a single job into the job queue to (1) rebuild one chunk of $batchSize subject IDs and (2) re-queue itself for the next chunk until the rebuild is complete."
+				"What it does instead is insert a single job into the job queue to rebuild one chunk of $batchSize subject IDs and re-queue itself for the next chunk until the rebuild is complete."
 			];
 		} elseif ( $chunked ) {
 			// @since 7.3.1
@@ -362,14 +363,14 @@ class rebuildFulltextSearchTable extends Maintenance {
 
 		$job = $jobFactory->newFulltextSearchTableRebuildJob(
 			$title,
-			[ 'fromSid' => $fromSid, 'batchSize' => $batchSize ]
+			[ 's' => $fromSid, 'n' => $batchSize ]
 		);
 		$job->setParameter( 'mode', 'chunked' );
 
 		$job->insert();
 
 		$this->messageReporter->reportMessage(
-			"\n   ... queued (fromSid=$fromSid, batchSize=$batchSize).\n\n" .
+			"\n   ... queued (s=$fromSid, n=$batchSize).\n\n" .
 			"   Run it with, for example:\n" .
 			"   php maintenance/run.php runJobs --type=smw.fulltextSearchTableRebuild --maxjobs=500\n"
 		);

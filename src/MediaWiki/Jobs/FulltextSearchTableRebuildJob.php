@@ -75,8 +75,8 @@ class FulltextSearchTableRebuildJob extends Job {
 	 * @param \SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder $searchTableRebuilder
 	 */
 	private function rebuildChunk( $searchTableRebuilder ): void {
-		$fromSid = max( 0, (int)$this->getParameter( 'fromSid', 0 ) );
-		$batchSize = (int)$this->getParameter( 'batchSize', $searchTableRebuilder::DEFAULT_BATCH_SIZE );
+		$fromSid = max( 0, (int)$this->getParameter( 's', 0 ) );
+		$batchSize = (int)$this->getParameter( 'n', $searchTableRebuilder::DEFAULT_BATCH_SIZE );
 		$batchSize = $batchSize > 0 ? $batchSize : $searchTableRebuilder::DEFAULT_BATCH_SIZE;
 
 		$nextSid = $searchTableRebuilder->rebuildChunk( $fromSid, $batchSize );
