@@ -398,6 +398,20 @@ class LegacyParserTest extends TestCase {
 		$this->assertEmpty( $this->queryParser->getErrors() );
 	}
 
+	public function testConjunctionsDoNotCountTowardSubqueryDepthLimit() {
+		$this->setMaxQueryDepth( 1 );
+
+		// One <q> level (permitted at depth 1) but several AND conjuncts. A
+		// conjunction stays at the same nesting level, so it must not consume
+		// depth; the query parses without a nesting error rather than being
+		// truncated.
+		$this->queryParser->getQueryDescription(
+			'[[Category:Foo]] AND <q>[[One::A]] AND [[Two::B]]</q>'
+		);
+
+		$this->assertEmpty( $this->queryParser->getErrors() );
+	}
+
 	private function setMaxQueryDepth( int $depth ): void {
 		$GLOBALS['smwgQMaxDepth'] = $depth;
 	}
