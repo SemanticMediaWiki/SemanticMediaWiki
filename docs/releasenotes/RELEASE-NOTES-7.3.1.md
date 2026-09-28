@@ -1,6 +1,6 @@
 # Semantic MediaWiki 7.3.1
 
-Released on TBD.
+Released on September 28, 2026.
 
 This is a [patch release](../RELEASE-POLICY.md). Thus, it contains only bug fixes and security fixes, and no new features. Some of the security fixes tighten input handling and may reject requests that previously succeeded.
 
