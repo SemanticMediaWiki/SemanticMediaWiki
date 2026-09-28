@@ -10,6 +10,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 ## Changes
 
 * Fixed the parser cache rejecting entries whose semantic data items carry options, such as every page saved after the store update ran (a `ParserCache: Unable to deserialize JSON` error and a full re-parse on the next view)
+* Queries that nest more deeply than `$smwgQMaxDepth`, including long chains of explicit `AND`, are now rejected with an error
 
 ## Upgrading
 
