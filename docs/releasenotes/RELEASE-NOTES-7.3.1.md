@@ -9,6 +9,8 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ## Changes
 
+* Fixed the parser cache rejecting entries whose semantic data items carry options, such as every page saved after the store update ran (a `ParserCache: Unable to deserialize JSON` error and a full re-parse on the next view)
+
 ## Upgrading
 
 No need to run "update.php" or any other migration scripts.

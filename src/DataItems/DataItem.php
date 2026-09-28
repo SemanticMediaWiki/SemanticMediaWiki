@@ -6,6 +6,7 @@ use AllowDynamicProperties;
 use InvalidArgumentException;
 use MediaWiki\Json\JsonDeserializable;
 use MediaWiki\Json\JsonDeserializer;
+use SMW\DataModel\SemanticData;
 use SMW\Options;
 
 /**
@@ -277,7 +278,7 @@ abstract class DataItem implements JsonDeserializable {
 	 */
 	public static function newFromJsonArray( JsonDeserializer $deserializer, array $json ) {
 		$obj = static::doUnserialize( $json['value'] );
-		$obj->options = $json['options'] ? $deserializer->deserialize( $json['options'] ) : null;
+		$obj->options = $json['options'] ? SemanticData::maybeDeserialize( $deserializer, $json['options'] ) : null;
 		return $obj;
 	}
 

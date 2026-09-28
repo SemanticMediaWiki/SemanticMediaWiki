@@ -4,6 +4,7 @@ namespace SMW\Tests\Integration;
 
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataModel\Subobject;
@@ -19,6 +20,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  *
  * @covers \SMW\DataModel\SemanticData
  * @covers \SMW\DataModel\SubSemanticData
+ * @covers \SMW\DataItems\DataItem
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
@@ -28,7 +30,7 @@ class SemanticDataJsonCodecRoundtripTest extends TestCase {
 	/**
 	 * @dataProvider semanticDataProvider
 	 */
-	public function testJsonCodecRoundtrip( SemanticData $data ): void {
+	public function testJsonCodecRoundtrip( SemanticData $data, array $expectedItemOptions = [] ): void {
 		$codec = MediaWikiServices::getInstance()->getJsonCodec();
 
 		$json = $codec->serialize( $data );
@@ -36,6 +38,15 @@ class SemanticDataJsonCodecRoundtripTest extends TestCase {
 
 		$this->assertInstanceOf( SemanticData::class, $restored );
 		$this->assertSame( $data->getHash(), $restored->getHash() );
+
+		// The hash ignores data item options, so check them explicitly.
+		$dataItems = $restored->getPropertyValues( Property::newFromUserLabel( 'Has fooQuex' ) );
+		foreach ( $expectedItemOptions as $key => $value ) {
+			$this->assertNotEmpty( $dataItems );
+			foreach ( $dataItems as $dataItem ) {
+				$this->assertSame( $value, $dataItem->getOption( $key ) );
+			}
+		}
 	}
 
 	public function semanticDataProvider(): array {
@@ -71,6 +82,12 @@ class SemanticDataJsonCodecRoundtripTest extends TestCase {
 		$withSub->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
 
 		$provider['with subobject'] = [ $withSub ];
+
+		$withItemOptions = new SemanticData( WikiPage::newFromTitle( $title ) );
+		$dataValue = DataValueFactory::getInstance()->newDataValueByText( 'Has fooQuex', 'Bar' );
+		$dataValue->getDataItem()->setOption( 'is.keyword', true );
+		$withItemOptions->addDataValue( $dataValue );
+		$provider['data item with options'] = [ $withItemOptions, [ 'is.keyword' => true ] ];
 
 		return $provider;
 	}
