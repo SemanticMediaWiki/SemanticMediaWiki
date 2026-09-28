@@ -5,7 +5,6 @@ namespace SMW\MediaWiki\Jobs;
 use MediaWiki\Title\Title;
 use SMW\MediaWiki\Job;
 use SMW\MediaWiki\JobFactory;
-use SMW\Services\ServicesFactory;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\Store;
 use Throwable;

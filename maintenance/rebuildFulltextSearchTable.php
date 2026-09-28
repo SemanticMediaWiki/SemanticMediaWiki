@@ -50,7 +50,7 @@ class rebuildFulltextSearchTable extends Maintenance {
 		$this->addOption( 'v', 'Show additional (verbose) information about the progress', false );
 		$this->addOption( 'quick', 'Suppress abort operation', false );
 		// @since 7.3.1: 'n', 's', 'max-time', 'use-job'
-		$this->addOption( 'n', 'Batch size. The rebuild will be done in consecutive chunks of this many subject IDs (default ' . SearchTableRebuilder::DEFAULT_BATCH_SIZE . ') instead of rebuilding the index in one pass. The index is not purged, but each chunk replaces its own entries. Can be combined with `-s` and unless `--use-job` is used, with `--max-time`.', false, true );
+		$this->addOption( 'n', 'Batch size. The rebuild will be done in consecutive chunks of this many subject IDs (up to ' . SearchTableRebuilder::MAX_BATCH_SIZE . ', default: ' . SearchTableRebuilder::DEFAULT_BATCH_SIZE . ') instead of rebuilding the index in one pass. The index is not purged, but each chunk replaces its own entries. Can be combined with `-s` and unless `--use-job` is used, with `--max-time`.', false, true );
 		$this->addOption( 's', 'Subject ID (`s_id`) to start with (default 0). If an earlier run was stopped, the value reported by that run can be used to resume the rebuild.', false, true );
 		$this->addOption( 'max-time', 'Maximum run time in seconds. The script will not start another chunk after this and reports the subject ID to resume with (`-s`), if any.', false, true );
 		$this->addOption( 'use-job', 'Instead of running the rebuild, insert one `smw.fulltextSearchTableRebuild` job into the job queue and return immediately. On each invocation, the job processes one chunk of `-n` subject IDs and re-queues itself for the next one until the rebuild is complete. Process jobs with your job runner, e.g. `php maintenance/run.php runJobs --type=smw.fulltextSearchTableRebuild --maxjobs=500`. Combine `--use-job` with `-n` / `-s` to control the batch size / starting point. Cannot be combined with `--max-time`.', false );
@@ -100,7 +100,7 @@ class rebuildFulltextSearchTable extends Maintenance {
 
 		// General description. Cf. smw-admin-fulltext-intro (i18n)
 		$text = [
-			"This script is used to rebuild or optimise the search index from property tables that support a full-text search, or defer the rebuild to the job queue.",
+			"This script is used to rebuild or optimize the search index from property tables that support a full-text search, or defer the rebuild to the job queue.",
 			"Any change of the index rules (altered",
 			"stopwords, new stemmer etc.) and/or a newly added or altered table",
 			"requires running this script again to ensure that the index complies",
@@ -143,7 +143,11 @@ class rebuildFulltextSearchTable extends Maintenance {
 		}
 
 		$chunked = $this->hasOption( 'n' ) || $this->hasOption( 's' ) || $this->hasOption( 'max-time' );
-		$batchSize = (int)$this->getOption( 'n', $searchTableRebuilder::DEFAULT_BATCH_SIZE );
+		$batchSize = min(
+			(int)$this->getOption( 'n', $searchTableRebuilder::DEFAULT_BATCH_SIZE ),
+			$searchTableRebuilder::MAX_BATCH_SIZE
+		);
+
 		$fromSid = (int)$this->getOption( 's', 0 );
 		$maxTime = (int)$this->getOption( 'max-time', 0 );
 		$useJobQueue = $this->hasOption( 'use-job' );
@@ -246,8 +250,10 @@ class rebuildFulltextSearchTable extends Maintenance {
 		// Run rebuild (full or chunked) or optimisation
 
 		if ( $chunked ) {
-			$result = true;
 			[ $resumeSid, $status ] = $searchTableRebuilder->rebuildInChunks( $fromSid, $batchSize, $maxTime );
+			$result = $status === 'failure'
+				? false
+				: ( $status === 'cannot rebuild' ? null : true );
 			$this->reportChunkedResult( $resumeSid, $batchSize, $status );
 		} else {
 			$result = $searchTableRebuilder->rebuild();
@@ -405,10 +411,10 @@ class rebuildFulltextSearchTable extends Maintenance {
 				"\n   ... stopped because of `--max-time`. The rebuild is not complete yet.\n" .
 				"   Resume with: -n $batchSize -s $resumeSid\n"
 			);
-		} elseif( $status === 'failure' ) {
+		} elseif ( $status === 'failure' ) {
 			$this->messageReporter->reportMessage(
 				"\n   ... stopped because of an unexpected failure. The rebuild is not complete yet.\n" .
-				"   Retry with: -n $batchSize -s $resumeSid\n"
+				"   Try resuming with: -n $batchSize -s $resumeSid\n"
 			);
 		}
 	}

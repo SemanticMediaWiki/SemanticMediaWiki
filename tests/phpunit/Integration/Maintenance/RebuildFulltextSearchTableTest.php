@@ -45,7 +45,7 @@ class RebuildFulltextSearchTableTest extends SMWIntegrationTestCase {
 		$maintenanceRunner->run();
 
 		$this->assertStringContainsString(
-			'script is used to rebuild or optimise the search index',
+			'script is used to rebuild or optimize the search index',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}

@@ -40,7 +40,9 @@ class SearchTableRebuilder {
 	 *
 	 * @since 7.3.1
 	 */
-	public const DEFAULT_BATCH_SIZE = 2000;
+	public const DEFAULT_BATCH_SIZE = 500;
+
+	public const MAX_BATCH_SIZE = 2000;
 
 	/**
 	 * Property tables that take part in a chunked rebuild, resolved once per
@@ -159,6 +161,7 @@ class SearchTableRebuilder {
 			return null;
 		}
 
+		$batchSize = min( $batchSize, self::MAX_BATCH_SIZE );
 		$fromSid = max( 0, $fromSid );
 		// The next subject ID to start from
 		$toSid = $fromSid + max( 1, $batchSize );
@@ -217,10 +220,11 @@ class SearchTableRebuilder {
 	 * @param int $maxRuntime Maximum runtime in seconds, after which
 	 * no further chunk is started; 0 for no limit (default)
 	 *
-	 * @return array[<int|null>, <string>] The first item is the `$fromSid`
-	 * with which to resume, or null (if the rebuild has been completed or
-	 * the table updater is disabled); the second reports on the status of
-	 * the rebuild: 'success', 'failure' or 'cannot rebuild'.
+	 * @return array [<int|null>, <string>] The first item is the
+	 * `$fromSid` with which to resume, or null (if the rebuild has
+	 * been completed or the table updater is disabled); the second
+	 * reports on the status of the rebuild: 'success', 'failure' or
+	 * 'cannot rebuild'
 	 */
 	public function rebuildInChunks(
 		int $fromSid = 0,
@@ -233,6 +237,7 @@ class SearchTableRebuilder {
 
 		// Rebuild
 		$status = 'success';
+		$batchSize = min( $batchSize, self::MAX_BATCH_SIZE );
 		$start = microtime( true );
 		$cursor = $fromSid;
 		while ( $cursor !== null ) {
