@@ -57,7 +57,7 @@ class FulltextSearchTableRebuildJob extends Job {
 			// default, including 'chunked' mode
 			try {
 				$this->rebuildChunk( $searchTableRebuilder );
-			} catch ( Throwable $e ) {
+			} catch ( Throwable ) {
 				return false;
 			}
 		}
