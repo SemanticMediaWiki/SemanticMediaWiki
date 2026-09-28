@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ar choler",
 			"Dishual",
 			"Fohanno",
 			"Fulup",
@@ -122,7 +123,7 @@
 	"smw_ask_sortby": "Urzhiañ dre vannoù (diret)",
 	"smw_ask_ascorder": "War gresk",
 	"smw_ask_descorder": "War zigresk",
-	"smw-ask-order-rand": "Dargouezhek",
+	"smw-ask-order-rand": "Dre zegouezh",
 	"smw_ask_submit": "Kavout disoc'hoù",
 	"smw_ask_editquery": "Kemmañ ar reked",
 	"smw_add_sortcondition": "[ouzhpennañ un diviz urzhiañ]",
