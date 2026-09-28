@@ -249,6 +249,8 @@ class rebuildFulltextSearchTable extends Maintenance {
 
 		// Run rebuild (full or chunked) or optimisation
 
+		$resumeSid = null;
+		$status = 'success';
 		if ( $chunked ) {
 			[ $resumeSid, $status ] = $searchTableRebuilder->rebuildInChunks( $fromSid, $batchSize, $maxTime );
 			$result = $status === 'failure'
