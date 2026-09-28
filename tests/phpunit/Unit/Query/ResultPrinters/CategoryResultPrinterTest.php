@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\Query\ResultPrinters;
 
 use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryContext;
 use SMW\Query\QueryResult;
@@ -95,6 +96,48 @@ class CategoryResultPrinterTest extends TestCase {
 
 		// Inline #ask output is sanitised downstream by the parser.
 		$this->assertStringContainsString( '"><img src=x onerror=alert(1)>', $result );
+	}
+
+	public function testMarkupDelimiterIsEscapedInTemplateOutput() {
+		$fields = $this->buildTemplateFields(
+			'"><img src=x onerror=alert(1)>', SMW_OUTPUT_HTML
+		);
+
+		$this->assertStringContainsString( '&quot;&gt;&lt;img src=x onerror=alert(1)&gt;', $fields['1'] );
+		$this->assertStringNotContainsString( '"><img src=x onerror=alert(1)>', $fields['1'] );
+	}
+
+	private function buildTemplateFields( string $delim, int $outputMode ): array {
+		$instance = new CategoryResultPrinter( 'category' );
+
+		$this->setPrivate( $instance, 'delim', $delim );
+		$this->setPrivate( $instance, 'params', [ 'named args' => false ] );
+
+		$templateRenderer = new class extends WikitextTemplateRenderer {
+			public array $captured = [];
+
+			public function addField( $field, $value ): void {
+				$this->captured[$field] = $value;
+			}
+		};
+
+		$this->setPrivate( $instance, 'templateRenderer', $templateRenderer );
+
+		$method = new \ReflectionMethod( CategoryResultPrinter::class, 'row_to_template' );
+		$method->setAccessible( true );
+
+		$firstCol = true;
+		$method->invokeArgs(
+			$instance, [ [ $this->newField( 'ValA', 'ValB' ) ], &$firstCol, $outputMode ]
+		);
+
+		return $templateRenderer->captured;
+	}
+
+	private function setPrivate( object $instance, string $property, $value ): void {
+		$reflection = new \ReflectionProperty( CategoryResultPrinter::class, $property );
+		$reflection->setAccessible( true );
+		$reflection->setValue( $instance, $value );
 	}
 
 	private function buildRowContents( string $delim, int $outputMode ): string {

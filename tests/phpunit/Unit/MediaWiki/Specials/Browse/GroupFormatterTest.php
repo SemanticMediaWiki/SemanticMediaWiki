@@ -243,6 +243,19 @@ class GroupFormatterTest extends TestCase {
 		$this->assertStringContainsString( '>Custom benign group</a>', $heading );
 	}
 
+	public function testScriptBearingGroupNameWithoutLinkIsEscapedInBrowseGroupHeading() {
+		$instance = new GroupFormatter(
+			$this->propertySpecificationLookup,
+			$this->schemaFinder
+		);
+
+		// A group with no built link falls to the raw-name branch, which must escape it.
+		$heading = $instance->getGroupLink( '<img src=x onerror=alert(1)>' );
+
+		$this->assertStringNotContainsString( '<img src=x', $heading );
+		$this->assertStringContainsString( '&lt;img src=x', $heading );
+	}
+
 	private function newInstanceForSchemaGroup( array $groupData ): GroupFormatter {
 		$schemaDefinition = $this->getMockBuilder( SchemaDefinition::class )
 			->disableOriginalConstructor()

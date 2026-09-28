@@ -224,6 +224,26 @@ class SchemaContentFormatterTest extends TestCase {
 		);
 	}
 
+	public function testMarkupSchemaTypeRendersEscapedInSummaryTable() {
+		$schema = $this->newSchemaReturningType( '<img src=x onerror=alert(1)>' );
+
+		$instance = new SchemaContentFormatter(
+			$this->store
+		);
+
+		$html = $instance->getText( '...', $schema, [] );
+
+		$this->assertStringNotContainsString(
+			'<img src=x onerror=alert(1)>',
+			$html
+		);
+
+		$this->assertStringContainsString(
+			'&lt;img src=x onerror=alert(1)&gt;',
+			$html
+		);
+	}
+
 	private function newSchemaReturningTags( array $tags ) {
 		$schema = $this->getMockBuilder( Schema::class )
 			->disableOriginalConstructor()
@@ -232,6 +252,18 @@ class SchemaContentFormatterTest extends TestCase {
 		$schema->expects( $this->any() )
 			->method( 'get' )
 			->willReturnCallback( static fn ( $key ) => $key === Schema::SCHEMA_TAG ? $tags : '' );
+
+		return $schema;
+	}
+
+	private function newSchemaReturningType( string $type ) {
+		$schema = $this->getMockBuilder( Schema::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schema->expects( $this->any() )
+			->method( 'get' )
+			->willReturnCallback( static fn ( $key, $default = '' ) => $key === 'type' ? $type : $default );
 
 		return $schema;
 	}
