@@ -1457,8 +1457,7 @@
 		},
 		"FieldTypeFeatures": {
 			"value": false,
-			"description": "SQLStore field-type modifications. `false` (= `SMW_FIELDT_NONE`) disables all flags and skips field-type registration entirely; an array of `\"char-nocase\"` and/or `\"char-long\"` enables case-insensitive collation / extended field width respectively. Legacy `SMW_FIELDT_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0.",
-			"merge_strategy": "provide_default"
+			"description": "SQLStore field-type modifications. `false` (= `SMW_FIELDT_NONE`) disables all flags and skips field-type registration entirely; an array of `\"char-nocase\"` and/or `\"char-long\"` enables case-insensitive collation / extended field width respectively. Legacy `SMW_FIELDT_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
 		},
 		"FixedProperties": {
 			"value": [],

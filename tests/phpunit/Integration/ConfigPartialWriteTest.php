@@ -393,12 +393,20 @@ class ConfigPartialWriteTest extends TestCase {
 	// ---------------------------------------------------------------------------
 
 	/**
+	 * A non-array default (smwgFieldTypeFeatures: `false`) is already replaced
+	 * wholesale by ExtensionRegistry and must not declare a merge_strategy:
+	 * ExtensionProcessor stores the strategy as a key on the value, which
+	 * would turn `false` into `[]`.
+	 *
 	 * @dataProvider flagSettingProvider
 	 */
 	public function testFlagSettingReplacesDefault( string $shortKey ): void {
 		$entry = $this->loadManifestEntry( $shortKey );
 
-		$this->assertSame( 'provide_default', $entry['merge_strategy'] );
+		$this->assertSame(
+			is_array( $entry['value'] ) ? 'provide_default' : 'array_merge',
+			$entry['merge_strategy']
+		);
 	}
 
 	public function flagSettingProvider(): array {
