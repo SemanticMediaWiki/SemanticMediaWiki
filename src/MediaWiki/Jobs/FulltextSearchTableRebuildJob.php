@@ -72,7 +72,7 @@ class FulltextSearchTableRebuildJob extends Job {
 	 * - A job that fails or times out can simply be run again because
 	 * a window replaces its own entries.
 	 *
-	 * @since 7.3.1
+	 * @since 7.3.2
 	 *
 	 * Parameters: `fromSid` (default: 0) and `batchSize`
 	 * (default: \SearchTableRebuilder::DEFAULT_BATCH_SIZE).
@@ -90,8 +90,6 @@ class FulltextSearchTableRebuildJob extends Job {
 		try {
 			$nextSid = $searchTableRebuilder->rebuildChunk( $fromSid, $batchSize );
 		} catch ( Throwable $e ) {
-			// To do: notify that the chunk starting at
-			// `-s $fromSid` failed
 			throw $e;
 		}
 

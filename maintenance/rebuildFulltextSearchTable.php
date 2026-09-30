@@ -49,10 +49,10 @@ class rebuildFulltextSearchTable extends Maintenance {
 		$this->addOption( 'optimize', 'Run possible table optimization (`OPTIMIZE TABLE`) instead of rebuilding the full-text search index. Support for table optimization depends on the SQL back-end.', false );
 		$this->addOption( 'v', 'Show additional (verbose) information about the progress', false );
 		$this->addOption( 'quick', 'Suppress abort operation', false );
-		// @since 7.3.1: 'n', 's', 'max-time', 'use-job'
+		// @since 7.3.2: 'n', 's', 'max-time', 'use-job'
 		$this->addOption( 'n', 'Batch size. The rebuild will be done in consecutive chunks of this many subject IDs (up to ' . SearchTableRebuilder::MAX_BATCH_SIZE . ', default: ' . SearchTableRebuilder::DEFAULT_BATCH_SIZE . ') instead of rebuilding the index in one pass. The index is not purged, but each chunk replaces its own entries. Can be combined with `-s` and unless `--use-job` is used, with `--max-time`.', false, true );
 		$this->addOption( 's', 'Subject ID (`s_id`) to start with (default 0). If an earlier run was stopped, the value reported by that run can be used to resume the rebuild.', false, true );
-		$this->addOption( 'max-time', 'Maximum run time in seconds. The script will not start another chunk after this and reports the subject ID to resume with (`-s`), if any.', false, true );
+		$this->addOption( 'max-time', 'Maximum time in seconds (0 for no limit) for starting new batches. The script will not start another chunk after this and reports the subject ID to resume with (`-s`), if any.', false, true );
 		$this->addOption( 'use-job', 'Instead of running the rebuild, insert one `smw.fulltextSearchTableRebuild` job into the job queue and return immediately. On each invocation, the job processes one chunk of `-n` subject IDs and re-queues itself for the next one until the rebuild is complete. Process jobs with your job runner, e.g. `php maintenance/run.php runJobs --type=smw.fulltextSearchTableRebuild --maxjobs=500`. Combine `--use-job` with `-n` / `-s` to control the batch size / starting point. Cannot be combined with `--max-time`.', false );
 	}
 
@@ -160,7 +160,6 @@ class rebuildFulltextSearchTable extends Maintenance {
 			);
 		}
 		if ( $useJobQueue && $this->hasOption( 'max-time' ) ) {
-			// @DG should this be fatal?
 			$this->maintenanceLogger?->logFromArray( [ 'Error' => 'Incorrect parameters' ] );
 			$this->fatalError(
 				$cliMsgFormatter->wordwrap( [ "Aborted because `--max-time` has no effect with `--use-job`. Omit `--max-time` and consider using `-n` instead to set the window for each queued job." ] )
@@ -195,18 +194,18 @@ class rebuildFulltextSearchTable extends Maintenance {
 		);
 
 		if ( $this->hasOption( 'optimize' ) ) {
-			// @since 7.3.1
+			// @since 7.3.2
 			$text = [
 				"This process runs table optimization (`OPTIMIZE TABLE`) without purging or touching the index.",
 			];
 		} elseif ( $useJobQueue ) {
-			// @since 7.3.1
+			// @since 7.3.2
 			$text = [
 				"This process does not purge the index table or execute the rebuild.",
 				"What it does instead is insert a single job into the job queue to rebuild one chunk of $batchSize subject IDs and re-queue itself for the next chunk until the rebuild is complete."
 			];
 		} elseif ( $chunked ) {
-			// @since 7.3.1
+			// @since 7.3.2
 			$text = [
 				"The index table is not purged.",
 				"It is rebuilt in chunks of $batchSize subject IDs, with each chunk replacing its own index entries.",
@@ -242,7 +241,6 @@ class rebuildFulltextSearchTable extends Maintenance {
 		$maintenanceHelper->initRuntimeValues();
 
 		$searchTableRebuilder->setMessageReporter( $this->messageReporter );
-
 		$searchTableRebuilder->setStatsFlusher(
 			PeriodicStatsFlusher::newFromGlobalState()
 		);
@@ -362,7 +360,7 @@ class rebuildFulltextSearchTable extends Maintenance {
 	 * Inserts a single job into the job queue, reports to the
 	 * CLI and optionally, writes to the maintenance log.
 	 *
-	 * @since 7.3.1
+	 * @since 7.3.2
 	 */
 	private function queueRebuildJob( JobFactory $jobFactory, int $fromSid, int $batchSize ): void {
 		// Create a 'dummy' Title. Even if it carries no meaning of its
@@ -396,9 +394,10 @@ class rebuildFulltextSearchTable extends Maintenance {
 	 * Reports the result of a chunked rebuild operation.
 	 * Does not cover the maintenance log.
 	 *
-	 * @since 7.3.1
+	 * @since 7.3.2
 	 *
-	 * @param ?int $resumeSid The subject ID to resume from, or null if the rebuild is complete (or could not be run).
+	 * @param ?int $resumeSid The subject ID to resume from, or null if
+	 *     the rebuild is complete (or could not be run)
 	 * @param int $batchSize
 	 * @param string $status 'success', 'failure' or 'cannot rebuild'
 	 */

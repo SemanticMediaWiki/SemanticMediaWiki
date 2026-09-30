@@ -38,15 +38,17 @@ class SearchTableRebuilder {
 	 * Default number of subject IDs (`s_id`) covered by one chunk.
 	 * See rebuildChunk().
 	 *
-	 * @since 7.3.1
+	 * @since 7.3.2
 	 */
 	public const DEFAULT_BATCH_SIZE = 500;
 
 	public const MAX_BATCH_SIZE = 2000;
 
+	public const MAX_BYTES = 10485760; // 10 * 1024 * 1024
+
 	/**
-	 * Property tables that take part in a chunked rebuild, resolved once per
-	 * instance, see getChunkTables()
+	 * Property tables that take part in a chunked rebuild,
+	 * resolved once per instance. See getChunkTables()
 	 */
 	private ?array $chunkTables = null;
 
@@ -134,102 +136,28 @@ class SearchTableRebuilder {
 	}
 
 	/**
-	 * Rebuilds the index for a single chunk of subject IDs
-	 * across all indexable property tables.
-	 *
-	 * Unlike rebuild(), does not flush the index. Instead a
-	 * chunk's entries are collected from the property tables
-	 * first and then replaced in one run. As a result:
-	 * - The rest of the index remains searchable while the rebuild is running.
-	 * - A chunk can safely be repeated, e.g. after a timeout, because
-	 * old entries are deleted before the new ones are written.
-	 *
-	 * A caller is expected to keep calling this method with the
-	 * returned `$cursor` until it returns null.
-	 *
-	 * @since 7.3.1
-	 *
-	 * @param int $fromSid First subject ID of the chunk (inclusive)
-	 * @param int $batchSize Number of subject IDs in the chunk
-	 *
-	 * @throws Throwable
-	 * @return int|null The `$fromSid` for the next chunk, or null if
-	 * the last chunk has been processed or the index cannot be rebuilt
-	 */
-	public function rebuildChunk( int $fromSid = 0, int $batchSize = self::DEFAULT_BATCH_SIZE ): ?int {
-		if ( !$this->canRebuild() ) {
-			return null;
-		}
-
-		$batchSize = min( $batchSize, self::MAX_BATCH_SIZE );
-		$fromSid = max( 0, $fromSid );
-		// The next subject ID to start from
-		$toSid = $fromSid + max( 1, $batchSize );
-		$maxSid = $this->getMaxSid();
-
-		// Read first, then write
-		$texts = $this->collectTextsBySidRange( $fromSid, $toSid );
-
-		// Using MW's section transaction methods to prevent possible
-		// outages from causing empty or incomplete ranges
-		$this->connection->beginSectionTransaction( __METHOD__ );
-		try {
-			// Period between removing entries from the chunk and
-			// repopulation must be kept as short as possible!
-			$this->searchTableUpdater->deleteBySidRange( $fromSid, $toSid );
-
-			foreach ( $texts as $key => $parts ) {
-				[ $sid, $pid ] = explode( ':', $key, 2 );
-				$this->searchTableUpdater->insert( $sid, $pid );
-				$this->searchTableUpdater->update( $sid, $pid, implode( ' ', $parts ) );
-			}
-
-			$this->connection->endSectionTransaction( __METHOD__ );
-		} catch ( Throwable $e ) {
-			$this->connection->cancelSectionTransaction( __METHOD__ );
-			throw $e;
-		}
-
-		if ( $maxSid > 0 ) {
-			$cliMsgFormatter = new CliMsgFormatter();
-			$done = min( $toSid - 1, $maxSid );
-
-			$this->reportMessage(
-				$cliMsgFormatter->twoColsOverride(
-					"... s_id " . $fromSid . " - " . max( $fromSid, $done ) . " ...",
-					$cliMsgFormatter->progressCompact( $done, $maxSid ),
-					3
-				)
-			);
-		}
-
-		return $toSid > $maxSid ? null : $toSid;
-	}
-
-	/**
 	 * Repeatedly runs rebuildChunk(). Optionally, accepts a
-	 * maximum runtime, which is checked between batches. The
-	 * timing of this check means a run can exceed the runtime
-	 * by the duration of one chunk/batch.
+	 * maximum time for starting new batches.
 	 *
-	 * @since 7.3.1
+	 * @since 7.3.2
 	 * @see RebuildFulltextSearchTable::execute
 	 *
 	 * @param int $fromSid First subject ID to process (inclusive)
 	 * @param int $batchSize Number of subject IDs per chunk
-	 * @param int $maxRuntime Maximum runtime in seconds, after which
-	 * no further chunk is started; 0 for no limit (default)
-	 *
+	 * @param int $maxTime Maximum time in seconds, 0 for no limit
+	 *     (default), during which further chunks are allowed to be
+	 *     started. Because the check is done between batches, a run
+	 *     can exceed the runtime by the duration of one chunk/batch.
 	 * @return array [<int|null>, <string>] The first item is the
-	 * `$fromSid` with which to resume, or null (if the rebuild has
-	 * been completed or the table updater is disabled); the second
-	 * reports on the status of the rebuild: 'success', 'failure' or
-	 * 'cannot rebuild'
+	 *     `$fromSid` with which to resume, or null (if the rebuild has
+	 *     been completed or the table updater is disabled); the second
+	 *     reports on the status of the rebuild: 'success', 'failure' or
+	 *     'cannot rebuild'
 	 */
 	public function rebuildInChunks(
 		int $fromSid = 0,
 		int $batchSize = self::DEFAULT_BATCH_SIZE,
-		int $maxRuntime = 0
+		int $maxTime = 0
 	): array {
 		if ( !$this->canRebuild() ) {
 			return [ null, 'cannot rebuild' ];
@@ -240,18 +168,17 @@ class SearchTableRebuilder {
 		$batchSize = min( $batchSize, self::MAX_BATCH_SIZE );
 		$start = microtime( true );
 		$cursor = $fromSid;
+
 		while ( $cursor !== null ) {
 			try {
 				$cursor = $this->rebuildChunk( $cursor, $batchSize );
 			} catch ( Throwable $e ) {
-				$this->messageReporter->reportMessage(
-					"\nChunk starting at -s $cursor failed: " . $e->getMessage() . "\n"
-				);
 				// Don't throw
 				$status = 'failure';
 				break;
 			}
-			if ( $cursor !== null && $maxRuntime > 0 && ( microtime( true ) - $start ) >= $maxRuntime ) {
+			// maxTime
+			if ( $cursor !== null && $maxTime > 0 && ( microtime( true ) - $start ) >= $maxTime ) {
 				break;
 			}
 		}
@@ -271,6 +198,118 @@ class SearchTableRebuilder {
 		}
 
 		return [ $cursor, $status ];
+	}
+
+	/**
+	 * Rebuilds the index for a single chunk of subject IDs
+	 * across all indexable property tables.
+	 *
+	 * Unlike rebuild(), does not flush the index. Instead a
+	 * chunk's entries are collected from the property tables
+	 * first and then replaced in one run. As a result:
+	 * - The rest of the index remains searchable while the rebuild is running.
+	 * - A chunk can safely be repeated, e.g. after a timeout, because
+	 * old entries are deleted before the new ones are written.
+	 *
+	 * If indexable content happens to exceed `$max_bytes`, the ID range
+	 * is shortened and the next cursor lowered accordingly.
+	 *
+	 * A caller is expected to keep calling this method with the
+	 * returned `$cursor` until it returns null.
+	 *
+	 * @since 7.3.2
+	 *
+	 * @param int $fromSid First subject ID of the chunk (inclusive)
+	 * @param int $batchSize Number of subject IDs in the chunk
+	 *
+	 * @throws Throwable
+	 * @return int|null The `$fromSid` for the next chunk, or null if the last
+	 *     chunk has been processed or the index cannot be rebuilt
+	 */
+	public function rebuildChunk( int $fromSid = 0, int $batchSize = self::DEFAULT_BATCH_SIZE ): ?int {
+		if ( !$this->canRebuild() ) {
+			return null;
+		}
+
+		$batchSize = min( $batchSize, self::MAX_BATCH_SIZE );
+		$fromSid = max( 0, $fromSid );
+		// The next subject ID to start from
+		$toSid = $fromSid + max( 1, $batchSize );
+		$maxSid = $this->getMaxSid();
+		$maxBytes = self::MAX_BYTES;
+
+		// Read first, then write
+
+		$textsData = $this->collectTextsBySidRangeWithSize( $fromSid, $toSid );
+		$texts = $textsData['texts'];
+		$bytesBySid = $textsData['bytesBySid'];
+		$totalBytes = $textsData['totalBytes'];
+
+		if ( $totalBytes <= $maxBytes) {
+			$nextCursor = $toSid > $maxSid ? null : $toSid;
+		} else {
+			// Too large: cut range and lower the next cursor.
+			// Because collectTextsBySidRangeWithSize() will be
+			// invoked for the next run, some overhead is expected.
+			$splitSid = $this->getByteSplitSid( $toSid, $bytesBySid, $maxBytes );
+			$texts = $this->filterTextsBySidRange( $texts, $fromSid, $splitSid );
+			$toSid = $nextCursor = $splitSid;
+		}
+
+		// Using MW's section transaction methods to prevent possible
+		// outages from causing empty or incomplete ranges
+		$this->connection->beginSectionTransaction( __METHOD__ );
+		try {
+			// Period between removing entries from the chunk and
+			// repopulation must be kept as short as possible!
+			$this->replaceBySidRange( $texts, $fromSid, $toSid );
+			$this->connection->endSectionTransaction( __METHOD__ );
+		} catch ( Throwable $e ) {
+			$this->connection->cancelSectionTransaction( __METHOD__ );
+			$this->messageReporter->reportMessage(
+				"\nChunk starting at -s $fromSid failed: " . $e->getMessage() . "\n"
+			);
+			throw $e;
+		}
+
+		if ( $maxSid > 0 ) {
+			$cliMsgFormatter = new CliMsgFormatter();
+			$done = min( $toSid - 1, $maxSid );
+
+			$this->reportMessage(
+				$cliMsgFormatter->twoColsOverride(
+					"... s_id " . $fromSid . " - " . max( $fromSid, $done ) . " ...",
+					$cliMsgFormatter->progressCompact( $done, $maxSid ),
+					3
+				)
+			);
+		}
+
+		return $nextCursor;
+	}
+
+	/**
+	 * Runs the table updater to replace (delete, insert, update)
+	 * indexable content in the specified range of subject IDs.
+	 *
+	 * @since 7.3.2
+	 *
+	 * @param array $texts See collectTextsBySidRangeWithSize()
+	 * @param int $fromSid (inclusive)
+	 * @param int $toSid (exclusive)
+	 * @return void
+	 */
+	private function replaceBySidRange( array $texts, int $fromSid, int $toSid ): void {
+		// Period between removing entries from the chunk and
+		// repopulation must be kept as short as possible!
+		$this->searchTableUpdater->deleteBySidRange( $fromSid, $toSid );
+
+		foreach ( $texts as $sid => $props ) {
+			foreach ( $props as $pid => $parts ) {
+				$this->searchTableUpdater->insert( $sid, $pid );
+				$this->searchTableUpdater->update( $sid, $pid, implode( ' ', $parts ) );
+			}
+		}
 	}
 
 	/**
@@ -398,7 +437,7 @@ class SearchTableRebuilder {
 
 		$text = [
 			"[INVALID] refers to an invalid `DataItem` type, [EMPTY] describes",
-			"a table to contain no data, [EXEMPT] is exempted from processing"
+			"a table thats contains no data, [EXEMPT] is exempted from processing"
 		];
 
 		$this->reportMessage(
@@ -464,7 +503,7 @@ class SearchTableRebuilder {
 	 * Fetches the columns that hold the indexable text,
 	 * depending on the DataItem type.
 	 *
-	 * @since 7.3.1
+	 * @since 7.3.2
 	 *
 	 * @return string[]
 	 */
@@ -486,16 +525,181 @@ class SearchTableRebuilder {
 	}
 
 	/**
+	 * Helper function to retrieve the highest subject ID that
+	 * can have index entries, i.e. the upper bound for the chunk
+	 * cursor. Checks the ID table and the index itself so that
+	 * stale index entries beyond the last known ID are cleaned up.
+	 *
+	 * @since 7.3.2
+	 */
+	private function getMaxSid(): int {
+		$maxIdTable = (int)$this->connection->newSelectQueryBuilder()
+			->select( 'MAX(smw_id)' )
+			->from( SQLStore::ID_TABLE )
+			->caller( __METHOD__ )
+			->fetchField();
+
+		$maxIndex = (int)$this->connection->newSelectQueryBuilder()
+			->select( 'MAX(s_id)' )
+			->from( $this->getSearchTable()->getTableName() )
+			->caller( __METHOD__ )
+			->fetchField();
+
+		return max( $maxIdTable, $maxIndex );
+	}
+
+	private function doRebuildFromRows( SearchTable $searchTable, $table, $pid, $rows ) {
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		$i = 0;
+		$expected = $rows->numRows();
+
+		if ( $expected == 0 ) {
+			$this->skippedTables[$table] = '[EMPTY]';
+			return $this->skippedTables[$table];
+		}
+
+		foreach ( $rows as $row ) {
+
+			if ( $this->statsFlusher !== null ) {
+				$this->statsFlusher->tick();
+			}
+
+			$sid = $row->s_id;
+			$pid = !isset( $row->p_id ) ? $pid : $row->p_id;
+
+			$indexableText = $this->getIndexableTextFromRow(
+				$searchTable,
+				$row
+			);
+
+			if ( $searchTable->isExemptedPropertyById( $pid ) ||
+				!$searchTable->hasMinTokenLength( $indexableText ) ) {
+				continue;
+			}
+
+			$progress = $cliMsgFormatter->progressCompact( ++$i, $expected );
+
+			$this->reportMessage(
+				$cliMsgFormatter->twoColsOverride( "... {$table} ...", $progress, 7 )
+			);
+
+			$text = $this->searchTableUpdater->read( $sid, $pid );
+
+			// Unknown, so let's create the row
+			if ( $text === false ) {
+				$this->searchTableUpdater->insert( $sid, $pid );
+			}
+
+			$this->searchTableUpdater->update( $sid, $pid, trim( $text ?? '' ) . ' ' . $indexableText );
+		}
+
+		$this->reportMessage( "\n" );
+	}
+
+	private function reportMessage( string $message, bool $verbose = true ): void {
+		if ( $verbose ) {
+			$this->messageReporter->reportMessage( $message );
+		}
+	}
+
+	/**
+	 * Collects the indexable content of (eligible) property tables
+	 * for subject IDs in the range from $fromSid to, but excluding,
+	 * $toSid. Returns an array of texts as well as byte size info
+	 *
+	 * @since 7.3.2
+	 *
+	 * @param int $fromSid
+	 * @param int $toSid
+	 * @return array{
+	 *     texts: array<int, array<int, list<string>>>,
+	 *     bytesBySid: array<int, int>,
+	 *     totalBytes: int
+	 * } The `texts` array is keyed by `s_id`, each sub-array by `p_id`.
+	 */
+	private function collectTextsBySidRangeWithSize( int $fromSid, int $toSid ): array {
+		$texts = [];
+		$bytesBySid = [];
+		$totalBytes = 0;
+		$searchTable = $this->getSearchTable();
+
+		foreach ( $this->getRowsForSidRange( $fromSid, $toSid ) as $k => $row ) {
+			// pid must be derived from the key
+			[ $sid, $pid ] = explode( ':', $k );
+			$sid = (int)$sid;
+			$pid = (int)$pid;
+
+			$indexableText = $this->getIndexableTextFromRow( $searchTable, $row );
+
+			// Exclude rows from exempted properties and those
+			// with text below the minimum token length
+			if ( $searchTable->isExemptedPropertyById( $pid ) ||
+				!$searchTable->hasMinTokenLength( $indexableText ) ) {
+				continue;
+			}
+
+			$texts[$sid][$pid][] = $indexableText;
+
+			$bytes = strlen( $indexableText );
+			$bytesBySid[$sid] = ( $bytesBySid[$sid] ?? 0 ) + $bytes;
+			$totalBytes += $bytes;
+		}
+
+		return [
+			'texts' => $texts,
+			'bytesBySid' => $bytesBySid,
+			'totalBytes' => $totalBytes,
+		];
+	}
+
+	/**
+	 * Helper function
+	 *
+	 * @since 7.3.2
+	 *
+	 * @param int $fromSid Subject ID to start from (inclusive)
+	 * @param int $toSid Subject ID to stop at (exclusive)
+	 * @return array Rows keyed by a concatenation of `s_id:p_id`
+	 */
+	private function getRowsForSidRange( $fromSid, $toSid ): array {
+		$allRows = [];
+
+		foreach ( $this->getChunkTables() as $spec ) {
+			$rows = $this->connection->newSelectQueryBuilder()
+				->select( $spec['fields'] )
+				->from( $spec['table'] )
+				->where( [
+					$this->connection->expr( 's_id', '>=', $fromSid ),
+					$this->connection->expr( 's_id', '<', $toSid ),
+				] )
+				->caller( __METHOD__ )
+				->fetchResultSet();
+
+			foreach ( $rows as $row ) {
+				if ( $this->statsFlusher !== null ) {
+					$this->statsFlusher->tick();
+				}
+				$sid = $row->s_id;
+				// Fixed tables don't have a p_id column
+				$pid = $row->p_id ?? $spec['pid'];
+				$allRows[$sid . ':' . $pid] = $row;
+			}
+		}
+		return $allRows;
+	}
+
+	/**
 	 * Get the specifications of all property tables that are
 	 * eligible for a chunked rebuild.
 	 * Any table that's not eligible is recorded in `$skippedTables`
 	 * (same as when a full rebuild is done).
 	 *
-	 * @since 7.3.1
+	 * @since 7.3.2
 	 *
 	 * @return array[] Each entry has the keys `table`, `fields` and
-	 * `pid`, where `pid` is the fixed property's ID or an empty string
-	 * if the table has a `p_id` column
+	 *     `pid`, where `pid` is the fixed property's ID or an empty
+	 *     string if the table has a `p_id` column
 	 */
 	private function getChunkTables(): array {
 		if ( $this->chunkTables !== null ) {
@@ -542,133 +746,10 @@ class SearchTableRebuilder {
 	}
 
 	/**
-	 * Collects the indexable content of (eligible) property tables
-	 * for subject IDs in the range from $fromSid to, but excluding,
-	 * $toSid, joined per `s_id:p_id`.
-	 *
-	 * @since 7.3.1
-	 *
-	 * @param int $fromSid Subject ID to start from (inclusive)
-	 * @param int $toSid Subject ID to stop at (exclusive)
-	 *
-	 * @return array<string, string[]>
+	 * @param SearchTable $searchTable
+	 * @param mixed $row
+	 * @return string
 	 */
-	private function collectTextsBySidRange( int $fromSid, int $toSid ): array {
-		$searchTable = $this->getSearchTable();
-		$texts = [];
-
-		foreach ( $this->getChunkTables() as $spec ) {
-			$rows = $this->connection->newSelectQueryBuilder()
-				->select( $spec['fields'] )
-				->from( $spec['table'] )
-				->where( [
-					$this->connection->expr( 's_id', '>=', $fromSid ),
-					$this->connection->expr( 's_id', '<', $toSid ),
-				] )
-				->caller( __METHOD__ )
-				->fetchResultSet();
-
-			foreach ( $rows as $row ) {
-				if ( $this->statsFlusher !== null ) {
-					$this->statsFlusher->tick();
-				}
-
-				// Exclude rows from exempted properties and those
-				// with text below the minimum token length
-				$pid = $row->p_id ?? $spec['pid'];
-				$indexableText = $this->getIndexableTextFromRow( $searchTable, $row );
-				if ( $searchTable->isExemptedPropertyById( $pid ) ||
-					!$searchTable->hasMinTokenLength( $indexableText ) ) {
-					continue;
-				}
-
-				$texts[(int)$row->s_id . ':' . $pid][] = $indexableText;
-			}
-		}
-
-		return $texts;
-	}
-
-	/**
-	 * Helper function to retrieve the highest subject ID that
-	 * can have index entries, i.e. the upper bound for the chunk
-	 * cursor. Checks the ID table and the index itself so that
-	 * stale index entries beyond the last known ID are cleaned up.
-	 *
-	 * @since 7.3.1
-	 */
-	private function getMaxSid(): int {
-		$maxIdTable = (int)$this->connection->newSelectQueryBuilder()
-			->select( 'MAX(smw_id)' )
-			->from( SQLStore::ID_TABLE )
-			->caller( __METHOD__ )
-			->fetchField();
-
-		$maxIndex = (int)$this->connection->newSelectQueryBuilder()
-			->select( 'MAX(s_id)' )
-			->from( $this->getSearchTable()->getTableName() )
-			->caller( __METHOD__ )
-			->fetchField();
-
-		return max( $maxIdTable, $maxIndex );
-	}
-
-	private function doRebuildFromRows( SearchTable $searchTable, $table, $pid, $rows ) {
-		$cliMsgFormatter = new CliMsgFormatter();
-
-		$i = 0;
-		$expected = $rows->numRows();
-
-		if ( $expected == 0 ) {
-			$this->skippedTables[$table] = '[EMPTY]';
-			return $this->skippedTables[$table];
-		}
-
-		foreach ( $rows as $row ) {
-
-			if ( $this->statsFlusher !== null ) {
-				$this->statsFlusher->tick();
-			}
-
-			$sid = $row->s_id;
-			$pid = !isset( $row->p_id ) ? $pid : $row->p_id;
-
-			$indexableText = $this->getIndexableTextFromRow(
-				$searchTable,
-				$row
-			);
-
-			if (
-				$searchTable->isExemptedPropertyById( $pid ) ||
-				!$searchTable->hasMinTokenLength( $indexableText ) ) {
-				continue;
-			}
-
-			$progress = $cliMsgFormatter->progressCompact( ++$i, $expected );
-
-			$this->reportMessage(
-				$cliMsgFormatter->twoColsOverride( "... {$table} ...", $progress, 7 )
-			);
-
-			$text = $this->searchTableUpdater->read( $sid, $pid );
-
-			// Unknown, so let's create the row
-			if ( $text === false ) {
-				$this->searchTableUpdater->insert( $sid, $pid );
-			}
-
-			$this->searchTableUpdater->update( $sid, $pid, trim( $text ?? '' ) . ' ' . $indexableText );
-		}
-
-		$this->reportMessage( "\n" );
-	}
-
-	private function reportMessage( string $message, bool $verbose = true ): void {
-		if ( $verbose ) {
-			$this->messageReporter->reportMessage( $message );
-		}
-	}
-
 	private function getIndexableTextFromRow( SearchTable $searchTable, $row ): string {
 		$indexableText = '';
 
@@ -685,6 +766,46 @@ class SearchTableRebuilder {
 		}
 
 		return trim( $indexableText );
+	}
+
+	/**
+	 * Returns a subject ID as the upper limit (exclusive) for a
+	 * range whose indexable content does not exceed `$maxBytes`.
+	 *
+	 * @since 7.3.2
+	 *
+	 * @param int $toSid
+	 * @param array <int, int> $bytesBySid See collectTextsBySidRangeWithSize()
+	 * @param int $maxBytes
+	 * @return int The subject ID to split on
+	 */
+	private function getByteSplitSid( int $toSid, array $bytesBySid, int $maxBytes ): int {
+		ksort( $bytesBySid, SORT_NUMERIC );
+
+		$bytes = 0;
+		foreach ( $bytesBySid as $sid => $subjectBytes ) {
+			if ( $bytes > 0 &&
+				( $bytes + $subjectBytes > $maxBytes )
+			) {
+				return (int)$sid;
+			}
+			$bytes += $subjectBytes;
+		}
+
+		return $toSid;
+	}
+
+	/**
+	 * @since 7.3.2
+	 *
+	 * @param array $texts See collectTextsBySidRangeWithSize()
+	 * @param mixed $fromSid (inclusive)
+	 * @param mixed $toSid (exclusive)
+	 * @return array texts
+	 */
+	private function filterTextsBySidRange( array $texts, int $fromSid, int $toSid ) {
+		$subset = array_slice( $texts, $fromSid, $toSid - $fromSid, true );
+		return $subset;
 	}
 
 }
