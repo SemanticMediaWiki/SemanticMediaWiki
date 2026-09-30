@@ -1248,7 +1248,8 @@
 	"config": {
 		"AdminFeatures": {
 			"value": [ "refresh", "setup", "disposal", "pstats", "fullt", "maintenance-script-docs", "show-overview", "alert-last-optimization-run" ],
-			"description": "Special:Admin feature flags. Array of any of: `refresh`, `setup`, `disposal`, `pstats`, `fullt`, `maintenance-script-docs`, `show-overview`, `alert-last-optimization-run`. Legacy `SMW_ADM_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+			"description": "Special:Admin feature flags. Array of any of: `refresh`, `setup`, `disposal`, `pstats`, `fullt`, `maintenance-script-docs`, `show-overview`, `alert-last-optimization-run`. Legacy `SMW_ADM_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0.",
+			"merge_strategy": "provide_default"
 		},
 		"AllowRecursiveExport": {
 			"value": false,
@@ -1272,7 +1273,8 @@
 		},
 		"BrowseFeatures": {
 			"value": [ "toolbox-link", "show-incoming", "show-group", "use-api" ],
-			"description": "Special:Browse feature flags. Array of any of: `toolbox-link`, `show-inverse`, `show-incoming`, `show-group`, `show-sortkey`, `use-api`. Legacy `SMW_BROWSE_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+			"description": "Special:Browse feature flags. Array of any of: `toolbox-link`, `show-inverse`, `show-incoming`, `show-group`, `show-sortkey`, `use-api`. Legacy `SMW_BROWSE_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0.",
+			"merge_strategy": "provide_default"
 		},
 		"CacheUsage": {
 			"value": {
@@ -1297,7 +1299,8 @@
 		},
 		"CategoryFeatures": {
 			"value": [ "redirect", "instance", "hierarchy" ],
-			"description": "Category feature flags. Array of any of: `redirect`, `instance`, `hierarchy`. Legacy `SMW_CAT_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+			"description": "Category feature flags. Array of any of: `redirect`, `instance`, `hierarchy`. Legacy `SMW_CAT_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0.",
+			"merge_strategy": "provide_default"
 		},
 		"CheckForConstraintErrors": {
 			"value": "check/all",
@@ -1332,7 +1335,8 @@
 		},
 		"DVFeatures": {
 			"value": [ "provider-redirect", "monolingual-langcode", "pattern-validation", "wpv-display-title", "time-calendar-model", "preferred-label", "provider-link-hint" ],
-			"description": "DataValue feature flags. Array of any of: `provider-redirect`, `monolingual-langcode`, `number-value-usespaces`, `pattern-validation`, `wpv-display-title`, `provider-display-title`, `unique-constraint`, `time-calendar-model`, `preferred-label`, `provider-link-hint`, `wpv-pipetrick`. Legacy `SMW_DV_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+			"description": "DataValue feature flags. Array of any of: `provider-redirect`, `monolingual-langcode`, `number-value-usespaces`, `pattern-validation`, `wpv-display-title`, `provider-display-title`, `unique-constraint`, `time-calendar-model`, `preferred-label`, `provider-link-hint`, `wpv-pipetrick`. Legacy `SMW_DV_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0.",
+			"merge_strategy": "provide_default"
 		},
 		"DefaultLoggerRole": {
 			"value": "production",
@@ -1434,7 +1438,8 @@
 		},
 		"ExperimentalFeatures": {
 			"value": [ "queryresult-prefetch", "showparser-curtailment" ],
-			"description": "Experimental feature flags. Array of any of: `queryresult-prefetch`, `showparser-curtailment`. Legacy `SMW_QUERYRESULT_*` / `SMW_SHOWPARSER_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+			"description": "Experimental feature flags. Array of any of: `queryresult-prefetch`, `showparser-curtailment`. Legacy `SMW_QUERYRESULT_*` / `SMW_SHOWPARSER_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0.",
+			"merge_strategy": "provide_default"
 		},
 		"ExtraneousLanguageFileDir": {
 			"value": "i18n/extra",
@@ -1443,7 +1448,8 @@
 		},
 		"FactboxFeatures": {
 			"value": [ "cache", "purge-refresh", "display-subobject", "display-attachment" ],
-			"description": "Factbox feature flags. Array of any of: 'cache', 'purge-refresh', 'display-subobject', 'display-attachment'. Legacy `SMW_FACTBOX_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+			"description": "Factbox feature flags. Array of any of: 'cache', 'purge-refresh', 'display-subobject', 'display-attachment'. Legacy `SMW_FACTBOX_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0.",
+			"merge_strategy": "provide_default"
 		},
 		"FallbackSearchType": {
 			"value": null,
@@ -1451,7 +1457,8 @@
 		},
 		"FieldTypeFeatures": {
 			"value": false,
-			"description": "SQLStore field-type modifications. `false` (= `SMW_FIELDT_NONE`) disables all flags and skips field-type registration entirely; an array of `\"char-nocase\"` and/or `\"char-long\"` enables case-insensitive collation / extended field width respectively. Legacy `SMW_FIELDT_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+			"description": "SQLStore field-type modifications. `false` (= `SMW_FIELDT_NONE`) disables all flags and skips field-type registration entirely; an array of `\"char-nocase\"` and/or `\"char-long\"` enables case-insensitive collation / extended field width respectively. Legacy `SMW_FIELDT_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0.",
+			"merge_strategy": "provide_default"
 		},
 		"FixedProperties": {
 			"value": [],
@@ -1469,7 +1476,8 @@
 		},
 		"FulltextSearchIndexableDataTypes": {
 			"value": [ "blob", "uri" ],
-			"description": "DataTypes whose values are eligible for fulltext indexing. Array of any of: `blob`, `uri`, `wikipage`. Legacy `SMW_FT_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+			"description": "DataTypes whose values are eligible for fulltext indexing. Array of any of: `blob`, `uri`, `wikipage`. Legacy `SMW_FT_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0.",
+			"merge_strategy": "provide_default"
 		},
 		"FulltextSearchMinTokenSize": {
 			"value": 3,
@@ -1581,7 +1589,8 @@
 		},
 		"ParserFeatures": {
 			"value": [ "strict", "inline-errors", "hidden-categories" ],
-			"description": "Parser feature flags. Array of any of: `strict`, `unstrip`, `inline-errors`, `hidden-categories`, `links-in-values`. Legacy `SMW_PARSER_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+			"description": "Parser feature flags. Array of any of: `strict`, `unstrip`, `inline-errors`, `hidden-categories`, `links-in-values`. Legacy `SMW_PARSER_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0.",
+			"merge_strategy": "provide_default"
 		},
 		"PostEditUpdate": {
 			"value": {
@@ -1650,7 +1659,8 @@
 		},
 		"QConceptFeatures": {
 			"value": [ "property", "category", "concept", "namespace", "conjunction", "disjunction" ],
-			"description": "Query feature flags applied to concept-page query parsing. Array of any of: `property`, `category`, `concept`, `namespace`, `conjunction`, `disjunction`. Legacy `SMW_*_QUERY` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+			"description": "Query feature flags applied to concept-page query parsing. Array of any of: `property`, `category`, `concept`, `namespace`, `conjunction`, `disjunction`. Legacy `SMW_*_QUERY` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0.",
+			"merge_strategy": "provide_default"
 		},
 		"QDefaultLimit": {
 			"value": 50,
@@ -1682,7 +1692,8 @@
 		},
 		"QFeatures": {
 			"value": [ "property", "category", "concept", "namespace", "conjunction", "disjunction" ],
-			"description": "Query feature flags. Array of any of: `property`, `category`, `concept`, `namespace`, `conjunction`, `disjunction`. Each enables the matching query type in inline queries; removing one disables it (e.g. drop `disjunction` to forbid OR clauses). Legacy `SMW_*_QUERY` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+			"description": "Query feature flags. Array of any of: `property`, `category`, `concept`, `namespace`, `conjunction`, `disjunction`. Each enables the matching query type in inline queries; removing one disables it (e.g. drop `disjunction` to forbid OR clauses). Legacy `SMW_*_QUERY` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0.",
+			"merge_strategy": "provide_default"
 		},
 		"QFilterDuplicates": {
 			"value": false,
@@ -1710,7 +1721,8 @@
 		},
 		"QSortFeatures": {
 			"value": [ "sort", "random" ],
-			"description": "Sort feature flags. Array of any of: `sort` (allow sorting), `random` (allow random ordering), `unconditional` (allow unconditional sort). Legacy `SMW_QSORT*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+			"description": "Sort feature flags. Array of any of: `sort` (allow sorting), `random` (allow random ordering), `unconditional` (allow unconditional sort). Legacy `SMW_QSORT*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0.",
+			"merge_strategy": "provide_default"
 		},
 		"QStrictComparators": {
 			"value": false,
@@ -1735,7 +1747,8 @@
 		},
 		"QueryProfiler": {
 			"value": [],
-			"description": "Query profiler. Accepts `false` to disable profiling entirely, `[]` for basic profiling, or an array of any of `parameters`, `duration` for granular detail fields. Note that `[]` enables basic profiling (it does NOT disable); use `false` to disable. Legacy `true` (alias for `[]`) and `SMW_QPRFL_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+			"description": "Query profiler. Accepts `false` to disable profiling entirely, `[]` for basic profiling, or an array of any of `parameters`, `duration` for granular detail fields. Note that `[]` enables basic profiling (it does NOT disable); use `false` to disable. Legacy `true` (alias for `[]`) and `SMW_QPRFL_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0.",
+			"merge_strategy": "provide_default"
 		},
 		"QueryResultCacheLifetime": {
 			"value": 604800,
@@ -1764,7 +1777,8 @@
 		},
 		"RemoteReqFeatures": {
 			"value": [ "send-response", "show-note" ],
-			"description": "Remote-query feature flags. Array of any of: `send-response` (allow the remote wiki to respond to a query), `show-note` (display a hint when the result came from a remote source). Legacy `SMW_REMOTE_REQ_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+			"description": "Remote-query feature flags. Array of any of: `send-response` (allow the remote wiki to respond to a query), `show-note` (display a hint when the result came from a remote source). Legacy `SMW_REMOTE_REQ_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0.",
+			"merge_strategy": "provide_default"
 		},
 		"ResultAliases": {
 			"value": {
@@ -1852,7 +1866,8 @@
 		},
 		"SparqlQFeatures": {
 			"value": [ "redirects", "subproperties", "subcategories" ],
-			"description": "SPARQL query feature flags. Array of any of: `redirects`, `subproperties`, `subcategories`, `collation`, `no-case`. Legacy `SMW_SPARQL_QF_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0."
+			"description": "SPARQL query feature flags. Array of any of: `redirects`, `subproperties`, `subcategories`, `collation`, `no-case`. Legacy `SMW_SPARQL_QF_*` integer constants are accepted with a deprecation notice in 7.x and will be removed in 8.0.",
+			"merge_strategy": "provide_default"
 		},
 		"SparqlReplicationPropertyExemptionList": {
 			"value": [],

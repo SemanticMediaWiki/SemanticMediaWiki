@@ -9,6 +9,8 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ## Changes
 
+* Fixed flag settings such as `$smwgDVFeatures` or `$smwgFactboxFeatures` being unable to switch off a default flag. A flag list set in `LocalSettings.php` was merged with the default list instead of replacing it, so every default flag stayed enabled. If you relied on this to add a single flag (e.g. `$smwgDVFeatures[] = 'wpv-pipetrick';`), list the default flags you want to keep as well
+
 ## Upgrading
 
 No need to run "update.php" or any other migration scripts.
