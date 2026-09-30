@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
+use function array_slice;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DataItems\DataItem;
@@ -172,7 +173,7 @@ class SearchTableRebuilder {
 		while ( $cursor !== null ) {
 			try {
 				$cursor = $this->rebuildChunk( $cursor, $batchSize );
-			} catch ( Throwable $e ) {
+			} catch ( Throwable ) {
 				// Don't throw
 				$status = 'failure';
 				break;
@@ -775,7 +776,7 @@ class SearchTableRebuilder {
 	 * @since 7.3.2
 	 *
 	 * @param int $toSid
-	 * @param array <int, int> $bytesBySid See collectTextsBySidRangeWithSize()
+	 * @param array<int, int> $bytesBySid See collectTextsBySidRangeWithSize()
 	 * @param int $maxBytes
 	 * @return int The subject ID to split on
 	 */
@@ -799,13 +800,12 @@ class SearchTableRebuilder {
 	 * @since 7.3.2
 	 *
 	 * @param array $texts See collectTextsBySidRangeWithSize()
-	 * @param mixed $fromSid (inclusive)
-	 * @param mixed $toSid (exclusive)
+	 * @param int $fromSid (inclusive)
+	 * @param int $toSid (exclusive)
 	 * @return array texts
 	 */
-	private function filterTextsBySidRange( array $texts, int $fromSid, int $toSid ) {
-		$subset = array_slice( $texts, $fromSid, $toSid - $fromSid, true );
-		return $subset;
+	private function filterTextsBySidRange( array $texts, int $fromSid, int $toSid ): array {
+		return array_slice( $texts, $fromSid, $toSid - $fromSid, true );
 	}
 
 }
