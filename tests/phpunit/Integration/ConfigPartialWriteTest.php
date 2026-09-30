@@ -3,7 +3,9 @@
 namespace SMW\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionClassConstant;
 use SMW\Setup\ConfigBootstrap;
+use SMW\Setup\LegacyConstantNormalizer;
 
 /**
  * Regression coverage for the partial-write bug class behind #6649 and
@@ -16,6 +18,9 @@ use SMW\Setup\ConfigBootstrap;
  *
  * Cases are added per compound global as subsequent PRs migrate them with
  * appropriate merge_strategy declarations in extension.json.
+ *
+ * Flag settings are the inverse case: a user-set flag list must replace the
+ * default wholesale, otherwise a default flag can never be switched off.
  *
  * @group medium
  *
@@ -33,7 +38,8 @@ class ConfigPartialWriteTest extends TestCase {
 	 *
 	 * Returns an array with two keys:
 	 *   - 'value'          — the default value declared in the manifest
-	 *   - 'merge_strategy' — the merge_strategy string
+	 *   - 'merge_strategy' — the merge_strategy string, or `array_merge`
+	 *     (ExtensionRegistry's implicit strategy) when none is declared
 	 *
 	 * @param string $shortKey The key as it appears in extension.json's
 	 *   "config" object (without the "smwg" prefix, matching the manifest's
@@ -55,7 +61,7 @@ class ConfigPartialWriteTest extends TestCase {
 		);
 		return [
 			'value'          => $config[$shortKey]['value'],
-			'merge_strategy' => $config[$shortKey]['merge_strategy'],
+			'merge_strategy' => $config[$shortKey]['merge_strategy'] ?? 'array_merge',
 		];
 	}
 
@@ -64,7 +70,8 @@ class ConfigPartialWriteTest extends TestCase {
 	 * would use, merging $userValue on top of $manifestDefault.
 	 *
 	 * @param string $strategy One of: provide_default, array_plus,
-	 *                          array_plus_2d, array_replace_recursive
+	 *                          array_plus_2d, array_replace_recursive,
+	 *                          array_merge
 	 * @param array $default The manifest's default value
 	 * @param array $user The user's partial value from LocalSettings.php
 	 */
@@ -82,6 +89,9 @@ class ConfigPartialWriteTest extends TestCase {
 			case 'array_replace_recursive':
 				// User values at any depth win; unset paths from default survive.
 				return array_replace_recursive( $default, $user );
+			case 'array_merge':
+				// Implicit strategy: lists are concatenated with the default.
+				return array_merge( $default, $user );
 			default:
 				$this->fail( "Unknown merge_strategy '$strategy'" );
 		}
@@ -373,6 +383,60 @@ class ConfigPartialWriteTest extends TestCase {
 		} finally {
 			$GLOBALS[$key] = $backup;
 		}
+	}
+
+	// ---------------------------------------------------------------------------
+	// Flag settings (provide_default)
+	// A flag list is a complete set: MediaWiki's implicit array_merge would
+	// concatenate it with the default list, so a default flag left out of
+	// the user's list would still end up set.
+	// ---------------------------------------------------------------------------
+
+	/**
+	 * A non-array default (smwgFieldTypeFeatures: `false`) is already replaced
+	 * wholesale by ExtensionRegistry and must not declare a merge_strategy:
+	 * ExtensionProcessor stores the strategy as a key on the value, which
+	 * would turn `false` into `[]`.
+	 *
+	 * @dataProvider flagSettingProvider
+	 */
+	public function testFlagSettingReplacesDefault( string $shortKey ): void {
+		$entry = $this->loadManifestEntry( $shortKey );
+
+		$this->assertSame(
+			is_array( $entry['value'] ) ? 'provide_default' : 'array_merge',
+			$entry['merge_strategy']
+		);
+	}
+
+	public function flagSettingProvider(): array {
+		$flagMap = ( new ReflectionClassConstant( LegacyConstantNormalizer::class, 'FLAG_MAP' ) )->getValue();
+
+		$provider = [];
+		foreach ( array_keys( $flagMap ) as $key ) {
+			$provider[$key] = [ substr( $key, strlen( 'smwg' ) ) ];
+		}
+
+		return $provider;
+	}
+
+	/**
+	 * smwgDVFeatures — provide_default
+	 * User copies the default list without 'wpv-display-title'; the flag
+	 * must not be set while the remaining defaults stay enabled.
+	 */
+	public function testDVFeaturesDropDefaultFlag(): void {
+		$entry = $this->loadManifestEntry( 'DVFeatures' );
+		$user  = array_values( array_diff( $entry['value'], [ 'wpv-display-title' ] ) );
+
+		$result = $this->applyMergeStrategy( $entry['merge_strategy'], $entry['value'], $user );
+		$flags  = LegacyConstantNormalizer::normalize( 'smwgDVFeatures', $result );
+
+		// Dropped flag stays off.
+		$this->assertSame( 0, $flags & SMW_DV_WPV_DTITLE );
+		// Flags kept in the user's list survive.
+		$this->assertSame( SMW_DV_PROV_REDI, $flags & SMW_DV_PROV_REDI );
+		$this->assertSame( SMW_DV_PVAP, $flags & SMW_DV_PVAP );
 	}
 
 }
