@@ -245,7 +245,7 @@ class SearchTableRebuilder {
 		$bytesBySid = $textsData['bytesBySid'];
 		$totalBytes = $textsData['totalBytes'];
 
-		if ( $totalBytes <= $maxBytes) {
+		if ( $totalBytes <= $maxBytes ) {
 			$nextCursor = $toSid > $maxSid ? null : $toSid;
 		} else {
 			// Too large: cut range and lower the next cursor.
