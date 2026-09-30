@@ -2,7 +2,6 @@
 
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
-use function array_slice;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DataItems\DataItem;
@@ -13,6 +12,8 @@ use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Utils\PeriodicStatsFlusher;
 use Throwable;
+
+use function array_slice;
 
 /**
  * @license GPL-2.0-or-later
