@@ -189,4 +189,26 @@ class SearchTableUpdater {
 			->execute();
 	}
 
+	/**
+	 * Deletes every index entry in the subject ID (`s_id`) range
+	 * from $fromSid to, but excluding, $toSid, regardless of the
+	 * semantic property used.
+	 *
+	 * @since 7.3.2
+	 * @see SearchTableRebuilder::rebuildChunk().
+	 *
+	 * @param int $fromSid First subject ID to remove (inclusive)
+	 * @param int $toSid Subject ID at which to stop (exclusive)
+	 */
+	public function deleteBySidRange( int $fromSid, int $toSid ): void {
+		$this->connection->newDeleteQueryBuilder()
+			->deleteFrom( $this->searchTable->getTableName() )
+			->where( [
+				$this->connection->expr( 's_id', '>=', $fromSid ),
+				$this->connection->expr( 's_id', '<', $toSid ),
+			] )
+			->caller( __METHOD__ )
+			->execute();
+	}
+
 }

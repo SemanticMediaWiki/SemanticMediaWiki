@@ -67,6 +67,18 @@ class FulltextSearchTableRebuildJobTest extends SMWIntegrationTestCase {
 			[ 'mode' => 'full' ]
 		];
 
+		$provider[] = [
+			[ 'mode' => 'chunked', 'n' => 0 ]
+		];
+
+		$provider[] = [
+			[ 'mode' => 'chunked', 's' => 0, 'n' => 250 ]
+		];
+
+		$provider[] = [
+			[ 'mode' => 'chunked', 's' => 1000, 'n' => 250 ]
+		];
+
 		return $provider;
 	}
 }
