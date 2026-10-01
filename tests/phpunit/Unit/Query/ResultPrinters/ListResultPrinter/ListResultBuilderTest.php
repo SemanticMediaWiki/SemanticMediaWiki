@@ -32,6 +32,16 @@ class ListResultBuilderTest extends TestCase {
 		$this->assertStringNotContainsString( self::PAYLOAD, $text );
 	}
 
+	public function testOutputModeDefaultsToHtmlWhenOmitted() {
+		$builder = $this->newBuilderWithTwoRows();
+		$builder->set( 'sep', self::PAYLOAD );
+
+		$text = $builder->getResultText();
+
+		$this->assertStringContainsString( self::PAYLOAD_ESCAPED, $text );
+		$this->assertStringNotContainsString( self::PAYLOAD, $text );
+	}
+
 	public function testMarkupSeparatorIsEscapedInRawOutput() {
 		$builder = $this->newBuilderWithTwoRows();
 		$builder->set( 'sep', self::PAYLOAD );
