@@ -437,7 +437,7 @@ class SearchTableRebuilder {
 
 		$text = [
 			"[INVALID] refers to an invalid `DataItem` type, [EMPTY] describes",
-			"a table thats contains no data, [EXEMPT] is exempted from processing"
+			"a table that contains no data, [EXEMPT] is exempted from processing"
 		];
 
 		$this->reportMessage(
