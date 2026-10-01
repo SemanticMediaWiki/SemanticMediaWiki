@@ -184,7 +184,7 @@ class updateEntityCollation extends Maintenance {
 
 		$text = [
 			"The `smwgEntityCollation` and `wgCategoryCollation` have different",
-			"collation settings and may therefore result in an inconsitent sorting",
+			"collation settings and may therefore result in an inconsistent sorting",
 			"display for entities."
 		];
 
