@@ -75,7 +75,7 @@ class ListResultBuilder {
 		$this->listPlainByDefault = $listPlainByDefault ?? $GLOBALS['smwgPlainList'];
 	}
 
-	public function getResultText( int $outputMode ): string {
+	public function getResultText( int $outputMode = SMW_OUTPUT_HTML ): string {
 		$this->prepareBuilt();
 		$this->set( 'output-mode', $outputMode );
 
