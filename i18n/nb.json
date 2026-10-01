@@ -376,7 +376,7 @@
 	"smw_smwadmin_updatenotstarted": "Det kjører allerede en oppdateringsprosess.\nStarter derfor ikke enda en.",
 	"smw_smwadmin_updatestopped": "Alle eksisterende oppdateringsprosesser har blitt stoppet.",
 	"smw_smwadmin_updatenotstopped": "For å stoppe den kjørende oppdateringsprosessen må du markere avkrysningsboksen for å vise at du er helt sikker.",
-	"smw-admin-docu": "Denne spesialsiden hjelper deg under innstallasjon, oppgradering og vedlikehold av <a href=\"http://semantic-mediawiki.org\">Semantic MediaWiki</a> og tilbyr flere administrative funksjoner og oppgaver i tillegg til statistikk. Husk å ta sikkerhetskopier av viktige data før du starter disse administrasjonsfunksjonene.",
+	"smw-admin-docu": "Denne spesialsiden hjelper deg under installasjon, oppgradering og vedlikehold av <a href=\"http://semantic-mediawiki.org\">Semantic MediaWiki</a> og tilbyr flere administrative funksjoner og oppgaver i tillegg til statistikk. Husk å ta sikkerhetskopier av viktige data før du starter disse administrasjonsfunksjonene.",
 	"smw-admin-environment": "Programvaremiljø",
 	"smw-admin-db": "Databaseoppsett",
 	"smw-admin-db-preparation": "Tabellinitialiseringen er underveis og det kan ta noe tid før resultater vises avhengig av størrelse og tabelloptimalisering.",

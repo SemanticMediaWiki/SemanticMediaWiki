@@ -224,6 +224,7 @@
 	"smw_noconjunctions": "此wiki不支持查询内合取，部分查询被丢弃（$1）。",
 	"smw_nodisjunctions": "此wiki不支持查询内析取，部分查询被丢弃（$1）。",
 	"smw_querytoolarge": "由于此wiki对查询大小或深度的限制，无法考虑以下{{PLURAL:$2|查询条件}}：<code>$1</code>。",
+	"smw-query-nesting-level-exceeded": "该查询嵌套的子查询层级深度超过了本wiki所允许的$1层。",
 	"smw_notemplategiven": "请提供参数“template”（模板）的值以便此查询格式正常工作。",
 	"smw_db_sparqlqueryproblem": "无法从SPARQL数据库获得查询结果。该错误可能是暂时的，也可能表明数据库软件存在错误。",
 	"smw_db_sparqlqueryincomplete": "回答查询过于困难，因此被中止。某些结果可能会丢失。如果可能，请尝试使用更简单的查询。",

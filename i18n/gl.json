@@ -173,6 +173,7 @@
 	"smw_noconjunctions": "As conxuncións nas pescudas non están admitidas neste wiki, polo que unha parte foi excluída ($1).",
 	"smw_nodisjunctions": "As disxuncións nas pescudas non están admitidas neste wiki, polo que unha parte foi excluída ($1).",
 	"smw_querytoolarge": "{{PLURAL:$2|A seguinte condición da consulta non pode ser considerada|As seguintes $2 condicións da consulta non poden ser consideradas}} debido ás restricións do wiki para o tamaño ou profundidade das consultas: <code>$1</code>.",
+	"smw-query-nesting-level-exceeded": "A consulta aniña subconsultas máis profundamente que o límite de $1 permitido por este wiki.",
 	"smw_notemplategiven": "Proporciona un valor para o parámetro «template» para que funcione o formato desta pescuda.",
 	"smw_db_sparqlqueryproblem": "Non se puideron obter os resultado da pescuda da base de datos SPARQL. Este erro pode ser temporal ou indicar un erro no programa da base de datos.",
 	"smw_db_sparqlqueryincomplete": "Resultou demasiado difícil responder á pescuda e cancelouse. É probable que falten algúns resultados. Se fose posible, intenta facer unha consulta máis sinxela.",

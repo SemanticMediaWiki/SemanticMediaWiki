@@ -193,6 +193,7 @@
 	"smw_noconjunctions": "Verbindingen in zoekopdrachten worden in deze wiki niet ondersteund en een deel van de zoekopdracht is genegeerd ($1).",
 	"smw_nodisjunctions": "Scheidingen in zoekopdrachten worden niet ondersteund in deze wiki, dus een deel van de zoekopdracht is genegeerd ($1).",
 	"smw_querytoolarge": "De volgende {{PLURAL:$2|zoekopdrachtconditie is|$2 zoekopdrachtcondities zijn}} niet in acht genomen vanwege beperkingen in de grootte of diepte van zoekopdrachten in deze wiki: <code>$1</code>.",
+	"smw-query-nesting-level-exceeded": "De zoekopdracht nestelt subzoekopdrachten dieper dan de limiet van $1 die door deze wiki is toegestaan.",
 	"smw_notemplategiven": "Geef een waarde voor de parameter \"sjabloon\" op om deze zoekopdracht te laten werken.",
 	"smw_db_sparqlqueryproblem": "Er is geen antwoord op de zoekopdracht gekomen uit de SPARQL-database. Deze fout kan tijdelijk zijn of wijzen op een bug in de databasesoftware.",
 	"smw_db_sparqlqueryincomplete": "De zoekopdracht beantwoorden bleek te moeilijk en deze is afgebroken. Sommige resultaten kunnen ontbreken. Probeer een eenvoudiger zoekopdracht te gebruiken.",
