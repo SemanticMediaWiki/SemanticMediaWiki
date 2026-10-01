@@ -12,7 +12,6 @@ use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Utils\PeriodicStatsFlusher;
 use Throwable;
-use function array_slice;
 
 /**
  * @license GPL-2.0-or-later
@@ -805,7 +804,11 @@ class SearchTableRebuilder {
 	 * @return array texts
 	 */
 	private function filterTextsBySidRange( array $texts, int $fromSid, int $toSid ): array {
-		return array_slice( $texts, $fromSid, $toSid - $fromSid, true );
+		return array_filter(
+			$texts,
+			static fn ( $sid ) => $sid >= $fromSid && $sid < $toSid,
+			ARRAY_FILTER_USE_KEY
+		);
 	}
 
 }
