@@ -43,7 +43,7 @@
 	"tests": [
 		{
 			"type": "parser",
-			"about": "#0 spaces (_, , %20) produce only one URL not three",
+			"about": "#0 underscore (_), space, and urlencoded space (%20) produce only two URLs, not three",
 			"subject": "Example/P0446/1",
 			"assert-store": {
 				"semantic-data": {
@@ -62,15 +62,15 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"href=\"http://example.org/Foo_bar\">http://example.org/Foo bar</a>",
-					"href=\"http://example.org/Foo_bar\">http://example.org/Foo%20bar</a>",
+					"href=\"http://example.org/Foo%20bar\">http://example.org/Foo bar</a>",
+					"href=\"http://example.org/Foo%20bar\">http://example.org/Foo%20bar</a>",
 					"href=\"http://example.org/Foo_bar\">http://example.org/Foo bar</a>"
 				]
 			}
 		},
 		{
 			"type": "query",
-			"about": "#1 different space encoding dont't disort the condition/result",
+			"about": "#1 different space encoding dont't distort the condition/result",
 			"condition": "[[Has url::http://example.org/Foo bar]] [[Category:P0446]]",
 			"printouts": [
 				"Has url"
