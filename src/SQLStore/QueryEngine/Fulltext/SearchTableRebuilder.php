@@ -624,12 +624,7 @@ class SearchTableRebuilder {
 		$totalBytes = 0;
 		$searchTable = $this->getSearchTable();
 
-		foreach ( $this->getRowsForSidRange( $fromSid, $toSid ) as $k => $row ) {
-			// pid must be derived from the key
-			[ $sid, $pid ] = explode( ':', $k );
-			$sid = (int)$sid;
-			$pid = (int)$pid;
-
+		foreach ( $this->getRowsForSidRange( $fromSid, $toSid ) as [ $sid, $pid, $row ] ) {
 			$indexableText = $this->getIndexableTextFromRow( $searchTable, $row );
 
 			// Exclude rows from exempted properties and those
@@ -660,7 +655,7 @@ class SearchTableRebuilder {
 	 *
 	 * @param int $fromSid Subject ID to start from (inclusive)
 	 * @param int $toSid Subject ID to stop at (exclusive)
-	 * @return array Rows keyed by a concatenation of `s_id:p_id`
+	 * @return array[] Each entry is `[ s_id, p_id, row ]`, one per stored value
 	 */
 	private function getRowsForSidRange( $fromSid, $toSid ): array {
 		$allRows = [];
@@ -680,10 +675,8 @@ class SearchTableRebuilder {
 				if ( $this->statsFlusher !== null ) {
 					$this->statsFlusher->tick();
 				}
-				$sid = $row->s_id;
 				// Fixed tables don't have a p_id column
-				$pid = $row->p_id ?? $spec['pid'];
-				$allRows[$sid . ':' . $pid] = $row;
+				$allRows[] = [ (int)$row->s_id, (int)( $row->p_id ?? $spec['pid'] ), $row ];
 			}
 		}
 		return $allRows;
