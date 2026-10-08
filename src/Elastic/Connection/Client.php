@@ -164,7 +164,7 @@ class Client {
 		return [
 			'component' => $this->isOpenSearch() ?
 				"[https://opensearch.org OpenSearch]" :
-				"[https://www.elastic.co/elasticsearch/ Elasticsearch]",
+				"[https://www.elastic.co/elasticsearch Elasticsearch]",
 			'version' => $this->getVersion()
 		];
 	}

@@ -9,6 +9,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ## Changes
 
+* Fixed Special:Version listing the Elasticsearch server twice on wikis that also run CirrusSearch. Semantic MediaWiki now adds the same entry as CirrusSearch, so only one of them appears
 * Fixed flag settings such as `$smwgDVFeatures` or `$smwgFactboxFeatures` being unable to switch off a default flag. A flag list set in `LocalSettings.php` was merged with the default list instead of replacing it, so every default flag stayed enabled. If you relied on this to add a single flag (e.g. `$smwgDVFeatures[] = 'wpv-pipetrick';`), list the default flags you want to keep as well
 * Fixed an `ArgumentCountError` in extensions that call `ListResultBuilder::getResultText()` without an output mode, such as the listwidget format of Semantic Result Formats. The parameter introduced in 7.3.1 now defaults to `SMW_OUTPUT_HTML`
 
