@@ -25,7 +25,7 @@ class RebuildFulltextSearchTableTest extends SMWIntegrationTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->testEnvironment->addConfiguration( 'smwgEnabledFulltextSearch', true );
+		$this->enableFulltextSearch();
 		$this->runnerFactory  = $this->testEnvironment::getUtilityFactory()->newRunnerFactory();
 		$this->spyMessageReporter = $this->testEnvironment::getUtilityFactory()->newSpyMessageReporter();
 	}

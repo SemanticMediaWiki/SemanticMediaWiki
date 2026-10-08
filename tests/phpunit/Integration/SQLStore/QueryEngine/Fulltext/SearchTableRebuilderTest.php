@@ -21,6 +21,12 @@ class SearchTableRebuilderTest extends SMWIntegrationTestCase {
 
 	use FulltextRebuildFixtureTrait;
 
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->enableFulltextSearch();
+	}
+
 	public function testChunkedRebuildIndexesEveryValueOfAMultiValuedProperty() {
 		[ $sid, $pid ] = $this->storeTexts( 'ChunkedRebuildMultiValue', 'Has chunked text', [ 'alphaword', 'bravoword', 'charlieword' ] );
 		$this->flushIndex();

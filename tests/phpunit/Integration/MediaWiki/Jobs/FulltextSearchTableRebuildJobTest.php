@@ -23,6 +23,12 @@ class FulltextSearchTableRebuildJobTest extends SMWIntegrationTestCase {
 
 	use FulltextRebuildFixtureTrait;
 
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->enableFulltextSearch();
+	}
+
 	private function newJob( Title $title, array $params = [] ): FulltextSearchTableRebuildJob {
 		/** @var FulltextSearchTableRebuildJob $job */
 		$job = MediaWikiServices::getInstance()->getJobFactory()->newJob(

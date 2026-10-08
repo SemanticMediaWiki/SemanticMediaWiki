@@ -20,6 +20,18 @@ use SMW\SQLStore\SQLStore;
 trait FulltextRebuildFixtureTrait {
 
 	/**
+	 * Earlier tests in the suite can switch full-text search off or drop its table,
+	 * which the store setup run once per test class then does not recreate.
+	 */
+	private function enableFulltextSearch(): void {
+		$this->testEnvironment->addConfiguration( 'smwgEnabledFulltextSearch', true );
+
+		if ( !$this->getStore()->getConnection( 'mw.db' )->tableExists( SQLStore::FT_SEARCH_TABLE, __METHOD__ ) ) {
+			$this->getStore()->setup( false );
+		}
+	}
+
+	/**
 	 * @param string $page
 	 * @param string $propertyLabel
 	 * @param string[] $texts
