@@ -167,7 +167,7 @@ class Client {
 	private function getNodeVersion(): ?string {
 		try {
 			$nodes = $this->client->nodes()->info( [ 'node_id' => '_local' ] );
-		} catch ( Exception $e ) {
+		} catch ( Exception ) {
 			return null;
 		}
 
