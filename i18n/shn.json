@@ -5,7 +5,12 @@
 			"Sengwan365"
 		]
 	},
+	"smw_printername_csv": "သူင်ႇဢွၵ်ႇ CSV",
+	"smw_printername_dsv": "သူင်ႇဢွၵ်ႇ DSV",
+	"smw_printername_json": "သူင်ႇဢွၵ်ႇ JSON",
+	"smw_printername_rdf": "သူင်ႇဢွၵ်ႇ RDF",
 	"smw_printername_category": "ပိူင်ထၢၼ်ႈ",
+	"smw-paramdesc-export": "တၢင်းလိူၵ်သူင်ႇဢွၵ်ႇ",
 	"smw-categories": "ပိူင်ထၢၼ်ႈ",
 	"browse": "ပိုတ်ႇႁႃ ဝီႇၶီႇ",
 	"smw-admin-maintenance-no-description": "ဢမ်ႇမီး ၶေႃႈသပ်းလႅင်း။",
