@@ -41,15 +41,23 @@ class TestConfig {
 	 */
 	public function set( array $configurations = [] ) {
 		foreach ( $configurations as $key => $value ) {
-
-			if ( array_key_exists( $key, $GLOBALS ) ) {
-				$this->configurations[$key] = $GLOBALS[$key];
-			} else {
-				$this->newKeys[] = $key;
-			}
+			$this->recordOriginal( $key );
 
 			$GLOBALS[$key] = $value;
 			$this->settings->set( $key, $value );
+		}
+	}
+
+	private function recordOriginal( string $key ): void {
+		// A key set more than once must restore its pre-test value, not an earlier override
+		if ( array_key_exists( $key, $this->configurations ) || in_array( $key, $this->newKeys, true ) ) {
+			return;
+		}
+
+		if ( array_key_exists( $key, $GLOBALS ) ) {
+			$this->configurations[$key] = $GLOBALS[$key];
+		} else {
+			$this->newKeys[] = $key;
 		}
 	}
 
