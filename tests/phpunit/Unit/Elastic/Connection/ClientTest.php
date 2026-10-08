@@ -96,4 +96,98 @@ class ClientTest extends TestCase {
 		$instance->bulk( $params );
 	}
 
+	public function testIsOpenSearchWhenTheServerNamesItsDistribution() {
+		$instance = $this->newClientAnswering( [
+			'version' => [ 'distribution' => 'opensearch', 'number' => '2.19.5' ],
+			'tagline' => 'The OpenSearch Project: https://opensearch.org/'
+		] );
+
+		$this->assertTrue( $instance->isOpenSearch() );
+	}
+
+	public function testIsOpenSearchByTaglineWhenCompatibilityModeHidesTheDistribution() {
+		$instance = $this->newClientAnswering( self::COMPATIBILITY_MODE_INFO );
+
+		$this->assertTrue( $instance->isOpenSearch() );
+	}
+
+	public function testIsNotOpenSearchForElasticsearch() {
+		$instance = $this->newClientAnswering( [
+			'version' => [ 'number' => '7.10.2', 'build_flavor' => 'default' ],
+			'tagline' => 'You Know, for Search'
+		] );
+
+		$this->assertFalse( $instance->isOpenSearch() );
+	}
+
+	public function testGetVersionReportsTheNodeVersionWhenCompatibilityModeSpoofsIt() {
+		$this->nodesReportVersion( '2.19.5' );
+
+		$instance = $this->newClientAnswering( self::COMPATIBILITY_MODE_INFO, $this->newDefaultStoreConfig() );
+
+		$this->assertSame( '2.19.5', $instance->getVersion() );
+	}
+
+	public function testGetVersionKeepsTheMainResponseVersionForElasticsearch() {
+		$this->nodesReportVersion( '9.9.9' );
+
+		$instance = $this->newClientAnswering(
+			[ 'version' => [ 'number' => '7.10.2' ], 'tagline' => 'You Know, for Search' ],
+			$this->newDefaultStoreConfig()
+		);
+
+		$this->assertSame( '7.10.2', $instance->getVersion() );
+	}
+
+	public function testGetSoftwareInfoNamesOpenSearchInCompatibilityMode() {
+		$this->nodesReportVersion( '2.19.5' );
+
+		$instance = $this->newClientAnswering( self::COMPATIBILITY_MODE_INFO, $this->newDefaultStoreConfig() );
+
+		$this->assertEquals(
+			[ 'component' => '[https://opensearch.org OpenSearch]', 'version' => '2.19.5' ],
+			$instance->getSoftwareInfo()
+		);
+	}
+
+	/**
+	 * What OpenSearch 2.x answers to `GET /` with `compatibility.override_main_response_version`
+	 * enabled: no `distribution`, the version number of Elasticsearch 7.10.2, its own tagline.
+	 */
+	private const COMPATIBILITY_MODE_INFO = [
+		'version' => [ 'number' => '7.10.2', 'build_type' => 'tar' ],
+		'tagline' => 'The OpenSearch Project: https://opensearch.org/'
+	];
+
+	private function newClientAnswering( array $info, ?Config $config = null ): Client {
+		$this->elasticClient->method( 'ping' )
+			->willReturn( true );
+
+		$this->elasticClient->method( 'info' )
+			->willReturn( $info );
+
+		$instance = new Client( $this->elasticClient, $this->lockManager, $config );
+
+		// The ping result is cached across instances
+		$instance->clear();
+
+		return $instance;
+	}
+
+	private function nodesReportVersion( string $version ): void {
+		$nodes = $this->getMockBuilder( '\Elasticsearch\Namespaces\NodesNamespace' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$nodes->method( 'info' )
+			->willReturn( [ 'nodes' => [ 'node-id' => [ 'version' => $version ] ] ] );
+
+		$this->elasticClient->method( 'nodes' )
+			->willReturn( $nodes );
+	}
+
+	private function newDefaultStoreConfig(): Config {
+		return new Config( [ Config::DEFAULT_STORE => 'SMWElasticStore' ] );
+	}
+
 }
