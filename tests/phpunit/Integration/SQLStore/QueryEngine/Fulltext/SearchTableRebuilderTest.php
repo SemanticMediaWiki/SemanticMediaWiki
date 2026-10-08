@@ -33,6 +33,46 @@ class SearchTableRebuilderTest extends SMWIntegrationTestCase {
 		$this->assertStringContainsString( 'charlieword', $indexEntry );
 	}
 
+	public function testChunkedRebuildIndexesValuesOfFixedPropertyTables() {
+		[ $sid, $pid ] = $this->storeDisplayTitle( 'ChunkedRebuildFixed', 'deltaword' );
+		$this->flushIndex();
+
+		$this->newSearchTableRebuilder()->rebuildChunk( $sid, 1 );
+
+		$this->assertStringContainsString( 'deltaword', $this->readIndexEntry( $sid, $pid ) );
+	}
+
+	public function testChunkedRebuildContinuesUpToTheLastSubject() {
+		[ $firstSid, $pid ] = $this->storeTexts( 'ChunkedRebuildFirst', 'Has chunked text', [ 'alphaword' ] );
+		[ $lastSid ] = $this->storeTexts( 'ChunkedRebuildLast', 'Has chunked text', [ 'bravoword' ] );
+		$this->flushIndex();
+		$this->assertSame( $lastSid, $this->maxSubjectId(), 'Precondition: the last subject ends the rebuild' );
+
+		$this->newSearchTableRebuilder()->rebuildInChunks( $firstSid, 1 );
+
+		$this->assertStringContainsString( 'alphaword', $this->readIndexEntry( $firstSid, $pid ) );
+		$this->assertStringContainsString( 'bravoword', $this->readIndexEntry( $lastSid, $pid ) );
+	}
+
+	public function testChunkedRebuildRemovesEntriesOfPropertiesTheSubjectNoLongerHas() {
+		[ $sid, $pid ] = $this->storeTexts( 'ChunkedRebuildStale', 'Has chunked text', [ 'alphaword' ] );
+		$this->writeIndexEntry( $sid, $pid + 100000, 'staleword' );
+
+		$this->newSearchTableRebuilder()->rebuildInChunks( $sid, 1 );
+
+		$this->assertFalse( $this->readIndexEntry( $sid, $pid + 100000 ) );
+	}
+
+	public function testChunkedRebuildRemovesEntriesBeyondTheLastSubject() {
+		[ , $pid ] = $this->storeTexts( 'ChunkedRebuildStale', 'Has chunked text', [ 'alphaword' ] );
+		$staleSid = $this->maxSubjectId() + 1000;
+		$this->writeIndexEntry( $staleSid, $pid, 'staleword' );
+
+		$this->newSearchTableRebuilder()->rebuildInChunks( 0, 500 );
+
+		$this->assertFalse( $this->readIndexEntry( $staleSid, $pid ) );
+	}
+
 	private function newSearchTableRebuilder(): SearchTableRebuilder {
 		return ( new FulltextSearchTableFactory() )->newSearchTableRebuilder( $this->getStore() );
 	}

@@ -3,6 +3,7 @@
 namespace SMW\Tests\Integration\Maintenance;
 
 use SMW\Tests\SMWIntegrationTestCase;
+use SMW\Tests\Utils\FulltextRebuildFixtureTrait;
 
 /**
  * @group semantic-mediawiki
@@ -15,6 +16,8 @@ use SMW\Tests\SMWIntegrationTestCase;
  * @author mwjames
  */
 class RebuildFulltextSearchTableTest extends SMWIntegrationTestCase {
+
+	use FulltextRebuildFixtureTrait;
 
 	private $runnerFactory;
 	private $spyMessageReporter;
@@ -77,9 +80,34 @@ class RebuildFulltextSearchTableTest extends SMWIntegrationTestCase {
 		);
 	}
 
+	public function testStartOptionOnlyRebuildsFromThatSubjectOnwards() {
+		[ $earlierSid, $pid ] = $this->storeTexts( 'ChunkedScriptEarlier', 'Has chunked text', [ 'alphaword' ] );
+		[ $startSid ] = $this->storeTexts( 'ChunkedScriptStart', 'Has chunked text', [ 'bravoword' ] );
+		$this->flushIndex();
+
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
+			'\SMW\Maintenance\rebuildFulltextSearchTable'
+		);
+
+		$maintenanceRunner->setMessageReporter(
+			$this->spyMessageReporter
+		);
+
+		$maintenanceRunner->setOptions( [
+			's' => $startSid,
+			'quick' => true
+		] );
+
+		$maintenanceRunner->setQuiet();
+
+		$maintenanceRunner->run();
+
+		$this->assertFalse( $this->readIndexEntry( $earlierSid, $pid ) );
+		$this->assertStringContainsString( 'bravoword', $this->readIndexEntry( $startSid, $pid ) );
+	}
+
 	public function testInsertJobIntoJobQueueInsteadOfRebuilding() {
-		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
-		$jobQueueGroup->get( 'smw.fulltextSearchTableRebuild' )->delete();
+		$this->clearQueuedChunks();
 
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
 			'\SMW\Maintenance\rebuildFulltextSearchTable'
@@ -106,10 +134,9 @@ class RebuildFulltextSearchTableTest extends SMWIntegrationTestCase {
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 
-		// 1 job
 		$this->assertSame(
-			1,
-			$jobQueueGroup->get( 'smw.fulltextSearchTableRebuild' )->getSize()
+			[ [ 's' => 0, 'n' => 250 ] ],
+			$this->queuedChunks()
 		);
 	}
 

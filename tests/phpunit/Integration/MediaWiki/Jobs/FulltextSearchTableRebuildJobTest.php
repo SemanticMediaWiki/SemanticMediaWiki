@@ -7,6 +7,7 @@ use MediaWiki\Title\Title;
 use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob;
 use SMW\Tests\SMWIntegrationTestCase;
+use SMW\Tests\Utils\FulltextRebuildFixtureTrait;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob
@@ -19,6 +20,8 @@ use SMW\Tests\SMWIntegrationTestCase;
  * @author mwjames
  */
 class FulltextSearchTableRebuildJobTest extends SMWIntegrationTestCase {
+
+	use FulltextRebuildFixtureTrait;
 
 	private function newJob( Title $title, array $params = [] ): FulltextSearchTableRebuildJob {
 		/** @var FulltextSearchTableRebuildJob $job */
@@ -52,6 +55,32 @@ class FulltextSearchTableRebuildJobTest extends SMWIntegrationTestCase {
 		$this->assertTrue(
 			$instance->run()
 		);
+	}
+
+	public function testChunkJobRebuildsItsChunkAndQueuesTheNext() {
+		$this->clearQueuedChunks();
+		[ $sid, $pid ] = $this->storeTexts( 'ChunkJobSubject', 'Has chunked text', [ 'alphaword' ] );
+		$this->flushIndex();
+		// Keeps the rebuild from ending with this chunk
+		$this->writeIndexEntry( $sid + 1000, $pid, 'farword' );
+
+		$this->newJob( WikiPage::newFromText( __METHOD__ )->getTitle(), [ 's' => $sid, 'n' => 1 ] )->run();
+
+		$this->assertStringContainsString( 'alphaword', $this->readIndexEntry( $sid, $pid ) );
+		$this->assertSame( [ [ 's' => $sid + 1, 'n' => 1 ] ], $this->queuedChunks() );
+	}
+
+	public function testChunkJobForTheLastChunkQueuesNoFurtherJob() {
+		$this->clearQueuedChunks();
+		$this->storeTexts( 'ChunkJobSubject', 'Has chunked text', [ 'alphaword' ] );
+		$this->flushIndex();
+
+		$this->newJob(
+			WikiPage::newFromText( __METHOD__ )->getTitle(),
+			[ 's' => $this->maxSubjectId(), 'n' => 1 ]
+		)->run();
+
+		$this->assertSame( [], $this->queuedChunks() );
 	}
 
 	public function parametersProvider() {
