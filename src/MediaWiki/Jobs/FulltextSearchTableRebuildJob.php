@@ -7,6 +7,7 @@ use SMW\MediaWiki\Job;
 use SMW\MediaWiki\JobFactory;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\Store;
+use Throwable;
 
 /**
  * @license GPL-2.0-or-later
@@ -30,9 +31,12 @@ class FulltextSearchTableRebuildJob extends Job {
 	}
 
 	/**
+	 * Runs a rebuild job in one of three ways:
+	 * by table, in batch mode or full.
+	 *
 	 * @see Job::run
 	 *
-	 * @since  2.5
+	 * @since 2.5
 	 */
 	public function run(): bool {
 		if ( $this->waitOnCommandLineMode() ) {
@@ -50,26 +54,55 @@ class FulltextSearchTableRebuildJob extends Job {
 		} elseif ( $this->hasParameter( 'mode' ) && $this->getParameter( 'mode' ) === 'full' ) {
 			$searchTableRebuilder->rebuild();
 		} else {
-			$searchTableRebuilder->flushTable();
-			$this->createJobsFromTableList( $searchTableRebuilder->getQualifiedTableList() );
+			// default, including 'chunked' mode
+			try {
+				$this->rebuildChunk( $searchTableRebuilder );
+			} catch ( Throwable ) {
+				return false;
+			}
 		}
 
 		return true;
 	}
 
-	private function createJobsFromTableList( array $tableList ): void {
-		if ( $tableList === [] ) {
+	/**
+	 * Rebuilds one 'window' of subject IDs and if that wasn't the
+	 * last window, queues a job for the next one in row. Ensures that
+	 * - Each job does a bounded amount of work (`batchSize` subject IDs)
+	 * - A job that fails or times out can simply be run again because
+	 * a window replaces its own entries.
+	 *
+	 * @since 7.3.2
+	 *
+	 * Parameters: `fromSid` (default: 0) and `batchSize`
+	 * (default: \SearchTableRebuilder::DEFAULT_BATCH_SIZE).
+	 *
+	 * @param \SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder $searchTableRebuilder
+	 *
+	 * @return void
+	 * @throws Throwable
+	 */
+	private function rebuildChunk( $searchTableRebuilder ): void {
+		$fromSid = max( 0, (int)$this->getParameter( 's', 0 ) );
+		$batchSize = (int)$this->getParameter( 'n', $searchTableRebuilder::DEFAULT_BATCH_SIZE );
+		$batchSize = $batchSize > 0 ? $batchSize : $searchTableRebuilder::DEFAULT_BATCH_SIZE;
+
+		try {
+			$nextSid = $searchTableRebuilder->rebuildChunk( $fromSid, $batchSize );
+		} catch ( Throwable $e ) {
+			throw $e;
+		}
+
+		if ( $nextSid === null ) {
 			return;
 		}
 
-		foreach ( $tableList as $tableName ) {
-			$job = $this->jobFactory->newFulltextSearchTableRebuildJob(
-				$this->getTitle(),
-				[ 'table' => $tableName ]
-			);
+		$job = $this->jobFactory->newFulltextSearchTableRebuildJob(
+			$this->getTitle(),
+			[ 's' => $nextSid, 'n' => $batchSize ]
+		);
 
-			$job->insert();
-		}
+		$job->insert();
 	}
 
 }
