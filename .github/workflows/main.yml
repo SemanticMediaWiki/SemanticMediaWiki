@@ -115,7 +115,9 @@ jobs:
   # coverage itself is scoped to one leg) rather than on every matrix leg in
   # `tests`/`static-analysis`, so the JS toolchain install cost isn't paid
   # repeatedly. Not on the fast-feedback path (the test jobs report pass/fail
-  # well before coverage finishes).
+  # well before coverage finishes). PHP runs as two PHPUnit invocations for the
+  # same reason as in `tests`; the second reuses the container `ci-coverage`
+  # built, and codecov merges the two Clover files.
   coverage:
     name: Coverage (MW 1.43, PHP 8.2, mariadb:11.4)
     runs-on: ubuntu-latest
@@ -134,14 +136,17 @@ jobs:
       - name: Update submodules
         run: git submodule update --init --remote
 
-      - name: Run tests with coverage
-        run: make ci-coverage COMPOSER_PARAMS="-- --testsuite semantic-mediawiki-unit,semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure"
+      - name: Run unit tests with coverage
+        run: make ci-coverage COMPOSER_PARAMS="-- --testsuite semantic-mediawiki-unit --coverage-clover extensions/SemanticMediaWiki/coverage/php/coverage-unit.xml"
+
+      - name: Run integration tests with coverage
+        run: make composer-test-coverage COMPOSER_PARAMS="-- --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure --coverage-clover extensions/SemanticMediaWiki/coverage/php/coverage-integration.xml"
 
       - name: Upload code coverage
         uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: coverage/php/coverage.xml,coverage/js/clover.xml
+          files: coverage/php/coverage-unit.xml,coverage/php/coverage-integration.xml,coverage/js/clover.xml
 
   # Single fixed-name gate so branch protection does not have to list every
   # matrix leg (which would need updating on each version change). Require only
