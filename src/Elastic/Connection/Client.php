@@ -148,13 +148,32 @@ class Client {
 	public function getVersion() {
 		$info = $this->info();
 
-		if (
-			$this->options->isDefaultStore() &&
-			isset( $info['version']['number'] ) ) {
-			return $info['version']['number'];
+		if ( !$this->options->isDefaultStore() || !isset( $info['version']['number'] ) ) {
+			return null;
 		}
 
-		return null;
+		if ( $this->isOpenSearch() && !isset( $info['version']['distribution'] ) ) {
+			return $this->getNodeVersion() ?? $info['version']['number'];
+		}
+
+		return $info['version']['number'];
+	}
+
+	/**
+	 * The version a node reports about itself, which OpenSearch's
+	 * `compatibility.override_main_response_version` leaves untouched while
+	 * it spoofs the version in the main response as Elasticsearch 7.10.2.
+	 */
+	private function getNodeVersion(): ?string {
+		try {
+			$nodes = $this->client->nodes()->info( [ 'node_id' => '_local' ] );
+		} catch ( Exception $e ) {
+			return null;
+		}
+
+		$versions = array_column( $nodes['nodes'] ?? [], 'version' );
+
+		return $versions[0] ?? null;
 	}
 
 	/**
@@ -739,11 +758,27 @@ class Client {
 	 */
 	public function isOpenSearch(): bool {
 		if ( $this->distribution === null ) {
-			$info = $this->info();
-			$this->distribution = $info['version']['distribution'] ?? 'elasticsearch';
+			$this->distribution = $this->findDistribution( $this->info() );
 		}
 
 		return $this->distribution === 'opensearch';
+	}
+
+	/**
+	 * OpenSearch 1.x and 2.x omit `version.distribution` from the main
+	 * response while `compatibility.override_main_response_version` makes
+	 * them answer as Elasticsearch 7.10.2; the tagline still names them.
+	 */
+	private function findDistribution( array $info ): string {
+		if ( isset( $info['version']['distribution'] ) ) {
+			return $info['version']['distribution'];
+		}
+
+		if ( str_contains( $info['tagline'] ?? '', 'OpenSearch' ) ) {
+			return 'opensearch';
+		}
+
+		return 'elasticsearch';
 	}
 
 }
