@@ -71,7 +71,7 @@ class DummyClient extends Client {
 	 */
 	public function getSoftwareInfo(): array {
 		return [
-			'component' => "[https://www.elastic.co/elasticsearch/ Elasticsearch]",
+			'component' => "[https://www.elastic.co/elasticsearch Elasticsearch]",
 			'version' => null
 		];
 	}
