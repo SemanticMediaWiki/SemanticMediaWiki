@@ -24,10 +24,19 @@ Increases of minimum requirements are indicated in bold.
         <th>Notes</th>
     </tr>
     <tr>
-        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_7.2.0">7.2.x</a></th>
+        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_7.3.0">7.3.x</a></th>
         <td><strong>Stable release</strong></td>
+        <td>2026-09-16</td>
+        <td>2026-09-28</td>
+        <td>8.1 - 8.5</td>
+        <td>1.43 - 1.46</td>
+        <td></td>
+    </tr>
+    <tr>
+        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_7.2.0">7.2.x</a></th>
+        <td>Obsolete release</td>
         <td>2026-07-17</td>
-        <td>2026-07-17</td>
+        <td>2026-08-18</td>
         <td>8.1 - 8.5</td>
         <td>1.43 - 1.46</td>
         <td></td>
