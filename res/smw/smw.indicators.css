@@ -240,7 +240,3 @@ input:checked ~ .smw-indicator-accordion-tab-content {
 .plain input:checked ~ .smw-indicator-accordion-tab-content {
   /* border-bottom: 1px solid #eee; */
 }
-
-.skin-chameleon .mw-indicator-smw-entity-examiner {
-  margin-top: 25px;
-}
