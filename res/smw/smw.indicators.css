@@ -81,27 +81,21 @@
     display: inline-block;
 }
 
-.smw-icon-entity-examiner-panel {
-    background: url( assets/smw-icon-entity-examiner-panel.svg ) no-repeat left center;
+.smw-icon-entity-examiner-panel,
+.smw-icon-entity-examiner-panel-error,
+.smw-icon-entity-examiner-panel-warning {
     padding: 20px 0 0px 25px;
     display: inline-block;
     vertical-align: top;
+}
+
+.smw-icon-entity-examiner-panel,
+.smw-icon-entity-examiner-panel-warning {
+    background: url( assets/smw-icon-entity-examiner-panel.svg ) no-repeat left center;
 }
 
 .smw-icon-entity-examiner-panel-error {
-    background: url( assets/smw-icon-entity-examiner-panel-error.svg )
-    no-repeat
-    left center;
-    padding: 20px 0 0px 25px;
-    display: inline-block;
-    vertical-align: top;
-}
-
-.smw-icon-entity-examiner-panel-warning {
-    background: url( assets/smw-icon-entity-examiner-panel.svg ) no-repeat left center;
-    padding: 20px 0 0px 25px;
-    display: inline-block;
-    vertical-align: top;
+    background: url( assets/smw-icon-entity-examiner-panel-error.svg ) no-repeat left center;
 }
 
 /* Skins that lay out indicators inline rather than as a flex row */
