@@ -153,8 +153,7 @@
 					'subject': subject,
 					'is_placeholder': true,
 					'dir': that.data( 'dir' ),
-					'uselang': that.data( 'uselang' ),
-					'count': that.data( 'count' )
+					'uselang': that.data( 'uselang' )
 				};
 
 				var postArgs = {
@@ -168,7 +167,6 @@
 					// When run as placholder replacement, we expect the entire HTML
 					// the be replaced therefore using the `html` accessor.
 					that.replaceWith( data.task.html['smw-entity-examiner'] );
-					that.find( '.is-disabled' ).removeClass( 'is-disabled' );
 				} );
 			} );
 		}
