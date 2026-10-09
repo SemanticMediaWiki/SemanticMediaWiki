@@ -35,18 +35,6 @@
 	smw.entityexaminer.prototype = {
 
 		/**
-		 * Enable the `mw-indicator-mw-helplink` in case it was disabled
-		 *
-		 * @since 3.2
-		 * @method
-		 */
-		showHelpLink: function() {
-			if ( document.getElementById( 'mw-indicator-mw-helplink' ) !== null ) {
-				document.getElementById( 'mw-indicator-mw-helplink' ).style.display = 'inline-block';
-			};
-		},
-
-		/**
 		 * @since 3.2
 		 * @method
 		 *
@@ -136,10 +124,6 @@
 						self.addedResponse = true
 					};
 				};
-
-				if ( data.task.html === '' ) {
-					self.showHelpLink();
-				};
 			} );
 		},
 
@@ -185,10 +169,6 @@
 					// the be replaced therefore using the `html` accessor.
 					that.replaceWith( data.task.html['smw-entity-examiner'] );
 					that.find( '.is-disabled' ).removeClass( 'is-disabled' );
-
-					if ( data.task.html['smw-entity-examiner'] === undefined ) {
-						self.showHelpLink();
-					}
 				} );
 			} );
 		}
@@ -208,7 +188,7 @@
 
 		// Run a replacement for the entire placeholder
 		entityexaminer.runOnPlaceholder(
-			$( '.smw-entity-examiner.smw-indicator-vertical-bar-loader' )
+			$( '#mw-indicator-smw-entity-examiner > .smw-entity-examiner-placeholder' )
 		);
 
 		// Run on those examiners that have been marked as deferred and require

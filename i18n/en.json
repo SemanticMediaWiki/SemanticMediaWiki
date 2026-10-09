@@ -1137,7 +1137,6 @@
 	"smw-legend": "Legend",
 	"smw-datavalue-constraint-schema-category-invalid-type": "The annotated \"$1\" schema is invalid for a category, it requires a \"$2\" type.",
 	"smw-datavalue-constraint-schema-property-invalid-type": "The annotated \"$1\" schema is invalid for a property, it requires a \"$2\" type.",
-	"smw-entity-examiner-check": "Running {{PLURAL:$1|an examiner|examiners}} in the background",
 	"smw-entity-examiner-indicator": "Entity issue panel",
 	"smw-entity-examiner-deferred-check-awaiting-response": "The \"$1\" examiner is currently awaiting a response from the backend.",
 	"smw-entity-examiner-deferred-elastic-replication": "Elastic",

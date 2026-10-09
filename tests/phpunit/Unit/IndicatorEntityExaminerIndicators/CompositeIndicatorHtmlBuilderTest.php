@@ -52,16 +52,11 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 	}
 
 	public function testBuildHTML_Empty() {
-		$this->messageLocalizer->expects( $this->any() )
-			->method( 'msg' )
-			->willReturn( '__foo__' );
-
 		$subject = WikiPage::newFromText( 'Foo' );
 
 		$options = [
 			'subject' => $subject->getHash(),
 			'highlighter_title' => '',
-			'placeholder_title' => '',
 			'options_raw' => '',
 			'dir' => '',
 			'uselang' => ''
@@ -73,18 +68,10 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 			$this->templateParser
 		);
 
-		$instance->setMessageLocalizer(
-			$this->messageLocalizer
-		);
-
 		$html = $instance->buildHTML( $indicatorProviders, $options );
 
-		$this->assertStringContainsString(
-			'<div class="smw-entity-examiner smw-indicator-vertical-bar-loader" ' .
-			'data-subject="Foo#0##" data-dir="" data-uselang="" ' .
-			'title="__foo__"></div>',
-			$html
-		);
+		$this->assertStringContainsString( 'smw-entity-examiner-placeholder', $html );
+		$this->assertStringContainsString( 'data-subject="Foo#0##"', $html );
 	}
 
 	public function testBuildHTML_TypedIndicator_SEVERITY_ERROR() {
@@ -106,7 +93,6 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 		$options = [
 			'subject' => $subject->getHash(),
 			'highlighter_title' => '',
-			'placeholder_title' => '',
 			'options_raw' => '',
 			'dir' => '',
 			'uselang' => ''
@@ -153,7 +139,6 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 		$options = [
 			'subject' => $subject->getHash(),
 			'highlighter_title' => '',
-			'placeholder_title' => '',
 			'options_raw' => '',
 			'dir' => '',
 			'uselang' => ''
@@ -193,7 +178,6 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 		$options = [
 			'subject' => $subject->getHash(),
 			'highlighter_title' => '',
-			'placeholder_title' => '',
 			'options_raw' => '',
 			'dir' => '',
 			'uselang' => ''
@@ -232,16 +216,11 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 			->method( 'getIndicators' )
 			->willReturn( $composite );
 
-		$this->messageLocalizer->expects( $this->any() )
-			->method( 'msg' )
-			->willReturn( '__foo__' );
-
 		$subject = WikiPage::newFromText( 'Foo' );
 
 		$options = [
 			'subject' => $subject->getHash(),
 			'highlighter_title' => '',
-			'placeholder_title' => '',
 			'options_raw' => '',
 			'dir' => '',
 			'uselang' => ''
@@ -255,18 +234,10 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 			$this->templateParser
 		);
 
-		$instance->setMessageLocalizer(
-			$this->messageLocalizer
-		);
-
 		$html = $instance->buildHTML( $indicatorProviders, $options );
 
-		$this->assertStringContainsString(
-			'<div class="smw-entity-examiner smw-indicator-vertical-bar-loader" ' .
-			'data-subject="Foo#0##" data-dir="" data-uselang="" ' .
-			'title="__foo__"></div>',
-			$html
-		);
+		$this->assertStringContainsString( 'smw-entity-examiner-placeholder', $html );
+		$this->assertStringContainsString( 'data-subject="Foo#0##"', $html );
 	}
 
 }

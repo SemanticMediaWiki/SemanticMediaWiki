@@ -68,9 +68,7 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	 * @return string
 	 */
 	public function getInlineStyle(): string {
-		// The standard helplink interferes with the alignment (due to a text
-		// component) therefore disabled it when indicators are present
-		return '#mw-indicator-mw-helplink {display:none;}';
+		return '';
 	}
 
 	/**
@@ -123,7 +121,6 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 		}
 
 		$options['highlighter_title'] = 'smw-entity-examiner-indicator';
-		$options['placeholder_title'] = 'smw-entity-examiner-check';
 		$options['subject'] = $subject->getHash();
 
 		$content = $this->compositeIndicatorHtmlBuilder->buildHTML(
