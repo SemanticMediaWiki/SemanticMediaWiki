@@ -1110,7 +1110,7 @@
 	"smw-pendingtasks-setup-intro": "The {{PLURAL:$1|installation|upgrade}} of <b>Semantic MediaWiki</b> has classified the following tasks as [https://www.semantic-mediawiki.org/wiki/Help:Upgrade/Incomplete_upgrade incomplete] and an administrator (or user with sufficient rights) is expected to resolve those tasks before users continue to create or alter content.",
 	"smw-pendingtasks-setup-tasks": "Tasks",
 	"smw-helplink": "https://www.semantic-mediawiki.org/wiki/Help:$1",
-	"smw-helplink-maintenance": "https://www.semantic-mediawiki.org/wiki/Help:Maintenance script $1",
+	"smw-helplink-maintenance": "https://www.semantic-mediawiki.org/wiki/Help:Maintenance_script_$1",
 	"smw-filter-count": "Filter count",
 	"smw-es-replication-check": "Replication check (Elasticsearch)",
 	"smw-es-replication-error": "Elasticsearch replication issue",
