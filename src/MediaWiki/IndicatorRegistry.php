@@ -75,7 +75,12 @@ class IndicatorRegistry {
 	public function attachIndicators( OutputPage $outputPage ): void {
 		$outputPage->addModules( $this->modules );
 		$outputPage->setIndicators( $this->indicators );
-		$outputPage->addInlineStyle( implode( '', $this->inlineStyles ) );
+
+		$inlineStyle = implode( '', $this->inlineStyles );
+
+		if ( $inlineStyle !== '' ) {
+			$outputPage->addInlineStyle( $inlineStyle );
+		}
 	}
 
 }

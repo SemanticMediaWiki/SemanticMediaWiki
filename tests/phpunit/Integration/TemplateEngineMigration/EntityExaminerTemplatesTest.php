@@ -215,12 +215,10 @@ class EntityExaminerTemplatesTest extends TestCase {
 			'subject' => 'Foo#0##',
 			'dir' => 'ltr',
 			'uselang' => 'en',
-			'title' => 'Loading',
 		] );
 
-		$this->assertStringContainsString( 'smw-entity-examiner', $html );
+		$this->assertStringContainsString( 'smw-entity-examiner-placeholder', $html );
 		$this->assertStringContainsString( 'data-subject="Foo#0##"', $html );
-		$this->assertStringContainsString( 'title="Loading"', $html );
 	}
 
 	public function testConstraintTopLine(): void {

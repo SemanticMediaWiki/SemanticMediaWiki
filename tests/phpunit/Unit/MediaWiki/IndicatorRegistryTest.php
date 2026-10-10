@@ -82,6 +82,53 @@ class IndicatorRegistryTest extends TestCase {
 		$instance->attachIndicators( $outputPage );
 	}
 
+	public function testAttachIndicatorsAddsNoEmptyInlineStyle(): void {
+		$outputPage = $this->getMockBuilder( OutputPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputPage->expects( $this->never() )
+			->method( 'addInlineStyle' );
+
+		$instance = new IndicatorRegistry();
+		$instance->attachIndicators( $outputPage );
+	}
+
+	public function testAttachIndicatorsAddsProviderInlineStyle(): void {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->method( 'getNamespace' )
+			->willReturn( NS_MAIN );
+
+		$this->indicatorProvider->method( 'hasIndicator' )
+			->willReturn( true );
+
+		$this->indicatorProvider->method( 'getIndicators' )
+			->willReturn( [] );
+
+		$this->indicatorProvider->method( 'getModules' )
+			->willReturn( [] );
+
+		$this->indicatorProvider->method( 'getInlineStyle' )
+			->willReturn( '.foo {}' );
+
+		$instance = new IndicatorRegistry();
+		$instance->addIndicatorProvider( $this->indicatorProvider );
+		$instance->hasIndicator( $title, $this->permissionExaminer, [] );
+
+		$outputPage = $this->getMockBuilder( OutputPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputPage->expects( $this->once() )
+			->method( 'addInlineStyle' )
+			->with( '.foo {}' );
+
+		$instance->attachIndicators( $outputPage );
+	}
+
 	public function testNoPermissionOnIndicatorProvider() {
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()

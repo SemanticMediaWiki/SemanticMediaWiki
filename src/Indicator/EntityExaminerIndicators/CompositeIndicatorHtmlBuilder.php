@@ -51,7 +51,6 @@ class CompositeIndicatorHtmlBuilder {
 
 		$options = [
 			'highlighter_title' => $options['highlighter_title'],
-			'placeholder_title' => $options['placeholder_title'],
 			'dir' => $options['dir'],
 			'uselang' => $options['uselang'] ?? '',
 			'subject' => $options['subject'],
@@ -195,7 +194,6 @@ class CompositeIndicatorHtmlBuilder {
 		return $this->templateParser->processTemplate(
 			'CompositePlaceholder',
 			[
-				'title' => $this->msg( [ $options['placeholder_title'], $options['count'] ], Message::PARSE, $this->languageCode ),
 				'subject' => $options['subject'],
 				'dir' => $options['dir'],
 				'uselang' => $options['uselang']

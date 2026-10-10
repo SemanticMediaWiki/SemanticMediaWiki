@@ -109,16 +109,14 @@ class EntityExaminerCompositeIndicatorProviderTest extends TestCase {
 		);
 	}
 
-	public function testGetInlineStyle() {
-		$indicatorProviders = [];
-
+	public function testInlineStyleDoesNotHideHelpLink(): void {
 		$instance = new EntityExaminerCompositeIndicatorProvider(
 			$this->compositeIndicatorHtmlBuilder,
-			$indicatorProviders
+			[]
 		);
 
-		$this->assertIsString(
-
+		$this->assertStringNotContainsString(
+			'mw-helplink',
 			$instance->getInlineStyle()
 		);
 	}

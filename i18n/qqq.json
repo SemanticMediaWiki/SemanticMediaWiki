@@ -1074,7 +1074,6 @@
 	"smw-legend": "This is a tab label on a subpage to special page \"SemanticMediaWiki\".",
 	"smw-datavalue-constraint-schema-category-invalid-type": "This is an error message.\n\nParameter:\n* $1 - Holds the name of the schema.\n* $2 - Holds the name of a schema type.",
 	"smw-datavalue-constraint-schema-property-invalid-type": "This is an error message.\n\nParameter:\n* $1 - Holds the name of the schema.\n* $2 - Holds the name of a schema type.",
-	"smw-entity-examiner-check": "An ''examiner'' refers to a process for entity examination. See https://www.semantic-mediawiki.org/wiki/Help:Entity_examinations",
 	"smw-entity-examiner-deferred-elastic-replication": "This is a label. Translate as noun. Elastic as Elasticsearch.",
 	"smw-entity-examiner-deferred-constraint-error": "This is a label.",
 	"smw-entity-examiner-deferred-fake": "This is a label.",
