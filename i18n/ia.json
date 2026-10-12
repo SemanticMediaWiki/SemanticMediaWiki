@@ -1102,7 +1102,6 @@
 	"smw-legend": "Legenda",
 	"smw-datavalue-constraint-schema-category-invalid-type": "Le schema annotate \"$1\" es invalide pro un categoria; illo require un typo \"$2\".",
 	"smw-datavalue-constraint-schema-property-invalid-type": "Le schema annotate \"$1\" es invalide pro un proprietate; illo require un typo \"$2\".",
-	"smw-entity-examiner-check": "Execution de {{PLURAL:$1|un examinator|examinatores}} in secunde plano",
 	"smw-entity-examiner-indicator": "Pannello de problemas de entitates",
 	"smw-entity-examiner-deferred-check-awaiting-response": "Le examinator \"$1\" attende actualmente un responsa del servitor.",
 	"smw-entity-examiner-deferred-elastic-replication": "Elasticsearch",

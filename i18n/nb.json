@@ -1082,7 +1082,6 @@
 	"smw-legend": "Tegnforklaring",
 	"smw-datavalue-constraint-schema-category-invalid-type": "Det annoterte skjemaet «$1» er ugyldig for en kategori, det krever typen «$2».",
 	"smw-datavalue-constraint-schema-property-invalid-type": "Det annoterte skjemaet «$1» er ugyldig for en egenskap, det krever typen «$2».",
-	"smw-entity-examiner-check": "Kjører {{PLURAL:$1|en undersøker|undersøkere}} i bakgrunnen",
 	"smw-entity-examiner-indicator": "Entitetsproblempanel",
 	"smw-entity-examiner-deferred-check-awaiting-response": "Undersøkeren «$1» venter på svar fra bakstykket.",
 	"smw-entity-examiner-deferred-elastic-replication": "Elastic",

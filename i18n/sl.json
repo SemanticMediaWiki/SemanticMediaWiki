@@ -1115,7 +1115,6 @@
 	"smw-legend": "Legenda",
 	"smw-datavalue-constraint-schema-category-invalid-type": "Označena shema »$1« ni veljavna za kategorijo; potreben je tip »$2«.",
 	"smw-datavalue-constraint-schema-property-invalid-type": "Označena shema »$1« ni veljavna za lastnost; potreben je tip »$2«.",
-	"smw-entity-examiner-check": "V ozadju se {{PLURAL:$1|izvaja preverjanje podatkov|izvajajo preverjanja podatkov}}.",
 	"smw-entity-examiner-indicator": "Plošča za težave z datotekami",
 	"smw-entity-examiner-deferred-check-awaiting-response": "Preverjanje podatkov »$1« trenutno čaka na odgovor zaledja.",
 	"smw-entity-examiner-deferred-elastic-replication": "Elastic",

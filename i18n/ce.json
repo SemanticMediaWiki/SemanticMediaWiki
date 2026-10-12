@@ -1066,7 +1066,6 @@
 	"smw-legend": "Легенда",
 	"smw-datavalue-constraint-schema-category-invalid-type": "Аннотаци йина «$1» схема нийса йац категорина, цунна оьшу «$2» тайпа.",
 	"smw-datavalue-constraint-schema-property-invalid-type": "Аннотаци йина «$1» схема нийса йац башхаллина, цунна оьшу «$2» тайпа.",
-	"smw-entity-examiner-check": "Фонан рожехь {{PLURAL:$1|экзаменатор|экзаменаторш}} дӀахӀоттор",
 	"smw-entity-examiner-indicator": "Субъектийн проблемийн панель",
 	"smw-entity-examiner-deferred-check-awaiting-response": "«$1» эксперт карарчу хенахь бекэндера жоьпе хьоьжу.",
 	"smw-entity-examiner-deferred-elastic-replication": "Elastic",

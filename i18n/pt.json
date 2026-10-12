@@ -1087,7 +1087,6 @@
 	"smw-legend": "Legenda",
 	"smw-datavalue-constraint-schema-category-invalid-type": "O esquema anotado \"$1\" é inválido para uma categoria; requer um tipo \"$2\".",
 	"smw-datavalue-constraint-schema-property-invalid-type": "O esquema anotado \"$1\" é inválido para uma propriedade; requer um tipo \"$2\".",
-	"smw-entity-examiner-check": "Execução de {{PLURAL:$1|um examinador|examinadores}} em segundo plano",
 	"smw-entity-examiner-indicator": "Painel de problemas de entidades",
 	"smw-entity-examiner-deferred-check-awaiting-response": "O examinador \"$1\" está neste momento a aguardar uma resposta do servidor.",
 	"smw-entity-examiner-deferred-elastic-replication": "Elastic",

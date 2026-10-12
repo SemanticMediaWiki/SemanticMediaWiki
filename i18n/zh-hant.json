@@ -1151,7 +1151,6 @@
 	"smw-legend": "圖例",
 	"smw-datavalue-constraint-schema-category-invalid-type": "註解「$1」架構對於分類無效，需要是「$2」類型。",
 	"smw-datavalue-constraint-schema-property-invalid-type": "註解「$1」架構對於分類無效，需要是「$2」類型。",
-	"smw-entity-examiner-check": "在背景運行{{PLURAL:$1|審查}}",
 	"smw-entity-examiner-indicator": "實體問題面板",
 	"smw-entity-examiner-deferred-check-awaiting-response": "「$1」審查目前在等待來自後端的回應。",
 	"smw-entity-examiner-deferred-elastic-replication": "Elastic",

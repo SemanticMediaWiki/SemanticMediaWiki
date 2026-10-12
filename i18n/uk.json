@@ -1085,7 +1085,6 @@
 	"smw-legend": "Легенда",
 	"smw-datavalue-constraint-schema-category-invalid-type": "Анотована схема «$1» є недійсною для категорії, вона потребує типу «$2».",
 	"smw-datavalue-constraint-schema-property-invalid-type": "Анотована схема «$1» є недійсною для властивості, вона потребує типу «$2».",
-	"smw-entity-examiner-check": "Триває фонова робота {{PLURAL:$1|інспектора|інспекторів}}",
 	"smw-entity-examiner-indicator": "Панель проблем сутностей",
 	"smw-entity-examiner-deferred-check-awaiting-response": "Інспектор «$1» наразі очікує на відповідь із бекенду.",
 	"smw-entity-examiner-deferred-elastic-replication": "Elastic",

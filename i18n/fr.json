@@ -1128,7 +1128,6 @@
 	"smw-legend": "Légende",
 	"smw-datavalue-constraint-schema-category-invalid-type": "Le schéma annoté « $1 » n’est pas valide pour une catégorie, il nécessite un type « $2 ».",
 	"smw-datavalue-constraint-schema-property-invalid-type": "Le schéma annoté « $1 » n’est pas valide pour une propriété, il nécessite un type « $2 ».",
-	"smw-entity-examiner-check": "Exécution {{PLURAL:$1|d’un examinateur|d’examinateurs}} en tâche de fond",
 	"smw-entity-examiner-indicator": "Panneau des problèmes d’entité",
 	"smw-entity-examiner-deferred-check-awaiting-response": "L’examinateur « $1 » attend actuellement une réponse du serveur.",
 	"smw-entity-examiner-deferred-elastic-replication": "Elastic",

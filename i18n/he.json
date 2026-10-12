@@ -1082,7 +1082,6 @@
 	"smw-legend": "מקרא",
 	"smw-datavalue-constraint-schema-category-invalid-type": "הסכֵמה המוערת \"$1\" אינה תקינה עבור הקטגוריה, היא דורשת את הסוג \"$2\".",
 	"smw-datavalue-constraint-schema-property-invalid-type": "הסכֵמה המוערת \"$1\" אינה תקינה עבור המאפיין, היא דורשת את הסוג \"$2\".",
-	"smw-entity-examiner-check": "הרצת {{PLURAL:$1|הבוחן|הבוחנים}} ברקע",
 	"smw-entity-examiner-indicator": "חלונית בעיית ישות",
 	"smw-entity-examiner-deferred-check-awaiting-response": "הבוחן \"$1\" ממתין עכשיו לתשובה מהשרת.",
 	"smw-entity-examiner-deferred-elastic-replication": "Elastic",

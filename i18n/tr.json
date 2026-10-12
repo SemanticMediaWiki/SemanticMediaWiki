@@ -1114,7 +1114,6 @@
 	"smw-legend": "Gösterge",
 	"smw-datavalue-constraint-schema-category-invalid-type": "Açıklamalı \"$1\" şeması bir kategori için geçersiz, \"$2\" türü gerektiriyor.",
 	"smw-datavalue-constraint-schema-property-invalid-type": "Ek açıklamalı \"$1\" şeması bir mülk için geçersiz, \"$2\" türü gerektiriyor.",
-	"smw-entity-examiner-check": "Bir {{PLURAL:$1|denetçiyi}} arka planda çalıştırılıyor",
 	"smw-entity-examiner-indicator": "Varlık sorunu paneli",
 	"smw-entity-examiner-deferred-check-awaiting-response": "\"$1\" denetçisi şu anda arka uçtan yanıt bekliyor.",
 	"smw-entity-examiner-deferred-elastic-replication": "Elastik",
