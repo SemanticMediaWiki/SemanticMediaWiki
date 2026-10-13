@@ -15,6 +15,7 @@ use MediaWiki\Context\RequestContext;
 use MediaWiki\Html\Html;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Xml\Xml;
+use PageSchemas as PageSchemasExtension;
 use PSExtensionHandler;
 
 class PageSchemas extends PSExtensionHandler {
@@ -111,7 +112,7 @@ class PageSchemas extends PSExtensionHandler {
 		// TODO - there should be a more direct way to get
 		// this data.
 		$smwConnectingPropertyArray = $psTemplate->getObject( 'semanticmediawiki_ConnectingProperty' );
-		return self::getValueFromObject( $smwConnectingPropertyArray, 'name' );
+		return PageSchemasExtension::getValueFromObject( $smwConnectingPropertyArray, 'name' );
 	}
 
 	/**
@@ -198,7 +199,7 @@ class PageSchemas extends PSExtensionHandler {
 			}
 		}
 		$text = '<p>' . 'Name of property to connect this template\'s fields to the rest of the page:' . ' ' . '(should only be used if this template can have multiple instances)' . ' ';
-		$propName = self::getValueFromObject( $prop_array, 'name' );
+		$propName = PageSchemasExtension::getValueFromObject( $prop_array, 'name' );
 		$text .= Html::input( 'smw_connecting_property_num', $propName, 'text', [ 'size' => 15 ] ) . "\n";
 
 		return [ $text, $hasExistingValues ];
@@ -220,9 +221,9 @@ class PageSchemas extends PSExtensionHandler {
 			}
 		}
 		$html_text = '<p>' . wfMessage( 'ps-optional-name' )->escaped() . ' ';
-		$propName = self::getValueFromObject( $prop_array, 'name' );
+		$propName = PageSchemasExtension::getValueFromObject( $prop_array, 'name' );
 		$html_text .= Html::input( 'smw_property_name_num', $propName, 'text', [ 'size' => 15 ] ) . "\n";
-		$propType = self::getValueFromObject( $prop_array, 'Type' );
+		$propType = PageSchemasExtension::getValueFromObject( $prop_array, 'Type' );
 		$select_body = "";
 		$datatype_labels = $smwgContLang->getDatatypeLabels();
 		foreach ( $datatype_labels as $label ) {
@@ -243,7 +244,7 @@ class PageSchemas extends PSExtensionHandler {
 		// ocnstructed from this form's output.
 		if ( defined( 'SF_VERSION' ) ) {
 			$html_text .= '<p>' . wfMessage( 'sf_createproperty_linktoform' )->escaped() . ' ';
-			$linkedForm = self::getValueFromObject( $prop_array, 'LinkedForm' );
+			$linkedForm = PageSchemasExtension::getValueFromObject( $prop_array, 'LinkedForm' );
 			$html_text .= Html::input( 'smw_linked_form_num', $linkedForm, 'text', [ 'size' => 15 ] ) . "\n";
 			$html_text .= "(for Page properties only)</p>\n";
 		}
@@ -252,7 +253,7 @@ class PageSchemas extends PSExtensionHandler {
 		$allowedValsInputAttrs = [
 			'size' => 80
 		];
-		$allowedValues = self::getValueFromObject( $prop_array, 'allowed_values' );
+		$allowedValues = PageSchemasExtension::getValueFromObject( $prop_array, 'allowed_values' );
 		if ( $allowedValues === null ) {
 			$allowed_val_string = '';
 		} else {
