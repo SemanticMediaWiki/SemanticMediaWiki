@@ -20,6 +20,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed page content jumping while the entity examiner checks a page; its indicator now shows only when a check finds an issue ([#7150](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7150))
 * Fixed editing schemas with the Page Schemas extension, broken since 7.0.0 ([#7154](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7154))
 * Fixed the help links of the maintenance scripts on `Special:SemanticMediaWiki` ([#7151](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7151))
+* Fixed pages with `#ask` queries being parsed twice for each user language or other parser cache variant first viewed after one of their query dependencies changed, on wikis with `$smwgEnabledQueryDependencyLinksStore` enabled ([#7155](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7155))
 
 ## Upgrading
 

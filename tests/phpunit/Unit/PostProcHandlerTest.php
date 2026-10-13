@@ -259,7 +259,6 @@ class PostProcHandlerTest extends TestCase {
 			$namespaceExaminer,
 			$dependencyLinksValidator,
 			$entityCache,
-			'',
 			3600,
 			$eventDispatcher
 		);
@@ -316,7 +315,6 @@ class PostProcHandlerTest extends TestCase {
 			$namespaceExaminer,
 			$dependencyLinksValidator,
 			$entityCache,
-			'',
 			3600,
 			$eventDispatcher
 		);

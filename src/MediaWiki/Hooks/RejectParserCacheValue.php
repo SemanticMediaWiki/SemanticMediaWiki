@@ -38,9 +38,12 @@ class RejectParserCacheValue implements RejectParserCacheValueHook {
 			return true;
 		}
 
-		$dependencyValidator = $this->dependencyValidatorFactory->newFor( $wikiPage, $parserOptions );
+		$dependencyValidator = $this->dependencyValidatorFactory->newDependencyValidator();
 
-		if ( $dependencyValidator->canKeepParserCache( DIWikiPage::newFromTitle( $title ) ) ) {
+		if ( $dependencyValidator->canKeepParserCache(
+			DIWikiPage::newFromTitle( $title ),
+			$parserOutput->getCacheTime()
+		) ) {
 			return true;
 		}
 
