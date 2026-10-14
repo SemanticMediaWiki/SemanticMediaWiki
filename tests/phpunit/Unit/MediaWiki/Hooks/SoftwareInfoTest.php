@@ -14,7 +14,7 @@ use SMW\Store;
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
- * @since 7.3.2
+ * @since 7.4.0
  */
 class SoftwareInfoTest extends TestCase {
 

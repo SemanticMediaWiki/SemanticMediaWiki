@@ -38,7 +38,7 @@ class SearchTableRebuilder {
 	 * Default number of subject IDs (`s_id`) covered by one chunk.
 	 * See rebuildChunk().
 	 *
-	 * @since 7.3.2
+	 * @since 7.4.0
 	 */
 	public const DEFAULT_BATCH_SIZE = 500;
 
@@ -139,7 +139,7 @@ class SearchTableRebuilder {
 	 * Repeatedly runs rebuildChunk(). Optionally, accepts a
 	 * maximum time for starting new batches.
 	 *
-	 * @since 7.3.2
+	 * @since 7.4.0
 	 * @see RebuildFulltextSearchTable::execute
 	 *
 	 * @param int $fromSid First subject ID to process (inclusive)
@@ -217,7 +217,7 @@ class SearchTableRebuilder {
 	 * A caller is expected to keep calling this method with the
 	 * returned `$cursor` until it returns null.
 	 *
-	 * @since 7.3.2
+	 * @since 7.4.0
 	 *
 	 * @param int $fromSid First subject ID of the chunk (inclusive)
 	 * @param int $batchSize Number of subject IDs in the chunk
@@ -292,7 +292,7 @@ class SearchTableRebuilder {
 	 * Runs the table updater to replace (delete, insert, update)
 	 * indexable content in the specified range of subject IDs.
 	 *
-	 * @since 7.3.2
+	 * @since 7.4.0
 	 *
 	 * @param array $texts See collectTextsBySidRangeWithSize()
 	 * @param int $fromSid (inclusive)
@@ -503,7 +503,7 @@ class SearchTableRebuilder {
 	 * Fetches the columns that hold the indexable text,
 	 * depending on the DataItem type.
 	 *
-	 * @since 7.3.2
+	 * @since 7.4.0
 	 *
 	 * @return string[]
 	 */
@@ -530,7 +530,7 @@ class SearchTableRebuilder {
 	 * cursor. Checks the ID table and the index itself so that
 	 * stale index entries beyond the last known ID are cleaned up.
 	 *
-	 * @since 7.3.2
+	 * @since 7.4.0
 	 */
 	private function getMaxSid(): int {
 		$maxIdTable = (int)$this->connection->newSelectQueryBuilder()
@@ -608,7 +608,7 @@ class SearchTableRebuilder {
 	 * for subject IDs in the range from $fromSid to, but excluding,
 	 * $toSid. Returns an array of texts as well as byte size info
 	 *
-	 * @since 7.3.2
+	 * @since 7.4.0
 	 *
 	 * @param int $fromSid
 	 * @param int $toSid
@@ -651,7 +651,7 @@ class SearchTableRebuilder {
 	/**
 	 * Helper function
 	 *
-	 * @since 7.3.2
+	 * @since 7.4.0
 	 *
 	 * @param int $fromSid Subject ID to start from (inclusive)
 	 * @param int $toSid Subject ID to stop at (exclusive)
@@ -688,7 +688,7 @@ class SearchTableRebuilder {
 	 * Any table that's not eligible is recorded in `$skippedTables`
 	 * (same as when a full rebuild is done).
 	 *
-	 * @since 7.3.2
+	 * @since 7.4.0
 	 *
 	 * @return array[] Each entry has the keys `table`, `fields` and
 	 *     `pid`, where `pid` is the fixed property's ID or an empty
@@ -765,7 +765,7 @@ class SearchTableRebuilder {
 	 * Returns a subject ID as the upper limit (exclusive) for a
 	 * range whose indexable content does not exceed `$maxBytes`.
 	 *
-	 * @since 7.3.2
+	 * @since 7.4.0
 	 *
 	 * @param int $toSid
 	 * @param array<int, int> $bytesBySid See collectTextsBySidRangeWithSize()
@@ -789,7 +789,7 @@ class SearchTableRebuilder {
 	}
 
 	/**
-	 * @since 7.3.2
+	 * @since 7.4.0
 	 *
 	 * @param array $texts See collectTextsBySidRangeWithSize()
 	 * @param int $fromSid (inclusive)

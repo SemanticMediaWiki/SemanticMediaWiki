@@ -49,7 +49,7 @@ class rebuildFulltextSearchTable extends Maintenance {
 		$this->addOption( 'optimize', 'Run possible table optimization (`OPTIMIZE TABLE`) instead of rebuilding the full-text search index. Support for table optimization depends on the SQL back-end.', false );
 		$this->addOption( 'v', 'Show additional (verbose) information about the progress', false );
 		$this->addOption( 'quick', 'Suppress abort operation', false );
-		// @since 7.3.2: 'n', 's', 'max-time', 'use-job'
+		// @since 7.4.0: 'n', 's', 'max-time', 'use-job'
 		$this->addOption( 'n', 'Batch size. The rebuild will be done in consecutive chunks of this many subject IDs (up to ' . SearchTableRebuilder::MAX_BATCH_SIZE . ', default: ' . SearchTableRebuilder::DEFAULT_BATCH_SIZE . ') instead of rebuilding the index in one pass. The index is not purged, but each chunk replaces its own entries. Can be combined with `-s` and unless `--use-job` is used, with `--max-time`.', false, true );
 		$this->addOption( 's', 'Subject ID (`s_id`) to start with (default 0). If an earlier run was stopped, the value reported by that run can be used to resume the rebuild.', false, true );
 		$this->addOption( 'max-time', 'Maximum time in seconds (0 for no limit) for starting new batches. The script will not start another chunk after this and reports the subject ID to resume with (`-s`), if any.', false, true );
@@ -194,18 +194,18 @@ class rebuildFulltextSearchTable extends Maintenance {
 		);
 
 		if ( $this->hasOption( 'optimize' ) ) {
-			// @since 7.3.2
+			// @since 7.4.0
 			$text = [
 				"This process runs table optimization (`OPTIMIZE TABLE`) without purging or touching the index.",
 			];
 		} elseif ( $useJobQueue ) {
-			// @since 7.3.2
+			// @since 7.4.0
 			$text = [
 				"This process does not purge the index table or execute the rebuild.",
 				"What it does instead is insert a single job into the job queue to rebuild one chunk of $batchSize subject IDs and re-queue itself for the next chunk until the rebuild is complete."
 			];
 		} elseif ( $chunked ) {
-			// @since 7.3.2
+			// @since 7.4.0
 			$text = [
 				"The index table is not purged.",
 				"It is rebuilt in chunks of $batchSize subject IDs, with each chunk replacing its own index entries.",
@@ -360,7 +360,7 @@ class rebuildFulltextSearchTable extends Maintenance {
 	 * Inserts a single job into the job queue, reports to the
 	 * CLI and optionally, writes to the maintenance log.
 	 *
-	 * @since 7.3.2
+	 * @since 7.4.0
 	 */
 	private function queueRebuildJob( JobFactory $jobFactory, int $fromSid, int $batchSize ): void {
 		// Create a 'dummy' Title. Even if it carries no meaning of its
@@ -394,7 +394,7 @@ class rebuildFulltextSearchTable extends Maintenance {
 	 * Reports the result of a chunked rebuild operation.
 	 * Does not cover the maintenance log.
 	 *
-	 * @since 7.3.2
+	 * @since 7.4.0
 	 *
 	 * @param ?int $resumeSid The subject ID to resume from, or null if
 	 *     the rebuild is complete (or could not be run)

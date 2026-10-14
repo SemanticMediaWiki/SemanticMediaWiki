@@ -194,7 +194,7 @@ class SearchTableUpdater {
 	 * from $fromSid to, but excluding, $toSid, regardless of the
 	 * semantic property used.
 	 *
-	 * @since 7.3.2
+	 * @since 7.4.0
 	 * @see SearchTableRebuilder::rebuildChunk().
 	 *
 	 * @param int $fromSid First subject ID to remove (inclusive)
