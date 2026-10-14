@@ -14,6 +14,9 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed an `ArgumentCountError` in extensions that call `ListResultBuilder::getResultText()` without an output mode, such as the listwidget format of Semantic Result Formats. The parameter introduced in 7.3.1 now defaults to `SMW_OUTPUT_HTML`
 * Fixed the ElasticStore taking OpenSearch for Elasticsearch 7.10.2 when OpenSearch runs with `compatibility.override_main_response_version` enabled, as CirrusSearch on MediaWiki 1.43 requires. Special:Version now names OpenSearch and its real version
 * Fixed page content jumping while the entity examiner checks a page in the background. The loading animation is removed, the examiner shows an icon only when it finds an issue, and the help link indicator is no longer hidden
+* `rebuildFulltextSearchTable.php` can now rebuild the full-text search index in chunks, so the rebuild can be completed on hosts that stop long-running processes. `-n` sets the number of subject IDs per chunk, `--max-time` the seconds after which no further chunk starts, `-s` the subject ID to start or resume from, and `--use-job` hands the rebuild to the job queue. The rebuild scheduled on Special:SemanticMediaWiki now runs in chunks as well
+* Fixed `?action=editschema` of the Page Schemas extension failing since 7.0.0 with `Call to undefined method SMW\MediaWiki\PageSchemas::getValueFromObject()`
+* Fixed the help links of the maintenance scripts listed on Special:SemanticMediaWiki, which contained spaces instead of underscores
 
 ## Upgrading
 
