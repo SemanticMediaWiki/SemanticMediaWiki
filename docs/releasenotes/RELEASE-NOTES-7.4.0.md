@@ -9,17 +9,17 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ## New features and enhancements
 
-* `rebuildFulltextSearchTable.php` can now rebuild the full-text search index in chunks, so the rebuild can be completed on hosts that stop long-running processes. `-n` sets the number of subject IDs per chunk, `--max-time` the seconds after which no further chunk starts, `-s` the subject ID to start or resume from, and `--use-job` hands the rebuild to the job queue. The rebuild scheduled on Special:SemanticMediaWiki now runs in chunks as well
+* Added chunked and job queue rebuilds to `rebuildFulltextSearchTable.php`, so the full-text search index can be rebuilt on hosts that stop long-running scripts ([#7133](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7133))
 
 ## Bug fixes
 
-* Fixed Special:Version listing the Elasticsearch server twice on wikis that also run CirrusSearch. Semantic MediaWiki now adds the same entry as CirrusSearch, so only one of them appears
-* Fixed flag settings such as `$smwgDVFeatures` or `$smwgFactboxFeatures` being unable to switch off a default flag. A flag list set in `LocalSettings.php` was merged with the default list instead of replacing it, so every default flag stayed enabled. If you relied on this to add a single flag (e.g. `$smwgDVFeatures[] = 'wpv-pipetrick';`), list the default flags you want to keep as well
-* Fixed an `ArgumentCountError` in extensions that call `ListResultBuilder::getResultText()` without an output mode, such as the listwidget format of Semantic Result Formats. The parameter introduced in 7.3.1 now defaults to `SMW_OUTPUT_HTML`
-* Fixed the ElasticStore taking OpenSearch for Elasticsearch 7.10.2 when OpenSearch runs with `compatibility.override_main_response_version` enabled, as CirrusSearch on MediaWiki 1.43 requires. Special:Version now names OpenSearch and its real version
-* Fixed page content jumping while the entity examiner checks a page in the background. The loading animation is removed, the examiner shows an icon only when it finds an issue, and the help link indicator is no longer hidden
-* Fixed `?action=editschema` of the Page Schemas extension failing since 7.0.0 with `Call to undefined method SMW\MediaWiki\PageSchemas::getValueFromObject()`
-* Fixed the help links of the maintenance scripts listed on Special:SemanticMediaWiki, which contained spaces instead of underscores
+* Fixed `Special:Version` listing the Elasticsearch server twice on wikis that also run CirrusSearch ([#7143](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7143))
+* Fixed flag settings such as `$smwgDVFeatures` being unable to switch off a default flag. If you add a single flag, as in `$smwgDVFeatures[] = 'wpv-pipetrick';`, now also list the default flags you want to keep ([#7135](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7135))
+* Fixed an `ArgumentCountError` since 7.3.1 in extensions such as the listwidget format of Semantic Result Formats ([#7137](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7137))
+* Fixed OpenSearch being taken for Elasticsearch 7.10.2 when it runs in the compatibility mode that CirrusSearch on MediaWiki 1.43 requires ([#7142](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7142))
+* Fixed page content jumping while the entity examiner checks a page; its indicator now shows only when a check finds an issue ([#7150](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7150))
+* Fixed editing schemas with the Page Schemas extension, broken since 7.0.0 ([#7154](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7154))
+* Fixed the help links of the maintenance scripts on `Special:SemanticMediaWiki` ([#7151](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7151))
 
 ## Upgrading
 
