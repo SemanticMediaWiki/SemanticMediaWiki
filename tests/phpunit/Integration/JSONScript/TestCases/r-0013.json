@@ -40,11 +40,11 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<property:Has_url rdf:resource=\"http://example.org/Foo_bar\"/>"
+					"<property:Has_url rdf:resource=\"http://example.org/Foo_bar\"/>",
+					"<property:Has_url rdf:resource=\"http://example.org/Foo%20bar\"/>"
 				],
 				"not-contain": [
-					"<property:Has_url rdf:resource=\"http://example.org/Foo bar\"/>",
-					"<property:Has_url rdf:resource=\"http://example.org/Foo%20bar\"/>"
+					"<property:Has_url rdf:resource=\"http://example.org/Foo bar\"/>"
 				]
 			}
 		},

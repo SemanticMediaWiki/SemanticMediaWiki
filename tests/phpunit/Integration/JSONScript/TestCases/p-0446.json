@@ -43,7 +43,7 @@
 	"tests": [
 		{
 			"type": "parser",
-			"about": "#0 spaces (_, , %20) produce only one URL not three",
+			"about": "#0 underscore (_), space, and urlencoded space (%20) produce only two URLs, not three",
 			"subject": "Example/P0446/1",
 			"assert-store": {
 				"semantic-data": {
@@ -62,15 +62,15 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"href=\"http://example.org/Foo_bar\">http://example.org/Foo bar</a>",
-					"href=\"http://example.org/Foo_bar\">http://example.org/Foo%20bar</a>",
+					"href=\"http://example.org/Foo%20bar\">http://example.org/Foo bar</a>",
+					"href=\"http://example.org/Foo%20bar\">http://example.org/Foo%20bar</a>",
 					"href=\"http://example.org/Foo_bar\">http://example.org/Foo bar</a>"
 				]
 			}
 		},
 		{
 			"type": "query",
-			"about": "#1 different space encoding dont't disort the condition/result",
+			"about": "#1 unencoded space should be encoded",
 			"condition": "[[Has url::http://example.org/Foo bar]] [[Category:P0446]]",
 			"printouts": [
 				"Has url"
@@ -86,14 +86,14 @@
 				"datavalues": [
 					{
 						"property": "Has url",
-						"value": "http://example.org/Foo_bar"
+						"value": "http://example.org/Foo%20bar"
 					}
 				]
 			}
 		},
 		{
 			"type": "query",
-			"about": "#2 (same as #1)",
+			"about": "#2 (underscore should remain an underscore)",
 			"condition": "[[Has url::http://example.org/Foo_bar]] [[Category:P0446]]",
 			"printouts": [
 				"Has url"
@@ -116,7 +116,7 @@
 		},
 		{
 			"type": "query",
-			"about": "#3 (same as #1)",
+			"about": "#3 (percent-encoded space should remain percent-encoded)",
 			"condition": "[[Has url::http://example.org/Foo%20bar]] [[Category:P0446]]",
 			"printouts": [
 				"Has url"
@@ -132,7 +132,7 @@
 				"datavalues": [
 					{
 						"property": "Has url",
-						"value": "http://example.org/Foo_bar"
+						"value": "http://example.org/Foo%20bar"
 					}
 				]
 			}
@@ -143,7 +143,7 @@
 			"subject": "Example/P0446/Q.1.0",
 			"assert-output": {
 				"to-contain": [
-					"smwtype&#95;uri\"><a rel=\"nofollow\" class=\"external text\" href=\"http://example.org/Foo_bar\">http://example.org/Foo bar</a>"
+					"smwtype&#95;uri\"><a rel=\"nofollow\" class=\"external text\" href=\"http://example.org/Foo%20bar\">http://example.org/Foo%20bar</a>"
 				]
 			}
 		},
@@ -153,13 +153,13 @@
 			"subject": "Example/P0446/Q.1.1",
 			"assert-output": {
 				"to-contain": [
-					"smwtype&#95;uri\"><a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/Foo_bar\">http://example.org/Foo_bar</a>"
+					"smwtype&#95;uri\"><a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/Foo%20bar\">http://example.org/Foo%20bar</a>"
 				]
 			}
 		},
 		{
 			"type": "parser",
-			"about": "#6",
+			"about": "#6 (url with underscore, and custom caption)",
 			"subject": "Example/P0446/2",
 			"assert-store": {
 				"semantic-data": {
