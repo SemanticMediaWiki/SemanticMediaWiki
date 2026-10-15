@@ -1085,7 +1085,7 @@
 	"smw-elastic-rebuildelasticindex-run-incomplete": "<code>ElasticStore</code> seleccionouse como [https://www.semantic-mediawiki.org/wiki/Help:smwgDefaultStore almacén predeterminado], pero a extensión non puido atopar ningún rexistro de que se executase o script <code>[https://www.semantic-mediawiki.org/wiki/Help:rebuildElasticIndex.php rebuildElasticIndex.php]</code>. Executa o script segundo as instrucións.",
 	"smw-pendingtasks-setup-intro": "A {{PLURAL:$1|instalación|actualización}} de <b>Semantic MediaWiki</b> clasificou as seguintes tarefas como [https://www.semantic-mediawiki.org/wiki/Help:Upgrade/Incomplete_upgrade incompletas] e espérase que un administrador (ou usuario con dereitos suficientes) resolva esas tarefas antes de que os usuarios continúen creando ou modificando contido.",
 	"smw-pendingtasks-setup-tasks": "Tarefas",
-	"smw-helplink-maintenance": "https://www.semantic-mediawiki.org/wiki/Help:Maintenance script $1",
+	"smw-helplink-maintenance": "https://www.semantic-mediawiki.org/wiki/Help:Maintenance_script_$1",
 	"smw-filter-count": "Número de filtros",
 	"smw-es-replication-check": "Comprobación da replicación (Elasticsearch)",
 	"smw-es-replication-error": "Problema de replicación de Elasticsearch",
