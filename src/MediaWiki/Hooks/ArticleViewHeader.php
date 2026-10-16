@@ -59,12 +59,7 @@ class ArticleViewHeader implements ArticleViewHeaderHook {
 			$pcache = $this->updateCategoryTop( $title, $article->getContext()->getOutput() );
 		}
 
-		$wikiPage = $article->getPage();
-
-		$dependencyValidator = $this->dependencyValidatorFactory->newFor(
-			$wikiPage,
-			$wikiPage->makeParserOptions( 'canonical' )
-		);
+		$dependencyValidator = $this->dependencyValidatorFactory->newDependencyValidator();
 
 		if ( $dependencyValidator->hasArchaicDependencies( $subject ) ) {
 			$dependencyValidator->markTitle( $title );
