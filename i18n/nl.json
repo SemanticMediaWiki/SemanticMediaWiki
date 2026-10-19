@@ -1105,7 +1105,7 @@
 	"smw-elastic-rebuildelasticindex-run-incomplete": "Er is voor <code>ElasticStore</code> gekozen als [https://www.semantic-mediawiki.org/wiki/Help:smwgDefaultStore standaardwinkel], maar de uitbreiding kon geen aanwijzing vinden dat het script <code>[https://www.semantic-mediawiki.org/wiki/Help:rebuildElasticIndex.php rebuildElasticIndex.php]</code> is uitgevoerd. Voer dat script uit zoals is aangegeven.",
 	"smw-pendingtasks-setup-intro": "Na het {{PLURAL:$1|installeren|bijwerken}} van <b>Semantic MediaWiki</b> zijn de volgende taken als [https://www.semantic-mediawiki.org/wiki/Help:Upgrade/Incomplete_upgrade onvoltooid] aangemerkt. Een beheerder (of andere gebruiker met voldoende rechten) moet deze taken voltooien voordat gebruikers weer inhoud kunnen aanmaken of bewerken.",
 	"smw-pendingtasks-setup-tasks": "Taken",
-	"smw-helplink-maintenance": "https://www.semantic-mediawiki.org/wiki/Help:Maintenance script $1",
+	"smw-helplink-maintenance": "https://www.semantic-mediawiki.org/wiki/Help:Maintenance_script_$1",
 	"smw-filter-count": "Aantal filters",
 	"smw-es-replication-check": "Replicatiecontrole (Elasticsearch)",
 	"smw-es-replication-error": "Replicatieprobleem Elasticsearch",
