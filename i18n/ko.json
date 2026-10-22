@@ -429,7 +429,7 @@
 	"smw-admin-propertystatistics-active": "속성 통계 다시 빌드 작업이 예약되었습니다.",
 	"smw-admin-propertystatistics-button": "통계 재구성 예약",
 	"smw-admin-fulltext-title": "전문 검색 재구성",
-	"smw-admin-fulltext-intro": "전체 텍스트 검색(https://www.semantic-mediawiki.org/wiki/Full-text full-text search) 데이터 형식이 활성화된 속성 테이블에서 검색 인덱스를 다시 구축합니다. 색인 규칙 변경(불용어 수정, 새로운 어간 추출기 추가 등) 및/또는 새 테이블 추가 또는 변경이 있는 경우 이 작업을 다시 실행해야 합니다.",
+	"smw-admin-fulltext-intro": "전체 텍스트 검색(https://www.semantic-mediawiki.org/wiki/Full-text full-text search) 데이터 형식이 활성화된 속성 테이블에서 검색 인덱스를 재구축하거나 최적화합니다. 대신에 재구축을 작업 대기열로 미루는 것도 지원합니다. 색인 규칙 변경(불용어 수정, 새로운 어간 추출기 추가 등) 및/또는 새 테이블 추가 또는 변경이 있는 경우 이 작업을 다시 실행해야 합니다.",
 	"smw-admin-fulltext-active": "전문 검색 다시 빌드 작업이 예약되었습니다.",
 	"smw-admin-fulltext-button": "전문 재구성 예약",
 	"smw-admin-support": "지원 얻기",
