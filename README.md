@@ -47,14 +47,14 @@ to the version of the code it bundles with. The most critical files are linked b
 
 ## Support
 
-[![Chatroom](https://www.semantic-mediawiki.org/w/thumb.php?f=Comment-alt-solid.svg&width=35)](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom)
-[![Mastodon](https://www.semantic-mediawiki.org/w/thumb.php?f=Mastodon-square.svg&width=35)](https://mastodon.social/@smw@wikis.world)
-[![Bluesky](https://www.semantic-mediawiki.org/w/thumb.php?f=Bluesky.svg&width=35)](https://bsky.app/profile/semanticmw.bsky.social)
-[![Twitter](https://www.semantic-mediawiki.org/w/thumb.php?f=Twitter-square.svg&width=35)](https://x.com/#!/semanticmw)
-[![Facebook](https://www.semantic-mediawiki.org/w/thumb.php?f=Facebook-square.svg&width=35)](https://www.facebook.com/pages/Semantic-MediaWiki/160459700707245)
-[![LinkedIn](https://www.semantic-mediawiki.org/w/thumb.php?f=LinkedIn-square.svg&width=35)](https://www.linkedin.com/groups/2482811/)
-[![YouTube](https://www.semantic-mediawiki.org/w/thumb.php?f=Youtube-square.svg&width=35)](https://www.youtube.com/c/semanticmediawiki)
-[![Mailing lists](https://www.semantic-mediawiki.org/w/thumb.php?f=Envelope-square.svg&width=35)](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_mailing_lists)
+<a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom"><img src="https://www.semantic-mediawiki.org/w/images/7/7f/Comment-alt-solid.svg" width="35" alt="Chatroom"></a>
+<a href="https://mastodon.social/@smw@wikis.world"><img src="https://www.semantic-mediawiki.org/w/images/a/a4/Mastodon-square.svg" width="35" alt="Mastodon"></a>
+<a href="https://bsky.app/profile/semanticmw.bsky.social"><img src="https://www.semantic-mediawiki.org/w/images/c/c2/Bluesky.svg" width="35" alt="Bluesky"></a>
+<a href="https://x.com/#!/semanticmw"><img src="https://www.semantic-mediawiki.org/w/images/7/78/Twitter-square.svg" width="35" alt="Twitter"></a>
+<a href="https://www.facebook.com/pages/Semantic-MediaWiki/160459700707245"><img src="https://www.semantic-mediawiki.org/w/images/f/f0/Facebook-square.svg" width="35" alt="Facebook"></a>
+<a href="https://www.linkedin.com/groups/2482811/"><img src="https://www.semantic-mediawiki.org/w/images/e/ea/LinkedIn-square.svg" width="35" alt="LinkedIn"></a>
+<a href="https://www.youtube.com/c/semanticmediawiki"><img src="https://www.semantic-mediawiki.org/w/images/1/13/Youtube-square.svg" width="35" alt="YouTube"></a>
+<a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_mailing_lists"><img src="https://www.semantic-mediawiki.org/w/images/5/5e/Envelope-square.svg" width="35" alt="Mailing lists"></a>
 
 Primary support channels:
 
