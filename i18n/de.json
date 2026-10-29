@@ -1150,7 +1150,7 @@
 	"smw-entity-examiner-deferred-constraint-error": "Einschränkung",
 	"smw-entity-examiner-associated-revision-mismatch": "Version",
 	"smw-entity-examiner-deferred-fake": "Falschanzeige",
-	"smw-entity-examiner-indicator-suggestions": "Im Rahmen der Datenprüfung {{PLURAL:$1|wurde das folgende Problem|wurden die folgenden Probleme}} festgestellt. Es wird empfohlen {{PLURAL:$1|das Problem|die Probleme}} zu überprüfen und {{PLURAL:$1|eine Aktion|Aktionen}} zur Behebung {{PLURAL:$1|desselben|derselben}} auszuführen.",
+	"smw-entity-examiner-indicator-suggestions": "Im Rahmen der Datenprüfung {{PLURAL:$1|wurde das folgende Problem|wurden die folgenden Probleme}} festgestellt. Es wird empfohlen, {{PLURAL:$1|das Problem|die Probleme}} zu überprüfen und {{PLURAL:$1|eine Aktion|Aktionen}} zur Behebung {{PLURAL:$1|desselben|derselben}} auszuführen.",
 	"smw-indicator-constraint-violation": "Einschränkung{{PLURAL:$1||en}}",
 	"smw-indicator-revision-mismatch": "Revision",
 	"smw-indicator-revision-mismatch-error": "Der [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner Seitenversionsprüfung] hat beim Vergleich eine Abweichung der Seitenversionen zwischen den Datenbanken von MediaWiki und Semantic MediaWiki festgestellt.",

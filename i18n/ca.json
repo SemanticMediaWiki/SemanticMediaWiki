@@ -408,7 +408,7 @@
 	"smw-admin-propertystatistics-active": "S'ha programat una tasca de reconstrucció de les estadístiques.",
 	"smw-admin-propertystatistics-button": "Programa la reconstrucció de les estadístiques",
 	"smw-admin-fulltext-title": "Reconstrucció de la cerca en text complet",
-	"smw-admin-fulltext-intro": "Reconstrueix l'índex de cerca de les taules de propietats amb un tipus de dades  [https://www.semantic-mediawiki.org/wiki/Full-text cerca de text complet] habilitat. Els canvis a les regles d'indexació (separadors modificats, noves arrels, etc.) i/o taules noves o afegides necessiten que es torni a executar la tasca de nou.",
+	"smw-admin-fulltext-intro": "Reconstrueix, o optimitza, l'índex de cerca de les taules de propietats amb un tipus de dades  [https://www.semantic-mediawiki.org/wiki/Full-text cerca de text complet] habilitat. També permet ajornar la reconstrucció a la cua de treballs. Els canvis a les regles d'indexació (separadors modificats, noves arrels, etc.) i/o taules noves o afegides necessiten que es torni a executar la tasca.",
 	"smw-admin-fulltext-active": "S'ha programat una tasca de reconstrucció de cerca de text complet.",
 	"smw-admin-fulltext-button": "Programa una reconstrucció de text sencer",
 	"smw-admin-support": "Com obtenir assistència",
