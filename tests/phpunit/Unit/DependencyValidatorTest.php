@@ -243,7 +243,7 @@ class DependencyValidatorTest extends TestCase {
 		$this->findOutdatedDependenciesAt( WikiPage::newFromText( 'Foo' ), '20260601120000' );
 
 		$this->assertTrue(
-			$this->newInstance()->canKeepParserCache( WikiPage::newFromText( 'Bar' ), '20260601115959' )
+			$this->newInstance()->canKeepParserCache( WikiPage::newFromText( 'Foo', NS_HELP ), '20260601115959' )
 		);
 	}
 

@@ -90,6 +90,8 @@ class RejectParserCacheValueTest extends TestCase {
 
 	public function testKeepsOutputOfPageOutsideSemanticNamespaces() {
 		$title = Title::makeTitle( NS_MAIN, 'Foo' );
+		$this->findOutdatedDependenciesAt( $title, '20260601120000' );
+		$this->namespaceExaminer = $this->createMock( NamespaceExaminer::class );
 		$this->namespaceExaminer->method( 'isSemanticEnabled' )->willReturn( false );
 
 		$this->assertTrue(
