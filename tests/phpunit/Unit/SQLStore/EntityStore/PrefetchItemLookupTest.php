@@ -180,15 +180,12 @@ class PrefetchItemLookupTest extends TestCase {
 		$this->semanticDataLookup->method( 'prefetchDataFromTable' )
 			->willReturn( $dbKeysBySubjectId );
 
-		$sequenceMap = $this->createStub( SequenceMap::class );
-		$sequenceMap->method( 'hasSequenceMap' )->willReturn( false );
-
 		return new PrefetchItemLookup(
 			$this->store,
 			$this->semanticDataLookup,
 			$this->propertySubjectsLookup,
 			$this->linkBatch,
-			$sequenceMap
+			$this->createStub( SequenceMap::class )
 		);
 	}
 
