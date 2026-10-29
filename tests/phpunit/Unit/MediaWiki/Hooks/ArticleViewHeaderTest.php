@@ -5,7 +5,6 @@ namespace SMW\Tests\Unit\MediaWiki\Hooks;
 use Article;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Output\OutputPage;
-use MediaWiki\Parser\ParserOptions;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
@@ -18,7 +17,6 @@ use SMW\Settings;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
-use WikiPage as MwWikiPage;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ArticleViewHeader
@@ -58,7 +56,7 @@ class ArticleViewHeaderTest extends TestCase {
 		$this->dependencyValidator = $this->createMock( DependencyValidator::class );
 
 		$this->dependencyValidatorFactory = $this->createMock( DependencyValidatorFactory::class );
-		$this->dependencyValidatorFactory->method( 'newFor' )->willReturn( $this->dependencyValidator );
+		$this->dependencyValidatorFactory->method( 'newDependencyValidator' )->willReturn( $this->dependencyValidator );
 
 		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
@@ -83,12 +81,8 @@ class ArticleViewHeaderTest extends TestCase {
 	}
 
 	private function newArticleFor( $title ): Article {
-		$wikiPage = $this->createMock( MwWikiPage::class );
-		$wikiPage->method( 'makeParserOptions' )->willReturn( $this->createMock( ParserOptions::class ) );
-
 		$article = $this->createMock( Article::class );
 		$article->method( 'getTitle' )->willReturn( $title );
-		$article->method( 'getPage' )->willReturn( $wikiPage );
 		return $article;
 	}
 
@@ -130,13 +124,9 @@ class ArticleViewHeaderTest extends TestCase {
 		$context = $this->createMock( RequestContext::class );
 		$context->method( 'getOutput' )->willReturn( $output );
 
-		$wikiPage = $this->createMock( MwWikiPage::class );
-		$wikiPage->method( 'makeParserOptions' )->willReturn( $this->createMock( ParserOptions::class ) );
-
 		$page = $this->createMock( Article::class );
 		$page->method( 'getTitle' )->willReturn( $subject->getTitle() );
 		$page->method( 'getContext' )->willReturn( $context );
-		$page->method( 'getPage' )->willReturn( $wikiPage );
 
 		$outputDone = '';
 		$useParserCache = '';
@@ -178,13 +168,9 @@ class ArticleViewHeaderTest extends TestCase {
 		$context = $this->createMock( RequestContext::class );
 		$context->method( 'getOutput' )->willReturn( $output );
 
-		$wikiPage = $this->createMock( MwWikiPage::class );
-		$wikiPage->method( 'makeParserOptions' )->willReturn( $this->createMock( ParserOptions::class ) );
-
 		$page = $this->createMock( Article::class );
 		$page->method( 'getTitle' )->willReturn( $subject->getTitle() );
 		$page->method( 'getContext' )->willReturn( $context );
-		$page->method( 'getPage' )->willReturn( $wikiPage );
 
 		$outputDone = '';
 		$useParserCache = '';

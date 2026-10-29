@@ -21,7 +21,6 @@ use SMW\DataModel\SemanticData;
 use SMW\DataTypeRegistry;
 use SMW\DataUpdater;
 use SMW\DataValueFactory;
-use SMW\DependencyValidator;
 use SMW\DisplayTitleFinder;
 use SMW\Elastic\ElasticFactory;
 use SMW\EntityCache;
@@ -1044,26 +1043,6 @@ class ServicesFactory {
 		return new MagicWordsFinder(
 			$parserOutput,
 			MediaWikiServices::getInstance()->getMagicWordFactory()
-		);
-	}
-
-	/**
-	 * @since 7.0.0
-	 */
-	public function newDependencyValidator( string $eTag, int $cacheTTL ): DependencyValidator {
-		if ( array_key_exists( 'DependencyValidator', $this->testOverrides ) ) {
-			return $this->testOverrides['DependencyValidator'];
-		}
-
-		$queryDependencyLinksStoreFactory = $this->getQueryDependencyLinksStoreFactory();
-
-		return new DependencyValidator(
-			$this->getNamespaceExaminer(),
-			$queryDependencyLinksStoreFactory->newDependencyLinksValidator(),
-			$this->getEntityCache(),
-			$eTag,
-			$cacheTTL,
-			$this->getEventDispatcher()
 		);
 	}
 

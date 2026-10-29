@@ -4,7 +4,6 @@ namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Hook\RejectParserCacheValueHook;
 use Psr\Log\LoggerInterface;
-use SMW\DataItems\WikiPage as DIWikiPage;
 use SMW\DependencyValidatorFactory;
 use SMW\NamespaceExaminer;
 
@@ -38,9 +37,9 @@ class RejectParserCacheValue implements RejectParserCacheValueHook {
 			return true;
 		}
 
-		$dependencyValidator = $this->dependencyValidatorFactory->newFor( $wikiPage, $parserOptions );
+		$dependencyValidator = $this->dependencyValidatorFactory->newDependencyValidator();
 
-		if ( $dependencyValidator->canKeepParserCache( DIWikiPage::newFromTitle( $title ) ) ) {
+		if ( $dependencyValidator->canKeepParserCache( $title, $parserOutput->getCacheTime() ) ) {
 			return true;
 		}
 

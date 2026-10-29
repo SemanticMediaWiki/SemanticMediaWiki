@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Unit;
 
+use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 use SMW\DataItems\WikiPage;
 use SMW\DependencyValidator;
 use SMW\EntityCache;
@@ -12,6 +12,7 @@ use SMW\NamespaceExaminer;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 use SMW\Tests\TestEnvironment;
 use Wikimedia\ObjectCache\HashBagOStuff;
+use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
  * @covers \SMW\DependencyValidator
@@ -28,7 +29,6 @@ class DependencyValidatorTest extends TestCase {
 	private $dependencyLinksValidator;
 	private $namespaceExaminer;
 	private $entityCache;
-	private $logger;
 	private $eventDispatcher;
 
 	protected function setUp(): void {
@@ -44,13 +44,7 @@ class DependencyValidatorTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->entityCache = $this->getMockBuilder( EntityCache::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->logger = $this->getMockBuilder( LoggerInterface::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->entityCache = new EntityCache( new HashBagOStuff() );
 
 		$this->eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
@@ -58,18 +52,18 @@ class DependencyValidatorTest extends TestCase {
 	}
 
 	protected function tearDown(): void {
+		ConvertibleTimestamp::setFakeTime( false );
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
-	private function newInstance( string $eTag = '', int $cacheTTL = 3600, ?EventDispatcher $eventDispatcher = null ): DependencyValidator {
+	private function newInstance(): DependencyValidator {
 		return new DependencyValidator(
 			$this->namespaceExaminer,
 			$this->dependencyLinksValidator,
 			$this->entityCache,
-			$eTag,
-			$cacheTTL,
-			$eventDispatcher ?? $this->eventDispatcher
+			3600,
+			$this->eventDispatcher
 		);
 	}
 
@@ -85,26 +79,13 @@ class DependencyValidatorTest extends TestCase {
 			->method( 'isSemanticEnabled' )
 			->willReturn( true );
 
-		$this->entityCache->expects( $this->once() )
-			->method( 'overrideSub' )
-			->with(
-				$this->stringContains( 'smw:entity:2623cc3534dff8ce37b7b27e1b009a96' ),
-				'_smw_dirty_',
-				'1',
-				$this->anything()
-			);
-
-		$eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$eventDispatcher->expects( $this->once() )
+		$this->eventDispatcher->expects( $this->once() )
 			->method( 'dispatch' )
 			->with( 'InvalidateResultCache' );
 
 		$subject = WikiPage::newFromText( 'Foo' );
 
-		$instance = $this->newInstance( 'foo-etag', 3600, $eventDispatcher );
+		$instance = $this->newInstance();
 
 		$this->dependencyLinksValidator->expects( $this->once() )
 			->method( 'canCheckDependencies' )
@@ -129,9 +110,6 @@ class DependencyValidatorTest extends TestCase {
 			->method( 'isSemanticEnabled' )
 			->willReturn( true );
 
-		$this->entityCache->expects( $this->never() )
-			->method( 'overrideSub' );
-
 		$subject = WikiPage::newFromText( 'Foo' );
 
 		$this->dependencyLinksValidator->expects( $this->once() )
@@ -143,7 +121,7 @@ class DependencyValidatorTest extends TestCase {
 			->with( $subject )
 			->willReturn( false );
 
-		$instance = $this->newInstance( 'foo-etag' );
+		$instance = $this->newInstance();
 
 		$this->assertFalse(
 			$instance->hasArchaicDependencies( $subject )
@@ -151,16 +129,13 @@ class DependencyValidatorTest extends TestCase {
 	}
 
 	public function testHasNoArchaicDependencies_DisabledNamespace() {
-		$this->namespaceExaminer->expects( $this->once() )
-			->method( 'isSemanticEnabled' )
-			->willReturn( false );
-
-		$this->entityCache->expects( $this->never() )
-			->method( 'overrideSub' );
+		$this->namespaceExaminer->method( 'isSemanticEnabled' )->willReturn( false );
+		$this->dependencyLinksValidator->method( 'canCheckDependencies' )->willReturn( true );
+		$this->dependencyLinksValidator->method( 'hasArchaicDependencies' )->willReturn( true );
 
 		$subject = WikiPage::newFromText( 'Foo' );
 
-		$instance = $this->newInstance( 'foo-etag' );
+		$instance = $this->newInstance();
 
 		$this->assertFalse(
 			$instance->hasArchaicDependencies( $subject )
@@ -199,119 +174,81 @@ class DependencyValidatorTest extends TestCase {
 		$this->assertTrue( $instance->hasLikelyOutdatedDependencies( $title ) );
 	}
 
-	public function testCanKeepParserCache_NoCache() {
-		$this->entityCache->expects( $this->once() )
-			->method( 'contains' )
-			->willReturn( false );
-
-		$this->entityCache->expects( $this->never() )
-			->method( 'fetchSub' );
-
-		$subject = WikiPage::newFromText( 'Foo' );
-
-		$instance = $this->newInstance();
+	public function testKeepsOutputRenderedAfterOutdatedDependenciesWereFound() {
+		$title = Title::makeTitle( NS_MAIN, 'Foo' );
+		$this->findOutdatedDependenciesAt( $title, '20260601120000' );
 
 		$this->assertTrue(
-			$instance->canKeepParserCache( $subject )
+			$this->newInstance()->canKeepParserCache( $title, '20260601120001' )
 		);
 	}
 
-	public function testCanKeepParserCache_NoCacheOnFetch() {
-		$this->entityCache->expects( $this->once() )
-			->method( 'contains' )
-			->willReturn( true );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'fetchSub' )
-			->with( $this->stringContains( 'smw:entity:2623cc3534dff8ce37b7b27e1b009a96' ) )
-			->willReturn( true );
-
-		$subject = WikiPage::newFromText( 'Foo' );
-
-		$instance = $this->newInstance( 'foo-etag' );
+	public function testKeepsOutputRenderedInTheSameSecondOutdatedDependenciesWereFound() {
+		$title = Title::makeTitle( NS_MAIN, 'Foo' );
+		$this->findOutdatedDependenciesAt( $title, '20260601120000' );
 
 		$this->assertTrue(
-			$instance->canKeepParserCache( $subject )
+			$this->newInstance()->canKeepParserCache( $title, '20260601120000' )
 		);
 	}
 
-	public function testCanNotKeepParserCache() {
-		$this->entityCache->expects( $this->once() )
-			->method( 'contains' )
-			->willReturn( true );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'fetchSub' )
-			->willReturn( false );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'saveSub' )
-			->with(
-				$this->stringContains( 'smw:entity:2623cc3534dff8ce37b7b27e1b009a96' ),
-				$this->stringContains( 'foo-etag' ) );
-
-		$subject = WikiPage::newFromText( 'Foo' );
-
-		$instance = $this->newInstance( 'foo-etag' );
+	public function testRejectsOutputRenderedBeforeOutdatedDependenciesWereFound() {
+		$title = Title::makeTitle( NS_MAIN, 'Foo' );
+		$this->findOutdatedDependenciesAt( $title, '20260601120000' );
 
 		$this->assertFalse(
-			$instance->canKeepParserCache( $subject )
+			$this->newInstance()->canKeepParserCache( $title, '20260601115959' )
 		);
 	}
 
-	public function testHasArchaicDependenciesWriteCausesCanKeepParserCacheRejection() {
-		// Integration-style: hasArchaicDependencies' overrideSub write must
-		// cause canKeepParserCache to reject for the same request's eTag,
-		// because the marker is written under DIRTY_MARKER, not the eTag.
-		$this->namespaceExaminer->expects( $this->any() )
-			->method( 'isSemanticEnabled' )
-			->willReturn( true );
+	public function testKeepsRejectingOutputRenderedBeforeOutdatedDependenciesWereFound() {
+		$title = Title::makeTitle( NS_MAIN, 'Foo' );
+		$this->findOutdatedDependenciesAt( $title, '20260601120000' );
+		$this->newInstance()->canKeepParserCache( $title, '20260601115959' );
 
-		$this->dependencyLinksValidator->expects( $this->once() )
-			->method( 'canCheckDependencies' )
-			->willReturn( true );
-
-		$this->dependencyLinksValidator->expects( $this->once() )
-			->method( 'hasArchaicDependencies' )
-			->willReturn( true );
-
-		$this->dependencyLinksValidator->expects( $this->once() )
-			->method( 'getCheckedDependencies' )
-			->willReturn( [] );
-
-		$eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$realEntityCache = new EntityCache( new HashBagOStuff() );
-
-		$instance = new DependencyValidator(
-			$this->namespaceExaminer,
-			$this->dependencyLinksValidator,
-			$realEntityCache,
-			'foo-etag',
-			3600,
-			$eventDispatcher
-		);
-
-		$subject = WikiPage::newFromText( 'Foo' );
-
-		// hasArchaicDependencies writes the dirty marker (not the eTag).
-		$this->assertTrue(
-			$instance->hasArchaicDependencies( $subject )
-		);
-
-		// canKeepParserCache for the same request's eTag must reject:
-		// the parent key now exists but the eTag sub-key does not.
 		$this->assertFalse(
-			$instance->canKeepParserCache( $subject )
+			$this->newInstance()->canKeepParserCache( $title, '20260601115959' )
 		);
+	}
 
-		// A second call with the same eTag finds the saveSub entry from
-		// the prior rejection and keeps the cache (single-rejection-per-eTag).
-		$this->assertTrue(
-			$instance->canKeepParserCache( $subject )
+	public function testRejectsOutputRenderedBeforeOutdatedDependenciesWereFoundAgain() {
+		$title = Title::makeTitle( NS_MAIN, 'Foo' );
+		$this->findOutdatedDependenciesAt( $title, '20260601120000' );
+		$this->findOutdatedDependenciesAt( $title, '20260601130000' );
+
+		$this->assertFalse(
+			$this->newInstance()->canKeepParserCache( $title, '20260601123000' )
 		);
+	}
+
+	public function testKeepsOutputWhenNoOutdatedDependenciesWereFound() {
+		$title = Title::makeTitle( NS_MAIN, 'Foo' );
+		$this->checkDependenciesAt( $title, '20260601120000', outdated: false );
+
+		$this->assertTrue(
+			$this->newInstance()->canKeepParserCache( $title, '20260601115959' )
+		);
+	}
+
+	public function testKeepsOutputOfOtherPages() {
+		$this->findOutdatedDependenciesAt( Title::makeTitle( NS_MAIN, 'Foo' ), '20260601120000' );
+
+		$this->assertTrue(
+			$this->newInstance()->canKeepParserCache( Title::makeTitle( NS_HELP, 'Foo' ), '20260601115959' )
+		);
+	}
+
+	private function findOutdatedDependenciesAt( Title $title, string $time ): void {
+		$this->checkDependenciesAt( $title, $time, outdated: true );
+	}
+
+	private function checkDependenciesAt( Title $title, string $time, bool $outdated ): void {
+		$this->namespaceExaminer->method( 'isSemanticEnabled' )->willReturn( true );
+		$this->dependencyLinksValidator->method( 'canCheckDependencies' )->willReturn( true );
+		$this->dependencyLinksValidator->method( 'hasArchaicDependencies' )->willReturn( $outdated );
+
+		ConvertibleTimestamp::setFakeTime( $time );
+		$this->newInstance()->hasArchaicDependencies( WikiPage::newFromTitle( $title ) );
 	}
 
 }

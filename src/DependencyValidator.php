@@ -26,7 +26,6 @@ class DependencyValidator {
 		private readonly NamespaceExaminer $namespaceExaminer,
 		private readonly DependencyLinksValidator $dependencyLinksValidator,
 		private readonly EntityCache $entityCache,
-		private readonly string $eTag,
 		private readonly int $cacheTTL,
 		private readonly EventDispatcher $eventDispatcher
 	) {
@@ -90,12 +89,10 @@ class DependencyValidator {
 
 		$this->eventDispatcher->dispatch( 'InvalidateResultCache', $context );
 
-		// Write the dirty marker under a fixed sub-key (not the current request's
-		// eTag). canKeepParserCache will then find no eTag sub-key on the next
-		// fetch and correctly reject the cache for each distinct eTag exactly
-		// once, recording the eTag's handled state via its own saveSub call.
+		// Called before the request's parser cache lookup, so the re-parse that
+		// lookup triggers is cached after this time and kept.
 		$key = $this->makeCacheKey( $title );
-		$this->entityCache->overrideSub( $key, self::DIRTY_MARKER, '1', $this->cacheTTL );
+		$this->entityCache->overrideSub( $key, self::DIRTY_MARKER, wfTimestampNow(), $this->cacheTTL );
 
 		return true;
 	}
@@ -103,24 +100,18 @@ class DependencyValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param WikiPage $subject
-	 *
-	 * @return bool
+	 * @param Title $title
+	 * @param string $cacheTime TS_MW cache time of the cached output
 	 */
-	public function canKeepParserCache( WikiPage $subject ): bool {
-		$key = $this->makeCacheKey( $subject->getTitle() );
+	public function canKeepParserCache( Title $title, string $cacheTime ): bool {
+		$markedAt = $this->entityCache->fetchSub(
+			$this->makeCacheKey( $title ),
+			self::DIRTY_MARKER
+		);
 
-		// Test for a recent rejection, being unrelated etc.
-		if (
-			$this->entityCache->contains( $key ) === false ||
-			$this->entityCache->fetchSub( $key, $this->eTag ) ) {
-			return true;
-		}
-
-		// Value is unread; only the sub-key's presence matters.
-		$this->entityCache->saveSub( $key, $this->eTag, '1', $this->cacheTTL );
-
-		return false;
+		// As CacheTime::expired() does for page_touched, a cache time in the
+		// same second as the marker counts as current.
+		return $markedAt === false || $cacheTime >= $markedAt;
 	}
 
 }

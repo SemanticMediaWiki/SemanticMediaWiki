@@ -859,8 +859,7 @@ return [
 			$servicesFactory->getNamespaceExaminer(),
 			$servicesFactory->getQueryDependencyLinksStoreFactory(),
 			$servicesFactory->getEntityCache(),
-			$servicesFactory->getEventDispatcher(),
-			$services->getParserCache()
+			$servicesFactory->getEventDispatcher()
 		);
 	},
 
