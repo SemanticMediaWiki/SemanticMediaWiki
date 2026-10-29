@@ -205,6 +205,12 @@ class SomeValueInterpreterTest extends TestCase {
 			'example.org/a%2Ab',
 			'{"bool":{"must":{"query_string":{"fields":["P:42.uriField"],"query":"example.org +a*b"}}}}'
 		];
+
+		yield 'encoded space in a pattern condition separates words like an underscore' => [
+			SMW_CMP_LIKE,
+			'*Foo%20bar*',
+			'{"bool":{"must":{"query_string":{"fields":["P:42.uriField"],"query":"*Foo bar*","analyze_wildcard":true}}}}'
+		];
 	}
 
 	/**

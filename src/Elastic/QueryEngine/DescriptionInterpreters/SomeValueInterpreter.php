@@ -355,8 +355,10 @@ class SomeValueInterpreter {
 			}
 		} elseif ( $comparator === SMW_CMP_LIKE || $comparator === SMW_CMP_NLKE ) {
 
-			// In a pattern, an escaped asterisk is a wildcard, as in SQLStore
-			$value = str_replace( [ 'http://', 'https://', '=', '%2A' ], [ '', '', '', '*' ], $value );
+			// In a pattern, an escaped asterisk is a wildcard, as in SQLStore.
+			// An escaped space becomes `_`, which query_string_compat() turns
+			// into a word separator.
+			$value = str_replace( [ 'http://', 'https://', '=', '%2A', '%20' ], [ '', '', '', '*', '_' ], $value );
 
 			if ( strpos( $value, 'tel:' ) !== false || strpos( $value, 'mailto:' ) !== false ) {
 				$value = str_replace( [ 'tel:', 'mailto:' ], [ '', '' ], $value );
