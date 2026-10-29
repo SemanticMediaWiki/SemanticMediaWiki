@@ -146,7 +146,7 @@ class PrefetchItemLookupTest extends TestCase {
 
 	public function testGetPropertyValuesSkipsValuesWithUndecodableDbKeys() {
 		$instance = $this->newInstanceWithPrefetchedGeoDbKeys(
-			[ 42 => [ '52,5', null, '53,6' ] ]
+			[ 42 => [ '52,5', null, 'not-a-coordinate', '53,6' ] ]
 		);
 
 		$res = $instance->getPropertyValues(
