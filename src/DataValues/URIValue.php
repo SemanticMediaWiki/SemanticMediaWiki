@@ -347,6 +347,12 @@ class URIValue extends DataValue {
 			return false;
 		}
 
+		if ( $this->getOption( self::OPT_QUERY_CONTEXT ) ) {
+			// The text before the first `:` can be part of a pattern, as in
+			// `~*User talk:Foo*`, so encode it like the stored value
+			$scheme = $this->encodeUriPart( $scheme );
+		}
+
 		// try to split "hier-part?query#frag"
 		$parts = explode( '?', $parts[1], 2 );
 		if ( count( $parts ) == 2 ) {

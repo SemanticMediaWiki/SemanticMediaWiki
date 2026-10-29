@@ -76,6 +76,17 @@ class URIValueTest extends TestCase {
 		);
 	}
 
+	public function testQueryPatternEncodesSpaceBeforeFirstColonLikeTheStoredValue() {
+		$instance = new URIValue( '_uri' );
+		$instance->setOption( URIValue::OPT_QUERY_CONTEXT, true );
+		$instance->setUserValue( '*User talk:Foo*' );
+
+		$this->assertSame(
+			'*User%20talk:Foo*',
+			$instance->getDataItem()->getSerialization()
+		);
+	}
+
 	public function serializationProvider() {
 		# 0 - Issue #5212, an encoded slash is data and must stay encoded
 		$provider[] = [
