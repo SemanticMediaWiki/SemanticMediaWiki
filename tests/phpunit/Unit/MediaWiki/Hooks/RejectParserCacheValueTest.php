@@ -94,39 +94,21 @@ class RejectParserCacheValueTest extends TestCase {
 		$this->namespaceExaminer = $this->createMock( NamespaceExaminer::class );
 		$this->namespaceExaminer->method( 'isSemanticEnabled' )->willReturn( false );
 
-		$this->assertTrue(
-			$this->newInstance()->onRejectParserCacheValue(
-				$this->newParserOutputRenderedAt( '20260601115959' ),
-				$this->newPage( $title ),
-				$this->createMock( ParserOptions::class )
-			)
-		);
+		$this->assertTrue( $this->keepsOutputRenderedAt( $title, '20260601115959' ) );
 	}
 
 	public function testKeepsOutputRenderedAfterOutdatedDependenciesWereFound() {
 		$title = Title::makeTitle( NS_MAIN, 'Foo' );
 		$this->findOutdatedDependenciesAt( $title, '20260601120000' );
 
-		$this->assertTrue(
-			$this->newInstance()->onRejectParserCacheValue(
-				$this->newParserOutputRenderedAt( '20260601120001' ),
-				$this->newPage( $title ),
-				$this->createMock( ParserOptions::class )
-			)
-		);
+		$this->assertTrue( $this->keepsOutputRenderedAt( $title, '20260601120001' ) );
 	}
 
 	public function testRejectsOutputRenderedBeforeOutdatedDependenciesWereFound() {
 		$title = Title::makeTitle( NS_MAIN, 'Foo' );
 		$this->findOutdatedDependenciesAt( $title, '20260601120000' );
 
-		$this->assertFalse(
-			$this->newInstance()->onRejectParserCacheValue(
-				$this->newParserOutputRenderedAt( '20260601115959' ),
-				$this->newPage( $title ),
-				$this->createMock( ParserOptions::class )
-			)
-		);
+		$this->assertFalse( $this->keepsOutputRenderedAt( $title, '20260601115959' ) );
 	}
 
 	private function findOutdatedDependenciesAt( Title $title, string $time ): void {
@@ -140,11 +122,15 @@ class RejectParserCacheValueTest extends TestCase {
 			->hasArchaicDependencies( DIWikiPage::newFromTitle( $title ) );
 	}
 
-	private function newParserOutputRenderedAt( string $cacheTime ): ParserOutput {
+	private function keepsOutputRenderedAt( Title $title, string $cacheTime ): bool {
 		$parserOutput = new ParserOutput();
 		$parserOutput->setCacheTime( $cacheTime );
 
-		return $parserOutput;
+		return $this->newInstance()->onRejectParserCacheValue(
+			$parserOutput,
+			$this->newPage( $title ),
+			$this->createMock( ParserOptions::class )
+		);
 	}
 
 }

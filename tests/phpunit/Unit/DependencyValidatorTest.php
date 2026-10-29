@@ -3,7 +3,6 @@
 namespace SMW\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 use SMW\DataItems\WikiPage;
 use SMW\DependencyValidator;
 use SMW\EntityCache;
@@ -29,7 +28,6 @@ class DependencyValidatorTest extends TestCase {
 	private $dependencyLinksValidator;
 	private $namespaceExaminer;
 	private $entityCache;
-	private $logger;
 	private $eventDispatcher;
 
 	protected function setUp(): void {
@@ -47,10 +45,6 @@ class DependencyValidatorTest extends TestCase {
 
 		$this->entityCache = new EntityCache( new HashBagOStuff() );
 
-		$this->logger = $this->getMockBuilder( LoggerInterface::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -62,13 +56,13 @@ class DependencyValidatorTest extends TestCase {
 		parent::tearDown();
 	}
 
-	private function newInstance( int $cacheTTL = 3600, ?EventDispatcher $eventDispatcher = null ): DependencyValidator {
+	private function newInstance(): DependencyValidator {
 		return new DependencyValidator(
 			$this->namespaceExaminer,
 			$this->dependencyLinksValidator,
 			$this->entityCache,
-			$cacheTTL,
-			$eventDispatcher ?? $this->eventDispatcher
+			3600,
+			$this->eventDispatcher
 		);
 	}
 
@@ -84,17 +78,13 @@ class DependencyValidatorTest extends TestCase {
 			->method( 'isSemanticEnabled' )
 			->willReturn( true );
 
-		$eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$eventDispatcher->expects( $this->once() )
+		$this->eventDispatcher->expects( $this->once() )
 			->method( 'dispatch' )
 			->with( 'InvalidateResultCache' );
 
 		$subject = WikiPage::newFromText( 'Foo' );
 
-		$instance = $this->newInstance( 3600, $eventDispatcher );
+		$instance = $this->newInstance();
 
 		$this->dependencyLinksValidator->expects( $this->once() )
 			->method( 'canCheckDependencies' )

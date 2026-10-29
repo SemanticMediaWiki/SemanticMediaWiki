@@ -89,9 +89,8 @@ class DependencyValidator {
 
 		$this->eventDispatcher->dispatch( 'InvalidateResultCache', $context );
 
-		// Record when the outdated dependencies were found: canKeepParserCache
-		// rejects output with an earlier cache time, and keeps the re-parse of
-		// this request, which starts after this point.
+		// Called before the request's parser cache lookup, so the re-parse that
+		// lookup triggers is cached after this time and kept.
 		$key = $this->makeCacheKey( $title );
 		$this->entityCache->overrideSub( $key, self::DIRTY_MARKER, wfTimestampNow(), $this->cacheTTL );
 
@@ -103,8 +102,6 @@ class DependencyValidator {
 	 *
 	 * @param WikiPage $subject
 	 * @param string $cacheTime TS_MW cache time of the cached output
-	 *
-	 * @return bool
 	 */
 	public function canKeepParserCache( WikiPage $subject, string $cacheTime ): bool {
 		$markedAt = $this->entityCache->fetchSub(
