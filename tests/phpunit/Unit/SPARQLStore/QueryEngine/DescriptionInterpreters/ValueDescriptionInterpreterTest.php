@@ -446,7 +446,27 @@ class ValueDescriptionInterpreterTest extends TestCase {
 			$expected
 		];
 
-		# 13 Unknown comparator operator
+		# 13 Regex on a DIUri value matches the percent-encoded form of the exported IRI
+		$conditionType = FilterCondition::class;
+
+		$description = new ValueDescription(
+			new Uri( 'http', 'example.org/Foo%20bar', '', '' ),
+			new Property( 'Foo' ),
+			SMW_CMP_LIKE
+		);
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:page ?url .' )->addNewLine()
+			->addString( 'FILTER( regex( str( ?result ), "^.*example\\\.org/Foo%20bar$", "i") )' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$conditionType,
+			$expected
+		];
+
+		# 14 Unknown comparator operator
 		$conditionType = TrueCondition::class;
 
 		$description = $this->getMockBuilder( ValueDescription::class )
