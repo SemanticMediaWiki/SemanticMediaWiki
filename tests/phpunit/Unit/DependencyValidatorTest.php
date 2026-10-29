@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit;
 
+use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\DependencyValidator;
@@ -174,80 +175,80 @@ class DependencyValidatorTest extends TestCase {
 	}
 
 	public function testKeepsOutputRenderedAfterOutdatedDependenciesWereFound() {
-		$subject = WikiPage::newFromText( 'Foo' );
-		$this->findOutdatedDependenciesAt( $subject, '20260601120000' );
+		$title = Title::makeTitle( NS_MAIN, 'Foo' );
+		$this->findOutdatedDependenciesAt( $title, '20260601120000' );
 
 		$this->assertTrue(
-			$this->newInstance()->canKeepParserCache( $subject, '20260601120001' )
+			$this->newInstance()->canKeepParserCache( $title, '20260601120001' )
 		);
 	}
 
 	public function testKeepsOutputRenderedInTheSameSecondOutdatedDependenciesWereFound() {
-		$subject = WikiPage::newFromText( 'Foo' );
-		$this->findOutdatedDependenciesAt( $subject, '20260601120000' );
+		$title = Title::makeTitle( NS_MAIN, 'Foo' );
+		$this->findOutdatedDependenciesAt( $title, '20260601120000' );
 
 		$this->assertTrue(
-			$this->newInstance()->canKeepParserCache( $subject, '20260601120000' )
+			$this->newInstance()->canKeepParserCache( $title, '20260601120000' )
 		);
 	}
 
 	public function testRejectsOutputRenderedBeforeOutdatedDependenciesWereFound() {
-		$subject = WikiPage::newFromText( 'Foo' );
-		$this->findOutdatedDependenciesAt( $subject, '20260601120000' );
+		$title = Title::makeTitle( NS_MAIN, 'Foo' );
+		$this->findOutdatedDependenciesAt( $title, '20260601120000' );
 
 		$this->assertFalse(
-			$this->newInstance()->canKeepParserCache( $subject, '20260601115959' )
+			$this->newInstance()->canKeepParserCache( $title, '20260601115959' )
 		);
 	}
 
 	public function testKeepsRejectingOutputRenderedBeforeOutdatedDependenciesWereFound() {
-		$subject = WikiPage::newFromText( 'Foo' );
-		$this->findOutdatedDependenciesAt( $subject, '20260601120000' );
-		$this->newInstance()->canKeepParserCache( $subject, '20260601115959' );
+		$title = Title::makeTitle( NS_MAIN, 'Foo' );
+		$this->findOutdatedDependenciesAt( $title, '20260601120000' );
+		$this->newInstance()->canKeepParserCache( $title, '20260601115959' );
 
 		$this->assertFalse(
-			$this->newInstance()->canKeepParserCache( $subject, '20260601115959' )
+			$this->newInstance()->canKeepParserCache( $title, '20260601115959' )
 		);
 	}
 
 	public function testRejectsOutputRenderedBeforeOutdatedDependenciesWereFoundAgain() {
-		$subject = WikiPage::newFromText( 'Foo' );
-		$this->findOutdatedDependenciesAt( $subject, '20260601120000' );
-		$this->findOutdatedDependenciesAt( $subject, '20260601130000' );
+		$title = Title::makeTitle( NS_MAIN, 'Foo' );
+		$this->findOutdatedDependenciesAt( $title, '20260601120000' );
+		$this->findOutdatedDependenciesAt( $title, '20260601130000' );
 
 		$this->assertFalse(
-			$this->newInstance()->canKeepParserCache( $subject, '20260601123000' )
+			$this->newInstance()->canKeepParserCache( $title, '20260601123000' )
 		);
 	}
 
 	public function testKeepsOutputWhenNoOutdatedDependenciesWereFound() {
-		$subject = WikiPage::newFromText( 'Foo' );
-		$this->checkDependenciesAt( $subject, '20260601120000', outdated: false );
+		$title = Title::makeTitle( NS_MAIN, 'Foo' );
+		$this->checkDependenciesAt( $title, '20260601120000', outdated: false );
 
 		$this->assertTrue(
-			$this->newInstance()->canKeepParserCache( $subject, '20260601115959' )
+			$this->newInstance()->canKeepParserCache( $title, '20260601115959' )
 		);
 	}
 
 	public function testKeepsOutputOfOtherPages() {
-		$this->findOutdatedDependenciesAt( WikiPage::newFromText( 'Foo' ), '20260601120000' );
+		$this->findOutdatedDependenciesAt( Title::makeTitle( NS_MAIN, 'Foo' ), '20260601120000' );
 
 		$this->assertTrue(
-			$this->newInstance()->canKeepParserCache( WikiPage::newFromText( 'Foo', NS_HELP ), '20260601115959' )
+			$this->newInstance()->canKeepParserCache( Title::makeTitle( NS_HELP, 'Foo' ), '20260601115959' )
 		);
 	}
 
-	private function findOutdatedDependenciesAt( WikiPage $subject, string $time ): void {
-		$this->checkDependenciesAt( $subject, $time, outdated: true );
+	private function findOutdatedDependenciesAt( Title $title, string $time ): void {
+		$this->checkDependenciesAt( $title, $time, outdated: true );
 	}
 
-	private function checkDependenciesAt( WikiPage $subject, string $time, bool $outdated ): void {
+	private function checkDependenciesAt( Title $title, string $time, bool $outdated ): void {
 		$this->namespaceExaminer->method( 'isSemanticEnabled' )->willReturn( true );
 		$this->dependencyLinksValidator->method( 'canCheckDependencies' )->willReturn( true );
 		$this->dependencyLinksValidator->method( 'hasArchaicDependencies' )->willReturn( $outdated );
 
 		ConvertibleTimestamp::setFakeTime( $time );
-		$this->newInstance()->hasArchaicDependencies( $subject );
+		$this->newInstance()->hasArchaicDependencies( WikiPage::newFromTitle( $title ) );
 	}
 
 }

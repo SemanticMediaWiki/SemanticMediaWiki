@@ -100,12 +100,12 @@ class DependencyValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param WikiPage $subject
+	 * @param Title $title
 	 * @param string $cacheTime TS_MW cache time of the cached output
 	 */
-	public function canKeepParserCache( WikiPage $subject, string $cacheTime ): bool {
+	public function canKeepParserCache( Title $title, string $cacheTime ): bool {
 		$markedAt = $this->entityCache->fetchSub(
-			$this->makeCacheKey( $subject->getTitle() ),
+			$this->makeCacheKey( $title ),
 			self::DIRTY_MARKER
 		);
 
