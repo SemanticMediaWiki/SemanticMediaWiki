@@ -21,6 +21,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed editing schemas with the Page Schemas extension, broken since 7.0.0 ([#7154](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7154))
 * Fixed the help links of the maintenance scripts on `Special:SemanticMediaWiki` ([#7151](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7151))
 * Fixed pages with `#ask` queries being parsed twice for each user language or other parser cache variant first viewed after one of their query dependencies changed, on wikis with `$smwgEnabledQueryDependencyLinksStore` enabled ([#7155](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7155))
+* Fixed a `DataItemHandlerException` stopping page rendering and `rebuildData.php` when a query prints a stored value that can no longer be read; such values are now left out of the result ([#7161](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7161))
 
 ## Upgrading
 
