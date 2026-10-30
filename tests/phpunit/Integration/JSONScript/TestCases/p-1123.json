@@ -1,0 +1,40 @@
+{
+	"description": "Test #ask short captions remove the namespace prefix of a DISPLAYTITLE only once with pipe trick output (#7073, `wgContLang=en`, `wgLang=en`, `wgRestrictDisplayTitle=false`)",
+	"setup": [
+		{
+			"namespace": "NS_HELP",
+			"page": "P1123 Foo",
+			"contents": "{{DISPLAYTITLE:Help:P1123 Foo:Bar baz}} [[Category:P1123]]"
+		},
+		{
+			"page": "Example/P1123/Q.1",
+			"contents": "{{#ask: [[Category:P1123]] |format=ul }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (colon in the title remainder is kept)",
+			"subject": "Example/P1123/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Help:P1123 Foo\">P1123 Foo:Bar baz</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgRestrictDisplayTitle": false,
+		"smwgDVFeatures": [
+			"wpv-display-title",
+			"wpv-pipetrick"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
