@@ -2,7 +2,7 @@
 
 Released on TBD.
 
-This is a [minor release](../RELEASE-POLICY.md). Thus, it contains no breaking changes, only new features and fixes.
+This is a [minor release](../RELEASE-POLICY.md). Thus, it contains no breaking changes, only new features and fixes. Some of the security fixes tighten input handling and may reject requests that previously succeeded.
 
 Like SMW 7.3.1, this version is compatible with MediaWiki 1.43 up to 1.46 and PHP 8.1 up to 8.5.
 For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
@@ -11,6 +11,12 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 * Added chunked and job queue rebuilds to `rebuildFulltextSearchTable.php`, so the full-text search index can be rebuilt on hosts that stop long-running scripts ([#7133](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7133))
 * Added the `{{#property_search_link:}}` parser function for linking to `Special:SearchByProperty` with any value, including values with characters such as `/`, `#` or `[` that a hand-written subpage link cannot carry: `{{#property_search_link:Has text|AC/DC #1}}` and `{{#property_search_link:Has text|AC/DC #1|custom label}}` ([#7179](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7179))
+
+## Security fixes
+
+* Fixed a cross-site scripting (XSS) vulnerability in `Special:Ask` where file-export and raw-mode results fetched through `request_type` were served as HTML, so a user-supplied CSV or DSV separator, or a stored property value, could execute; these responses are now served as plain text ([GHSA-54fg-5p78-mhg8](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-54fg-5p78-mhg8))
+* Fixed a cross-site scripting (XSS) vulnerability in `Special:Browse` where an `Allows pattern` property value was rendered without HTML escaping ([GHSA-x29v-5v76-f3xg](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-x29v-5v76-f3xg))
+* Fixed a missing authorization check in the `smwtask` API where the `check-query` task authorized against the wiki-wide edit right instead of the caller's permission to edit the requested page, completing the earlier fix for GHSA-rjqv-6r83-pg8v ([GHSA-qhqw-xc5w-pp27](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-qhqw-xc5w-pp27))
 
 ## Bug fixes
 
