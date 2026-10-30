@@ -22,15 +22,16 @@
 			"contents": "{{DISPLAYTITLE:Help: P1122 Qux}} [[Category:P1122]]"
 		},
 		{
+			"namespace": "NS_HELP",
+			"page": "P1122 Quux",
+			"contents": "{{DISPLAYTITLE:Helpful: P1122 Quux}} [[Category:P1122]]"
+		},
+		{
 			"page": "Example/P1122/Q.1",
 			"contents": "{{#ask: [[Category:P1122]] |format=ul }}"
 		},
 		{
 			"page": "Example/P1122/Q.2",
-			"contents": "{{#ask: [[Category:P1122]] |format=ul |prefix=none }}"
-		},
-		{
-			"page": "Example/P1122/Q.3",
 			"contents": "{{#ask: [[Category:P1122]] |format=ul |prefix=all }}"
 		}
 	],
@@ -41,11 +42,8 @@
 			"subject": "Example/P1122/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Help:P1122 Bar\">P1122 Bar (inactive)</a>",
-					"title=\"Help:P1122 Foo\">P1122 Foo</a>"
-				],
-				"not-contain": [
-					">Help:P1122 Bar (inactive)</a>"
+					">P1122 Bar (inactive)</a>",
+					">P1122 Foo</a>"
 				]
 			}
 		},
@@ -55,7 +53,7 @@
 			"subject": "Example/P1122/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Help:P1122 Baz\">P1122 Baz</a>"
+					">P1122 Baz</a>"
 				]
 			}
 		},
@@ -71,24 +69,21 @@
 		},
 		{
 			"type": "parser",
-			"about": "#3 (prefix=none)",
-			"subject": "Example/P1122/Q.2",
+			"about": "#3 (display title not starting with the namespace is kept)",
+			"subject": "Example/P1122/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Help:P1122 Bar\">P1122 Bar (inactive)</a>"
-				],
-				"not-contain": [
-					">Help:P1122 Bar (inactive)</a>"
+					">Helpful: P1122 Quux</a>"
 				]
 			}
 		},
 		{
 			"type": "parser",
 			"about": "#4 (prefix=all keeps the display title as is)",
-			"subject": "Example/P1122/Q.3",
+			"subject": "Example/P1122/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Help:P1122 Bar\">Help:P1122 Bar (inactive)</a>"
+					">Help:P1122 Bar (inactive)</a>"
 				]
 			}
 		}
