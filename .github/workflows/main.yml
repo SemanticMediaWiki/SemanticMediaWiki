@@ -116,18 +116,19 @@ jobs:
       - name: Run integration tests
         run: make composer-phpunit COMPOSER_PARAMS='-- --testsuite semantic-mediawiki-check,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure --fail-on-empty-test-suite'
 
-  # PHP coverage uses PCOV, which is several times faster than the base image's
-  # Xdebug. JS tests run only here, so the other legs skip the npm install.
-  # PHPUnit runs twice for the same reason as in `tests`.
+  # PHP coverage uses PCOV, which is several times faster than Xdebug. JS tests
+  # run only here, so the other legs skip the npm install. PHPUnit runs twice for
+  # the same reason as in `tests`.
   coverage:
-    name: Coverage (MW 1.43, PHP 8.2, mariadb:11.4)
+    name: Coverage (MW 1.43, PHP 8.3, mariadb:11.4)
     runs-on: ubuntu-latest
     env:
       MW_VERSION: '1.43'
-      PHP_VERSION: 8.2
+      PHP_VERSION: 8.3
       DB_TYPE: mysql
       DB_IMAGE: "mariadb:11.4"
       NODE_JS: 'true'
+      COVERAGE_DRIVER: pcov
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -142,11 +143,6 @@ jobs:
 
       - name: Build image and install MediaWiki
         run: make install
-
-      - name: Install PCOV
-        run: |
-          docker exec -u root semanticmediawiki-mysql-wiki-1 bash -c 'pecl install pcov-1.0.12 > /dev/null && docker-php-ext-enable pcov'
-          docker cp .github/pcov.ini semanticmediawiki-mysql-wiki-1:/usr/local/etc/php/conf.d/
 
       - name: Run unit tests with coverage
         run: make composer-test-coverage COMPOSER_PARAMS="-- --testsuite semantic-mediawiki-unit --coverage-clover extensions/SemanticMediaWiki/coverage/php/coverage-unit.xml"
