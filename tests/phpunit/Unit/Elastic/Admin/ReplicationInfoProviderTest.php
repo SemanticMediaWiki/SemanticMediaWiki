@@ -10,6 +10,7 @@ use SMW\Elastic\Indexer\Replication\ReplicationCheck;
 use SMW\EntityCache;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\Store;
+use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
  * @covers \SMW\Elastic\Admin\ReplicationInfoProvider
@@ -38,7 +39,7 @@ class ReplicationInfoProviderTest extends TestCase {
 			->getMock();
 
 		$this->entityCache = $this->getMockBuilder( EntityCache::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ new HashBagOStuff() ] )
 			->setMethods( [ 'fetch' ] )
 			->getMock();
 

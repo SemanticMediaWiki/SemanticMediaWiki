@@ -23,8 +23,6 @@ class CachedListLookup implements ListLookup {
 	 */
 	private $timestamp;
 
-	private string $cachePrefix = 'smw:store:lookup:';
-
 	/**
 	 * @since 2.2
 	 */
@@ -33,15 +31,6 @@ class CachedListLookup implements ListLookup {
 		private readonly BagOStuff $cache,
 		private readonly stdClass $cacheOptions,
 	) {
-	}
-
-	/**
-	 * @since 2.2
-	 *
-	 * @param string $cachePrefix
-	 */
-	public function setCachePrefix( string $cachePrefix ): void {
-		$this->cachePrefix = $cachePrefix . ':' . $this->cachePrefix;
 	}
 
 	/**
@@ -170,8 +159,8 @@ class CachedListLookup implements ListLookup {
 		}
 
 		return [
-			$this->cachePrefix . md5( $id . self::VERSION ),
-			$this->cachePrefix . md5( $id . $optionsKey . self::VERSION )
+			$this->cache->makeKey( 'smw', 'store', 'lookup', md5( $id . self::VERSION ) ),
+			$this->cache->makeKey( 'smw', 'store', 'lookup', md5( $id . $optionsKey . self::VERSION ) )
 		];
 	}
 

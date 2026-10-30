@@ -86,15 +86,15 @@ class SpecificationLookup {
 		$this->entityCache->invalidate( $subject );
 
 		$this->entityCache->delete(
-			$this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP, $subject )
+			$this->entityCache->makeKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP, $subject )
 		);
 
 		$this->entityCache->delete(
-			$this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_PREFERREDLABEL, $subject )
+			$this->entityCache->makeKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_PREFERREDLABEL, $subject )
 		);
 
 		$this->entityCache->delete(
-			$this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION, $subject )
+			$this->entityCache->makeKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION, $subject )
 		);
 	}
 
@@ -119,7 +119,7 @@ class SpecificationLookup {
 			return [];
 		}
 
-		$key = $this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP, $subject );
+		$key = $this->entityCache->makeKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP, $subject );
 		$sub_key = $target->getKey();
 
 		if ( !$this->skipCache ) {
@@ -176,7 +176,7 @@ class SpecificationLookup {
 			return '';
 		}
 
-		$key = $this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_PREFERREDLABEL, $subject );
+		$key = $this->entityCache->makeKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_PREFERREDLABEL, $subject );
 
 		$text = $this->entityCache->fetchSub( $key, $languageCode );
 		if ( $text !== false ) {
@@ -385,7 +385,7 @@ class SpecificationLookup {
 			return '';
 		}
 
-		$key = $this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION, $subject );
+		$key = $this->entityCache->makeKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION, $subject );
 
 		$sub_key = $languageCode . ':' . ( $parsed ? '1' : '0' );
 

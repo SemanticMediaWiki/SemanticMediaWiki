@@ -299,8 +299,6 @@ class SQLStoreFactory {
 			$cacheOptions
 		);
 
-		$cachedListLookup->setCachePrefix( $cacheFactory->getCachePrefix() );
-
 		return $cachedListLookup;
 	}
 

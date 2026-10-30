@@ -34,8 +34,8 @@ class DependencyValidator {
 	/**
 	 * @since 2.2
 	 */
-	public static function makeCacheKey( Title $title ): string {
-		return EntityCache::makeCacheKey( 'parsercacheinvalidator', $title->getPrefixedDBKey() );
+	public function makeCacheKey( Title $title ): string {
+		return $this->entityCache->makeKey( 'parsercacheinvalidator', $title->getPrefixedDBKey() );
 	}
 
 	/**

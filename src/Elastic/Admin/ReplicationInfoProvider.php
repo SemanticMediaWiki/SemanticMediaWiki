@@ -155,7 +155,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 	private function buildFromFile( ?Title $title ): string {
 		$response = '';
 
-		$key = $this->entityCache->makeCacheKey(
+		$key = $this->entityCache->makeKey(
 			$title,
 			FileIndexer::INGEST_RESPONSE
 		);

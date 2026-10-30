@@ -249,7 +249,7 @@ class FileIndexer {
 		// Store the response temporarily to allow the `replication status` board
 		// to show whether some files had issues during the indexing and need
 		// intervention from a user
-		$key = $this->entityCache->makeCacheKey( $title, self::INGEST_RESPONSE );
+		$key = $this->entityCache->makeKey( $title, self::INGEST_RESPONSE );
 
 		$this->entityCache->save( $key, $context['response'] );
 		$this->entityCache->associate( $title, $key );

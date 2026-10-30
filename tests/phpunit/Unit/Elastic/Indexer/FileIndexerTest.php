@@ -14,6 +14,7 @@ use SMW\EntityCache;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
  * @covers \SMW\Elastic\Indexer\FileIndexer
@@ -56,7 +57,7 @@ class FileIndexerTest extends TestCase {
 			->getMock();
 
 		$this->entityCache = $this->getMockBuilder( EntityCache::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ new HashBagOStuff() ] )
 			->setMethods( [ 'save', 'associate', 'fetch' ] )
 			->getMock();
 

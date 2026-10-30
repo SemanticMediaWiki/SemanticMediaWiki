@@ -48,7 +48,7 @@ class ProtectionValidatorTest extends TestCase {
 			->getMockForAbstractClass();
 
 		$this->entityCache = $this->getMockBuilder( EntityCache::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ new HashBagOStuff() ] )
 			->setMethods( [ 'save', 'contains', 'fetch', 'associate', 'invalidate', 'delete' ] )
 			->getMock();
 

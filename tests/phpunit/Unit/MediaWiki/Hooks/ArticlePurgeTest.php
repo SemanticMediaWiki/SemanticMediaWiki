@@ -3,8 +3,8 @@
 namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
 use PHPUnit\Framework\TestCase;
+use SMW\EntityCache;
 use SMW\EventDispatcher\EventDispatcher;
-use SMW\Factbox\CachedFactbox;
 use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Settings;
@@ -78,7 +78,7 @@ class ArticlePurgeTest extends TestCase {
 
 		$instance = new ArticlePurge( $store, $this->cache, $settings, $this->eventDispatcher );
 
-		$factboxCacheKey = CachedFactbox::makeCacheKey( $pageId );
+		$factboxCacheKey = ( new EntityCache( $this->cache ) )->makeKey( 'factbox', $pageId );
 		$purgeCacheKey = smwfCacheKey( ArticlePurge::CACHE_NAMESPACE, $pageId );
 
 		$this->assertEquals(

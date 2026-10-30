@@ -7,6 +7,7 @@ use SMW\Lookup\CachedListLookup;
 use SMW\Lookup\ListLookup;
 use stdClass;
 use Wikimedia\ObjectCache\BagOStuff;
+use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
  * @covers \SMW\Lookup\CachedListLookup
@@ -48,8 +49,9 @@ class CachedListLookupTest extends TestCase {
 			->method( 'getHash' )
 			->willReturn( 'Bar#123' );
 
-		$cache = $this->getMockBuilder( BagOStuff::class )
-			->disableOriginalConstructor()
+		$cache = $this->getMockBuilder( HashBagOStuff::class )
+			->setConstructorArgs( [ [ 'keyspace' => 'cacheprefix-foobar' ] ] )
+			->onlyMethods( [ 'get' ] )
 			->getMock();
 
 		$cache->expects( $this->exactly( 2 ) )
@@ -61,7 +63,6 @@ class CachedListLookupTest extends TestCase {
 		$cacheOptions->useCache = true;
 
 		$instance = new CachedListLookup( $listLookup, $cache, $cacheOptions );
-		$instance->setCachePrefix( 'cacheprefix-foobar' );
 
 		$this->assertEquals(
 			[ 'Foo' ],
@@ -105,8 +106,8 @@ class CachedListLookupTest extends TestCase {
 			->method( 'getHash' )
 			->willReturn( 'Foo#123' );
 
-		$cache = $this->getMockBuilder( BagOStuff::class )
-			->disableOriginalConstructor()
+		$cache = $this->getMockBuilder( HashBagOStuff::class )
+			->onlyMethods( [ 'get', 'set' ] )
 			->getMock();
 
 		$cache->expects( $this->any() )
@@ -150,8 +151,8 @@ class CachedListLookupTest extends TestCase {
 			->method( 'getHash' )
 			->willReturn( 'Foo#123' );
 
-		$cache = $this->getMockBuilder( BagOStuff::class )
-			->disableOriginalConstructor()
+		$cache = $this->getMockBuilder( HashBagOStuff::class )
+			->onlyMethods( [ 'get', 'delete' ] )
 			->getMock();
 
 		$cache->expects( $this->once() )

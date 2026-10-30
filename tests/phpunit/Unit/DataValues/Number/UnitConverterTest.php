@@ -9,6 +9,7 @@ use SMW\DataValues\NumberValue;
 use SMW\EntityCache;
 use SMW\Property\SpecificationLookup;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
  * @covers \SMW\DataValues\Number\UnitConverter
@@ -35,7 +36,7 @@ class UnitConverterTest extends TestCase {
 			->getMock();
 
 		$this->entityCache = $this->getMockBuilder( EntityCache::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ new HashBagOStuff() ] )
 			->setMethods( [ 'fetch', 'save', 'associate' ] )
 			->getMock();
 	}
