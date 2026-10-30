@@ -4,7 +4,6 @@ namespace SMW\MediaWiki\Specials\Admin\Supplement;
 
 use MediaWiki\Html\Html;
 use MediaWiki\Request\WebRequest;
-use SMW\EntityCache;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Api\Tasks\TableStatisticsTask;
 use SMW\MediaWiki\Api\Tasks\Task;
@@ -12,6 +11,7 @@ use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\Utils\HtmlTabs;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -26,7 +26,7 @@ class TableStatisticsTaskHandler extends TaskHandler implements ActionableTask {
 	 */
 	public function __construct(
 		private readonly OutputFormatter $outputFormatter,
-		private readonly EntityCache $entityCache,
+		private readonly BagOStuff $cache,
 	) {
 	}
 
@@ -176,9 +176,9 @@ class TableStatisticsTaskHandler extends TaskHandler implements ActionableTask {
 		);
 
 		// Is the result fetchable from cache? If yes, change the tab class.
-		$isFromCache = $this->entityCache->contains(
+		$isFromCache = $this->cache->get(
 			Task::makeCacheKey( TableStatisticsTask::CACHE_KEY )
-		);
+		) !== false;
 
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setGroup( 'table-statistics' );

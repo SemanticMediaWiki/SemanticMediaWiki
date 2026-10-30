@@ -8,9 +8,10 @@ use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DisplayTitleFinder;
-use SMW\EntityCache;
+use SMW\Services\Exception\ServiceNotFoundException;
 use SMW\SQLStore\Lookup\DisplayTitleLookup;
 use SMW\Store;
+use SMW\Tests\Utils\EntityCacheFactory;
 
 /**
  * @covers \SMW\DisplayTitleFinder
@@ -33,9 +34,7 @@ class DisplayTitleFinderTest extends TestCase {
 			->setMethods( [ 'getWikiPageSortKey', 'service' ] )
 			->getMockForAbstractClass();
 
-		$this->entityCache = $this->getMockBuilder( EntityCache::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->entityCache = EntityCacheFactory::newEntityCache();
 	}
 
 	public function testCanConstruct() {
@@ -52,22 +51,6 @@ class DisplayTitleFinderTest extends TestCase {
 			->method( 'getPropertyValues' )
 			->with( $subject )
 			->willReturn( [ new Blob( 'Bar' ) ] );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'makeKey' )
-			->with(
-				'displaytitle',
-				$subject->getHash() );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'fetch' )
-			->willReturn( false );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'save' );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'associate' );
 
 		$instance = new DisplayTitleFinder(
 			$this->store,
@@ -90,25 +73,6 @@ class DisplayTitleFinderTest extends TestCase {
 				[ $this->equalTo( $subject->asBase() ) ] )
 			->willReturnOnConsecutiveCalls( [], [ new Blob( 'foobar' ) ] );
 
-		$this->entityCache->expects( $this->once() )
-			->method( 'makeKey' )
-			->with(
-				'displaytitle',
-				$subject->getHash() );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'fetch' )
-			->willReturn( false );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'save' )
-			->with(
-				$this->anything(),
-				'foobar' );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'associate' );
-
 		$instance = new DisplayTitleFinder(
 			$this->store,
 			$this->entityCache
@@ -130,26 +94,6 @@ class DisplayTitleFinderTest extends TestCase {
 				[ $this->equalTo( $subject->asBase() ) ] )
 			->willReturnOnConsecutiveCalls( [], [] );
 
-		$this->entityCache->expects( $this->once() )
-			->method( 'makeKey' )
-			->with(
-				'displaytitle',
-				$subject->getHash() );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'fetch' )
-			->willReturn( false );
-
-		// Stored with a space
-		$this->entityCache->expects( $this->once() )
-			->method( 'save' )
-			->with(
-				$this->anything(),
-				' ' );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'associate' );
-
 		$instance = new DisplayTitleFinder(
 			$this->store,
 			$this->entityCache
@@ -162,107 +106,132 @@ class DisplayTitleFinderTest extends TestCase {
 		);
 	}
 
-	public function testPrefetchFromSemanticData() {
-		$subSemanticData = $this->getMockBuilder( SemanticData::class )
-			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
-			->getMock();
+	public function testPrefetchFromSemanticDataCoversSubjectsValuesAndSubobjects() {
+		$subSemanticData = $this->createMock( SemanticData::class );
+		$subSemanticData->method( 'getSubject' )->willReturn( WikiPage::doUnserialize( 'Foo#0##123' ) );
+		$subSemanticData->method( 'getProperties' )->willReturn( [ new Property( 'SubFoo' ) ] );
+		$subSemanticData->method( 'getPropertyValues' )->willReturn( [ WikiPage::newFromText( 'SubValue' ) ] );
 
-		$subSemanticData->expects( $this->atLeastOnce() )
-			->method( 'getSubject' )
-			->willReturn( WikiPage::doUnserialize( 'Foo#0##123' ) );
+		$semanticData = $this->createMock( SemanticData::class );
+		$semanticData->method( 'getSubject' )->willReturn( WikiPage::newFromText( 'Bar' ) );
+		$semanticData->method( 'getProperties' )->willReturn( [ new Property( 'Foo' ) ] );
+		$semanticData->method( 'getPropertyValues' )->willReturn( [ WikiPage::newFromText( 'Value' ) ] );
+		$semanticData->method( 'getSubSemanticData' )->willReturn( [ $subSemanticData ] );
 
-		$subSemanticData->expects( $this->any() )
-			->method( 'getProperties' )
-			->willReturn( [ new Property( 'SubFoo' ) ] );
+		$bar = WikiPage::newFromText( 'Bar' );
+		$value = WikiPage::newFromText( 'Value' );
+		$subobject = WikiPage::doUnserialize( 'Foo#0##123' );
+		$subValue = WikiPage::newFromText( 'SubValue' );
 
-		$subSemanticData->expects( $this->any() )
-			->method( 'getPropertyValues' )
-			->willReturn( [ WikiPage::newFromText( 'SubFoo' ) ] );
+		$this->givenPrefetchedDisplayTitles( [
+			WikiPage::newFromText( 'Foo' )->getSha1() => null,
+			$bar->getSha1() => 'Title of Bar',
+			$value->getSha1() => 'Title of Value',
+			$subobject->getSha1() => 'Title of the subobject',
+			$subValue->getSha1() => 'Title of SubValue',
+		] );
 
-		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
-			->getMock();
+		$this->store->expects( $this->never() )->method( 'getPropertyValues' );
 
-		$semanticData->expects( $this->atLeastOnce() )
-			->method( 'getSubject' )
-			->willReturn( new WikiPage( 'Bar', NS_MAIN ) );
-
-		$semanticData->expects( $this->any() )
-			->method( 'getProperties' )
-			->willReturn( [ new Property( 'Foo' ) ] );
-
-		$semanticData->expects( $this->any() )
-			->method( 'getPropertyValues' )
-			->willReturn( [ WikiPage::newFromText( 'Foo' ) ] );
-
-		$semanticData->expects( $this->any() )
-			->method( 'getSubSemanticData' )
-			->willReturn( [ $subSemanticData ] );
-
-		$prefetchList = [
-			WikiPage::newFromText( 'Bar' ),
-			WikiPage::newFromText( 'Foo' ),
-			WikiPage::doUnserialize( 'Foo#0##123' ),
-			WikiPage::newFromText( 'SubFoo' )
-		];
-
-		$instance = $this->getMockBuilder( DisplayTitleFinder::class )
-			->setConstructorArgs(
-				[
-					$this->store,
-					$this->entityCache
-				]
-			)
-			->setMethods( [ 'prefetchFromList' ] )
-			->getMock();
-
-		$instance->expects( $this->any() )
-			->method( 'prefetchFromList' )
-			->with( $prefetchList );
-
+		$instance = new DisplayTitleFinder( $this->store, $this->entityCache );
 		$instance->prefetchFromSemanticData( $semanticData );
+
+		$this->assertSame(
+			[ 'Title of Bar', 'Title of Value', 'Title of the subobject', 'Title of SubValue' ],
+			[
+				$instance->findDisplayTitle( $bar ),
+				$instance->findDisplayTitle( $value ),
+				$instance->findDisplayTitle( $subobject ),
+				$instance->findDisplayTitle( $subValue ),
+			]
+		);
 	}
 
-	public function testPrefetchFromList() {
+	public function testPageWithoutADisplayTitleFoundByAPrefetchDoesNotReadTheStore() {
+		$subject = WikiPage::newFromText( 'Foo' );
+		$this->givenPrefetchedDisplayTitles( [ $subject->getSha1() => null ] );
+		$this->store->expects( $this->never() )->method( 'getPropertyValues' );
+
+		$instance = new DisplayTitleFinder( $this->store, $this->entityCache );
+		$instance->prefetchFromList( [ $subject ] );
+
+		$this->assertSame( '', $instance->findDisplayTitle( $subject ) );
+	}
+
+	public function testPageAbsentFromAPrefetchReadsTheStore() {
+		$subject = WikiPage::newFromText( 'Foo' );
+		$this->givenPrefetchedDisplayTitles( [] );
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->willReturn( [ new Blob( 'Bar' ) ] );
+
+		$instance = new DisplayTitleFinder( $this->store, $this->entityCache );
+		$instance->prefetchFromList( [ $subject ] );
+
+		$this->assertSame( 'Bar', $instance->findDisplayTitle( $subject ) );
+	}
+
+	public function testPrefetchWithoutALookupServiceReadsTheStore() {
+		$subject = WikiPage::newFromText( 'Foo' );
+		$this->store->expects( $this->any() )
+			->method( 'service' )
+			->willThrowException( new ServiceNotFoundException( 'DisplayTitleLookup' ) );
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->willReturn( [ new Blob( 'Bar' ) ] );
+
+		$instance = new DisplayTitleFinder( $this->store, $this->entityCache );
+		$instance->prefetchFromList( [ $subject ] );
+
+		$this->assertSame( 'Bar', $instance->findDisplayTitle( $subject ) );
+	}
+
+	public function testFindsNothingWhenDisplayTitlesAreOff() {
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->willReturn( [ new Blob( 'Bar' ) ] );
+
+		$instance = new DisplayTitleFinder( $this->store, $this->entityCache );
+		$instance->setCanUse( false );
+
+		$this->assertSame( '', $instance->findDisplayTitle( WikiPage::newFromText( 'Foo' ) ) );
+	}
+
+	public function testFindDisplayTitleReadsTheStoreOnlyOnce() {
+		$subject = WikiPage::newFromText( 'Foo' );
+
+		$this->store->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->willReturn( [ new Blob( 'Bar' ) ] );
+
+		$instance = new DisplayTitleFinder(
+			$this->store,
+			$this->entityCache
+		);
+
+		$instance->findDisplayTitle( $subject );
+
+		$this->assertSame(
+			'Bar',
+			$instance->findDisplayTitle( $subject )
+		);
+	}
+
+	public function testPrefetchedDisplayTitlesAreFoundWithoutReadingTheStore() {
 		$subjects = [
 			WikiPage::newFromText( 'Foo' ),
 			WikiPage::doUnserialize( 'Foo#0##abc' ),
 			WikiPage::doUnserialize( 'Foo#0##123' )
 		];
 
-		$prefetch = [
+		$this->givenPrefetchedDisplayTitles( [
 			$subjects[2]->getSha1() => 'Bar',
 			$subjects[0]->getSha1() => 'Foobar',
 			$subjects[1]->getSha1() => null,
-		];
+		] );
 
-		$displayTitleLookup = $this->getMockBuilder( DisplayTitleLookup::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$displayTitleLookup->expects( $this->any() )
-			->method( 'prefetchFromList' )
-			->willReturn( $prefetch );
-
-		$this->store->expects( $this->any() )
-			->method( 'service' )
-			->with( 'DisplayTitleLookup' )
-			->willReturn( $displayTitleLookup );
-
-		$this->entityCache->expects( $this->any() )
-			->method( 'fetch' )
-			->willReturn( false );
-
-		// Stored with a space
-		$this->entityCache->expects( $this->any() )
-			->method( 'save' )
-			->withConsecutive(
-				[ $this->anything(), $this->equalTo( 'Foobar' ) ],
-				[ $this->anything(), $this->equalTo( 'Foobar' ) ],
-				[ $this->anything(), $this->equalTo( 'Bar' ) ] );
-
-		$this->entityCache->expects( $this->exactly( 3 ) )
-			->method( 'associate' );
+		$this->store->expects( $this->never() )
+			->method( 'getPropertyValues' );
 
 		$instance = new DisplayTitleFinder(
 			$this->store,
@@ -270,21 +239,88 @@ class DisplayTitleFinderTest extends TestCase {
 		);
 
 		$instance->prefetchFromList( $subjects );
+
+		$this->assertSame(
+			[ 'Foobar', 'Foobar', 'Bar' ],
+			array_map( [ $instance, 'findDisplayTitle' ], $subjects )
+		);
 	}
 
-	public function testPrefetchFromList_Subobject_Base() {
-		$subjects = [
-			WikiPage::doUnserialize( 'Foo#0##abc' ),
-		];
+	public function testPrefetchedSubobjectWithoutDisplayTitleFindsTheDisplayTitleOfItsBase() {
+		$subject = WikiPage::doUnserialize( 'Foo#0##abc' );
 
-		$prefetch = [
-			$subjects[0]->getSha1() => null,
-			$subjects[0]->asBase()->getSha1() => 'Bar',
-		];
+		$this->givenPrefetchedDisplayTitles( [
+			$subject->getSha1() => null,
+			$subject->asBase()->getSha1() => 'Bar',
+		] );
 
-		$displayTitleLookup = $this->getMockBuilder( DisplayTitleLookup::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->store->expects( $this->never() )
+			->method( 'getPropertyValues' );
+
+		$instance = new DisplayTitleFinder(
+			$this->store,
+			$this->entityCache
+		);
+
+		$instance->prefetchFromList( [ $subject ] );
+
+		$this->assertSame(
+			'Bar',
+			$instance->findDisplayTitle( $subject )
+		);
+	}
+
+	public function testPrefetchingASubobjectAlsoPrefetchesItsPage() {
+		$subject = WikiPage::doUnserialize( 'Foo#0##abc' );
+
+		$this->givenPrefetchedDisplayTitles( [
+			$subject->getSha1() => 'Bar',
+			$subject->asBase()->getSha1() => 'Foobar',
+		] );
+
+		$this->store->expects( $this->never() )
+			->method( 'getPropertyValues' );
+
+		$instance = new DisplayTitleFinder(
+			$this->store,
+			$this->entityCache
+		);
+
+		$instance->prefetchFromList( [ $subject ] );
+
+		$this->assertSame(
+			'Foobar',
+			$instance->findDisplayTitle( $subject->asBase() )
+		);
+	}
+
+	public function testPrefetchLooksUpOnlyDisplayTitlesThatAreNotCached() {
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->willReturn( [] );
+
+		$displayTitleLookup = $this->createMock( DisplayTitleLookup::class );
+
+		$displayTitleLookup->expects( $this->once() )
+			->method( 'prefetchFromList' )
+			->with( [ WikiPage::newFromText( 'Bar' )->getSha1() => WikiPage::newFromText( 'Bar' ) ] )
+			->willReturn( [] );
+
+		$this->store->expects( $this->any() )
+			->method( 'service' )
+			->willReturn( $displayTitleLookup );
+
+		$instance = new DisplayTitleFinder(
+			$this->store,
+			$this->entityCache
+		);
+
+		$instance->findDisplayTitle( WikiPage::newFromText( 'Foo' ) );
+		$instance->prefetchFromList( [ WikiPage::newFromText( 'Foo' ), WikiPage::newFromText( 'Bar' ) ] );
+	}
+
+	private function givenPrefetchedDisplayTitles( array $prefetch ): void {
+		$displayTitleLookup = $this->createMock( DisplayTitleLookup::class );
 
 		$displayTitleLookup->expects( $this->any() )
 			->method( 'prefetchFromList' )
@@ -294,26 +330,6 @@ class DisplayTitleFinderTest extends TestCase {
 			->method( 'service' )
 			->with( 'DisplayTitleLookup' )
 			->willReturn( $displayTitleLookup );
-
-		$this->entityCache->expects( $this->any() )
-			->method( 'fetch' )
-			->willReturn( false );
-
-		// Stored with a space
-		$this->entityCache->expects( $this->any() )
-			->method( 'save' )
-			->withConsecutive(
-				[ $this->anything(), $this->equalTo( 'Bar' ) ] );
-
-		$this->entityCache->expects( $this->exactly( 2 ) )
-			->method( 'associate' );
-
-		$instance = new DisplayTitleFinder(
-			$this->store,
-			$this->entityCache
-		);
-
-		$instance->prefetchFromList( $subjects );
 	}
 
 }

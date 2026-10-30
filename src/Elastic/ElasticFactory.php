@@ -223,7 +223,7 @@ class ElasticFactory {
 
 		$fileIndexer = new FileIndexer(
 			$store,
-			$applicationFactory->getEntityCache(),
+			$applicationFactory->getObjectCache(),
 			$fileHandler,
 			$fileAttachment
 		);
@@ -280,7 +280,7 @@ class ElasticFactory {
 		$replicationCheck = new ReplicationCheck(
 			$store,
 			$this->newDocumentReplicationExaminer( $store ),
-			$applicationFactory->getEntityCache(),
+			$applicationFactory->getObjectCache(),
 			new TemplateParser( __DIR__ . '/../../templates/EntityExaminer' )
 		);
 
@@ -388,7 +388,7 @@ class ElasticFactory {
 		$replicationInfoProvider = new ReplicationInfoProvider(
 			$outputFormatter,
 			$this->newReplicationCheck( $store ),
-			$applicationFactory->getEntityCache()
+			$applicationFactory->getObjectCache()
 		);
 
 		$taskHandlers = [

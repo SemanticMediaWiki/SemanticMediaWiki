@@ -155,11 +155,9 @@ class TaskHandlerFactory {
 	 * @return OperationalStatisticsListTaskHandler
 	 */
 	public function newOperationalStatisticsListTaskHandler(): OperationalStatisticsListTaskHandler {
-		$entityCache = ApplicationFactory::getInstance()->getEntityCache();
-
 		$taskHandlers = [
 			new CacheStatisticsListTaskHandler( $this->outputFormatter ),
-			new TableStatisticsTaskHandler( $this->outputFormatter, $entityCache )
+			new TableStatisticsTaskHandler( $this->outputFormatter, ApplicationFactory::getInstance()->getObjectCache() )
 		];
 
 		return new OperationalStatisticsListTaskHandler( $this->outputFormatter, $taskHandlers );

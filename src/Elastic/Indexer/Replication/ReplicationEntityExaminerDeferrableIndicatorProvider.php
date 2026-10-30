@@ -5,7 +5,6 @@ namespace SMW\Elastic\Indexer\Replication;
 use MediaWiki\Html\TemplateParser;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\EntityCache;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Localizer\MessageLocalizerTrait;
@@ -34,7 +33,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 */
 	public function __construct(
 		private readonly Store $store,
-		private readonly EntityCache $entityCache,
 		private readonly ReplicationCheck $replicationCheck,
 		private readonly TemplateParser $templateParser,
 	) {
@@ -163,7 +161,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 
 	private function wasChecked( WikiPage $subject ): bool {
 		$connection = $this->store->getConnection( 'elastic' );
-		$wasChecked = false;
 
 		if (
 			$connection->ping() === false ||
@@ -171,11 +168,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 			return false;
 		}
 
-		$wasChecked = $this->entityCache->fetch(
-			$this->replicationCheck->makeCacheKey( $subject )
-		);
-
-		return $wasChecked === ReplicationCheck::TYPE_SUCCESS;
+		return $this->replicationCheck->hasSuccessfulCheck( $subject );
 	}
 
 }

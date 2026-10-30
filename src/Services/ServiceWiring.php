@@ -176,7 +176,8 @@ return [
 		}
 
 		return new EntityCache(
-			$servicesFactory->getObjectCache()
+			$servicesFactory->getObjectCache(),
+			new MapCacheLRU( 1000 )
 		);
 	},
 
@@ -858,7 +859,7 @@ return [
 		return new DependencyValidatorFactory(
 			$servicesFactory->getNamespaceExaminer(),
 			$servicesFactory->getQueryDependencyLinksStoreFactory(),
-			$servicesFactory->getEntityCache(),
+			$servicesFactory->getObjectCache(),
 			$servicesFactory->getEventDispatcher()
 		);
 	},

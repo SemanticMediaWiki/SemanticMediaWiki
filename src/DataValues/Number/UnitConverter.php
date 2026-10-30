@@ -116,17 +116,40 @@ class UnitConverter {
 			return;
 		}
 
-		$key = $this->entityCache->makeKey( 'unit', $subject->getHash() );
+		$data = $this->entityCache->getWithSetCallback(
+			$subject,
+			$this->entityCache->makeKey( 'unit', $subject->getHash() ),
+			EntityCache::TTL_WEEK,
+			fn () => $this->buildConversionData( $numberValue )
+		);
 
-		$data = $this->entityCache->fetch( $key );
-		if ( $data !== false ) {
-			$this->unitIds = $data['ids'];
-			$this->unitFactors = $data['factors'];
-			$this->mainUnit = $data['main'];
-			$this->prefixalUnitPreference = $data['prefix'];
-		} else {
-			$this->initConversionData( $subject, $key, $numberValue );
+		if ( $data === false ) {
+			return;
 		}
+
+		$this->unitIds = $data['ids'];
+		$this->unitFactors = $data['factors'];
+		$this->mainUnit = $data['main'];
+		$this->prefixalUnitPreference = $data['prefix'];
+	}
+
+	private function buildConversionData( NumberValue $numberValue ): array|false {
+		$this->fetchConversionData( $numberValue );
+
+		foreach ( $this->errors as $error ) {
+			$numberValue->addErrorMsg( $error );
+		}
+
+		if ( $this->errors !== [] ) {
+			return false;
+		}
+
+		return [
+			'ids' => $this->unitIds,
+			'factors' => $this->unitFactors,
+			'main' => $this->mainUnit,
+			'prefix' => $this->prefixalUnitPreference
+		];
 	}
 
 	/**
@@ -189,31 +212,6 @@ class UnitConverter {
 		// @phan-suppress-next-line PhanUselessBinaryAddRight
 		$this->unitFactors = [ '' => 1 ] + $this->unitFactors;
 		$this->unitIds[''] = '';
-	}
-
-	private function initConversionData( $subject, string $key, NumberValue $numberValue ): void {
-		$this->fetchConversionData( $numberValue );
-
-		foreach ( $this->errors as $error ) {
-			$numberValue->addErrorMsg( $error );
-		}
-
-		if ( $this->errors !== [] ) {
-			return;
-		}
-
-		$data = [
-			'ids' => $this->unitIds,
-			'factors' => $this->unitFactors,
-			'main' => $this->mainUnit,
-			'prefix' => $this->prefixalUnitPreference
-		];
-
-		$this->entityCache->save( $key, $data );
-
-		// Connect to the property page so that it can be flushed once the
-		// property page content changes
-		$this->entityCache->associate( $subject, $key );
 	}
 
 	private function matchUnitAliases( NumberValue $numberValue, $number, $asPrefix, array $unitAliases ): void {

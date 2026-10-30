@@ -2,16 +2,18 @@
 
 namespace SMW;
 
+use MapCacheLRU;
 use MediaWiki\Title\Title;
 use SMW\DataItems\WikiPage;
 use Wikimedia\ObjectCache\BagOStuff;
 
 /**
- * Class provides a simple interface the link independent cache entries as
- * associates (to a wikipage) hereby allowing them to be invalidated at once.
+ * Caches values derived from a page so that invalidating the page invalidates
+ * all of them, including those of its subobjects.
  *
- * `...Sub` methods provide a convenient support layer to extend or remove values
- * from a cache entry.
+ * Each value is stored with the version of its page current when the value
+ * was generated, and counts as cached only while that version is current.
+ * Invalidating a page gives it a new version.
  *
  * @license GPL-2.0-or-later
  * @since 3.1
@@ -24,7 +26,7 @@ class EntityCache {
 	 * Repository specific namespace
 	 */
 	const CACHE_NAMESPACE = 'smw:entity';
-	const VERSION = 1;
+	const VERSION = 2;
 
 	/**
 	 * TTLs
@@ -38,9 +40,22 @@ class EntityCache {
 	const TTL_YEAR = 31536000; // 365 * 24 * 3600
 
 	/**
-	 * @since 3.1
+	 * At least the TTL of any value, as a page's values count as outdated once
+	 * its version expires
 	 */
-	public function __construct( private readonly BagOStuff $cache ) {
+	private const VERSION_TTL = self::TTL_MONTH;
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param BagOStuff $cache
+	 * @param MapCacheLRU $processCache Holds this process's values, keyed by
+	 *  the version key of their page, so invalidating a page clears only its values
+	 */
+	public function __construct(
+		private readonly BagOStuff $cache,
+		private readonly MapCacheLRU $processCache
+	) {
 	}
 
 	/**
@@ -70,192 +85,164 @@ class EntityCache {
 	}
 
 	/**
-	 * @since 3.1
+	 * Returns the value cached under $key, or generates and caches it with
+	 * $callback. A generated `false` is not cached.
 	 *
-	 * @param string $key
+	 * A process keeps values it has looked up in memory for up to
+	 * BagOStuff::TTL_PROC_SHORT seconds after it got them, so it can take that
+	 * long to see an invalidation made by another process.
 	 *
-	 * @return bool
+	 * @since 7.4.0
 	 */
-	public function contains( $key ) {
-		return $this->cache->get( $key ) !== false;
+	public function getWithSetCallback( WikiPage|Title $subject, string $key, int $ttl, callable $callback ): mixed {
+		return $this->getMultiWithUnionSetCallback(
+			[ $key => $subject ],
+			$ttl,
+			static fn () => [ $key => $callback() ]
+		)[$key];
 	}
 
 	/**
-	 * @since 3.1
+	 * Like getWithSetCallback() for several values, generating all missing ones
+	 * with a single $callback call. $callback receives the subjects of the
+	 * missing values and returns a value, or `false`, for each of them, both
+	 * keyed by cache key.
 	 *
-	 * @param string $key
+	 * @since 7.4.0
+	 *
+	 * @param array<string,WikiPage|Title> $subjects Subjects keyed by the cache key of their value
+	 *
+	 * @return array<string,mixed> Values keyed by cache key
 	 */
-	public function fetch( $key ) {
-		return $this->cache->get( $key );
-	}
+	public function getMultiWithUnionSetCallback( array $subjects, int $ttl, callable $callback ): array {
+		$versionKeys = array_map( fn ( WikiPage|Title $subject ) => $this->makeVersionKey( $subject ), $subjects );
+		[ $values, $versions ] = $this->lookUp( $versionKeys );
+		$versionKeys = array_diff_key( $versionKeys, $values );
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 */
-	public function save( $key, $value = null, $ttl = 0 ): void {
-		$this->cache->set( $key, $value, $ttl );
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @param string $key
-	 */
-	public function delete( $key ): void {
-		$this->cache->delete( $key );
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @param string $key
-	 * @param mixed $sub
-	 */
-	public function fetchSub( $key, $sub ) {
-		$res = $this->cache->get( $key );
-		$sub = md5( $sub );
-
-		if ( !is_array( $res ) ) {
-			return false;
+		if ( $versionKeys === [] ) {
+			return $values;
 		}
 
-		return $res[$sub] ?? false;
-	}
+		// Before generating, so an invalidation after this point outdates the value.
+		// Its source must also be current: data read before the change was
+		// committed, or from a replica behind it, is stored under the new version.
+		$versions += $this->createVersions( array_diff( $versionKeys, array_keys( $versions ) ) );
+		$entries = [];
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param string $key
-	 * @param string $sub
-	 * @param mixed $value
-	 * @param int $ttl
-	 */
-	public function saveSub( $key, $sub, $value = null, $ttl = 0 ): void {
-		$res = $this->cache->get( $key );
-		$sub = md5( $sub );
+		foreach ( $callback( array_intersect_key( $subjects, $versionKeys ) ) as $key => $value ) {
+			$values[$key] = $value;
 
-		if ( !is_array( $res ) ) {
-			$res = [];
-		}
-
-		$res[$sub] = $value;
-
-		$this->cache->set( $key, $res, $ttl );
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @param string $key
-	 * @param string $sub
-	 * @param mixed $value
-	 * @param int $ttl
-	 */
-	public function overrideSub( $key, $sub, $value = null, $ttl = 0 ): void {
-		$res = [
-			md5( $sub ) => $value
-		];
-
-		$this->cache->set( $key, $res, $ttl );
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @param string $key
-	 * @param string $sub
-	 * @param int $ttl
-	 */
-	public function deleteSub( $key, $sub, $ttl = 0 ): void {
-		$res = $this->cache->get( $key );
-		$sub = md5( $sub );
-
-		if ( !is_array( $res ) ) {
-			$res = [];
-		}
-
-		unset( $res[$sub] );
-
-		$this->cache->set( $key, $res, $ttl );
-	}
-
-	/**
-	 * Bind a cache key to a subject so that when a page gets flushed or
-	 * modified, any associate keys can be invalidated at once.
-	 *
-	 * @since 3.1
-	 *
-	 * @param WikiPage|Title $subject
-	 */
-	public function associate( $subject, $key ): void {
-		if ( $subject === null ) {
-			return;
-		}
-
-		if ( $subject instanceof Title ) {
-			$subject = WikiPage::newFromTitle( $subject );
-		}
-
-		if ( !$subject instanceof WikiPage ) {
-			return;
-		}
-
-		// Associate only with the main subject (given that a Title can be injected)
-		$subject = $subject->asBase();
-
-		$k = $this->makeKey( $subject );
-		$res = $this->cache->get( $k );
-		$res = $res === false ? [] : $res;
-
-		// Initialize the record that binds the "page" entity to all associated
-		// subkeys
-		if ( !isset( $res['__subject'] ) ) {
-			$res['__subject'] = $subject->getHash();
-		}
-
-		if ( !isset( $res['__assoc'] ) ) {
-			$res['__assoc'] = [];
-		}
-
-		$res['__assoc'][$key] = true;
-
-		// Store without expiry
-		$this->cache->set( $k, $res );
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @param WikiPage|Title|null $subject
-	 */
-	public function invalidate( $subject = null ): void {
-		if ( $subject === null ) {
-			return;
-		}
-
-		if ( $subject instanceof Title ) {
-			$subject = WikiPage::newFromTitle( $subject );
-		}
-
-		if ( !$subject instanceof WikiPage ) {
-			return;
-		}
-
-		$subject = $subject->asBase();
-
-		$k = $this->makeKey( $subject );
-		$res = $this->cache->get( $k );
-
-		if ( isset( $res['__assoc'] ) ) {
-			foreach ( $res['__assoc'] as $key => $bool ) {
-				$this->cache->delete( $key );
+			if ( $value !== false ) {
+				$entries[$key] = [ $versions[$versionKeys[$key]], $value ];
+				$this->processCache->setField( $versionKeys[$key], $key, $value );
 			}
 		}
 
-		$this->cache->delete( $k );
+		if ( $entries !== [] ) {
+			$this->cache->setMulti( $entries, $ttl );
+		}
+
+		return $values;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return mixed The value cached under $key, or false if there is none
+	 */
+	public function fetch( WikiPage|Title $subject, string $key ): mixed {
+		[ $values ] = $this->lookUp( [ $key => $this->makeVersionKey( $subject ) ] );
+
+		return array_key_exists( $key, $values ) ? $values[$key] : false;
+	}
+
+	/**
+	 * @since 3.1
+	 */
+	public function invalidate( WikiPage|Title $subject ): void {
+		$versionKey = $this->makeVersionKey( $subject );
+
+		$this->cache->set( $versionKey, $this->newVersion(), self::VERSION_TTL );
+		$this->processCache->clear( $versionKey );
+	}
+
+	/**
+	 * For a long-running process that must not use a value that another process
+	 * has invalidated in the last BagOStuff::TTL_PROC_SHORT seconds.
+	 *
+	 * @since 7.4.0
+	 */
+	public function clearProcessCache(): void {
+		$this->processCache->clear();
+	}
+
+	/**
+	 * @param array<string,string> $versionKeys Version keys keyed by the cache key of their value
+	 *
+	 * @return array{0: array<string,mixed>, 1: array<string,string>} The cached values found,
+	 *  keyed by cache key, and all backend entries read, which hold the versions by version key
+	 */
+	private function lookUp( array $versionKeys ): array {
+		$values = [];
+
+		foreach ( $versionKeys as $key => $versionKey ) {
+			if ( $this->processCache->hasField( $versionKey, $key, BagOStuff::TTL_PROC_SHORT ) ) {
+				$values[$key] = $this->processCache->getField( $versionKey, $key );
+			}
+		}
+
+		$versionKeys = array_diff_key( $versionKeys, $values );
+
+		if ( $versionKeys === [] ) {
+			return [ $values, [] ];
+		}
+
+		// Unique, as a page and its subobjects share a version key
+		$stored = $this->cache->getMulti(
+			array_merge( array_keys( $versionKeys ), array_values( array_unique( $versionKeys ) ) )
+		);
+
+		foreach ( $versionKeys as $key => $versionKey ) {
+			$entry = $stored[$key] ?? false;
+
+			if ( isset( $stored[$versionKey] ) && is_array( $entry ) && $entry[0] === $stored[$versionKey] ) {
+				$values[$key] = $entry[1];
+				$this->processCache->setField( $versionKey, $key, $entry[1] );
+			}
+		}
+
+		return [ $values, $stored ];
+	}
+
+	/**
+	 * @param string[] $versionKeys
+	 *
+	 * @return array<string,string> Versions keyed by version key
+	 */
+	private function createVersions( array $versionKeys ): array {
+		$versions = [];
+
+		foreach ( $versionKeys as $versionKey ) {
+			$versions[$versionKey] = $this->newVersion();
+		}
+
+		if ( $versions !== [] ) {
+			$this->cache->setMulti( $versions, self::VERSION_TTL );
+		}
+
+		return $versions;
+	}
+
+	private function newVersion(): string {
+		return bin2hex( random_bytes( 8 ) );
+	}
+
+	private function makeVersionKey( WikiPage|Title $subject ): string {
+		if ( $subject instanceof Title ) {
+			$subject = WikiPage::newFromTitle( $subject );
+		}
+
+		return $this->makeKey( ':version', $subject->asBase() );
 	}
 
 }

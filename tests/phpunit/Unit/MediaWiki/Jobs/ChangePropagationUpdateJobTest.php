@@ -8,7 +8,10 @@ use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\ChangePropagationUpdateJob;
 use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\EntityCacheFactory;
+use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\ChangePropagationUpdateJob
@@ -74,6 +77,38 @@ class ChangePropagationUpdateJobTest extends TestCase {
 		$this->assertTrue(
 			$instance->run()
 		);
+	}
+
+	public function testRunSeesASpecificationChangedByAnotherRunnerMomentsAgo() {
+		$subject = WikiPage::newFromText( 'Foo' );
+		$backend = new HashBagOStuff();
+		$entityCache = EntityCacheFactory::newEntityCache( $backend );
+		$this->testEnvironment->registerObject( 'EntityCache', $entityCache );
+
+		$key = $entityCache->makeKey( 'specification' );
+		$lookUp = static fn ( string $value ) => $entityCache->getWithSetCallback( $subject, $key, 60, static fn () => $value );
+		$lookUp( 'old type' );
+		EntityCacheFactory::newEntityCache( $backend )->invalidate( $subject );
+
+		$this->runJob( $subject );
+
+		$this->assertSame( 'new type', $lookUp( 'new type' ) );
+	}
+
+	public function testRunClearsWhatTheStoreKeepsInMemory() {
+		$store = $this->createMock( Store::class );
+		$store->expects( $this->once() )->method( 'clear' );
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$this->runJob( WikiPage::newFromText( 'Foo' ) );
+	}
+
+	private function runJob( WikiPage $subject ): void {
+		$this->jobFactory->expects( $this->any() )
+			->method( 'newUpdateJob' )
+			->willReturn( $this->createMock( UpdateJob::class ) );
+
+		( new ChangePropagationUpdateJob( $subject->getTitle(), [], $this->jobFactory ) )->run();
 	}
 
 	public function jobProvider() {

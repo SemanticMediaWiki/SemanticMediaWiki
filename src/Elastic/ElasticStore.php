@@ -254,6 +254,7 @@ class ElasticStore extends SQLStore {
 		$document->setTextBody( $text );
 
 		$this->indexer->indexDocument( $document, Indexer::REQUIRE_SAFE_REPLICATION );
+		$this->elasticFactory->newReplicationCheck( $this )->forgetSuccessfulCheck( $subject );
 
 		$this->logger->info(
 			'ElasticStore Data update completed procTime in sec: {procTime}',

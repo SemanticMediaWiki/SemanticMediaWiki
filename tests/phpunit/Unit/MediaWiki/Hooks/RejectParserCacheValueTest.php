@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use SMW\DataItems\WikiPage as DIWikiPage;
 use SMW\DependencyValidatorFactory;
-use SMW\EntityCache;
 use SMW\EventDispatcher\EventDispatcher;
 use SMW\MediaWiki\Hooks\RejectParserCacheValue;
 use SMW\NamespaceExaminer;
@@ -35,7 +34,7 @@ class RejectParserCacheValueTest extends TestCase {
 	private $namespaceExaminer;
 	private $logger;
 	private $dependencyLinksValidator;
-	private $entityCache;
+	private $cache;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -45,7 +44,7 @@ class RejectParserCacheValueTest extends TestCase {
 		$this->namespaceExaminer = $this->createMock( NamespaceExaminer::class );
 		$this->logger = $this->createMock( LoggerInterface::class );
 		$this->dependencyLinksValidator = $this->createMock( DependencyLinksValidator::class );
-		$this->entityCache = new EntityCache( new HashBagOStuff() );
+		$this->cache = new HashBagOStuff();
 	}
 
 	protected function tearDown(): void {
@@ -70,7 +69,7 @@ class RejectParserCacheValueTest extends TestCase {
 		return new DependencyValidatorFactory(
 			$this->namespaceExaminer,
 			$queryDependencyLinksStoreFactory,
-			$this->entityCache,
+			$this->cache,
 			$this->createMock( EventDispatcher::class )
 		);
 	}

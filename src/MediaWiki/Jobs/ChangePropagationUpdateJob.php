@@ -55,6 +55,11 @@ class ChangePropagationUpdateJob extends Job {
 	 * @since 3.0
 	 */
 	public function run(): bool {
+		// Another runner can have changed the specification moments ago, and this
+		// job is the page's only reprocess: an outdated type would store its values
+		// in a table that reads under the new type do not look at
+		ApplicationFactory::getInstance()->getStore()->clear();
+
 		ChangePropagationDispatchJob::cleanUp(
 			WikiPage::newFromTitle( $this->getTitle() )
 		);

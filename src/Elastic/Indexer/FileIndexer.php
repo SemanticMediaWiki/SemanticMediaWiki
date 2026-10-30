@@ -10,9 +10,9 @@ use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Indexer\Attachment\FileAttachment;
 use SMW\Elastic\Indexer\Attachment\FileHandler;
-use SMW\EntityCache;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\Store;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * File indexer to use the Elasticsearch ingest pipeline to index and retrieve
@@ -31,8 +31,6 @@ class FileIndexer {
 	use RevisionGuardAwareTrait;
 	use LoggerAwareTrait;
 
-	const INGEST_RESPONSE = 'es.ingest.response';
-
 	private string $origin = '';
 
 	private bool $sha1Check = true;
@@ -44,10 +42,19 @@ class FileIndexer {
 	 */
 	public function __construct(
 		private Store $store,
-		private EntityCache $entityCache,
+		private BagOStuff $cache,
 		private FileHandler $fileHandler,
 		private FileAttachment $fileAttachment,
 	) {
+	}
+
+	/**
+	 * Key of the response of the last ingest of a file, for the replication status board
+	 *
+	 * @since 7.4.0
+	 */
+	public static function makeIngestResponseKey( BagOStuff $cache, Title $title ): string {
+		return $cache->makeKey( 'smw', 'es', 'ingest-response', md5( $title->getPrefixedDBkey() ) );
 	}
 
 	/**
@@ -249,10 +256,11 @@ class FileIndexer {
 		// Store the response temporarily to allow the `replication status` board
 		// to show whether some files had issues during the indexing and need
 		// intervention from a user
-		$key = $this->entityCache->makeKey( $title, self::INGEST_RESPONSE );
-
-		$this->entityCache->save( $key, $context['response'] );
-		$this->entityCache->associate( $title, $key );
+		$this->cache->set(
+			self::makeIngestResponseKey( $this->cache, $title ),
+			$context['response'],
+			BagOStuff::TTL_MONTH
+		);
 
 		$this->fileAttachment->createAttachment( $dataItem );
 	}

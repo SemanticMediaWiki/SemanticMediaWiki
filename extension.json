@@ -431,8 +431,7 @@
 		"SemanticMediaWiki.Elastic.RegisterEntityExaminerDeferrableIndicatorProviders": {
 			"class": "SMW\\Elastic\\Hooks\\RegisterEntityExaminerDeferrableIndicatorProviders",
 			"services": [
-				"SMW.ElasticFactory",
-				"SMW.EntityCache"
+				"SMW.ElasticFactory"
 			]
 		},
 		"SemanticMediaWiki.Elastic.RegisterTaskHandlers": {

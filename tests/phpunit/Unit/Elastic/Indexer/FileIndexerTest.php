@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\Elastic\Indexer;
 
+use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use SMW\DataItems\WikiPage;
@@ -10,10 +11,10 @@ use SMW\Elastic\Indexer\Attachment\FileAttachment;
 use SMW\Elastic\Indexer\Attachment\FileHandler;
 use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Indexer;
-use SMW\EntityCache;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use Wikimedia\ObjectCache\BagOStuff;
 use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
@@ -31,7 +32,7 @@ class FileIndexerTest extends TestCase {
 	private $fileHandler;
 	private $fileAttachment;
 	private $logger;
-	private $entityCache;
+	private BagOStuff $cache;
 	private $revisionGuard;
 	private Store $store;
 
@@ -56,10 +57,7 @@ class FileIndexerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->entityCache = $this->getMockBuilder( EntityCache::class )
-			->setConstructorArgs( [ new HashBagOStuff() ] )
-			->setMethods( [ 'save', 'associate', 'fetch' ] )
-			->getMock();
+		$this->cache = new HashBagOStuff();
 
 		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -69,11 +67,39 @@ class FileIndexerTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			FileIndexer::class,
-			new FileIndexer( $this->store, $this->entityCache, $this->fileHandler, $this->fileAttachment )
+			new FileIndexer( $this->store, $this->cache, $this->fileHandler, $this->fileAttachment )
 		);
 	}
 
 	public function testIndex() {
+		$dataItem = $this->indexFile();
+
+		$this->assertSame(
+			[ 'result' => 'created' ],
+			$this->cache->get( FileIndexer::makeIngestResponseKey( $this->cache, $dataItem->getTitle() ) )
+		);
+	}
+
+	public function testIngestResponseExpires() {
+		$now = 1700000000.0;
+		$this->cache->setMockTime( $now );
+		$dataItem = $this->indexFile();
+
+		$now += BagOStuff::TTL_MONTH + 1;
+
+		$this->assertFalse(
+			$this->cache->get( FileIndexer::makeIngestResponseKey( $this->cache, $dataItem->getTitle() ) )
+		);
+	}
+
+	public function testIngestResponseIsKeptPerFile() {
+		$this->assertNotSame(
+			FileIndexer::makeIngestResponseKey( $this->cache, Title::makeTitle( NS_FILE, 'Foo.pdf' ) ),
+			FileIndexer::makeIngestResponseKey( $this->cache, Title::makeTitle( NS_FILE, 'Bar.pdf' ) )
+		);
+	}
+
+	private function indexFile(): WikiPage {
 		$url = 'http://example.org/Foo.txt';
 
 		$file = $this->getMockBuilder( '\File' )
@@ -95,23 +121,17 @@ class FileIndexerTest extends TestCase {
 		$client->expects( $this->once() )
 			->method( 'ingestPutPipeline' );
 
+		$client->expects( $this->any() )
+			->method( 'index' )
+			->willReturn( [ 'result' => 'created' ] );
+
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
 			->willReturn( $client );
 
-		$this->entityCache->expects( $this->once() )
-			->method( 'save' )
-			->with( $this->stringContains( 'smw:entity:84eec6ddc362d91dd31cab4e5ed78620' ) );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'associate' )
-			->with(
-				$this->anything(),
-				$this->stringContains( 'smw:entity:84eec6ddc362d91dd31cab4e5ed78620' ) );
-
 		$instance = new FileIndexer(
 			$this->store,
-			$this->entityCache,
+			$this->cache,
 			$this->fileHandler,
 			$this->fileAttachment
 		);
@@ -123,6 +143,8 @@ class FileIndexerTest extends TestCase {
 		$dataItem->setId( 42 );
 
 		$instance->index( $dataItem, $file );
+
+		return $dataItem;
 	}
 
 }

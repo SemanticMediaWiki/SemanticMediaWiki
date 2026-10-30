@@ -188,13 +188,17 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	}
 
 	private function findErrors( $subject ): array {
-		$key = $this->entityCache->makeKey( $subject, 'constraint-error' );
+		$errors = $this->entityCache->getWithSetCallback(
+			$subject,
+			$this->entityCache->makeKey( $subject, 'constraint-error' ),
+			EntityCache::TTL_WEEK,
+			fn () => $this->lookUpErrors( $subject )
+		);
 
-		$errors = $this->entityCache->fetch( $key );
-		if ( $errors !== false ) {
-			return $this->decodeErrors( $errors );
-		}
+		return $this->decodeErrors( $errors );
+	}
 
+	private function lookUpErrors( $subject ): array {
 		$errorLookup = $this->store->service( 'ErrorLookup' );
 
 		$requestOptions = new RequestOptions();
@@ -208,31 +212,13 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 			$requestOptions
 		);
 
-		$errors = $errorLookup->buildArray( $res );
-
-		// Store `null` as string to have the cache return something and not
-		// interpret an empty [] as `false`
-		if ( $errors === [] ) {
-			$errors = 'null';
-		}
-
-		$this->entityCache->save( $key, $errors, EntityCache::TTL_WEEK );
-
-		// Being an associate member means once the subject is invalidated (during
-		// save, delete etc.), the current cache entry is evicted as well.
-		$this->entityCache->associate( $subject, $key );
-
-		return $this->decodeErrors( $errors );
+		return $errorLookup->buildArray( $res );
 	}
 
-	private function decodeErrors( $errors ): array {
-		if ( $errors === 'null' ) {
-			return [];
-		}
-
+	private function decodeErrors( array $errors ): array {
 		$messages = [];
 
-		foreach ( (array)$errors as $error ) {
+		foreach ( $errors as $error ) {
 			$messages[] = Message::decode( $error, Message::PARSE, $this->languageCode );
 		}
 

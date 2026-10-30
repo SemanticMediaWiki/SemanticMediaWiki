@@ -11,12 +11,12 @@ use PHPUnit\Framework\TestCase;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
-use SMW\EntityCache;
 use SMW\Factbox\CachedFactbox;
 use SMW\Factbox\FactboxText;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\EntityCacheFactory;
 use SMW\Tests\Utils\Mock\MockTitle;
 use Wikimedia\ObjectCache\HashBagOStuff;
 
@@ -52,10 +52,7 @@ class CachedFactboxTest extends TestCase {
 
 		$this->spyLogger = $this->testEnvironment->newSpyLogger();
 
-		$this->entityCache = $this->getMockBuilder( EntityCache::class )
-			->disableOriginalConstructor()
-			->setMethods( [ 'fetch', 'save', 'saveSub', 'fetchSub', 'associate' ] )
-			->getMock();
+		$this->entityCache = EntityCacheFactory::newEntityCache( $this->memoryCache );
 
 		$this->factboxText = ApplicationFactory::getInstance()->getFactboxText();
 	}
@@ -76,41 +73,8 @@ class CachedFactboxTest extends TestCase {
 	 * @dataProvider outputDataProvider
 	 */
 	public function testProcessAndRetrieveContent( $parameters, $expected ) {
-		$this->entityCache->expects( $this->any() )
-			->method( 'fetch' )
-			->willReturn( false );
-
-		$this->testEnvironment->addConfiguration(
-			'smwgNamespacesWithSemanticLinks',
-			$parameters['smwgNamespacesWithSemanticLinks']
-		);
-
-		$this->testEnvironment->addConfiguration(
-			'smwgShowFactbox',
-			$parameters['smwgShowFactbox']
-		);
-
-		$this->testEnvironment->registerObject( 'Store', $parameters['store'] );
-
 		$outputPage = $parameters['outputPage'];
-
-		$instance = new CachedFactbox(
-			new EntityCache( $this->memoryCache ),
-			$this->factboxText
-		);
-
-		$instance->isEnabled( true );
-
-		// Read post-normalization so setShowFactbox sees the integer
-		// regardless of whether the provider supplied the new string form
-		// or a legacy SMW_FACTBOX_* constant.
-		$instance->setShowFactbox(
-			(int)ApplicationFactory::getInstance()->getSettings()->get( 'smwgShowFactbox' )
-		);
-
-		$instance->setLogger(
-			$this->spyLogger
-		);
+		$instance = $this->newCachedFactbox( $parameters );
 
 		$this->assertEmpty(
 			$instance->retrieveContent( $outputPage )
@@ -142,6 +106,146 @@ class CachedFactboxTest extends TestCase {
 			$outputPage,
 			$instance
 		);
+	}
+
+	public function testFactboxOfARegularViewReachesReaders() {
+		[ $view, $expected ] = $this->newVisibleFactboxCase();
+		$this->newCachedFactbox( $view )->prepare( $view['outputPage'], $view['parserOutput'] );
+
+		$this->assertStringContainsString( $expected['text'], $this->retrieveForReader( 10001 ) );
+	}
+
+	/**
+	 * @dataProvider uncachedRequestProvider
+	 */
+	public function testFactboxOfAPreviewOrEditViewDoesNotReachReaders( array $request ) {
+		[ $view ] = $this->newVisibleFactboxCase( 10001, $request );
+		$this->newCachedFactbox( $view )->prepare( $view['outputPage'], $view['parserOutput'] );
+
+		$this->assertSame( '', $this->retrieveForReader( 10001 ) );
+	}
+
+	public function uncachedRequestProvider(): iterable {
+		yield 'preview' => [ [ 'wpPreview' => true ] ];
+		yield 'edit' => [ [ 'action' => 'edit' ] ];
+	}
+
+	public function testFactboxBuiltWithCachingDisabledDoesNotReachReaders() {
+		[ $view ] = $this->newVisibleFactboxCase();
+		$instance = $this->newCachedFactbox( $view );
+		$instance->isEnabled( false );
+
+		$instance->prepare( $view['outputPage'], $view['parserOutput'] );
+
+		$this->assertSame( '', $this->retrieveForReader( 10001 ) );
+	}
+
+	public function testFactboxOfAnotherRevisionDoesNotReachReaders() {
+		[ $view ] = $this->newVisibleFactboxCase( 10001 );
+		$this->newCachedFactbox( $view )->prepare( $view['outputPage'], $view['parserOutput'] );
+
+		$this->assertSame( '', $this->retrieveForReader( 20002 ) );
+	}
+
+	public function testRebuildsCachedContentThatNoLongerVerifies() {
+		[ $view, $expected ] = $this->newVisibleFactboxCase();
+		$instance = $this->newCachedFactbox( $view );
+		$instance->prepare( $view['outputPage'], $view['parserOutput'] );
+
+		$this->testEnvironment->addConfiguration( 'wgSecretKey', 'a different secret' );
+		$instance->prepare( $view['outputPage'], $view['parserOutput'] );
+
+		$this->assertStringContainsString(
+			$expected['text'],
+			$instance->retrieveContent( $view['outputPage'] )
+		);
+	}
+
+	public function testContentThatNoLongerVerifiesIsCachedAgainByTheNextView() {
+		[ $view, $expected ] = $this->newVisibleFactboxCase();
+		$instance = $this->newCachedFactbox( $view );
+		$instance->prepare( $view['outputPage'], $view['parserOutput'] );
+
+		$this->testEnvironment->addConfiguration( 'wgSecretKey', 'a different secret' );
+		$instance->prepare( $view['outputPage'], $view['parserOutput'] );
+		$instance->prepare( $view['outputPage'], $view['parserOutput'] );
+
+		$this->assertStringContainsString( $expected['text'], $this->retrieveForReader( 10001 ) );
+	}
+
+	public function testPreviewShowsTheFactbox() {
+		[ $view, $expected ] = $this->newVisibleFactboxCase( 10001, [ 'wpPreview' => true ] );
+		$instance = $this->newCachedFactbox( $view );
+
+		$instance->prepare( $view['outputPage'], $view['parserOutput'] );
+
+		$this->assertStringContainsString( $expected['text'], $instance->retrieveContent( $view['outputPage'] ) );
+	}
+
+	public function testFactboxWithoutARevisionDoesNotReachReaders() {
+		[ $view ] = $this->newVisibleFactboxCase( 0 );
+		$this->newCachedFactbox( $view )->prepare( $view['outputPage'], $view['parserOutput'] );
+
+		$this->assertSame( '', $this->retrieveForReader( 0 ) );
+	}
+
+	public function testFactboxInAnotherLanguageDoesNotReachReaders() {
+		[ $view ] = $this->newVisibleFactboxCase();
+		$view['outputPage']->getContext()->setLanguage( 'de' );
+		$this->newCachedFactbox( $view )->prepare( $view['outputPage'], $view['parserOutput'] );
+
+		$this->assertSame( '', $this->retrieveForReader( 10001 ) );
+	}
+
+	public function testFactboxOfAnotherFeatureSetDoesNotReachReaders() {
+		[ $view ] = $this->newVisibleFactboxCase();
+		$instance = $this->newCachedFactbox( $view );
+		$instance->setFeatureSet( 1 );
+		$instance->prepare( $view['outputPage'], $view['parserOutput'] );
+
+		$this->assertSame( '', $this->retrieveForReader( 10001 ) );
+	}
+
+	public function testReaderWithCachingDisabledGetsNoCachedFactbox() {
+		[ $view ] = $this->newVisibleFactboxCase();
+		$this->newCachedFactbox( $view )->prepare( $view['outputPage'], $view['parserOutput'] );
+		$this->factboxText->clear();
+
+		[ $reader ] = $this->newVisibleFactboxCase();
+		$instance = $this->newInstance();
+		$instance->isEnabled( false );
+
+		$this->assertSame( '', $instance->retrieveContent( $reader['outputPage'] ) );
+	}
+
+	private function newCachedFactbox( array $parameters ): CachedFactbox {
+		$this->testEnvironment->addConfiguration( 'smwgNamespacesWithSemanticLinks', $parameters['smwgNamespacesWithSemanticLinks'] );
+		$this->testEnvironment->addConfiguration( 'smwgShowFactbox', $parameters['smwgShowFactbox'] );
+		$this->testEnvironment->registerObject( 'Store', $parameters['store'] );
+
+		return $this->newInstance();
+	}
+
+	private function newInstance(): CachedFactbox {
+		$showFactbox = (int)ApplicationFactory::getInstance()->getSettings()->get( 'smwgShowFactbox' );
+
+		$instance = new CachedFactbox( $this->entityCache, $this->factboxText );
+		$instance->isEnabled( true );
+		$instance->setShowFactbox( $showFactbox );
+		$instance->setShowFactboxEdit( $showFactbox );
+		$instance->setLogger( $this->spyLogger );
+
+		return $instance;
+	}
+
+	/**
+	 * Another request for the same page, which finds the factbox only in the cache
+	 */
+	private function retrieveForReader( int $revisionId ): string {
+		$this->factboxText->clear();
+		[ $view ] = $this->newVisibleFactboxCase( $revisionId );
+
+		return $this->newInstance()->retrieveContent( $view['outputPage'] );
 	}
 
 	public function assertPreProcess( $expected, $result, $outputPage, $instance ) {
@@ -202,94 +306,13 @@ class CachedFactboxTest extends TestCase {
 		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 		$language = $languageFactory->getLanguage( 'en' );
 
-		$title = MockTitle::buildMockForMainNamespace( __METHOD__ . 'mock-subject' );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'exists' )
-			->willReturn( true );
-
-		$subject = WikiPage::newFromTitle( $title );
-
-		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
-			->getMock();
-
-		$semanticData->expects( $this->atLeastOnce() )
-			->method( 'getSubject' )
-			->willReturn( $subject );
-
-		$semanticData->expects( $this->atLeastOnce() )
-			->method( 'hasVisibleProperties' )
-			->willReturn( true );
-
-		$semanticData->expects( $this->any() )
-			->method( 'getSubSemanticData' )
-			->willReturn( [] );
-
-		$semanticData->expects( $this->atLeastOnce() )
-			->method( 'getPropertyValues' )
-			->willReturn( [ WikiPage::newFromTitle( $title ) ] );
-
-		$semanticData->expects( $this->atLeastOnce() )
-			->method( 'getProperties' )
-			->willReturn( [ new Property( __METHOD__ . 'property' ) ] );
+		[ $subject, $semanticData ] = $this->newVisibleSemanticData();
 
 		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		# 0 Factbox build, being visible
-		$title = MockTitle::buildMock( __METHOD__ . 'title-being-visible' );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'exists' )
-			->willReturn( true );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getNamespace' )
-			->willReturn( NS_MAIN );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getPageLanguage' )
-			->willReturn( $language );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getArticleID' )
-			->willReturn( 10001 );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getLatestRevID' )
-			->willReturn( 10001 );
-
-		$outputPage = $this->getMockBuilder( OutputPage::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$outputPage->expects( $this->atLeastOnce() )
-			->method( 'getTitle' )
-			->willReturn( $title );
-
-		$outputPage->expects( $this->atLeastOnce() )
-			->method( 'getContext' )
-			->willReturn( new RequestContext() );
-
-		$outputPage->expects( $this->atLeastOnce() )
-			->method( 'getRevisionId' )
-			->willReturn( 10001 );
-
-		$provider[] = [
-			[
-				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
-				'smwgShowFactbox' => 'nonempty',
-				'outputPage'      => $outputPage,
-				'store'           => $store,
-				'parserOutput'    => $this->makeParserOutput( $semanticData )
-			],
-			[
-				'text'            => $subject->getDBKey(),
-				'isCached'        => true
-			]
-		];
+		$provider[] = $this->newVisibleFactboxCase();
 
 		# 1 Factbox build, being visible, using WebRequest oldid
 		$title = MockTitle::buildMock( __METHOD__ . 'title-with-oldid' );
@@ -544,6 +567,108 @@ class CachedFactboxTest extends TestCase {
 		];
 
 		return $provider;
+	}
+
+	private function newVisibleFactboxCase( int $revisionId = 10001, array $request = [] ): array {
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+		$language = $languageFactory->getLanguage( 'en' );
+
+		[ $subject, $semanticData ] = $this->newVisibleSemanticData();
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$title = MockTitle::buildMock( __METHOD__ . 'title-being-visible' );
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->willReturn( true );
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->willReturn( NS_MAIN );
+
+		$title->expects( $this->any() )
+			->method( 'getPageLanguage' )
+			->willReturn( $language );
+
+		$title->expects( $this->any() )
+			->method( 'getArticleID' )
+			->willReturn( 10001 );
+
+		$title->expects( $this->any() )
+			->method( 'getLatestRevID' )
+			->willReturn( 10001 );
+
+		$outputPage = $this->getMockBuilder( OutputPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputPage->expects( $this->any() )
+			->method( 'getTitle' )
+			->willReturn( $title );
+
+		$context = new RequestContext();
+		$context->setRequest( new FauxRequest( $request ) );
+
+		$outputPage->expects( $this->any() )
+			->method( 'getContext' )
+			->willReturn( $context );
+
+		$outputPage->expects( $this->any() )
+			->method( 'getRevisionId' )
+			->willReturn( $revisionId );
+
+		return [
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
+				'smwgShowFactbox' => 'nonempty',
+				'outputPage'      => $outputPage,
+				'store'           => $store,
+				'parserOutput'    => $this->makeParserOutput( $semanticData )
+			],
+			[
+				'text'            => $subject->getDBKey(),
+				'isCached'        => true
+			]
+		];
+	}
+
+	private function newVisibleSemanticData(): array {
+		$title = MockTitle::buildMockForMainNamespace( __METHOD__ . 'mock-subject' );
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->willReturn( true );
+
+		$subject = WikiPage::newFromTitle( $title );
+
+		$semanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+
+		$semanticData->expects( $this->any() )
+			->method( 'getSubject' )
+			->willReturn( $subject );
+
+		$semanticData->expects( $this->any() )
+			->method( 'hasVisibleProperties' )
+			->willReturn( true );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getSubSemanticData' )
+			->willReturn( [] );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->willReturn( [ WikiPage::newFromTitle( $title ) ] );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getProperties' )
+			->willReturn( [ new Property( __METHOD__ . 'property' ) ] );
+
+		return [ $subject, $semanticData ];
 	}
 
 	protected function makeParserOutput( $semanticData ) {
