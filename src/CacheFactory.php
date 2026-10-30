@@ -45,8 +45,10 @@ class CacheFactory {
 	 * @return string
 	 */
 	public static function getCachePrefix() {
-		return $GLOBALS['wgCachePrefix'] === false ?
-			WikiMap::getCurrentWikiId() : $GLOBALS['wgCachePrefix'];
+		// MediaWiki 1.47 removed $wgCachePrefix
+		$cachePrefix = $GLOBALS['wgCachePrefix'] ?? false;
+
+		return $cachePrefix === false ? WikiMap::getCurrentWikiId() : $cachePrefix;
 	}
 
 	/**

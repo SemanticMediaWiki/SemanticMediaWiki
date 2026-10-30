@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit;
 
+use MediaWiki\WikiMap\WikiMap;
 use PHPUnit\Framework\TestCase;
 use SMW\CacheFactory;
 use SMW\Query\Cache\QueryResultStore;
@@ -16,6 +17,23 @@ use SMW\Query\Cache\QueryResultStore;
  * @author mwjames
  */
 class CacheFactoryTest extends TestCase {
+
+	private string|false|null $originalCachePrefix;
+
+	protected function setUp(): void {
+		parent::setUp();
+		$this->originalCachePrefix = $GLOBALS['wgCachePrefix'] ?? null;
+	}
+
+	protected function tearDown(): void {
+		if ( $this->originalCachePrefix === null ) {
+			unset( $GLOBALS['wgCachePrefix'] );
+		} else {
+			$GLOBALS['wgCachePrefix'] = $this->originalCachePrefix;
+		}
+
+		parent::tearDown();
+	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -40,13 +58,22 @@ class CacheFactoryTest extends TestCase {
 		);
 	}
 
-	public function testGetCachePrefix() {
-		$instance = new CacheFactory( 'hash' );
+	public function testCachePrefixIsWikiIdWhenCachePrefixSettingIsAbsent() {
+		unset( $GLOBALS['wgCachePrefix'] );
 
-		$this->assertIsString(
+		$this->assertSame( WikiMap::getCurrentWikiId(), CacheFactory::getCachePrefix() );
+	}
 
-			$instance->getCachePrefix()
-		);
+	public function testCachePrefixIsWikiIdWhenCachePrefixSettingIsFalse() {
+		$GLOBALS['wgCachePrefix'] = false;
+
+		$this->assertSame( WikiMap::getCurrentWikiId(), CacheFactory::getCachePrefix() );
+	}
+
+	public function testCachePrefixIsCachePrefixSettingWhenSet() {
+		$GLOBALS['wgCachePrefix'] = 'smw-test-prefix';
+
+		$this->assertSame( 'smw-test-prefix', CacheFactory::getCachePrefix() );
 	}
 
 	public function testCanConstructCacheOptions() {
