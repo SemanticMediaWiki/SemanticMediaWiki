@@ -660,7 +660,7 @@ class WikiPageValue extends DataValue {
 			$nsText = Localizer::getInstance()->getNsText( $this->m_dataitem->getNamespace() );
 
 			if ( $nsText !== '' && str_starts_with( $displayTitle, "$nsText:" ) ) {
-				$displayTitle = substr( $displayTitle, strlen( $nsText ) + 1 );
+				$displayTitle = ltrim( substr( $displayTitle, strlen( $nsText ) + 1 ) );
 			}
 		}
 

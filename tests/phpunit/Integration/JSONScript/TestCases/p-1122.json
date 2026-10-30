@@ -17,6 +17,11 @@
 			"contents": "{{DISPLAYTITLE:Help:}} [[Category:P1122]]"
 		},
 		{
+			"namespace": "NS_HELP",
+			"page": "P1122 Qux",
+			"contents": "{{DISPLAYTITLE:Help: P1122 Qux}} [[Category:P1122]]"
+		},
+		{
 			"page": "Example/P1122/Q.1",
 			"contents": "{{#ask: [[Category:P1122]] |format=ul }}"
 		},
@@ -56,7 +61,17 @@
 		},
 		{
 			"type": "parser",
-			"about": "#2 (prefix=none)",
+			"about": "#2 (space after the namespace is removed with it)",
+			"subject": "Example/P1122/Q.1",
+			"assert-output": {
+				"to-contain": [
+					">P1122 Qux</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (prefix=none)",
 			"subject": "Example/P1122/Q.2",
 			"assert-output": {
 				"to-contain": [
@@ -69,7 +84,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#3 (prefix=all keeps the display title as is)",
+			"about": "#4 (prefix=all keeps the display title as is)",
 			"subject": "Example/P1122/Q.3",
 			"assert-output": {
 				"to-contain": [
