@@ -320,6 +320,7 @@ class SpecialAsk extends SpecialPage {
 				echo $printer->getResult( $res, $this->params, SMW_OUTPUT_HTML ) . RemoteRequest::REQUEST_ID;
 			} elseif ( $request_type === 'special_page' ) {
 				// Generate raw content when being requested from a remote special_page
+				$this->sendInertResponseContentType();
 				echo $printer->getResult( $res, $this->params, SMW_OUTPUT_FILE ) . RemoteRequest::REQUEST_ID;
 			} else {
 				$printer->outputAsFile( $res, $this->params );
@@ -451,6 +452,11 @@ class SpecialAsk extends SpecialPage {
 		if ( !$printer->isExportFormat() ) {
 			if ( $request_type !== '' ) {
 				$this->getOutput()->disable();
+
+				if ( $request_type === 'raw' ) {
+					$this->sendInertResponseContentType();
+				}
+
 				$output = '';
 
 				$count = $res->getCount();
@@ -516,6 +522,18 @@ class SpecialAsk extends SpecialPage {
 		}
 
 		return [ $result, $res, $duration ];
+	}
+
+	/**
+	 * A remote `request_type` response is echoed with the OutputPage disabled, so without an
+	 * explicit content type it defaults to text/html; the file-export and raw branches carry
+	 * user-supplied separators and stored property values verbatim, which then execute as markup.
+	 * Serve those branches as inert plain text instead. The `embed` branch stays HTML by design.
+	 */
+	private function sendInertResponseContentType(): void {
+		$response = $this->getRequest()->response();
+		$response->header( 'Content-Type: text/plain; charset=UTF-8' );
+		$response->header( 'X-Content-Type-Options: nosniff' );
 	}
 
 	private function getQueryLog( $duration, bool $isFromCache = false ): array {
