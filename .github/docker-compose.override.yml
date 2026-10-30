@@ -1,0 +1,15 @@
+# The CI jobs in workflows/main.yml copy this file to build/, where
+# docker-compose-ci applies it to every compose call.
+services:
+  wiki:
+    environment:
+      # The base image loads Xdebug in coverage mode, which halves PHPUnit
+      # speed even when no coverage is collected. The coverage job uses PCOV.
+      XDEBUG_MODE: "off"
+  mysql:
+    # On MySQL the integration tests use regular tables (see
+    # SMWIntegrationTestCase), so every teardown TRUNCATE hits the disk, and
+    # MySQL 8 also writes a binary log by default.
+    tmpfs:
+      - /var/lib/mysql
+    command: --skip-log-bin
