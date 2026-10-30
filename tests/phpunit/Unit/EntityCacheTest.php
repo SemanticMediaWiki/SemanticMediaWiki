@@ -39,38 +39,34 @@ class EntityCacheTest extends TestCase {
 
 		$this->assertStringContainsString(
 			EntityCache::CACHE_NAMESPACE,
-			$instance->makeCacheKey( 'Foo' )
+			$instance->makeKey( 'Foo' )
 		);
 
 		$subject = WikiPage::newFromText( 'Foo' );
 
 		$this->assertEquals(
-			$instance->makeCacheKey( $subject ),
-			$instance->makeCacheKey( 'Foo#0##' )
+			$instance->makeKey( $subject ),
+			$instance->makeKey( 'Foo#0##' )
 		);
 
 		$this->assertEquals(
-			$instance->makeCacheKey( $subject->getTitle() ),
-			$instance->makeCacheKey( 'Foo#0##' )
-		);
-
-		$this->assertEquals(
-			EntityCache::makeCacheKey( $subject->getTitle() ),
+			$instance->makeKey( $subject->getTitle() ),
 			$instance->makeKey( 'Foo#0##' )
 		);
 	}
 
 	public function testMakeCacheKey_SubNamespace() {
+		$instance = new EntityCache( new HashBagOStuff( [ 'keyspace' => 'wiki' ] ) );
 		$subject = WikiPage::newFromText( 'Foo' );
 
-		$this->assertStringContainsString(
-			'smw:entity:44ab375ee7ebac04b8e4471a70180dc5',
-			EntityCache::makeCacheKey( $subject )
+		$this->assertSame(
+			'wiki:smw:entity:44ab375ee7ebac04b8e4471a70180dc5',
+			$instance->makeKey( $subject )
 		);
 
-		$this->assertStringContainsString(
-			'smw:entity:foo:44ab375ee7ebac04b8e4471a70180dc5',
-			EntityCache::makeCacheKey( ':foo', $subject )
+		$this->assertSame(
+			'wiki:smw:entity:foo:44ab375ee7ebac04b8e4471a70180dc5',
+			$instance->makeKey( ':foo', $subject )
 		);
 	}
 
@@ -146,7 +142,7 @@ class EntityCacheTest extends TestCase {
 
 		$instance->associate( $subject, 'assocKey' );
 
-		$anchor = $instance->fetch( EntityCache::makeCacheKey( $subject ) );
+		$anchor = $instance->fetch( $instance->makeKey( $subject ) );
 
 		$this->assertSame( $subject->getHash(), $anchor['__subject'] );
 		$this->assertTrue( $anchor['__assoc']['assocKey'] );
@@ -159,7 +155,7 @@ class EntityCacheTest extends TestCase {
 
 		// No anchor record is created for a non-WikiPage subject.
 		$this->assertFalse(
-			$instance->contains( EntityCache::makeCacheKey( 'notASubject' ) )
+			$instance->contains( $instance->makeKey( 'notASubject' ) )
 		);
 	}
 
@@ -167,9 +163,9 @@ class EntityCacheTest extends TestCase {
 		$subject = WikiPage::newFromText( 'Foo' );
 		$instance = new EntityCache( $this->newCache() );
 
-		$assocKeyOne = $instance->makeCacheKey( 'assoc', 'one' );
-		$assocKeyTwo = $instance->makeCacheKey( 'assoc', 'two' );
-		$unrelatedKey = $instance->makeCacheKey( 'unrelated' );
+		$assocKeyOne = $instance->makeKey( 'assoc', 'one' );
+		$assocKeyTwo = $instance->makeKey( 'assoc', 'two' );
+		$unrelatedKey = $instance->makeKey( 'unrelated' );
 
 		$instance->save( $assocKeyOne, 'a' );
 		$instance->save( $assocKeyTwo, 'b' );
@@ -177,7 +173,7 @@ class EntityCacheTest extends TestCase {
 		$instance->associate( $subject, $assocKeyOne );
 		$instance->associate( $subject, $assocKeyTwo );
 
-		$anchorKey = EntityCache::makeCacheKey( $subject );
+		$anchorKey = $instance->makeKey( $subject );
 		$this->assertTrue( $instance->contains( $anchorKey ) );
 
 		$instance->invalidate( $subject );

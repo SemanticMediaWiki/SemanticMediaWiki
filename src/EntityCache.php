@@ -48,7 +48,7 @@ class EntityCache {
 	 *
 	 * @param string|Title|WikiPage ...$params
 	 */
-	public static function makeCacheKey( ...$params ): string {
+	public function makeKey( ...$params ): string {
 		$namespace = self::CACHE_NAMESPACE;
 
 		if ( is_string( $params[0] ) && $params[0][0] === ':' ) {
@@ -63,16 +63,10 @@ class EntityCache {
 			$params[0] = $params[0]->getHash();
 		}
 
-		return smwfCacheKey( $namespace, $params + [ 'version' => self::VERSION ] );
-	}
+		$components = explode( ':', $namespace );
+		$components[] = md5( json_encode( $params + [ 'version' => self::VERSION ] ) );
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param string|Title|WikiPage ...$params
-	 */
-	public function makeKey( ...$params ): string {
-		return self::makeCacheKey( ...$params );
+		return $this->cache->makeKey( ...$components );
 	}
 
 	/**
@@ -212,7 +206,7 @@ class EntityCache {
 		// Associate only with the main subject (given that a Title can be injected)
 		$subject = $subject->asBase();
 
-		$k = $this->makeCacheKey( $subject );
+		$k = $this->makeKey( $subject );
 		$res = $this->cache->get( $k );
 		$res = $res === false ? [] : $res;
 
@@ -252,7 +246,7 @@ class EntityCache {
 
 		$subject = $subject->asBase();
 
-		$k = $this->makeCacheKey( $subject );
+		$k = $this->makeKey( $subject );
 		$res = $this->cache->get( $k );
 
 		if ( isset( $res['__assoc'] ) ) {

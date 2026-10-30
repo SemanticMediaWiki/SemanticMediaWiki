@@ -172,7 +172,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 		}
 
 		$wasChecked = $this->entityCache->fetch(
-			ReplicationCheck::makeCacheKey( $subject )
+			$this->replicationCheck->makeCacheKey( $subject )
 		);
 
 		return $wasChecked === ReplicationCheck::TYPE_SUCCESS;

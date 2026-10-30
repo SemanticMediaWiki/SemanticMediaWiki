@@ -20,10 +20,7 @@ use Wikimedia\ObjectCache\HashBagOStuff;
 class QueryResultStoreTest extends TestCase {
 
 	private function newStore( ?HashBagOStuff $cache = null ): QueryResultStore {
-		$store = new QueryResultStore( 'smw:query:store', $cache ?? new HashBagOStuff(), new MapCacheLRU( 500 ) );
-		$store->setNamespacePrefix( 'mw' );
-
-		return $store;
+		return new QueryResultStore( 'smw:query:store', $cache ?? new HashBagOStuff(), new MapCacheLRU( 500 ) );
 	}
 
 	public function testCanConstruct() {
@@ -82,14 +79,14 @@ class QueryResultStoreTest extends TestCase {
 	}
 
 	public function testKeyFormatIsFrozen() {
-		$cache = new HashBagOStuff();
+		$cache = new HashBagOStuff( [ 'keyspace' => 'mw' ] );
 		$store = $this->newStore( $cache );
 
 		$container = $store->read( 'abc' );
 		$container->set( 'results', [ 'Foo#0' ] );
 		$store->save( $container );
 
-		// {namespacePrefix}:{namespace}:{id}
+		// {keyspace}:{namespace}:{id}
 		$this->assertNotFalse(
 			$cache->get( 'mw:smw:query:store:abc' ),
 			'the durable entry must be stored under the frozen key format'

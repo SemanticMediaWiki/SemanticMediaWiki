@@ -14,12 +14,13 @@ use Wikimedia\ObjectCache\BagOStuff;
  * cross-request {@link BagOStuff} slow tier that holds the serialized payload.
  * A backend hit is promoted into the fast tier.
  *
- * The cache key (`{namespacePrefix}:{namespace}:{id}`) and the `serialize()`
- * encoding are preserved byte-for-byte from the former blob store so entries it
- * wrote remain readable. `delete()` reimplements the enumerable `@linkedList`
- * bulk-purge: it reads the container, hard-deletes every linked id and then the
- * anchor from both tiers (N+1 true deletes), never a WAN tombstone/check-key,
- * because SMW invalidates query results by precise deletion.
+ * The cache key, built by the backend's `makeKey()` from the namespace's
+ * colon-separated parts and the id, and the `serialize()` encoding match the
+ * former blob store byte-for-byte so entries it wrote remain readable.
+ * `delete()` reimplements the enumerable `@linkedList` bulk-purge: it reads the
+ * container, hard-deletes every linked id and then the anchor from both tiers
+ * (N+1 true deletes), never a WAN tombstone/check-key, because SMW invalidates
+ * query results by precise deletion.
  *
  * @license GPL-2.0-or-later
  * @since 7.0.0
@@ -31,7 +32,6 @@ class QueryResultStore {
 	private string $namespace;
 	private BagOStuff $cache;
 	private MapCacheLRU $internalCache;
-	private string $namespacePrefix = 'blobstore';
 	private bool $usageState = true;
 	private int $expiry = 0;
 
@@ -46,15 +46,6 @@ class QueryResultStore {
 		$this->namespace = $namespace;
 		$this->cache = $cache;
 		$this->internalCache = $internalCache ?? new MapCacheLRU( 500 );
-	}
-
-	/**
-	 * @since 7.0.0
-	 *
-	 * @param string $namespacePrefix
-	 */
-	public function setNamespacePrefix( $namespacePrefix ): void {
-		$this->namespacePrefix = $namespacePrefix;
 	}
 
 	/**
@@ -157,7 +148,10 @@ class QueryResultStore {
 	}
 
 	private function getKey( $id ): string {
-		return $this->namespacePrefix . ':' . $this->namespace . ':' . $id;
+		$components = explode( ':', $this->namespace );
+		$components[] = $id;
+
+		return $this->cache->makeKey( ...$components );
 	}
 
 }

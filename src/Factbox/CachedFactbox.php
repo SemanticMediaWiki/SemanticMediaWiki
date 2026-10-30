@@ -101,12 +101,12 @@ class CachedFactbox {
 	/**
 	 * @since 2.2
 	 */
-	public static function makeCacheKey( $id ): string {
+	public function makeCacheKey( $id ): string {
 		if ( $id instanceof Title ) {
 			$id = $id->getArticleID();
 		}
 
-		return EntityCache::makeCacheKey( 'factbox', $id );
+		return $this->entityCache->makeKey( 'factbox', $id );
 	}
 
 	/**

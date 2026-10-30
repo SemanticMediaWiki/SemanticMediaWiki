@@ -53,12 +53,12 @@ class ReplicationCheck {
 	 *
 	 * @param string|Title|WikiPage $subject
 	 */
-	public static function makeCacheKey( $subject ): string {
+	public function makeCacheKey( $subject ): string {
 		if ( $subject instanceof WikiPage ) {
 			$subject = $subject->getHash();
 		}
 
-		return EntityCache::makeCacheKey( 'es-replication-check', $subject );
+		return $this->entityCache->makeKey( 'es-replication-check', $subject );
 	}
 
 	/**

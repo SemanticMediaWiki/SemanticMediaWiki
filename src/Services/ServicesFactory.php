@@ -1102,16 +1102,10 @@ class ServicesFactory {
 			return $this->testOverrides['QueryResultStore'];
 		}
 
-		$cacheFactory = $this->getCacheFactory();
-
 		$store = new QueryResultStore(
 			$namespace,
 			$this->getObjectCache( $cacheType ),
 			new MapCacheLRU( 500 )
-		);
-
-		$store->setNamespacePrefix(
-			$cacheFactory->getCachePrefix()
 		);
 
 		$store->setExpiryInSeconds(

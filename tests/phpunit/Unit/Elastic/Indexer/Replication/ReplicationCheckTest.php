@@ -15,6 +15,7 @@ use SMW\EntityCache;
 use SMW\Localizer\MessageLocalizer;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\Store;
+use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
  * @covers \SMW\Elastic\Indexer\Replication\ReplicationCheck
@@ -68,7 +69,8 @@ class ReplicationCheckTest extends TestCase {
 			->willReturn( true );
 
 		$this->entityCache = $this->getMockBuilder( EntityCache::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ new HashBagOStuff() ] )
+			->onlyMethods( [ 'contains', 'fetch', 'save', 'delete', 'fetchSub', 'saveSub', 'overrideSub', 'deleteSub', 'associate', 'invalidate' ] )
 			->getMock();
 	}
 
@@ -500,9 +502,16 @@ class ReplicationCheckTest extends TestCase {
 	public function testMakeCacheKey() {
 		$subject = WikiPage::newFromText( 'Foo', NS_MAIN );
 
+		$instance = new ReplicationCheck(
+			$this->store,
+			$this->documentReplicationExaminer,
+			$this->entityCache,
+			$this->templateParser
+		);
+
 		$this->assertSame(
-			ReplicationCheck::makeCacheKey( $subject->getHash() ),
-			ReplicationCheck::makeCacheKey( $subject )
+			$instance->makeCacheKey( $subject->getHash() ),
+			$instance->makeCacheKey( $subject )
 		);
 	}
 

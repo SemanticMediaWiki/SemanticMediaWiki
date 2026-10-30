@@ -14,6 +14,7 @@ use SMW\Property\SpecificationLookup;
 use SMW\SQLStore\Lookup\MonolingualTextLookup;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
  * @covers \SMW\Property\SpecificationLookup
@@ -42,7 +43,7 @@ class SpecificationLookupTest extends TestCase {
 			->getMockForAbstractClass();
 
 		$this->entityCache = $this->getMockBuilder( EntityCache::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ new HashBagOStuff() ] )
 			->setMethods( [ 'save', 'fetch', 'associate', 'fetchSub', 'saveSub', 'delete', 'invalidate' ] )
 			->getMock();
 

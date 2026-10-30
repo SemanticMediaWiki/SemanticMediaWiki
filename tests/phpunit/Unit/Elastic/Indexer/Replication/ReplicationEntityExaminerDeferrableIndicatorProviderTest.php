@@ -216,12 +216,17 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 			->method( 'ping' )
 			->willReturn( true );
 
+		$subject = WikiPage::newFromText( 'Foo' );
+
+		$this->replicationCheck->expects( $this->any() )
+			->method( 'makeCacheKey' )
+			->with( $subject )
+			->willReturn( 'replication-check-key' );
+
 		$this->entityCache->expects( $this->any() )
 			->method( 'fetch' )
-			->with(	$this->stringContains( 'smw:entity:b94628b92d22cd315ccf7abb5b1df3c0' ) )
+			->with( 'replication-check-key' )
 			->willReturn( ReplicationCheck::TYPE_SUCCESS );
-
-		$subject = WikiPage::newFromText( 'Foo' );
 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,

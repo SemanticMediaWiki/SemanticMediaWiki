@@ -116,7 +116,7 @@ class UnitConverter {
 			return;
 		}
 
-		$key = $this->entityCache->makeCacheKey( 'unit', $subject->getHash() );
+		$key = $this->entityCache->makeKey( 'unit', $subject->getHash() );
 
 		$data = $this->entityCache->fetch( $key );
 		if ( $data !== false ) {
