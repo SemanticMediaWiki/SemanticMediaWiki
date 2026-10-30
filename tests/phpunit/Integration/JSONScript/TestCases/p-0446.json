@@ -63,8 +63,10 @@
 			"assert-output": {
 				"to-contain": [
 					"href=\"http://example.org/Foo%20bar\">http://example.org/Foo bar</a>",
-					"href=\"http://example.org/Foo%20bar\">http://example.org/Foo%20bar</a>",
-					"href=\"http://example.org/Foo_bar\">http://example.org/Foo bar</a>"
+					"href=\"http://example.org/Foo_bar\">http://example.org/Foo_bar</a>"
+				],
+				"not-contain": [
+					">http://example.org/Foo%20bar</a>"
 				]
 			}
 		},
@@ -143,7 +145,7 @@
 			"subject": "Example/P0446/Q.1.0",
 			"assert-output": {
 				"to-contain": [
-					"smwtype&#95;uri\"><a rel=\"nofollow\" class=\"external text\" href=\"http://example.org/Foo%20bar\">http://example.org/Foo%20bar</a>"
+					"smwtype&#95;uri\"><a rel=\"nofollow\" class=\"external text\" href=\"http://example.org/Foo%20bar\">http://example.org/Foo bar</a>"
 				]
 			}
 		},

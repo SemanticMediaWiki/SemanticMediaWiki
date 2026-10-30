@@ -306,13 +306,13 @@ class URIValue extends DataValue {
 			$context = Encoder::decode( str_replace( '-', '-2D', $context ) );
 		}
 
+		// Show an encoded space as a space. A stored URL never holds a raw
+		// space, so the text still points at exactly one URL, and `_` is shown
+		// as is because it is a different URL.
 		if ( $this->m_mode !== SMW_URI_MODE_EMAIL && $linker !== null ) {
-			$context = str_replace( '_', ' ', $context ?? '' );
+			$context = str_replace( '%20', ' ', $context ?? '' );
 		}
 
-		// Allow the display without `_` so that URIs can be split
-		// during the outout by the browser without breaking the URL itself
-		// as it contains the `_` for spaces
 		return [ $url, $context ];
 	}
 
