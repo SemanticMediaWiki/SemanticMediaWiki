@@ -49,6 +49,9 @@ jobs:
       - name: Update submodules
         run: git submodule update --init --remote
 
+      - name: Configure containers
+        run: cp .github/docker-compose.override.yml build/
+
       - name: Build image and install MediaWiki
         run: make install
 
@@ -101,6 +104,9 @@ jobs:
       - name: Update submodules
         run: git submodule update --init --remote
 
+      - name: Configure containers
+        run: cp .github/docker-compose.override.yml build/
+
       - name: Build image and install MediaWiki
         run: make install
 
@@ -110,14 +116,9 @@ jobs:
       - name: Run integration tests
         run: make composer-phpunit COMPOSER_PARAMS='-- --testsuite semantic-mediawiki-check,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure --fail-on-empty-test-suite'
 
-  # Coverage: same PHP suite/Xdebug instrumentation/codecov upload as before,
-  # plus JS (QUnit) coverage. JS tests run only on this leg (matching how PHP
-  # coverage itself is scoped to one leg) rather than on every matrix leg in
-  # `tests`/`static-analysis`, so the JS toolchain install cost isn't paid
-  # repeatedly. Not on the fast-feedback path (the test jobs report pass/fail
-  # well before coverage finishes). PHP runs as two PHPUnit invocations for the
-  # same reason as in `tests`; the second reuses the container `ci-coverage`
-  # built, and codecov merges the two Clover files.
+  # PHP coverage uses PCOV, which is several times faster than the base image's
+  # Xdebug. JS tests run only here, so the other legs skip the npm install.
+  # PHPUnit runs twice for the same reason as in `tests`.
   coverage:
     name: Coverage (MW 1.43, PHP 8.2, mariadb:11.4)
     runs-on: ubuntu-latest
@@ -136,11 +137,25 @@ jobs:
       - name: Update submodules
         run: git submodule update --init --remote
 
+      - name: Configure containers
+        run: cp .github/docker-compose.override.yml build/
+
+      - name: Build image and install MediaWiki
+        run: make install
+
+      - name: Install PCOV
+        run: |
+          docker exec -u root semanticmediawiki-mysql-wiki-1 bash -c 'pecl install pcov-1.0.12 > /dev/null && docker-php-ext-enable pcov'
+          docker cp .github/pcov.ini semanticmediawiki-mysql-wiki-1:/usr/local/etc/php/conf.d/
+
       - name: Run unit tests with coverage
-        run: make ci-coverage COMPOSER_PARAMS="-- --testsuite semantic-mediawiki-unit --coverage-clover extensions/SemanticMediaWiki/coverage/php/coverage-unit.xml"
+        run: make composer-test-coverage COMPOSER_PARAMS="-- --testsuite semantic-mediawiki-unit --coverage-clover extensions/SemanticMediaWiki/coverage/php/coverage-unit.xml"
 
       - name: Run integration tests with coverage
         run: make composer-test-coverage COMPOSER_PARAMS="-- --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure --coverage-clover extensions/SemanticMediaWiki/coverage/php/coverage-integration.xml"
+
+      - name: Run JS tests with coverage
+        run: make npm-test-coverage
 
       - name: Upload code coverage
         uses: codecov/codecov-action@v6
