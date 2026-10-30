@@ -315,7 +315,7 @@ class TaskTest extends TestCase {
 		$instance->execute();
 	}
 
-	public function testCheckQueryTask() {
+	public function testCheckQueryTaskRunsForCallerAuthorizedToEditSubject() {
 		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -329,33 +329,70 @@ class TaskTest extends TestCase {
 			->willReturn( $queryResult );
 
 		$instance = new Task(
-			$this->apiFactory->newApiMain(
+			$this->newApiMainWithEditAuthority(
 				[
 					'action'   => 'smwtask',
 					'task'     => 'check-query',
-					'params'   => json_encode(
-						[
-							'subject' => 'Foo#0##',
-							'query' => [
-								'query_hash_1#result_hash_2' => [
-									'parameters' => [
-										'limit' => 5,
-										'offset' => 0,
-										'querymode' => 1
-									],
-									'conditions' => ''
-								]
-							]
-						]
-					),
+					'params'   => $this->checkQueryParams(),
 					'token'    => 'foo'
-				]
+				],
+				true
 			),
 			'smwtask',
 			$this->newRealTaskFactory( $store )
 		);
 
 		$instance->execute();
+	}
+
+	public function testCheckQueryTaskRefusedForCallerNotAuthorizedToEditSubject() {
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		// The caller-parameterised store query must never run for a title the
+		// caller may not edit.
+		$store->expects( $this->never() )
+			->method( 'getQueryResult' );
+
+		$instance = new Task(
+			$this->newApiMainWithEditAuthority(
+				[
+					'action'   => 'smwtask',
+					'task'     => 'check-query',
+					'params'   => $this->checkQueryParams(),
+					'token'    => 'foo'
+				],
+				false
+			),
+			'smwtask',
+			$this->newRealTaskFactory( $store )
+		);
+
+		try {
+			$instance->execute();
+			$this->fail( 'Expected a permission denial for the unauthorized subject' );
+		} catch ( ApiUsageException $e ) {
+			$this->assertSame( 'permissiondenied', $e->getMessageObject()->getApiCode() );
+		}
+	}
+
+	private function checkQueryParams(): string {
+		return json_encode(
+			[
+				'subject' => 'Foo#0##',
+				'query' => [
+					'query_hash_1#result_hash_2' => [
+						'parameters' => [
+							'limit' => 5,
+							'offset' => 0,
+							'querymode' => 1
+						],
+						'conditions' => ''
+					]
+				]
+			]
+		);
 	}
 
 	public function testUnauthorizedUserCannotRunAdminTask() {

@@ -82,12 +82,12 @@ class TaskFactoryTest extends TestCase {
 	}
 
 	public function requiredPermissionProvider() {
-		// `update` and `run-joblist` authorize against the caller-supplied
-		// subject (see testNewByTypeDeclaresAuthorizationSubject), so they no
-		// longer opt down to the wiki-wide `edit` right and inherit the safe
-		// `smw-admin` default for the global-right path they never take.
+		// `update`, `run-joblist` and `check-query` authorize against the
+		// caller-supplied subject (see testNewByTypeDeclaresAuthorizationSubject),
+		// so they no longer opt down to the wiki-wide `edit` right and inherit the
+		// safe `smw-admin` default for the global-right path they never take.
 		yield 'update' => [ 'update', 'smw-admin' ];
-		yield 'check-query' => [ 'check-query', 'edit' ];
+		yield 'check-query' => [ 'check-query', 'smw-admin' ];
 		yield 'run-joblist' => [ 'run-joblist', 'smw-admin' ];
 		yield 'run-entity-examiner' => [ 'run-entity-examiner', 'read' ];
 		yield 'table-statistics' => [ 'table-statistics', 'smw-admin' ];
@@ -115,7 +115,7 @@ class TaskFactoryTest extends TestCase {
 		// every other task gates on its global getRequiredPermission() right.
 		yield 'update' => [ 'update', true ];
 		yield 'run-joblist' => [ 'run-joblist', true ];
-		yield 'check-query' => [ 'check-query', false ];
+		yield 'check-query' => [ 'check-query', true ];
 		yield 'table-statistics' => [ 'table-statistics', false ];
 		yield 'insert-job' => [ 'insert-job', false ];
 	}

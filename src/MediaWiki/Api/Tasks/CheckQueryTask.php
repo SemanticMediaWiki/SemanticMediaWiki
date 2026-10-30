@@ -22,12 +22,15 @@ class CheckQueryTask extends Task {
 	}
 
 	/**
-	 * Triggered by post-edit processing for the user who just saved the page.
+	 * Runs a caller-supplied query with the subject as its context page, so the
+	 * caller must be authorized to edit that specific page rather than merely
+	 * holding a wiki-wide right. The legitimate post-edit flow checks the query
+	 * on the page the caller just saved.
 	 *
-	 * @since 7.3.0
+	 * @since 7.4.0
 	 */
-	public function getRequiredPermission(): string {
-		return 'edit';
+	public function getAuthorizationSubject( array $parameters ): ?string {
+		return $parameters['subject'] ?? '';
 	}
 
 	/**
