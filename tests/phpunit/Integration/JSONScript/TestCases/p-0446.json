@@ -141,7 +141,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#4 #ask output (url with underscore)",
+			"about": "#4 #ask output (url with space)",
 			"subject": "Example/P0446/Q.1.0",
 			"assert-output": {
 				"to-contain": [
@@ -151,7 +151,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#5 #ask output (url with underscore + link=none)",
+			"about": "#5 #ask output (url with space + link=none)",
 			"subject": "Example/P0446/Q.1.1",
 			"assert-output": {
 				"to-contain": [
