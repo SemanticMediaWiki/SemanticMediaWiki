@@ -29,6 +29,11 @@ class SearchTableRebuilderTest extends TestCase {
 	private $searchTable;
 	private $connection;
 
+	/**
+	 * @var int[]
+	 */
+	private array $exemptionLookups = [];
+
 	protected function setUp(): void {
 		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
@@ -208,6 +213,76 @@ class SearchTableRebuilderTest extends TestCase {
 		);
 
 		$instance->rebuildByTable( 'Foo' );
+	}
+
+	public function testRebuildLooksUpExemptionOncePerProperty() {
+		$this->recordExemptionLookups();
+
+		$this->newRebuilderOverBlobRows( [ 1, 2, 1, 2, 1 ] )->rebuild();
+
+		$this->assertSame( [ 1, 2 ], $this->exemptionLookups );
+	}
+
+	public function testChunkedRebuildLooksUpExemptionOncePerProperty() {
+		$this->recordExemptionLookups();
+
+		$this->newRebuilderOverBlobRows( [ 1, 2, 1, 2, 1 ] )->rebuildChunk();
+
+		$this->assertSame( [ 1, 2 ], $this->exemptionLookups );
+	}
+
+	public function testRebuildSkipsOnlyRowsOfExemptedProperties() {
+		$this->searchTable->method( 'isExemptedPropertyById' )
+			->willReturnCallback( static fn ( $pid ) => (int)$pid === 1 );
+
+		$updatedProperties = [];
+		$this->searchTableUpdater->method( 'update' )
+			->willReturnCallback( static function ( $sid, $pid ) use ( &$updatedProperties ) {
+				$updatedProperties[] = (int)$pid;
+			} );
+
+		$this->newRebuilderOverBlobRows( [ 1, 2, 1, 2 ] )->rebuild();
+
+		$this->assertSame( [ 2, 2 ], $updatedProperties );
+	}
+
+	private function recordExemptionLookups(): void {
+		$this->searchTable->method( 'isExemptedPropertyById' )
+			->willReturnCallback( function ( $pid ) {
+				$this->exemptionLookups[] = (int)$pid;
+				return false;
+			} );
+	}
+
+	/**
+	 * @param int[] $propertyIds One `smw_di_blob` row per entry, in this order
+	 */
+	private function newRebuilderOverBlobRows( array $propertyIds ): SearchTableRebuilder {
+		$rows = [];
+
+		foreach ( $propertyIds as $i => $propertyId ) {
+			$row = new stdClass;
+			$row->s_id = (string)( $i + 1 );
+			$row->p_id = (string)$propertyId;
+			$row->o_blob = 'Lorem ipsum';
+			$row->o_hash = null;
+			$rows[] = $row;
+		}
+
+		$this->connection->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( $rows ) );
+
+		$tableDefinition = $this->createMock( PropertyTableDefinition::class );
+		$tableDefinition->method( 'getName' )->willReturn( 'smw_di_blob' );
+		$tableDefinition->method( 'getDiType' )->willReturn( DataItem::TYPE_BLOB );
+
+		$this->searchTable->method( 'isValidByType' )->willReturn( true );
+		$this->searchTable->method( 'hasMinTokenLength' )->willReturn( true );
+
+		$this->searchTableUpdater->method( 'isEnabled' )->willReturn( true );
+		$this->searchTableUpdater->method( 'getPropertyTables' )->willReturn( [ $tableDefinition ] );
+
+		return new SearchTableRebuilder( $this->connection, $this->searchTableUpdater );
 	}
 
 }

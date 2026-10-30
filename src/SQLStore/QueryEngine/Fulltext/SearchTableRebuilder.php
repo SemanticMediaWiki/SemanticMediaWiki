@@ -53,6 +53,11 @@ class SearchTableRebuilder {
 	private ?array $chunkTables = null;
 
 	/**
+	 * @var array<int, bool> Keyed by property ID (`p_id`)
+	 */
+	private array $exemptedProperties = [];
+
+	/**
 	 * @since 2.5
 	 */
 	public function __construct(
@@ -479,7 +484,7 @@ class SearchTableRebuilder {
 				$property
 			);
 
-			if ( $searchTable->isExemptedPropertyById( $pid ) ) {
+			if ( $this->isExemptedProperty( $pid ) ) {
 				$this->skippedTables[$table] = '[EXEMPT]';
 				return $this->skippedTables[$table];
 			}
@@ -573,7 +578,7 @@ class SearchTableRebuilder {
 				$row
 			);
 
-			if ( $searchTable->isExemptedPropertyById( $pid ) ||
+			if ( $this->isExemptedProperty( $pid ) ||
 				!$searchTable->hasMinTokenLength( $indexableText ) ) {
 				continue;
 			}
@@ -595,6 +600,20 @@ class SearchTableRebuilder {
 		}
 
 		$this->reportMessage( "\n" );
+	}
+
+	/**
+	 * Each row asks for its property, but the answer depends on the property
+	 * alone, and the lookup behind it can cost a cache or database round trip.
+	 */
+	private function isExemptedProperty( int|string $pid ): bool {
+		$pid = (int)$pid;
+
+		if ( !isset( $this->exemptedProperties[$pid] ) ) {
+			$this->exemptedProperties[$pid] = $this->getSearchTable()->isExemptedPropertyById( $pid );
+		}
+
+		return $this->exemptedProperties[$pid];
 	}
 
 	private function reportMessage( string $message, bool $verbose = true ): void {
@@ -629,7 +648,7 @@ class SearchTableRebuilder {
 
 			// Exclude rows from exempted properties and those
 			// with text below the minimum token length
-			if ( $searchTable->isExemptedPropertyById( $pid ) ||
+			if ( $this->isExemptedProperty( $pid ) ||
 				!$searchTable->hasMinTokenLength( $indexableText ) ) {
 				continue;
 			}
@@ -722,7 +741,7 @@ class SearchTableRebuilder {
 
 				$pid = $searchTable->getIdByProperty( $property );
 
-				if ( $searchTable->isExemptedPropertyById( $pid ) ) {
+				if ( $this->isExemptedProperty( $pid ) ) {
 					$this->skippedTables[$table] = '[EXEMPT]';
 					continue;
 				}
