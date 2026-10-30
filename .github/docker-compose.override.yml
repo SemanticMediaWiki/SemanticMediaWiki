@@ -3,9 +3,8 @@
 services:
   wiki:
     environment:
-      # The base images for PHP 8.2 on MW 1.43, MW 1.44 and MW 1.45 are no longer
-      # rebuilt and still load Xdebug in coverage mode, which halves PHPUnit speed
-      # even when no coverage is collected. Newer images default to off.
+      # 1.43-php8.2, 1.44-php8.3 and 1.45-php8.4 are no longer rebuilt and still
+      # load Xdebug in coverage mode, which halves PHPUnit speed.
       XDEBUG_MODE: "off"
   mysql:
     # On MySQL the integration tests use regular tables (see
