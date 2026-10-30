@@ -654,15 +654,15 @@ class WikiPageValue extends DataValue {
 
 		$displayTitle = $this->getDisplayTitle();
 
+		// #7073 (A display title may repeat the namespace which the short caption omits)
+		$nsText = Localizer::getInstance()->getNsText( $this->m_dataitem->getNamespace() );
+
+		if ( $nsText !== '' && str_starts_with( $displayTitle, "$nsText:" ) ) {
+			$displayTitle = substr( $displayTitle, strlen( $nsText ) + 1 );
+		}
+
 		if ( $displayTitle === '' ) {
 			$displayTitle = $this->getText();
-		} else {
-			// #7073 (A display title may repeat the namespace which the short caption omits)
-			$nsText = Localizer::getInstance()->getNsText( $this->m_dataitem->getNamespace() );
-
-			if ( $nsText !== '' && str_starts_with( $displayTitle, "$nsText:" ) ) {
-				$displayTitle = substr( $displayTitle, strlen( $nsText ) + 1 );
-			}
 		}
 
 		// #3945 (Remove context as per pipe trick)

@@ -12,6 +12,11 @@
 			"contents": "{{DISPLAYTITLE:Help:P1122 Bar (inactive)}} [[Category:P1122]]"
 		},
 		{
+			"namespace": "NS_HELP",
+			"page": "P1122 Baz",
+			"contents": "{{DISPLAYTITLE:Help:}} [[Category:P1122]]"
+		},
+		{
 			"page": "Example/P1122/Q.1",
 			"contents": "{{#ask: [[Category:P1122]] |format=ul }}"
 		},
@@ -41,7 +46,17 @@
 		},
 		{
 			"type": "parser",
-			"about": "#1 (prefix=none)",
+			"about": "#1 (display title of only the namespace falls back to the page name)",
+			"subject": "Example/P1122/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Help:P1122 Baz\">P1122 Baz</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (prefix=none)",
 			"subject": "Example/P1122/Q.2",
 			"assert-output": {
 				"to-contain": [
@@ -54,7 +69,7 @@
 		},
 		{
 			"type": "parser",
-			"about": "#2 (prefix=all keeps the display title as is)",
+			"about": "#3 (prefix=all keeps the display title as is)",
 			"subject": "Example/P1122/Q.3",
 			"assert-output": {
 				"to-contain": [
