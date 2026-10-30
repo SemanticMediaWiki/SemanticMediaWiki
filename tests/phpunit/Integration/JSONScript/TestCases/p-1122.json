@@ -1,0 +1,116 @@
+{
+	"description": "Test #ask short captions omit the namespace prefix of a DISPLAYTITLE (#7073, `wgContLang=en`, `wgLang=en`, `wgRestrictDisplayTitle=false`)",
+	"setup": [
+		{
+			"namespace": "NS_HELP",
+			"page": "P1122 Foo",
+			"contents": "[[Category:P1122]]"
+		},
+		{
+			"namespace": "NS_HELP",
+			"page": "P1122 Bar",
+			"contents": "{{DISPLAYTITLE:Help:P1122 Bar (inactive)}} [[Category:P1122]]"
+		},
+		{
+			"namespace": "NS_HELP",
+			"page": "P1122 Baz",
+			"contents": "{{DISPLAYTITLE:Help:}} [[Category:P1122]]"
+		},
+		{
+			"namespace": "NS_HELP",
+			"page": "P1122 Qux",
+			"contents": "{{DISPLAYTITLE:Help: P1122 Qux}} [[Category:P1122]]"
+		},
+		{
+			"namespace": "NS_HELP",
+			"page": "P1122 Quux",
+			"contents": "{{DISPLAYTITLE:Helpful: P1122 Quux}} [[Category:P1122]]"
+		},
+		{
+			"namespace": "NS_HELP",
+			"page": "P1122 Corge",
+			"contents": "{{DISPLAYTITLE:help:P1122 Corge (inactive)}} [[Category:P1122]]"
+		},
+		{
+			"page": "Example/P1122/Q.1",
+			"contents": "{{#ask: [[Category:P1122]] |format=ul }}"
+		},
+		{
+			"page": "Example/P1122/Q.2",
+			"contents": "{{#ask: [[Category:P1122]] |format=ul |prefix=all }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (default, namespace is omitted from the display title)",
+			"subject": "Example/P1122/Q.1",
+			"assert-output": {
+				"to-contain": [
+					">P1122 Bar (inactive)</a>",
+					">P1122 Foo</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (display title of only the namespace falls back to the page name)",
+			"subject": "Example/P1122/Q.1",
+			"assert-output": {
+				"to-contain": [
+					">P1122 Baz</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (space after the namespace is removed with it)",
+			"subject": "Example/P1122/Q.1",
+			"assert-output": {
+				"to-contain": [
+					">P1122 Qux</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (display title not starting with the namespace is kept)",
+			"subject": "Example/P1122/Q.1",
+			"assert-output": {
+				"to-contain": [
+					">Helpful: P1122 Quux</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (namespace is matched case-insensitively)",
+			"subject": "Example/P1122/Q.1",
+			"assert-output": {
+				"to-contain": [
+					">P1122 Corge (inactive)</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 (prefix=all keeps the display title as is)",
+			"subject": "Example/P1122/Q.2",
+			"assert-output": {
+				"to-contain": [
+					">Help:P1122 Bar (inactive)</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgRestrictDisplayTitle": false
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

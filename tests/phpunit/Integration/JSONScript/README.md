@@ -231,6 +231,8 @@ It will also generate the descriptions for each test based on the contents of th
 * [p-1111.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-1111.json) Test `smw/schema` on `CLASS_CONSTRAINT_SCHEMA` with `shape_constraint` and `Constraint schema`
 * [p-1120.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-1120.json) Test `smw/schema` on `PROPERTY_PROFILE_SCHEMA` with `sequence_map`
 * [p-1121.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-1121.json) Test `smw/schema` on `PROPERTY_PROFILE_SCHEMA` with `sequence_map` and redirects
+* [p-1122.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-1122.json) Test #ask short captions omit the namespace prefix of a DISPLAYTITLE (#7073, `wgContLang=en`, `wgLang=en`, `wgRestrictDisplayTitle=false`)
+* [p-1123.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-1123.json) Test #ask short captions remove the namespace prefix of a DISPLAYTITLE only once with pipe trick output (#7073, `wgContLang=en`, `wgLang=en`, `wgRestrictDisplayTitle=false`)
 * [p-1200.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-1200.json) Test `#declare` for queries with `#show` `#ask`
 
 ### Q
