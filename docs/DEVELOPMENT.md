@@ -215,8 +215,8 @@ CI runs on [GitHub Actions](https://github.com/SemanticMediaWiki/SemanticMediaWi
 
 | MediaWiki | PHP | Database | Status |
 |---|---|---|---|
-| 1.43 | 8.2 | MariaDB 11.2 | Stable (+ coverage) |
-| 1.43 | 8.3 | MariaDB 11.2 | Stable |
+| 1.43 | 8.2 | MariaDB 11.2 | Stable |
+| 1.43 | 8.3 | MariaDB 11.2 | Stable (+ coverage) |
 | 1.44 | 8.3 | MariaDB 11.2 | Experimental |
 | 1.44 | 8.3 | MariaDB 11.8 | Experimental |
 | 1.45 | 8.4 | MariaDB 11.8 | Experimental |
