@@ -106,7 +106,7 @@ class AllowsPatternValue extends StringValue {
 		$id = $this->getDataItem()->getString();
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( self::REFERENCE_PAGE_ID, NS_MEDIAWIKI );
 
-		return Html::rawElement(
+		return Html::element(
 			'a',
 			[
 				'href'   => $title->getLocalUrl(),

@@ -199,4 +199,40 @@ class AllowsPatternValueTest extends TestCase {
 		);
 	}
 
+	public function testMarkupValueIsEscapedInShortHtmlText() {
+		$instance = $this->newValidValue( '<img src=x onerror=alert(1)>' );
+
+		$this->assertStringNotContainsString( '<img', $instance->getShortHtmlText() );
+		$this->assertStringContainsString( '&lt;img src=x onerror=alert(1)', $instance->getShortHtmlText() );
+	}
+
+	public function testBenignValueRendersAsAnchorBodyLinkedToReferencePage() {
+		$instance = $this->newValidValue( 'Foo' );
+
+		$this->assertStringContainsString( '>Foo</a>', $instance->getShortHtmlText() );
+		$this->assertStringContainsString( 'Smw_allows_pattern', $instance->getShortHtmlText() );
+	}
+
+	private function newValidValue( string $userValue ): AllowsPatternValue {
+		$parser = $this->getMockBuilder( AllowsPatternValueParser::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parser->method( 'parse' )->willReturn( '.*' );
+
+		$dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataValueServiceFactory->method( 'getValueParser' )->willReturn( $parser );
+		$dataValueServiceFactory->method( 'getConstraintValueValidator' )->willReturn( $this->constraintValueValidator );
+
+		$instance = new AllowsPatternValue();
+		$instance->setOption( 'smwgDVFeatures', SMW_DV_PVAP );
+		$instance->setDataValueServiceFactory( $dataValueServiceFactory );
+		$instance->setUserValue( $userValue );
+
+		return $instance;
+	}
+
 }
