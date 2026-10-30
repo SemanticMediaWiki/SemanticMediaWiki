@@ -27,6 +27,11 @@
 			"contents": "{{DISPLAYTITLE:Helpful: P1122 Quux}} [[Category:P1122]]"
 		},
 		{
+			"namespace": "NS_HELP",
+			"page": "P1122 Corge",
+			"contents": "{{DISPLAYTITLE:help:P1122 Corge (inactive)}} [[Category:P1122]]"
+		},
+		{
 			"page": "Example/P1122/Q.1",
 			"contents": "{{#ask: [[Category:P1122]] |format=ul }}"
 		},
@@ -79,7 +84,17 @@
 		},
 		{
 			"type": "parser",
-			"about": "#4 (prefix=all keeps the display title as is)",
+			"about": "#4 (namespace is matched case-insensitively)",
+			"subject": "Example/P1122/Q.1",
+			"assert-output": {
+				"to-contain": [
+					">P1122 Corge (inactive)</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 (prefix=all keeps the display title as is)",
 			"subject": "Example/P1122/Q.2",
 			"assert-output": {
 				"to-contain": [
