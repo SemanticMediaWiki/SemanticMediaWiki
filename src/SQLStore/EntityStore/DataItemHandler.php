@@ -3,6 +3,8 @@
 namespace SMW\SQLStore\EntityStore;
 
 use SMW\DataItems\DataItem;
+use SMW\Exception\DataItemException;
+use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\SQLStore;
 
 /**
@@ -218,16 +220,16 @@ abstract class DataItemHandler {
 
 	/**
 	 * Create a dataitem from an array of DB keys or a single DB key
-	 * string. May throw an DataItemException if the given DB keys
-	 * cannot be converted back into a dataitem. Each implementation
-	 * of this method must otherwise run without errors for both array
-	 * and string inputs.
+	 * string. May throw a DataItemException or DataItemHandlerException
+	 * if the given DB keys cannot be converted back into a dataitem.
+	 * Each implementation of this method must otherwise run without
+	 * errors for both array and string inputs.
 	 *
 	 * @since 1.8
 	 *
 	 * @param array|string $dbkeys
 	 *
-	 * @throws DataItemException
+	 * @throws DataItemException|DataItemHandlerException
 	 * @return DataItem
 	 */
 	abstract public function dataItemFromDBKeys( $dbkeys );
@@ -238,7 +240,7 @@ abstract class DataItemHandler {
 	 * @param array|string $dbkeys
 	 *
 	 * @return DataItem
-	 * @throws DataItemException
+	 * @throws DataItemException|DataItemHandlerException
 	 */
 	public function newFromDBKeys( $dbkeys ) {
 		return $this->dataItemFromDBKeys( $dbkeys );
