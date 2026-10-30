@@ -19,11 +19,14 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed OpenSearch being taken for Elasticsearch 7.10.2 when it runs in the compatibility mode that CirrusSearch on MediaWiki 1.43 requires ([#7142](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7142))
 * Fixed page content jumping while the entity examiner checks a page; its indicator now shows only when a check finds an issue ([#7150](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7150))
 * Fixed editing schemas with the Page Schemas extension, broken since 7.0.0 ([#7154](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7154))
+* Fixed URL values containing a space linking to a different URL: `http://example.org/Foo bar` and `http://example.org/Foo%20bar` now link to `http://example.org/Foo%20bar`, not `http://example.org/Foo_bar`. `Foo bar` and `Foo_bar` are now different values, so a query for one no longer finds the other. Link text now shows an underscore as an underscore, not as a space ([#7139](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7139))
 * Fixed the help links of the maintenance scripts on `Special:SemanticMediaWiki` ([#7151](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7151))
 
 ## Upgrading
 
 No need to run "update.php" or any other migration scripts.
+
+However, if your wiki uses properties of type URL or Annotation URI, run `php maintenance/run.php SemanticMediaWiki:rebuildData` after upgrading. Until then, queries on values containing a space may return wrong results.
 
 **Get the new version via Composer:**
 
