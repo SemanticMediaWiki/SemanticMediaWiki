@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit;
 
 use MediaWiki\Linker\Linker;
+use MediaWiki\WikiMap\WikiMap;
 use PHPUnit\Framework\TestCase;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 
@@ -15,6 +16,23 @@ use SMW\Localizer\LocalLanguage\LocalLanguage;
  * @author mwjames
  */
 class GlobalFunctionsTest extends TestCase {
+
+	private string|false|null $originalCachePrefix;
+
+	protected function setUp(): void {
+		parent::setUp();
+		$this->originalCachePrefix = $GLOBALS['wgCachePrefix'] ?? null;
+	}
+
+	protected function tearDown(): void {
+		if ( $this->originalCachePrefix === null ) {
+			unset( $GLOBALS['wgCachePrefix'] );
+		} else {
+			$GLOBALS['wgCachePrefix'] = $this->originalCachePrefix;
+		}
+
+		parent::tearDown();
+	}
 
 	/**
 	 * @covers ::smwfGetLinker
@@ -93,6 +111,15 @@ class GlobalFunctionsTest extends TestCase {
 			smwfCacheKey( 'foo', 'bar' ),
 			smwfCacheKey( ':foo', 'bar' )
 		);
+	}
+
+	/**
+	 * @covers ::smwfCacheKey
+	 */
+	public function testSmwfCacheKeyIsPrefixedByWikiIdWhenCachePrefixSettingIsAbsent() {
+		unset( $GLOBALS['wgCachePrefix'] );
+
+		$this->assertStringStartsWith( WikiMap::getCurrentWikiId() . ':foo:', smwfCacheKey( 'foo', 'bar' ) );
 	}
 
 	public function testSmwfContLang() {

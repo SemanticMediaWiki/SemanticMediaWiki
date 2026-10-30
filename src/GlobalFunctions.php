@@ -2,7 +2,7 @@
 
 use MediaWiki\Linker\Linker;
 use MediaWiki\Parser\Sanitizer;
-use MediaWiki\WikiMap\WikiMap;
+use SMW\CacheFactory;
 use SMW\Formatters\Highlighter;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\ProcessingErrorMsgHandler;
@@ -142,8 +142,7 @@ function &smwfGetStore() {
  * @param string|array $key
  */
 function smwfCacheKey( $namespace, $key ): string {
-	$cachePrefix = $GLOBALS['wgCachePrefix'] === false ?
-		WikiMap::getCurrentWikiId() : $GLOBALS['wgCachePrefix'];
+	$cachePrefix = CacheFactory::getCachePrefix();
 
 	if ( $namespace[0] !== ':' ) {
 		$namespace = ':' . $namespace;
