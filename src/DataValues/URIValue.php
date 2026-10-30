@@ -306,13 +306,11 @@ class URIValue extends DataValue {
 			$context = Encoder::decode( str_replace( '-', '-2D', $context ) );
 		}
 
+		// Show an encoded space as a space, but `_` as is: it is a different URL.
 		if ( $this->m_mode !== SMW_URI_MODE_EMAIL && $linker !== null ) {
-			$context = str_replace( '_', ' ', $context ?? '' );
+			$context = str_replace( '%20', ' ', $context ?? '' );
 		}
 
-		// Allow the display without `_` so that URIs can be split
-		// during the outout by the browser without breaking the URL itself
-		// as it contains the `_` for spaces
 		return [ $url, $context ];
 	}
 
@@ -345,6 +343,12 @@ class URIValue extends DataValue {
 		if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !isset( $this->schemeList[$scheme] ) ) {
 			$this->addErrorMsg( [ 'smw-datavalue-uri-invalid-scheme', $scheme ] );
 			return false;
+		}
+
+		if ( $this->getOption( self::OPT_QUERY_CONTEXT ) ) {
+			// The text before the first `:` can be part of a pattern, as in
+			// `~*User talk:Foo*`, so encode it like the stored value
+			$scheme = $this->encodeUriPart( $scheme );
 		}
 
 		// try to split "hier-part?query#frag"

@@ -161,6 +161,9 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 		if ( $dataItem instanceof Blob ) {
 			$search = $dataItem->getString();
+		} elseif ( $dataItem instanceof Uri ) {
+			// The exported IRI keeps its percent-encoding, so the pattern must too
+			$search = $dataItem->getURI();
 		} else {
 			$search = $dataItem->getSortKey();
 		}
