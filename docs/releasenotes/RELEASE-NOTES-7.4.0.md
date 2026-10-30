@@ -23,6 +23,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed the help links of the maintenance scripts on `Special:SemanticMediaWiki` ([#7151](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7151))
 * Fixed pages with `#ask` queries being parsed twice for each user language or other parser cache variant first viewed after one of their query dependencies changed, on wikis with `$smwgEnabledQueryDependencyLinksStore` enabled ([#7155](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7155))
 * Fixed a `DataItemHandlerException` stopping page rendering and `rebuildData.php` when a query prints a stored value that can no longer be read; such values are now left out of the result ([#7161](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7161))
+* Fixed `rebuildFulltextSearchTable.php` running slower since 7.0.0: it made a cache lookup for every stored value, which is a database query on most wikis when run from the command line, and now makes one per property ([#7165](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7165))
 
 ## Upgrading
 
