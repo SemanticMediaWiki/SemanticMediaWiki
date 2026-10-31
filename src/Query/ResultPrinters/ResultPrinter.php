@@ -475,7 +475,8 @@ abstract class ResultPrinter implements IResultPrinter {
 		$this->mIntro = isset( $params['intro'] ) ? str_replace( '_', ' ', $params['intro'] ) : '';
 		$this->mOutro = isset( $params['outro'] ) ? str_replace( '_', ' ', $params['outro'] ) : '';
 
-		$this->mSearchlabel = !isset( $params['searchlabel'] ) || $params['searchlabel'] === false ? null : $params['searchlabel'];
+		// Comments survive in parameters on substitution (#6134), strip them so a comment-only label counts as empty
+		$this->mSearchlabel = !isset( $params['searchlabel'] ) || $params['searchlabel'] === false ? null : Sanitizer::removeHTMLcomments( $params['searchlabel'] );
 		$link = $params['link'] ?? '';
 
 		switch ( $link ) {
