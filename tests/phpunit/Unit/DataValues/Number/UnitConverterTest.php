@@ -6,9 +6,10 @@ use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataValues\Number\UnitConverter;
 use SMW\DataValues\NumberValue;
-use SMW\EntityCache;
 use SMW\Property\SpecificationLookup;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\EntityCacheFactory;
+use Wikimedia\ObjectCache\BagOStuff;
 use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
@@ -35,10 +36,7 @@ class UnitConverterTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->entityCache = $this->getMockBuilder( EntityCache::class )
-			->setConstructorArgs( [ new HashBagOStuff() ] )
-			->setMethods( [ 'fetch', 'save', 'associate' ] )
-			->getMock();
+		$this->entityCache = EntityCacheFactory::newEntityCache();
 	}
 
 	protected function tearDown(): void {
@@ -134,30 +132,106 @@ class UnitConverterTest extends TestCase {
 		);
 	}
 
-	public function testLoadConversionData() {
+	public function testLoadConversionDataReadsTheSpecificationOnlyOnce() {
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
-
-		$data = [
-			'ids' => '',
-			'factors' => '',
-			'main' => '',
-			'prefix' => ''
-		];
-
-		$this->entityCache->expects( $this->atLeastOnce() )
-			->method( 'fetch' )
-			->willReturnOnConsecutiveCalls( false, $data );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'save' );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'associate' )
-			->with( $property->getDiWikiPage() );
 
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'getSpecification' )
-			->willReturn( [ $this->dataItemFactory->newDIBlob( 'Foo' ) ] );
+			->willReturn( [ $this->dataItemFactory->newDIBlob( '€ 1' ), $this->dataItemFactory->newDIBlob( '¥,JPY 1.5' ) ] );
+
+		$numberValue = new NumberValue();
+		$numberValue->setProperty( $property );
+
+		( new UnitConverter( $this->propertySpecificationLookup, $this->entityCache ) )->loadConversionData( $numberValue );
+
+		$instance = new UnitConverter(
+			$this->propertySpecificationLookup,
+			$this->entityCache
+		);
+
+		$instance->loadConversionData( $numberValue );
+
+		$this->assertSame( '€', $instance->getMainUnit() );
+		$this->assertSame( '¥', $instance->getUnitIds()['JPY'] );
+		$this->assertSame( 1.5, $instance->getUnitFactors()['¥'] );
+		$this->assertTrue( $instance->getPrefixalUnitPreference()['€'] );
+	}
+
+	public function testLoadConversionDataReportsAPropertyWithoutUnits() {
+		$this->propertySpecificationLookup->expects( $this->any() )
+			->method( 'getSpecification' )
+			->willReturn( [] );
+
+		$numberValue = new NumberValue();
+		$numberValue->setProperty( $this->dataItemFactory->newDIProperty( 'Foo' ) );
+
+		$instance = new UnitConverter(
+			$this->propertySpecificationLookup,
+			$this->entityCache
+		);
+
+		$instance->loadConversionData( $numberValue );
+
+		$this->assertNotEmpty( $numberValue->getErrors() );
+	}
+
+	public function testUnitsAreCachedPerProperty() {
+		$this->propertySpecificationLookup->expects( $this->exactly( 2 ) )
+			->method( 'getSpecification' )
+			->willReturnCallback( fn ( $subject ) => [
+				$this->dataItemFactory->newDIBlob( $subject->getDBkey() === 'Foo' ? '€ 1' : '¥ 1' )
+			] );
+
+		$foo = new NumberValue();
+		$foo->setProperty( $this->dataItemFactory->newDIProperty( 'Foo' ) );
+		$bar = new NumberValue();
+		$bar->setProperty( $this->dataItemFactory->newDIProperty( 'Bar' ) );
+
+		$backend = new HashBagOStuff();
+		$this->newUnitConverter( $backend )->loadConversionData( $foo );
+		$this->newUnitConverter( $backend )->loadConversionData( $bar );
+		$this->newUnitConverter( $backend )->loadConversionData( $foo );
+
+		$instance = $this->newUnitConverter( $backend );
+		$instance->loadConversionData( $bar );
+
+		$this->assertArrayHasKey( '¥', $instance->getUnitFactors() );
+	}
+
+	public function testLoadingCachedUnitsClearsTheErrorsOfAnEarlierProperty() {
+		$this->propertySpecificationLookup->expects( $this->any() )
+			->method( 'getSpecification' )
+			->willReturnCallback( fn ( $subject ) => $subject->getDBkey() === 'Foo' ? [ $this->dataItemFactory->newDIBlob( '€ 1' ) ] : [] );
+
+		$foo = new NumberValue();
+		$foo->setProperty( $this->dataItemFactory->newDIProperty( 'Foo' ) );
+		$bar = new NumberValue();
+		$bar->setProperty( $this->dataItemFactory->newDIProperty( 'Bar' ) );
+
+		$instance = new UnitConverter( $this->propertySpecificationLookup, $this->entityCache );
+		$instance->loadConversionData( $foo );
+		$instance->loadConversionData( $bar );
+		$instance->loadConversionData( $foo );
+
+		$this->assertSame( [], $instance->getErrors() );
+	}
+
+	/**
+	 * A converter of its own process, over a backend shared with other processes
+	 */
+	private function newUnitConverter( BagOStuff $backend ): UnitConverter {
+		return new UnitConverter( $this->propertySpecificationLookup, EntityCacheFactory::newEntityCache( $backend ) );
+	}
+
+	public function testLoadConversionDataRetriesAfterAnError() {
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+
+		$this->propertySpecificationLookup->expects( $this->exactly( 2 ) )
+			->method( 'getSpecification' )
+			->willReturnOnConsecutiveCalls(
+				[],
+				[ $this->dataItemFactory->newDIBlob( '¥,JPY 1.5' ) ]
+			);
 
 		$numberValue = new NumberValue();
 		$numberValue->setProperty( $property );
@@ -168,9 +242,12 @@ class UnitConverterTest extends TestCase {
 		);
 
 		$instance->loadConversionData( $numberValue );
-
-		// Cached
 		$instance->loadConversionData( $numberValue );
+
+		$this->assertEquals(
+			[ '' => 1, '¥' => 1.5 ],
+			$instance->getUnitFactors()
+		);
 	}
 
 	public function conversionDataProvider() {

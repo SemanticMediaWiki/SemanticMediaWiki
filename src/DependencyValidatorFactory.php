@@ -4,6 +4,7 @@ namespace SMW;
 
 use SMW\EventDispatcher\EventDispatcher;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * Produces a fully-configured {@link DependencyValidator} for the
@@ -27,7 +28,7 @@ class DependencyValidatorFactory {
 	public function __construct(
 		private readonly NamespaceExaminer $namespaceExaminer,
 		private readonly QueryDependencyLinksStoreFactory $queryDependencyLinksStoreFactory,
-		private readonly EntityCache $entityCache,
+		private readonly BagOStuff $cache,
 		private readonly EventDispatcher $eventDispatcher,
 	) {
 	}
@@ -39,7 +40,7 @@ class DependencyValidatorFactory {
 		return new DependencyValidator(
 			$this->namespaceExaminer,
 			$this->queryDependencyLinksStoreFactory->newDependencyLinksValidator(),
-			$this->entityCache,
+			$this->cache,
 			Site::getCacheExpireTime( 'parser' ),
 			$this->eventDispatcher
 		);

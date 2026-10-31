@@ -6,7 +6,6 @@ use MediaWiki\Html\TemplateParser;
 use SMW\Elastic\Connection\DummyClient;
 use SMW\Elastic\ElasticFactory;
 use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
-use SMW\EntityCache;
 use SMW\Store;
 
 /**
@@ -24,7 +23,6 @@ class RegisterEntityExaminerDeferrableIndicatorProviders {
 	 */
 	public function __construct(
 		private readonly ElasticFactory $elasticFactory,
-		private readonly EntityCache $entityCache,
 	) {
 	}
 
@@ -44,7 +42,6 @@ class RegisterEntityExaminerDeferrableIndicatorProviders {
 
 		$replicationEntityExaminerDeferrableIndicatorProvider = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$store,
-			$this->entityCache,
 			$this->elasticFactory->newReplicationCheck( $store ),
 			new TemplateParser( __DIR__ . '/../../../templates/EntityExaminer' )
 		);

@@ -11,10 +11,10 @@ use SMW\Elastic\Connection\DummyClient;
 use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
 use SMW\Elastic\Indexer\Replication\ReplicationCheck;
 use SMW\Elastic\Indexer\Replication\ReplicationError;
-use SMW\EntityCache;
 use SMW\Localizer\MessageLocalizer;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\Store;
+use Wikimedia\ObjectCache\BagOStuff;
 use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
@@ -30,7 +30,7 @@ class ReplicationCheckTest extends TestCase {
 
 	private $store;
 	private $documentReplicationExaminer;
-	private $entityCache;
+	private BagOStuff $cache;
 	private $elasticClient;
 	private $messageLocalizer;
 	private $idTable;
@@ -68,16 +68,13 @@ class ReplicationCheckTest extends TestCase {
 			->method( 'ping' )
 			->willReturn( true );
 
-		$this->entityCache = $this->getMockBuilder( EntityCache::class )
-			->setConstructorArgs( [ new HashBagOStuff() ] )
-			->onlyMethods( [ 'contains', 'fetch', 'save', 'delete', 'fetchSub', 'saveSub', 'overrideSub', 'deleteSub', 'associate', 'invalidate' ] )
-			->getMock();
+		$this->cache = new HashBagOStuff();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ReplicationCheck::class,
-			new ReplicationCheck( $this->store, $this->documentReplicationExaminer, $this->entityCache, $this->templateParser )
+			new ReplicationCheck( $this->store, $this->documentReplicationExaminer, $this->cache, $this->templateParser )
 		);
 	}
 
@@ -85,7 +82,7 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache,
+			$this->cache,
 			$this->templateParser
 		);
 
@@ -99,7 +96,7 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache,
+			$this->cache,
 			$this->templateParser
 		);
 
@@ -113,7 +110,7 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache,
+			$this->cache,
 			$this->templateParser
 		);
 
@@ -135,7 +132,7 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache,
+			$this->cache,
 			$this->templateParser
 		);
 
@@ -171,7 +168,7 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache,
+			$this->cache,
 			$this->templateParser
 		);
 
@@ -209,7 +206,7 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache,
+			$this->cache,
 			$this->templateParser
 		);
 
@@ -250,7 +247,7 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache,
+			$this->cache,
 			$this->templateParser
 		);
 
@@ -305,7 +302,7 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache,
+			$this->cache,
 			$this->templateParser
 		);
 
@@ -361,7 +358,7 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache,
+			$this->cache,
 			$this->templateParser
 		);
 
@@ -422,7 +419,7 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache,
+			$this->cache,
 			$this->templateParser
 		);
 
@@ -481,7 +478,7 @@ class ReplicationCheckTest extends TestCase {
 		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
-			$this->entityCache,
+			$this->cache,
 			$this->templateParser
 		);
 
@@ -501,13 +498,7 @@ class ReplicationCheckTest extends TestCase {
 
 	public function testMakeCacheKey() {
 		$subject = WikiPage::newFromText( 'Foo', NS_MAIN );
-
-		$instance = new ReplicationCheck(
-			$this->store,
-			$this->documentReplicationExaminer,
-			$this->entityCache,
-			$this->templateParser
-		);
+		$instance = new ReplicationCheck( $this->store, $this->documentReplicationExaminer, $this->cache, $this->templateParser );
 
 		$this->assertSame(
 			$instance->makeCacheKey( $subject->getHash() ),
@@ -515,61 +506,174 @@ class ReplicationCheckTest extends TestCase {
 		);
 	}
 
-	public function testGetReplicationFailures() {
-		$this->entityCache->expects( $this->once() )
-			->method( 'fetch' )
-			->with( $this->stringContains( 'smw:entity:1ce32bc49b4f8bc82a53098238ded208' ) );
+	public function testFailedCheckIsListedAsReplicationFailure() {
+		$subject = WikiPage::newFromText( 'Foo' );
 
-		$instance = new ReplicationCheck(
-			$this->store,
-			$this->documentReplicationExaminer,
-			$this->entityCache,
-			$this->templateParser
+		$instance = $this->checkReplication( $subject, $this->newReplicationError() );
+
+		$this->assertContains( $subject->getHash(), $instance->getReplicationFailures() );
+	}
+
+	public function testSuccessfulCheckClearsAnEarlierReplicationFailure() {
+		$subject = WikiPage::newFromText( 'Foo' );
+		$this->checkReplication( $subject, $this->newReplicationError() );
+
+		$instance = $this->checkReplication( $subject, null );
+
+		$this->assertNotContains( $subject->getHash(), $instance->getReplicationFailures() );
+	}
+
+	public function testFailuresOfSeveralPagesAreListed() {
+		$this->checkReplication( WikiPage::newFromText( 'Foo' ), $this->newReplicationError() );
+
+		$instance = $this->checkReplication( WikiPage::newFromText( 'Bar' ), $this->newReplicationError() );
+
+		$this->assertEqualsCanonicalizing(
+			[ WikiPage::newFromText( 'Foo' )->getHash(), WikiPage::newFromText( 'Bar' )->getHash() ],
+			array_values( $instance->getReplicationFailures() )
 		);
+	}
 
-		$instance->setMessageLocalizer(
-			$this->messageLocalizer
-		);
+	public function testSuccessOfOnePageKeepsTheFailureOfAnother() {
+		$this->checkReplication( WikiPage::newFromText( 'Foo' ), $this->newReplicationError() );
 
-		$instance->getReplicationFailures();
+		$instance = $this->checkReplication( WikiPage::newFromText( 'Bar' ), null );
+
+		$this->assertContains( WikiPage::newFromText( 'Foo' )->getHash(), $instance->getReplicationFailures() );
+	}
+
+	public function testSuccessfulCheckIsRemembered() {
+		$subject = WikiPage::newFromText( 'Foo' );
+
+		$instance = $this->checkReplication( $subject, null );
+
+		$this->assertTrue( $instance->hasSuccessfulCheck( $subject ) );
+	}
+
+	public function testFailedCheckForgetsAnEarlierSuccess() {
+		$subject = WikiPage::newFromText( 'Foo' );
+		$this->checkReplication( $subject, null );
+
+		$instance = $this->checkReplication( $subject, $this->newReplicationError() );
+
+		$this->assertFalse( $instance->hasSuccessfulCheck( $subject ) );
 	}
 
 	public function testDeleteReplicationTrail_OnTitle() {
-		$subject = WikiPage::newFromText( 'Foo', NS_MAIN );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'deleteSub' )
-			->with(
-				$this->stringContains( 'smw:entity:1ce32bc49b4f8bc82a53098238ded208' ),
-				$this->stringContains( 'smw:entity:b94628b92d22cd315ccf7abb5b1df3c0' ) );
-
-		$instance = new ReplicationCheck(
-			$this->store,
-			$this->documentReplicationExaminer,
-			$this->entityCache,
-			$this->templateParser
-		);
-
-		$instance->setMessageLocalizer(
-			$this->messageLocalizer
-		);
+		$subject = WikiPage::newFromText( 'Foo' );
+		$instance = $this->checkReplication( $subject, $this->newReplicationError() );
 
 		$instance->deleteReplicationTrail( $subject->getTitle() );
+
+		$this->assertNotContains( $subject->getHash(), $instance->getReplicationFailures() );
 	}
 
 	public function testDeleteReplicationTrail_OnSubject() {
-		$subject = WikiPage::newFromText( 'Foo', NS_MAIN );
+		$subject = WikiPage::newFromText( 'Foo' );
+		$instance = $this->checkReplication( $subject, $this->newReplicationError() );
 
-		$this->entityCache->expects( $this->once() )
-			->method( 'deleteSub' )
-			->with(
-				$this->stringContains( 'smw:entity:1ce32bc49b4f8bc82a53098238ded208' ),
-				$this->stringContains( 'smw:entity:b94628b92d22cd315ccf7abb5b1df3c0' ) );
+		$instance->deleteReplicationTrail( $subject );
+
+		$this->assertNotContains( $subject->getHash(), $instance->getReplicationFailures() );
+	}
+
+	public function testDeleteReplicationTrailForgetsASuccessfulCheck() {
+		$subject = WikiPage::newFromText( 'Foo' );
+		$instance = $this->checkReplication( $subject, null );
+
+		$instance->deleteReplicationTrail( $subject );
+
+		$this->assertFalse( $instance->hasSuccessfulCheck( $subject ) );
+	}
+
+	public function testForgetSuccessfulCheckForgetsIt() {
+		$subject = WikiPage::newFromText( 'Foo' );
+		$instance = $this->checkReplication( $subject, null );
+
+		$instance->forgetSuccessfulCheck( $subject );
+
+		$this->assertFalse( $instance->hasSuccessfulCheck( $subject ) );
+	}
+
+	public function testForgetSuccessfulCheckKeepsAListedFailure() {
+		$subject = WikiPage::newFromText( 'Foo' );
+		$instance = $this->checkReplication( $subject, $this->newReplicationError() );
+
+		$instance->forgetSuccessfulCheck( $subject );
+
+		$this->assertSame( [ $subject->getHash() ], array_values( $instance->getReplicationFailures() ) );
+	}
+
+	public function testSuccessfulCheckExpires() {
+		$subject = WikiPage::newFromText( 'Foo' );
+		$now = 1700000000.0;
+		$this->cache->setMockTime( $now );
+		$instance = $this->checkReplication( $subject, null );
+
+		$now += 3601;
+
+		$this->assertFalse( $instance->hasSuccessfulCheck( $subject ) );
+	}
+
+	public function testAssociatedRevisionDifferenceIsAWarning() {
+		$instance = $this->checkReplication(
+			WikiPage::newFromText( 'Foo' ),
+			new ReplicationError( ReplicationError::TYPE_ASSOCIATED_REVISION_DIFF, [ 'id' => 42, 'rev_es' => 42, 'rev_store' => 43 ] )
+		);
+
+		$this->assertSame( ReplicationCheck::SEVERITY_TYPE_WARNING, $instance->getSeverityType() );
+	}
+
+	public function testMissingFileAttachmentIsAWarning() {
+		$instance = $this->checkReplication(
+			WikiPage::newFromText( 'Foo' ),
+			new ReplicationError( ReplicationError::TYPE_FILE_ATTACHMENT_MISSING, [ 'id' => 42 ] )
+		);
+
+		$this->assertSame( ReplicationCheck::SEVERITY_TYPE_WARNING, $instance->getSeverityType() );
+	}
+
+	public function testFailureListedBefore740IsListed() {
+		$this->listFooAsFailedBefore740();
+
+		$instance = new ReplicationCheck( $this->store, $this->documentReplicationExaminer, $this->cache, $this->templateParser );
+
+		$this->assertContains( 'Foo#0##', $instance->getReplicationFailures() );
+	}
+
+	public function testSuccessfulCheckClearsAFailureListedBefore740() {
+		$this->listFooAsFailedBefore740();
+
+		$instance = $this->checkReplication( WikiPage::newFromText( 'Foo' ), null );
+
+		$this->assertNotContains( 'Foo#0##', $instance->getReplicationFailures() );
+	}
+
+	/**
+	 * As EntityCache::saveSub() listed the failure of page Foo before 7.4.0
+	 */
+	private function listFooAsFailedBefore740(): void {
+		$this->cache->set(
+			$this->cache->makeKey( 'smw', 'entity', '1ce32bc49b4f8bc82a53098238ded208' ),
+			[ md5( $this->cache->makeKey( 'smw', 'entity', 'b94628b92d22cd315ccf7abb5b1df3c0' ) ) => 'Foo#0##' ]
+		);
+	}
+
+	private function checkReplication( WikiPage $subject, ?ReplicationError $error ): ReplicationCheck {
+		$documentReplicationExaminer = $this->createMock( DocumentReplicationExaminer::class );
+
+		$documentReplicationExaminer->expects( $this->any() )
+			->method( 'check' )
+			->willReturn( $error );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $this->elasticClient );
 
 		$instance = new ReplicationCheck(
 			$this->store,
-			$this->documentReplicationExaminer,
-			$this->entityCache,
+			$documentReplicationExaminer,
+			$this->cache,
 			$this->templateParser
 		);
 
@@ -577,7 +681,16 @@ class ReplicationCheckTest extends TestCase {
 			$this->messageLocalizer
 		);
 
-		$instance->deleteReplicationTrail( $subject );
+		$instance->checkReplication( $subject );
+
+		return $instance;
+	}
+
+	private function newReplicationError(): ReplicationError {
+		return new ReplicationError(
+			ReplicationError::TYPE_MODIFICATION_DATE_MISSING,
+			[ 'id' => 42 ]
+		);
 	}
 
 }

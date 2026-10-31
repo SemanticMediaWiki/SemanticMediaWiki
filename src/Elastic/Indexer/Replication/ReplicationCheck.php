@@ -6,10 +6,10 @@ use MediaWiki\Html\TemplateParser;
 use MediaWiki\Title\Title;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\EntityCache;
 use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\Store;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -43,7 +43,7 @@ class ReplicationCheck {
 	public function __construct(
 		private Store $store,
 		private DocumentReplicationExaminer $documentReplicationExaminer,
-		private EntityCache $entityCache,
+		private BagOStuff $cache,
 		private TemplateParser $templateParser,
 	) {
 	}
@@ -58,21 +58,27 @@ class ReplicationCheck {
 			$subject = $subject->getHash();
 		}
 
-		return $this->entityCache->makeKey( 'es-replication-check', $subject );
+		// As EntityCache built it before 7.4.0, so records written then stay readable
+		// where the object cache keyspace equals the wiki ID that key used
+		return $this->cache->makeKey(
+			'smw',
+			'entity',
+			md5( json_encode( [ 'es-replication-check', $subject, 'version' => 1 ] ) )
+		);
 	}
 
 	/**
 	 * @since 3.1
 	 */
 	public function getReplicationFailures() {
-		return $this->entityCache->fetch( $this->makeCacheKey( self::REPLICATION_CHECK_TASK_CACKE_KEY ) );
+		return $this->cache->get( $this->makeCacheKey( self::REPLICATION_CHECK_TASK_CACKE_KEY ) );
 	}
 
 	/**
 	 * @since 3.1
 	 */
 	public function deleteEntireReplicationTrail(): void {
-		$this->entityCache->delete( $this->makeCacheKey( self::REPLICATION_CHECK_TASK_CACKE_KEY ) );
+		$this->cache->delete( $this->makeCacheKey( self::REPLICATION_CHECK_TASK_CACKE_KEY ) );
 	}
 
 	/**
@@ -89,10 +95,24 @@ class ReplicationCheck {
 			return;
 		}
 
-		$this->entityCache->deleteSub(
-			$this->makeCacheKey( self::REPLICATION_CHECK_TASK_CACKE_KEY ),
-			$this->makeCacheKey( $subject )
-		);
+		$this->forgetSuccessfulCheck( $subject );
+		$this->updateReplicationTrail( $subject, false );
+	}
+
+	/**
+	 * @since 7.4.0
+	 */
+	public function hasSuccessfulCheck( WikiPage $subject ): bool {
+		return $this->cache->get( $this->makeCacheKey( $subject ) ) === self::TYPE_SUCCESS;
+	}
+
+	/**
+	 * The page's document has changed since the check.
+	 *
+	 * @since 7.4.0
+	 */
+	public function forgetSuccessfulCheck( WikiPage $subject ): void {
+		$this->cache->delete( $this->makeCacheKey( $subject ) );
 	}
 
 	/**
@@ -178,19 +198,42 @@ class ReplicationCheck {
 		}
 
 		$key = $this->makeCacheKey( $subject );
-		$taskKey = $this->makeCacheKey( self::REPLICATION_CHECK_TASK_CACKE_KEY );
 
 		// Only keep the cache around when ES has successful replicated the entity
 		if ( $html === '' ) {
-			$this->entityCache->save( $key, self::TYPE_SUCCESS, $this->cacheTTL );
-			$this->entityCache->associate( $subject, $key );
-			$this->entityCache->deleteSub( $taskKey, $key );
+			$this->cache->set( $key, self::TYPE_SUCCESS, $this->cacheTTL );
+			$this->updateReplicationTrail( $subject, false );
 		} else {
-			$this->entityCache->delete( $key );
-			$this->entityCache->saveSub( $taskKey, $key, $subject->getHash() );
+			$this->cache->delete( $key );
+			$this->updateReplicationTrail( $subject, true );
 		}
 
 		return $this->wrapHTML( $html );
+	}
+
+	private function updateReplicationTrail( WikiPage $subject, bool $failed ): void {
+		// Keyed as the trail was before 7.4.0, so pages listed then can still be removed
+		$entry = md5( $this->makeCacheKey( $subject ) );
+
+		$this->cache->merge(
+			$this->makeCacheKey( self::REPLICATION_CHECK_TASK_CACKE_KEY ),
+			static function ( $cache, $key, $trail ) use ( $subject, $failed, $entry ) {
+				$trail = is_array( $trail ) ? $trail : [];
+
+				// Nothing to write
+				if ( $failed === isset( $trail[$entry] ) ) {
+					return false;
+				}
+
+				if ( $failed ) {
+					$trail[$entry] = $subject->getHash();
+				} else {
+					unset( $trail[$entry] );
+				}
+
+				return $trail;
+			}
+		);
 	}
 
 	private function buildHTML( ReplicationError $error, $title_text ): string {

@@ -105,7 +105,7 @@ class DisplayTitleFinder {
 			return;
 		}
 
-		$unCachedList = [];
+		$subjects = [];
 
 		foreach ( $dataItems as $dataItem ) {
 
@@ -113,67 +113,81 @@ class DisplayTitleFinder {
 				continue;
 			}
 
-			$key = $this->entityCache->makeKey( 'displaytitle', $dataItem->getHash() );
-
-			if ( $this->entityCache->fetch( $key ) !== false ) {
-				continue;
-			}
-
-			$unCachedList[$dataItem->getSha1()] = $dataItem;
-
-			if ( $dataItem->getSubobjectName() === '' ) {
-				continue;
-			}
+			$subjects[$this->makeKey( $dataItem )] = $dataItem;
 
 			// Fetch the base in case the subobject has no assignment
-			$dataItem = $dataItem->asBase();
-			$unCachedList[$dataItem->getSha1()] = $dataItem;
+			if ( $dataItem->getSubobjectName() !== '' ) {
+				$base = $dataItem->asBase();
+				$subjects[$this->makeKey( $base )] = $base;
+			}
 		}
 
-		if ( $unCachedList === [] ) {
+		if ( $subjects === [] ) {
 			return;
+		}
+
+		$this->entityCache->getMultiWithUnionSetCallback(
+			$subjects,
+			EntityCache::TTL_WEEK,
+			fn ( array $missing ) => $this->prefetchDisplayTitles( $missing )
+		);
+	}
+
+	/**
+	 * @param array<string,WikiPage> $subjects
+	 *
+	 * @return array<string,string|false>
+	 */
+	private function prefetchDisplayTitles( array $subjects ): array {
+		$unCachedList = [];
+
+		foreach ( $subjects as $subject ) {
+			$base = $subject->asBase();
+			$unCachedList[$subject->getSha1()] = $subject;
+			$unCachedList[$base->getSha1()] = $base;
 		}
 
 		try {
 			$displayTitleLookup = $this->store->service( 'DisplayTitleLookup' );
 		} catch ( ServiceNotFoundException ) {
-			return;
+			return array_fill_keys( array_keys( $subjects ), false );
 		}
 
 		$prefetch = $displayTitleLookup->prefetchFromList(
 			$unCachedList
 		);
 
-		foreach ( $unCachedList as $sha1 => $dataItem ) {
+		$displayTitles = [];
 
-			// Can be NULL therefore use `array_key_exists` as well
-			if ( !isset( $prefetch[$sha1] ) && !array_key_exists( $sha1, $prefetch ) ) {
-				continue;
+		foreach ( $subjects as $key => $subject ) {
+			$displayTitles[$key] = $this->findPrefetchedDisplayTitle( $prefetch, $subject );
+		}
+
+		return $displayTitles;
+	}
+
+	private function findPrefetchedDisplayTitle( array $prefetch, WikiPage $subject ): string|false {
+		$sha1 = $subject->getSha1();
+
+		// Can be NULL therefore use `array_key_exists`
+		if ( !array_key_exists( $sha1, $prefetch ) ) {
+			return false;
+		}
+
+		$prefetchTitle = $prefetch[$sha1];
+
+		// Nothing found, use the base!
+		if ( $prefetchTitle === null && $subject->getSubobjectName() !== '' ) {
+			$sha1 = $subject->asBase()->getSha1();
+
+			if ( !array_key_exists( $sha1, $prefetch ) ) {
+				return false;
 			}
 
 			$prefetchTitle = $prefetch[$sha1];
-
-			// Nothing found, use the base!
-			if ( $prefetchTitle === null && $dataItem->getSubobjectName() !== '' ) {
-				$sha1 = $dataItem->asBase()->getSha1();
-
-				if ( !isset( $prefetch[$sha1] ) && !array_key_exists( $sha1, $prefetch ) ) {
-					continue;
-				}
-
-				$prefetchTitle = $prefetch[$sha1];
-			}
-
-			if ( $prefetchTitle === null ) {
-				$displayTitle = ' ';
-			} else {
-				$displayTitle = $prefetchTitle;
-			}
-
-			$key = $this->entityCache->makeKey( 'displaytitle', $dataItem->getHash() );
-			$this->entityCache->save( $key, $displayTitle, EntityCache::TTL_WEEK );
-			$this->entityCache->associate( $dataItem, $key );
 		}
+
+		return $prefetchTitle ?? ' ';
 	}
 
 	/**
@@ -184,22 +198,18 @@ class DisplayTitleFinder {
 			return '';
 		}
 
-		$base = $subject->asBase();
-		$key = $this->entityCache->makeKey( 'displaytitle', $subject->getHash() );
-
-		$displayTitle = $this->entityCache->fetch( $key );
-		if ( $displayTitle !== false && $displayTitle !== null ) {
-			return trim( $displayTitle );
-		}
-
-		$displayTitle = $this->findDisplayTitleFor( $subject );
-		$this->entityCache->save( $key, $displayTitle, EntityCache::TTL_WEEK );
-
-		// Connect to the base subject so that all keys can be flushed at
-		// the time the subject gets altered
-		$this->entityCache->associate( $base, $key );
+		$displayTitle = $this->entityCache->getWithSetCallback(
+			$subject,
+			$this->makeKey( $subject ),
+			EntityCache::TTL_WEEK,
+			fn () => $this->findDisplayTitleFor( $subject )
+		);
 
 		return trim( $displayTitle );
+	}
+
+	private function makeKey( WikiPage $subject ): string {
+		return $this->entityCache->makeKey( 'displaytitle', $subject->getHash() );
 	}
 
 	private function findDisplayTitleFor( $subject ) {

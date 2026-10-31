@@ -8,7 +8,6 @@ use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\DependencyValidator;
-use SMW\EntityCache;
 use SMW\EventDispatcher\EventDispatcher;
 use SMW\NamespaceExaminer;
 use SMW\PostProcHandler;
@@ -18,6 +17,7 @@ use SMW\SQLStore\ChangeOp\FieldChangeOp;
 use SMW\SQLStore\ChangeOp\TableChangeOp;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 use Wikimedia\ObjectCache\BagOStuff;
+use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
  * @covers \SMW\PostProcHandler
@@ -253,12 +253,11 @@ class PostProcHandlerTest extends TestCase {
 
 		$dependencyLinksValidator = $this->createMock( DependencyLinksValidator::class );
 		$namespaceExaminer = $this->createMock( NamespaceExaminer::class );
-		$entityCache = $this->createMock( EntityCache::class );
 		$eventDispatcher = $this->createMock( EventDispatcher::class );
 		$dependencyValidator = new DependencyValidator(
 			$namespaceExaminer,
 			$dependencyLinksValidator,
-			$entityCache,
+			new HashBagOStuff(),
 			3600,
 			$eventDispatcher
 		);
@@ -309,12 +308,11 @@ class PostProcHandlerTest extends TestCase {
 
 		$dependencyLinksValidator = $this->createMock( DependencyLinksValidator::class );
 		$namespaceExaminer = $this->createMock( NamespaceExaminer::class );
-		$entityCache = $this->createMock( EntityCache::class );
 		$eventDispatcher = $this->createMock( EventDispatcher::class );
 		$dependencyValidator = new DependencyValidator(
 			$namespaceExaminer,
 			$dependencyLinksValidator,
-			$entityCache,
+			new HashBagOStuff(),
 			3600,
 			$eventDispatcher
 		);

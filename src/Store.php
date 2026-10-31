@@ -169,35 +169,37 @@ abstract class Store implements QueryEngine {
 			return $dataItem;
 		}
 
-		$entityCache = ApplicationFactory::getInstance()->getEntityCache();
-		$key = $entityCache->makeKey( 'redirect', $wikipage->getHash() );
-
-		if ( $type === DataItem::TYPE_PROPERTY ) {
-			$serialization = $entityCache->fetch( $key );
-			if ( $serialization !== false ) {
-				return DataItem::newFromSerialization( $type, $serialization );
-			}
+		if ( $type === DataItem::TYPE_WIKIPAGE ) {
+			return $this->findRedirectTarget( $dataItem, $wikipage );
 		}
 
+		$entityCache = ApplicationFactory::getInstance()->getEntityCache();
+
+		return DataItem::newFromSerialization(
+			$type,
+			$entityCache->getWithSetCallback(
+				$wikipage,
+				$entityCache->makeKey( 'redirect', $wikipage->getHash() ),
+				EntityCache::TTL_DAY,
+				fn () => $this->findRedirectTarget( $dataItem, $wikipage )->getSerialization()
+			)
+		);
+	}
+
+	private function findRedirectTarget( DataItem $dataItem, WikiPage $wikipage ): DataItem {
 		$dataItems = $this->getPropertyValues( $wikipage, new Property( '_REDI' ) );
 
-		if ( is_array( $dataItems ) && count( $dataItems ) > 0 ) {
-
-			$redirectDataItem = end( $dataItems );
-
-			if ( $type == DataItem::TYPE_PROPERTY && $redirectDataItem instanceof WikiPage ) {
-				$dataItem = Property::newFromUserLabel( $redirectDataItem->getDBkey() );
-			} else {
-				$dataItem = $redirectDataItem;
-			}
+		if ( !is_array( $dataItems ) || count( $dataItems ) === 0 ) {
+			return $dataItem;
 		}
 
-		if ( $type === DataItem::TYPE_PROPERTY ) {
-			$entityCache->save( $key, $dataItem->getSerialization(), $entityCache::TTL_DAY );
-			$entityCache->associate( $wikipage, $key );
+		$redirectDataItem = end( $dataItems );
+
+		if ( $dataItem->getDIType() === DataItem::TYPE_PROPERTY && $redirectDataItem instanceof WikiPage ) {
+			return Property::newFromUserLabel( $redirectDataItem->getDBkey() );
 		}
 
-		return $dataItem;
+		return $redirectDataItem;
 	}
 
 ///// Writing methods /////
@@ -540,6 +542,8 @@ abstract class Store implements QueryEngine {
 	 * @since 2.0
 	 */
 	public function clear(): void {
+		ApplicationFactory::getInstance()->getEntityCache()->clearProcessCache();
+
 		if ( $this->connectionManager !== null ) {
 			$this->connectionManager->releaseConnections();
 		}

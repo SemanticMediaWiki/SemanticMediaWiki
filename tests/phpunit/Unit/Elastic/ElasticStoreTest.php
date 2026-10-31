@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\Elastic;
 
+use MediaWiki\Html\TemplateParser;
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
 use SMW\DataItems\WikiPage;
@@ -13,15 +14,19 @@ use SMW\Elastic\ElasticStore;
 use SMW\Elastic\Indexer\Document;
 use SMW\Elastic\Indexer\DocumentCreator;
 use SMW\Elastic\Indexer\Indexer;
+use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
+use SMW\Elastic\Indexer\Replication\ReplicationCheck;
 use SMW\Elastic\Installer;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Options;
 use SMW\SetupFile;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
 use stdClass;
+use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
  * @covers \SMW\Elastic\ElasticStore
@@ -286,12 +291,6 @@ class ElasticStoreTest extends TestCase {
 	}
 
 	public function testUpdateData_PushFileIngestJob() {
-		$config = new Config(
-			[
-				'indexer.experimental.file.ingest' => true
-			]
-		);
-
 		$subject = WikiPage::newFromText( __METHOD__, NS_FILE );
 
 		// Check that the IngestJob is referencing to the same subject instance
@@ -309,6 +308,32 @@ class ElasticStoreTest extends TestCase {
 
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
+		$this->updateData( $subject, new Config( [ 'indexer.experimental.file.ingest' => true ] ) );
+	}
+
+	public function testUpdateDataForgetsTheSuccessfulReplicationCheckOfThePage() {
+		$subject = WikiPage::newFromText( 'Foo' );
+		$cache = new HashBagOStuff();
+
+		$replicationCheck = new ReplicationCheck(
+			$this->createMock( Store::class ),
+			$this->createMock( DocumentReplicationExaminer::class ),
+			$cache,
+			$this->createMock( TemplateParser::class )
+		);
+
+		$cache->set( $replicationCheck->makeCacheKey( $subject ), ReplicationCheck::TYPE_SUCCESS );
+
+		$this->elasticFactory->expects( $this->any() )
+			->method( 'newReplicationCheck' )
+			->willReturn( $replicationCheck );
+
+		$this->updateData( $subject, new Config( [] ) );
+
+		$this->assertFalse( $cache->get( $replicationCheck->makeCacheKey( $subject ) ) );
+	}
+
+	private function updateData( WikiPage $subject, Config $config ): void {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->setMethods( [ 'getSubject', 'getPropertyValues', 'getProperties', 'getSubSemanticData' ] )

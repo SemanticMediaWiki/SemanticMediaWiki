@@ -6,6 +6,7 @@ use MediaWiki\Title\Title;
 use SMW\DataItems\WikiPage;
 use SMW\EventDispatcher\EventDispatcher;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -15,8 +16,6 @@ use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
  */
 class DependencyValidator {
 
-	private const DIRTY_MARKER = '_smw_dirty_';
-
 	private static array $titles = [];
 
 	/**
@@ -25,7 +24,7 @@ class DependencyValidator {
 	public function __construct(
 		private readonly NamespaceExaminer $namespaceExaminer,
 		private readonly DependencyLinksValidator $dependencyLinksValidator,
-		private readonly EntityCache $entityCache,
+		private readonly BagOStuff $cache,
 		private readonly int $cacheTTL,
 		private readonly EventDispatcher $eventDispatcher
 	) {
@@ -35,7 +34,7 @@ class DependencyValidator {
 	 * @since 2.2
 	 */
 	public function makeCacheKey( Title $title ): string {
-		return $this->entityCache->makeKey( 'parsercacheinvalidator', $title->getPrefixedDBKey() );
+		return $this->cache->makeKey( 'smw', 'parsercache', 'dirty', md5( $title->getPrefixedDBKey() ) );
 	}
 
 	/**
@@ -92,7 +91,7 @@ class DependencyValidator {
 		// Called before the request's parser cache lookup, so the re-parse that
 		// lookup triggers is cached after this time and kept.
 		$key = $this->makeCacheKey( $title );
-		$this->entityCache->overrideSub( $key, self::DIRTY_MARKER, wfTimestampNow(), $this->cacheTTL );
+		$this->cache->set( $key, wfTimestampNow(), $this->cacheTTL );
 
 		return true;
 	}
@@ -104,10 +103,7 @@ class DependencyValidator {
 	 * @param string $cacheTime TS_MW cache time of the cached output
 	 */
 	public function canKeepParserCache( Title $title, string $cacheTime ): bool {
-		$markedAt = $this->entityCache->fetchSub(
-			$this->makeCacheKey( $title ),
-			self::DIRTY_MARKER
-		);
+		$markedAt = $this->cache->get( $this->makeCacheKey( $title ) );
 
 		// As CacheTime::expired() does for page_touched, a cache time in the
 		// same second as the marker counts as current.

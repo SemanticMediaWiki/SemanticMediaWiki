@@ -162,7 +162,7 @@ class PropertyTableUpdater {
 
 			$this->propertyChangeListener->recordChange(
 				$pid,
-				[ 'row' => $row, 'is_insert' => $insert ]
+				[ 'row' => $row ]
 			);
 
 			if ( !array_key_exists( $pid, $this->stats ) ) {

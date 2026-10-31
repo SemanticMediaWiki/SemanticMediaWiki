@@ -6,7 +6,6 @@ use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\DependencyValidator;
-use SMW\EntityCache;
 use SMW\EventDispatcher\EventDispatcher;
 use SMW\NamespaceExaminer;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
@@ -28,7 +27,7 @@ class DependencyValidatorTest extends TestCase {
 	private $testEnvironment;
 	private $dependencyLinksValidator;
 	private $namespaceExaminer;
-	private $entityCache;
+	private $cache;
 	private $eventDispatcher;
 
 	protected function setUp(): void {
@@ -44,7 +43,7 @@ class DependencyValidatorTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->entityCache = new EntityCache( new HashBagOStuff() );
+		$this->cache = new HashBagOStuff();
 
 		$this->eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
@@ -61,7 +60,7 @@ class DependencyValidatorTest extends TestCase {
 		return new DependencyValidator(
 			$this->namespaceExaminer,
 			$this->dependencyLinksValidator,
-			$this->entityCache,
+			$this->cache,
 			3600,
 			$this->eventDispatcher
 		);

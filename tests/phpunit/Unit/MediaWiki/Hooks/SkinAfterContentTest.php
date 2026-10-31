@@ -83,25 +83,7 @@ class SkinAfterContentTest extends TestCase {
 
 		$this->factboxText->setText( $parameters['text'] );
 
-		// Replace CachedFactbox instance
-		if ( isset( $parameters['title'] ) ) {
-			$cachedFactbox = $this->applicationFactory->create( 'FactboxFactory' )->newCachedFactbox();
-
-			$cachedFactbox->addContentToCache(
-				$cachedFactbox->makeCacheKey( $parameters['title'] ),
-				$parameters['text']
-			);
-
-			$factboxFactory = $this->getMockBuilder( FactboxFactory::class )
-				->disableOriginalConstructor()
-				->getMock();
-
-			$factboxFactory->expects( $this->once() )
-				->method( 'newCachedFactbox' )
-				->willReturn( $cachedFactbox );
-		} else {
-			$factboxFactory = $this->applicationFactory->getFactboxFactory();
-		}
+		$factboxFactory = $this->applicationFactory->getFactboxFactory();
 
 		$instance = new SkinAfterContent( $factboxFactory );
 
@@ -158,55 +140,6 @@ class SkinAfterContentTest extends TestCase {
 
 		$provider[] = [
 			[ 'skin' => $skin, 'text' => $text ],
-			[ 'text' => $text ]
-		];
-
-		# 1 Retrieve content from cache
-		$title = MockTitle::buildMock( __METHOD__ . 'from-cache' );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'exists' )
-			->willReturn( true );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getArticleID' )
-			->willReturn( 10002 );
-
-		$outputPage = $this->getMockBuilder( OutputPage::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$outputPage->expects( $this->atLeastOnce() )
-			->method( 'getTitle' )
-			->willReturn( $title );
-
-		$requestContext = new RequestContext();
-		$requestContext->setLanguage( 'en' );
-
-		$outputPage->expects( $this->atLeastOnce() )
-			->method( 'getContext' )
-			->willReturn( $requestContext );
-
-		$text = __METHOD__ . 'text-1';
-
-		$skin = $this->getMockBuilder( Skin::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$skin->expects( $this->any() )
-			->method( 'getTitle' )
-			->willReturn( $title );
-
-		$skin->expects( $this->atLeastOnce() )
-			->method( 'getOutput' )
-			->willReturn( $outputPage );
-
-		$skin->expects( $this->atLeastOnce() )
-			->method( 'getContext' )
-			->willReturn( $requestContext );
-
-		$provider[] = [
-			[ 'skin' => $skin, 'text' => $text, 'title' => $outputPage->getTitle() ],
 			[ 'text' => $text ]
 		];
 

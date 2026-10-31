@@ -5,7 +5,6 @@ namespace SMW\Tests\Unit\IndicatorEntityExaminerIndicators;
 use MediaWiki\Html\TemplateParser;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
-use SMW\EntityCache;
 use SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerDeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProvider;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
@@ -13,6 +12,7 @@ use SMW\Localizer\MessageLocalizer;
 use SMW\SQLStore\Lookup\ErrorLookup;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\EntityCacheFactory;
 
 /**
  * @covers \SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerDeferrableIndicatorProvider
@@ -50,9 +50,7 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends TestC
 			->method( 'service' )
 			->willReturn( $this->errorLookup );
 
-		$this->entityCache = $this->getMockBuilder( EntityCache::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->entityCache = EntityCacheFactory::newEntityCache();
 
 		$this->messageLocalizer = $this->getMockBuilder( MessageLocalizer::class )
 			->disableOriginalConstructor()
@@ -120,47 +118,9 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends TestC
 	}
 
 	public function testHasIndicator_FromErrorLookup() {
-		$this->entityCache->expects( $this->once() )
-			->method( 'fetch' )
-			->willReturn( false );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'save' );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'associate' );
-
 		$this->errorLookup->expects( $this->once() )
 			->method( 'buildArray' )
 			->willReturn( [ 'Foo' ] );
-
-		$subject = WikiPage::newFromText( __METHOD__ );
-
-		$instance = new ConstraintErrorEntityExaminerDeferrableIndicatorProvider(
-			$this->store,
-			$this->entityCache,
-			$this->templateParser
-		);
-
-		$instance->setDeferredMode( true );
-
-		$instance->setMessageLocalizer(
-			$this->messageLocalizer
-		);
-
-		$this->assertIsBool(
-
-			$instance->hasIndicator( $subject, [] )
-		);
-	}
-
-	public function testHasIndicator_FromCache() {
-		$this->entityCache->expects( $this->once() )
-			->method( 'fetch' )
-			->willReturn( [ 'Foo' ] );
-
-		$this->errorLookup->expects( $this->never() )
-			->method( 'buildArray' );
 
 		$subject = WikiPage::newFromText( __METHOD__ );
 

@@ -3,13 +3,16 @@
 namespace SMW\Tests\Unit\Elastic\Admin;
 
 use MediaWiki\Request\WebRequest;
+use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Admin\ReplicationInfoProvider;
 use SMW\Elastic\Connection\DummyClient;
+use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Replication\ReplicationCheck;
-use SMW\EntityCache;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\Store;
+use Wikimedia\ObjectCache\BagOStuff;
 use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
@@ -26,7 +29,7 @@ class ReplicationInfoProviderTest extends TestCase {
 	private $outputFormatter;
 	private $webRequest;
 	private $replicationCheck;
-	private $entityCache;
+	private BagOStuff $cache;
 	private $store;
 
 	protected function setUp(): void {
@@ -38,10 +41,7 @@ class ReplicationInfoProviderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->entityCache = $this->getMockBuilder( EntityCache::class )
-			->setConstructorArgs( [ new HashBagOStuff() ] )
-			->setMethods( [ 'fetch' ] )
-			->getMock();
+		$this->cache = new HashBagOStuff();
 
 		$this->webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
@@ -60,7 +60,7 @@ class ReplicationInfoProviderTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ReplicationInfoProvider::class,
-			new ReplicationInfoProvider( $this->outputFormatter, $this->replicationCheck, $this->entityCache )
+			new ReplicationInfoProvider( $this->outputFormatter, $this->replicationCheck, $this->cache )
 		);
 	}
 
@@ -68,7 +68,7 @@ class ReplicationInfoProviderTest extends TestCase {
 		$instance = new ReplicationInfoProvider(
 			$this->outputFormatter,
 			$this->replicationCheck,
-			$this->entityCache
+			$this->cache
 		);
 
 		$this->assertEquals(
@@ -86,7 +86,7 @@ class ReplicationInfoProviderTest extends TestCase {
 		$instance = new ReplicationInfoProvider(
 			$this->outputFormatter,
 			$this->replicationCheck,
-			$this->entityCache
+			$this->cache
 		);
 
 		$this->assertIsString(
@@ -107,7 +107,7 @@ class ReplicationInfoProviderTest extends TestCase {
 		$instance = new ReplicationInfoProvider(
 			$this->outputFormatter,
 			$this->replicationCheck,
-			$this->entityCache
+			$this->cache
 		);
 
 		$instance->setStore( $this->store );
@@ -124,11 +124,43 @@ class ReplicationInfoProviderTest extends TestCase {
 		$instance = new ReplicationInfoProvider(
 			$this->outputFormatter,
 			$this->replicationCheck,
-			$this->entityCache
+			$this->cache
 		);
 
 		$instance->setStore( $this->store );
 		$instance->handleRequest( $this->webRequest );
+	}
+
+	public function testShowsTheIngestErrorOfAFileThatFailedReplication() {
+		$title = Title::newFromText( 'Foo.pdf', NS_FILE );
+
+		$this->cache->set(
+			FileIndexer::makeIngestResponseKey( $this->cache, $title ),
+			[ 'error' => [ 'root_cause' => [ [ 'reason' => 'Unreadable attachment' ] ] ] ]
+		);
+
+		$this->replicationCheck->expects( $this->any() )
+			->method( 'getReplicationFailures' )
+			->willReturn( [ WikiPage::newFromTitle( $title )->getHash() ] );
+
+		$html = '';
+
+		$this->outputFormatter->expects( $this->any() )
+			->method( 'addHTML' )
+			->willReturnCallback( static function ( $text ) use ( &$html ) {
+				$html .= $text;
+			} );
+
+		$instance = new ReplicationInfoProvider(
+			$this->outputFormatter,
+			$this->replicationCheck,
+			$this->cache
+		);
+
+		$instance->setStore( $this->store );
+		$instance->handleRequest( $this->webRequest );
+
+		$this->assertStringContainsString( 'Unreadable attachment', $html );
 	}
 
 }

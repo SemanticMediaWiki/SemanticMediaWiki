@@ -84,18 +84,6 @@ class SpecificationLookup {
 	 */
 	public function invalidateCache( WikiPage $subject ): void {
 		$this->entityCache->invalidate( $subject );
-
-		$this->entityCache->delete(
-			$this->entityCache->makeKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP, $subject )
-		);
-
-		$this->entityCache->delete(
-			$this->entityCache->makeKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_PREFERREDLABEL, $subject )
-		);
-
-		$this->entityCache->delete(
-			$this->entityCache->makeKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION, $subject )
-		);
 	}
 
 	/**
@@ -119,16 +107,22 @@ class SpecificationLookup {
 			return [];
 		}
 
-		$key = $this->entityCache->makeKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP, $subject );
-		$sub_key = $target->getKey();
-
-		if ( !$this->skipCache ) {
-			$specification = $this->entityCache->fetchSub( $key, $sub_key );
-			if ( $specification !== false ) {
-				return $specification;
-			}
+		if ( $this->skipCache ) {
+			return $this->findSpecification( $subject, $target );
 		}
 
+		return $this->entityCache->getWithSetCallback(
+			$subject,
+			$this->entityCache->makeKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP, $subject, $target->getKey() ),
+			EntityCache::TTL_WEEK,
+			fn () => $this->findSpecification( $subject, $target )
+		);
+	}
+
+	/**
+	 * @return DataItem[]
+	 */
+	private function findSpecification( WikiPage $subject, Property $target ): array {
 		$dataItems = $this->store->getPropertyValues(
 			$subject,
 			$target
@@ -137,9 +131,6 @@ class SpecificationLookup {
 		if ( !is_array( $dataItems ) ) {
 			$dataItems = [];
 		}
-
-		$this->entityCache->saveSub( $key, $sub_key, $dataItems, EntityCache::TTL_WEEK );
-		$this->entityCache->associate( $subject, $key );
 
 		return $dataItems;
 	}
@@ -176,23 +167,16 @@ class SpecificationLookup {
 			return '';
 		}
 
-		$key = $this->entityCache->makeKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_PREFERREDLABEL, $subject );
-
-		$text = $this->entityCache->fetchSub( $key, $languageCode );
-		if ( $text !== false ) {
-			return $text;
-		}
-
-		$text = $this->getTextByLanguageCode(
+		return $this->entityCache->getWithSetCallback(
 			$subject,
-			new Property( '_PPLB' ),
-			$languageCode
+			$this->entityCache->makeKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_PREFERREDLABEL, $subject, $languageCode ),
+			EntityCache::TTL_WEEK,
+			fn () => $this->getTextByLanguageCode(
+				$subject,
+				new Property( '_PPLB' ),
+				$languageCode
+			)
 		);
-
-		$this->entityCache->saveSub( $key, $languageCode, $text );
-		$this->entityCache->associate( $subject, $key );
-
-		return $text;
 	}
 
 	/**
@@ -385,15 +369,19 @@ class SpecificationLookup {
 			return '';
 		}
 
-		$key = $this->entityCache->makeKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION, $subject );
+		return (string)$this->entityCache->getWithSetCallback(
+			$subject,
+			$this->entityCache->makeKey(
+				self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION,
+				$subject,
+				$languageCode . ':' . ( $parsed ? '1' : '0' )
+			),
+			EntityCache::TTL_WEEK,
+			fn () => $this->buildPropertyDescription( $property, $subject, $languageCode, $parsed )
+		);
+	}
 
-		$sub_key = $languageCode . ':' . ( $parsed ? '1' : '0' );
-
-		$text = $this->entityCache->fetchSub( $key, $sub_key );
-		if ( $text !== false ) {
-			return (string)$text;
-		}
-
+	private function buildPropertyDescription( Property $property, WikiPage $subject, string $languageCode, bool $parsed ): string {
 		$text = trim( $this->getTextByLanguageCode(
 			$subject,
 			new Property( '_PDESC' ),
@@ -410,12 +398,7 @@ class SpecificationLookup {
 			$text = $this->getPredefinedPropertyDescription( $property, $languageCode, $parsed );
 		}
 
-		$text = trim( $text );
-
-		$this->entityCache->saveSub( $key, $sub_key, $text );
-		$this->entityCache->associate( $subject, $key );
-
-		return $text;
+		return trim( $text );
 	}
 
 	private function parse( string $text, string $languageCode ): string {

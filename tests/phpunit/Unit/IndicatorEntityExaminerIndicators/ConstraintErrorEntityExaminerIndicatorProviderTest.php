@@ -5,13 +5,15 @@ namespace SMW\Tests\Unit\IndicatorEntityExaminerIndicators;
 use MediaWiki\Html\TemplateParser;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
-use SMW\EntityCache;
 use SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerIndicatorProvider;
 use SMW\Indicator\IndicatorProvider;
 use SMW\Localizer\MessageLocalizer;
 use SMW\SQLStore\Lookup\ErrorLookup;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\EntityCacheFactory;
+use Wikimedia\ObjectCache\BagOStuff;
+use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
  * @covers \SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerIndicatorProvider
@@ -49,9 +51,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 			->method( 'service' )
 			->willReturn( $this->errorLookup );
 
-		$this->entityCache = $this->getMockBuilder( EntityCache::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->entityCache = EntityCacheFactory::newEntityCache();
 
 		$this->messageLocalizer = $this->getMockBuilder( MessageLocalizer::class )
 			->disableOriginalConstructor()
@@ -154,16 +154,6 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 	}
 
 	public function testHasIndicator_FromErrorLookup() {
-		$this->entityCache->expects( $this->once() )
-			->method( 'fetch' )
-			->willReturn( false );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'save' );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'associate' );
-
 		$this->errorLookup->expects( $this->once() )
 			->method( 'buildArray' )
 			->willReturn( [ 'Foo' ] );
@@ -187,16 +177,6 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 	}
 
 	public function testHasIndicator_FromErrorLookup_NoErrors() {
-		$this->entityCache->expects( $this->once() )
-			->method( 'fetch' )
-			->willReturn( false );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'save' );
-
-		$this->entityCache->expects( $this->once() )
-			->method( 'associate' );
-
 		$this->errorLookup->expects( $this->once() )
 			->method( 'buildArray' )
 			->willReturn( [] );
@@ -224,13 +204,16 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 		);
 	}
 
-	public function testHasIndicator_FromCache() {
-		$this->entityCache->expects( $this->once() )
-			->method( 'fetch' )
-			->willReturn( [ 'Foo' ] );
+	/**
+	 * @dataProvider errorsProvider
+	 */
+	public function testErrorsOfAPageAreLookedUpOnlyOnce( array $errors ) {
+		$this->errorLookup->expects( $this->once() )
+			->method( 'findErrorsByType' );
 
-		$this->errorLookup->expects( $this->never() )
-			->method( 'buildArray' );
+		$this->errorLookup->expects( $this->any() )
+			->method( 'buildArray' )
+			->willReturn( $errors );
 
 		$subject = WikiPage::newFromText( __METHOD__ );
 
@@ -244,10 +227,50 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 			$this->messageLocalizer
 		);
 
-		$this->assertIsBool(
+		$instance->hasIndicator( $subject, [] );
+		$instance->hasIndicator( $subject, [] );
+	}
 
-			$instance->hasIndicator( $subject, [] )
+	public function errorsProvider(): iterable {
+		yield 'with errors' => [ [ 'Foo' ] ];
+		yield 'without errors' => [ [] ];
+	}
+
+	public function testErrorsAreCachedPerPage() {
+		$this->errorLookup->expects( $this->exactly( 2 ) )
+			->method( 'findErrorsByType' )
+			->willReturnCallback( static fn ( $type, WikiPage $subject ) => $subject->getDBkey() );
+
+		$this->errorLookup->expects( $this->any() )
+			->method( 'buildArray' )
+			->willReturnCallback( static fn ( $res ) => $res === 'Foo' ? [ '["An error on Foo"]' ] : [] );
+
+		$backend = new HashBagOStuff();
+		$this->newProvider( $backend )->hasIndicator( WikiPage::newFromText( 'Foo' ), [] );
+		$this->newProvider( $backend )->hasIndicator( WikiPage::newFromText( 'Bar' ), [] );
+		$this->newProvider( $backend )->hasIndicator( WikiPage::newFromText( 'Foo' ), [] );
+
+		$instance = $this->newProvider( $backend );
+		$instance->hasIndicator( WikiPage::newFromText( 'Bar' ), [] );
+
+		$this->assertSame( '', $instance->getIndicators()['content'] );
+	}
+
+	/**
+	 * A provider of its own process, over a backend shared with other processes
+	 */
+	private function newProvider( BagOStuff $backend ): ConstraintErrorEntityExaminerIndicatorProvider {
+		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
+			$this->store,
+			EntityCacheFactory::newEntityCache( $backend ),
+			$this->templateParser
 		);
+
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
+		);
+
+		return $instance;
 	}
 
 }

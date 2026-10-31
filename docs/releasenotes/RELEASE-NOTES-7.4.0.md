@@ -26,6 +26,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed page views and maintenance scripts failing with a `TypeError` on MediaWiki 1.47, which removed `$wgCachePrefix` ([#7163](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7163))
 * Fixed `rebuildFulltextSearchTable.php` running slower since 7.0.0: it made a cache lookup for every stored value, which is a database query on most wikis when run from the command line, and now makes one per property ([#7165](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7165))
 * Fixed query results showing the namespace on pages whose display title repeats it; `Help:Bar (inactive)` is now listed as `Bar (inactive)` unless `prefix` asks for the long form ([#7169](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7169))
+* Fixed a slowdown since 7.0.0: reading a property's type, a page's display title or other cached page data ran a database query every time on wikis that cache in the database, which includes maintenance scripts such as `rebuildData.php` by default ([#7168](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7168))
 
 ## Upgrading
 

@@ -8,10 +8,10 @@ use MediaWiki\Title\Title;
 use SMW\DataItems\WikiPage;
 use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Replication\ReplicationCheck;
-use SMW\EntityCache;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\Utils\HtmlColumns;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -27,7 +27,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 	public function __construct(
 		OutputFormatter $outputFormatter,
 		private readonly ReplicationCheck $replicationCheck,
-		private readonly EntityCache $entityCache,
+		private readonly BagOStuff $cache,
 	) {
 		parent::__construct( $outputFormatter );
 	}
@@ -153,14 +153,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 	}
 
 	private function buildFromFile( ?Title $title ): string {
-		$response = '';
-
-		$key = $this->entityCache->makeKey(
-			$title,
-			FileIndexer::INGEST_RESPONSE
-		);
-
-		$response = $this->entityCache->fetch( $key );
+		$response = $this->cache->get( FileIndexer::makeIngestResponseKey( $this->cache, $title ) );
 		if ( $response !== false ) {
 
 			if ( is_string( $response ) ) {
