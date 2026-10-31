@@ -477,6 +477,11 @@ abstract class ResultPrinter implements IResultPrinter {
 
 		// Comments survive in parameters on substitution (#6134), strip them so a comment-only label counts as empty
 		$this->mSearchlabel = !isset( $params['searchlabel'] ) || $params['searchlabel'] === false ? null : Sanitizer::removeHTMLcomments( $params['searchlabel'] );
+
+		// Whitespace left between comments would otherwise yield an invisible link
+		if ( $this->mSearchlabel !== null && trim( $this->mSearchlabel ) === '' ) {
+			$this->mSearchlabel = '';
+		}
 		$link = $params['link'] ?? '';
 
 		switch ( $link ) {

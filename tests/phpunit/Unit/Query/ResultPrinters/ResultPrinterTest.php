@@ -52,6 +52,8 @@ class ResultPrinterTest extends TestCase {
 		yield [ '', false ];
 		// #6134
 		yield [ '<!-- nothing -->', false ];
+		yield [ '<!-- first --> <!-- second -->', false ];
+		yield [ '<!-- note --> Further results', true ];
 	}
 
 }
