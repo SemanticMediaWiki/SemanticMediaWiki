@@ -111,7 +111,7 @@
 						"_SKEY"
 					],
 					"propertyValues": [
-						"<q> <q>[[Has page::Example/P0909/1]]</q>  OR [[Has page::Example/P0909/1]] [[Has page.Has page::+]] [[Has page::+]]</q>"
+						"[[Has page::Example/P0909/1]] OR [[Has page::Example/P0909/1]] [[Has page.Has page::+]] [[Has page::+]]"
 					]
 				}
 			}
@@ -132,7 +132,7 @@
 						"_SKEY"
 					],
 					"propertyValues": [
-						"<q> <q>[[Has page.Has page::Example/P0909/1]]</q>  OR  <q>[[Has page::Example/P0909/1]]</q> </q>"
+						"[[Has page.Has page::Example/P0909/1]] OR [[Has page::Example/P0909/1]]"
 					]
 				}
 			}
@@ -174,7 +174,7 @@
 						"_SKEY"
 					],
 					"propertyValues": [
-						"<q>[[Has page.Has page::Example/P0909/1]] [[Has page.Has page.Has page::Example/P0909/1]] OR  <q>[[Has page.Has page.Has page::Example/P0909/1]]</q> </q>"
+						"[[Has page.Has page::Example/P0909/1]] [[Has page.Has page.Has page::Example/P0909/1]] OR [[Has page.Has page.Has page::Example/P0909/1]]"
 					]
 				}
 			}
@@ -237,7 +237,7 @@
 						"_SKEY"
 					],
 					"propertyValues": [
-						"<q>[[Has page.Has page::Example/P0909/1]] [[-Has page.Has page::Example/P0909/1]] OR  <q>[[Has page.-Has page::Example/P0909/1]]</q> </q>"
+						"[[Has page.Has page::Example/P0909/1]] [[-Has page.Has page::Example/P0909/1]] OR [[Has page.-Has page::Example/P0909/1]]"
 					]
 				}
 			}

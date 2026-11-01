@@ -90,7 +90,14 @@ class Conjunction extends Description {
 		$result = '';
 
 		foreach ( $this->descriptions as $desc ) {
-			$result .= ( $result ? ' ' : '' ) . $desc->getQueryString( false );
+			$subdesc = $desc->getQueryString( false );
+
+			// OR binds weaker than AND
+			if ( $desc instanceof Disjunction && $subdesc !== '+' ) {
+				$subdesc = " <q>{$subdesc}</q> ";
+			}
+
+			$result .= ( $result ? ' ' : '' ) . $subdesc;
 		}
 
 		if ( $result === '' ) {

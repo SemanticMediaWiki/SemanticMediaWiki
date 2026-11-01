@@ -3,12 +3,14 @@
 namespace SMW\Tests\Unit\Query\Language;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 
@@ -103,7 +105,7 @@ class DisjunctionTest extends TestCase {
 			$descriptions,
 			[
 				'descriptions'  => $descriptions,
-				'queryString' => " <q>[[:+]] OR [[{$nsHelp}:+]]</q> ",
+				'queryString' => "[[:+]] OR [[{$nsHelp}:+]]",
 				'queryStringAsValue' => " <q>[[:+]]</q> || <q>[[{$nsHelp}:+]]</q> ",
 				'isSingleton' => false,
 				'queryFeatures' => 40,
@@ -130,7 +132,7 @@ class DisjunctionTest extends TestCase {
 			$descriptions,
 			[
 				'descriptions'  => $expectedDescriptions,
-				'queryString' => ' <q>[[:Foo]] OR [[:Bar]] OR [[:Yim]]</q> ',
+				'queryString' => '[[:Foo]] OR [[:Bar]] OR [[:Yim]]',
 				'queryStringAsValue' => 'Foo||Bar||Yim',
 				'isSingleton' => false,
 				'queryFeatures' => 32,
@@ -151,7 +153,7 @@ class DisjunctionTest extends TestCase {
 			$descriptions,
 			[
 				'descriptions'  => $descriptions,
-				'queryString' => ' <q>[[:Foo]] OR [[:Bar]] [[:Yim]]</q> ',
+				'queryString' => '[[:Foo]] OR [[:Bar]] [[:Yim]]',
 				'queryStringAsValue' => 'Foo|| <q>[[:Bar]] [[:Yim]]</q> ',
 				'isSingleton' => false,
 				'queryFeatures' => 48,
@@ -161,6 +163,31 @@ class DisjunctionTest extends TestCase {
 		];
 
 		return $provider;
+	}
+
+	public function testGetQueryStringForSomePropertyDisjunction() {
+		$property = new Property( 'Foo' );
+
+		$instance = new Disjunction( [
+			new SomeProperty( $property, new ValueDescription( new WikiPage( 'Bar', NS_MAIN ), null, SMW_CMP_NEQ ) ),
+			new SomeProperty( $property, new ValueDescription( new WikiPage( 'Yim', NS_MAIN ), null, SMW_CMP_NEQ ) )
+		] );
+
+		// #4291
+		$this->assertSame(
+			'[[Foo::!Bar]] OR [[Foo::!Yim]]',
+			$instance->getQueryString()
+		);
+
+		$conjunction = new Conjunction( [
+			new ValueDescription( new WikiPage( 'Foo', NS_MAIN ) ),
+			$instance
+		] );
+
+		$this->assertSame(
+			'[[:Foo]]  <q>[[Foo::!Bar]] OR [[Foo::!Yim]]</q> ',
+			$conjunction->getQueryString()
+		);
 	}
 
 	public function testPrune() {

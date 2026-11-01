@@ -71,7 +71,7 @@
 					},
 					{
 						"property": "Query string",
-						"value": " <q> <q>[[Has page property::Template two]]</q>  OR  <q>[[Has page property::Template three]]</q> </q> "
+						"value": "[[Has page property::Template two]] OR [[Has page property::Template three]]"
 					}
 				]
 			}
@@ -104,7 +104,7 @@
 					},
 					{
 						"property": "Query string",
-						"value": " <q> <q>[[Has page property::Template two]]</q>  OR  <q>[[Has page property::Template three]]</q> </q> "
+						"value": "[[Has page property::Template two]] OR [[Has page property::Template three]]"
 					}
 				]
 			}
