@@ -60,7 +60,7 @@ class LanguageCodeValue extends StringValue {
 		// their canonical form (e.g. de-x-formal to de-formal)
 		$mappedLanguageCode = array_search( $languageCode, $this->nonstandardLanguageCodeMapping ) ?: $languageCode;
 
-		if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !Localizer::isKnownLanguageTag( $mappedLanguageCode ) ) {
+		if ( !$this->getOption( self::OPT_QUERY_CONTEXT ) && !$this->isKnownLanguageCode( $mappedLanguageCode ) ) {
 			$this->addErrorMsg( [
 				'smw-datavalue-languagecode-invalid',
 				$mappedLanguageCode
@@ -69,6 +69,19 @@ class LanguageCodeValue extends StringValue {
 		}
 
 		$this->m_dataitem = new Blob( $mappedLanguageCode );
+	}
+
+	/**
+	 * MediaWiki only knows a limited set of tags, so also accept a well-formed
+	 * BCP47 tag (e.g. ja-Latn-hepburn) when its primary language is known
+	 */
+	private function isKnownLanguageCode( string $languageCode ): bool {
+		if ( Localizer::isKnownLanguageTag( $languageCode ) ) {
+			return true;
+		}
+
+		return LanguageCode::isWellFormedLanguageTag( $languageCode ) &&
+			Localizer::isKnownLanguageTag( explode( '-', $languageCode )[0] );
 	}
 
 }

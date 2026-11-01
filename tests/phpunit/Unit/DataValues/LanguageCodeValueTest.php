@@ -74,6 +74,29 @@ class LanguageCodeValueTest extends TestCase {
 		);
 	}
 
+	public function testWellFormedLanguageTagWithKnownPrimaryLanguage() {
+		$instance = new LanguageCodeValue();
+		$instance->setUserValue( 'ja-Latn-hepburn' );
+
+		$this->assertEmpty(
+			$instance->getErrors()
+		);
+
+		$this->assertEquals(
+			'ja-Latn-hepburn',
+			$instance->getDataItem()->getString()
+		);
+	}
+
+	public function testWellFormedLanguageTagWithUnknownPrimaryLanguage() {
+		$instance = new LanguageCodeValue();
+		$instance->setUserValue( 'foo-Latn' );
+
+		$this->assertNotEmpty(
+			$instance->getErrors()
+		);
+	}
+
 	public function testInvalidLanguageCodeIsAllowedInQueryContext() {
 		$instance = new LanguageCodeValue();
 		$instance->setOption( LanguageCodeValue::OPT_QUERY_CONTEXT, true );
