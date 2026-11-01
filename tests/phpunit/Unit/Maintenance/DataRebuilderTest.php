@@ -487,6 +487,45 @@ class DataRebuilderTest extends TestCase {
 		);
 	}
 
+	public function testRebuildAllUpdatesFixedPropertyTables() {
+		$rebuilder = $this->getMockBuilder( Rebuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$rebuilder->expects( $this->once() )
+			->method( 'rebuild' )
+			->willReturnCallback( [ $this, 'refreshDataOnMockCallback' ] );
+
+		$rebuilder->expects( $this->any() )
+			->method( 'getDispatchedEntities' )
+			->willReturn( [] );
+
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->once() )
+			->method( 'refreshData' )
+			->willReturn( $rebuilder );
+
+		$store->expects( $this->once() )
+			->method( 'updateFixedPropertyTables' );
+
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new DataRebuilder( $store, $titleFactory, $this->jobFactory );
+
+		$instance->setOptions( new Options( [
+			'e' => 1,
+			'skip-properties' => true,
+			'skip-dispose' => true
+		] ) );
+
+		$this->assertTrue( $instance->rebuild() );
+	}
+
 	public function testRebuildSelectedPagesWithCategoryNamespaceFilter() {
 		$row = new stdClass;
 		$row->cat_title = 'Foo';

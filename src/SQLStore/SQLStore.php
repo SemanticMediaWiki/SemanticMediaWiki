@@ -21,6 +21,7 @@ use SMW\SQLStore\EntityStore\DataItemHandlerFactory;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\EntityLookup;
 use SMW\SQLStore\Rebuilder\Rebuilder;
+use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\Store;
 
 /*
@@ -454,6 +455,23 @@ class SQLStore extends Store {
 		);
 
 		return true;
+	}
+
+	/**
+	 * Aligns the tables of user-defined fixed properties ($smwgFixedProperties)
+	 * with the type currently declared for each property.
+	 *
+	 * @since 7.4.0
+	 */
+	public function updateFixedPropertyTables(): void {
+		$tableBuilder = TableBuilder::factory( $this->getConnection( DB_PRIMARY ) );
+		$tableSchemaManager = $this->factory->newTableSchemaManager();
+
+		foreach ( $this->getPropertyTables() as $propertyTable ) {
+			if ( $propertyTable->isFixedPropertyTable() && $propertyTable->getFixedProperty()[0] !== '_' ) {
+				$tableBuilder->create( $tableSchemaManager->findTable( $propertyTable->getName() ) );
+			}
+		}
 	}
 
 	public function refreshData( &$id, $count, $namespaces = false, $usejobs = true ): Rebuilder {

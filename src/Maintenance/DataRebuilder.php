@@ -12,7 +12,9 @@ use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
 use SMW\MediaWiki\JobFactory;
 use SMW\Options;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SPARQLStore\SPARQLStore;
 use SMW\SQLStore\Rebuilder\Rebuilder;
+use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Utils\PeriodicStatsFlusher;
@@ -343,6 +345,15 @@ class DataRebuilder {
 		}
 
 		$this->store->clear();
+
+		// Rebuilt property pages may declare a type for a fixed property that
+		// differs from the one its table was created with (#6833)
+		$sqlStore = $this->store instanceof SPARQLStore ? $this->store->baseStore : $this->store;
+
+		if ( $sqlStore instanceof SQLStore ) {
+			$sqlStore->updateFixedPropertyTables();
+		}
+
 		$maxId = $this->entityRebuildDispatcher->getMaxId();
 
 		if ( $this->start > 1 && $this->end === false ) {
