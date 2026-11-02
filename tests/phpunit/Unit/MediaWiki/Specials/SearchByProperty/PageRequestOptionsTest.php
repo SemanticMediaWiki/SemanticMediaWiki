@@ -279,6 +279,36 @@ class PageRequestOptionsTest extends TestCase {
 			]
 		];
 
+		# 14 @see 5781, MediaWiki converts spaces in a subpage link to `_` (_txt type)
+		$provider[] = [
+			':Display_title_of/Brandenburg_Gate',
+			[],
+			[
+				'propertyString' => 'Display title of',
+				'valueString'    => 'Brandenburg Gate',
+			]
+		];
+
+		# 15
+		$provider[] = [
+			'Display_title_of/Brandenburg_Gate',
+			[],
+			[
+				'propertyString' => 'Display title of',
+				'valueString'    => 'Brandenburg Gate',
+			]
+		];
+
+		# 16 an escaped `_` is kept
+		$provider[] = [
+			':Display_title_of/Foo-5Fbar',
+			[],
+			[
+				'propertyString' => 'Display title of',
+				'valueString'    => 'Foo_bar',
+			]
+		];
+
 		return $provider;
 	}
 

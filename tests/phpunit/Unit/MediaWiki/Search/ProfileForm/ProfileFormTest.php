@@ -222,6 +222,15 @@ class ProfileFormTest extends TestCase {
 		);
 	}
 
+	public function testAvailableFormsLinkSearchesForTheStoredSchemaType() {
+		$form = $this->buildExtendedProfileFormForQueryString( '[[~~*Has text foo*]]' );
+
+		$this->assertStringContainsString(
+			'property=Schema+type&amp;value=SEARCH_FORM_SCHEMA',
+			$form
+		);
+	}
+
 	private function buildExtendedProfileFormForQueryString( string $queryString ): string {
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )

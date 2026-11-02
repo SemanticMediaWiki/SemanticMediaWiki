@@ -76,7 +76,8 @@ class PageRequestOptions {
 		$params = array_filter( $params, 'strlen' );
 
 		$property = $this->requestOptions['property'] ?? current( $params );
-		$value = $this->requestOptions['value'] ?? next( $params );
+		// MediaWiki turns spaces in the subpage into `_` (a literal `_` is escaped as -5F)
+		$value = $this->requestOptions['value'] ?? str_replace( '_', ' ', (string)next( $params ) );
 
 		// Auto-generated link is marked with a leading :
 		if ( is_string( $property ) && $property !== '' && $property[0] === ':' ) {
