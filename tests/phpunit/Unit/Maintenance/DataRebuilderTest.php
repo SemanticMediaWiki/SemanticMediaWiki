@@ -17,6 +17,7 @@ use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Options;
 use SMW\Query\QueryResult;
+use SMW\SPARQLStore\SPARQLStore;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -485,6 +486,53 @@ class DataRebuilderTest extends TestCase {
 			'--use-job applies to full rebuilds only',
 			$spyMessageReporter->getMessagesAsString()
 		);
+	}
+
+	public function testRebuildWithSkippedPropertiesStillUpdatesFixedPropertyTables() {
+		$store = $this->newStoreStubForFixedPropertyTables( SQLStore::class );
+
+		$store->expects( $this->once() )
+			->method( 'updateFixedPropertyTables' );
+
+		$this->rebuildWithSkippedProperties( $store );
+	}
+
+	public function testRebuildUpdatesFixedPropertyTablesOfTheBaseStoreBehindSparql() {
+		$baseStore = $this->createMock( SQLStore::class );
+
+		$baseStore->expects( $this->once() )
+			->method( 'updateFixedPropertyTables' );
+
+		$store = $this->newStoreStubForFixedPropertyTables( SPARQLStore::class );
+		$store->baseStore = $baseStore;
+
+		$this->rebuildWithSkippedProperties( $store );
+	}
+
+	private function newStoreStubForFixedPropertyTables( string $storeClass ) {
+		$rebuilder = $this->createMock( Rebuilder::class );
+		$rebuilder->method( 'rebuild' )
+			->willReturnCallback( [ $this, 'refreshDataOnMockCallback' ] );
+		$rebuilder->method( 'getDispatchedEntities' )
+			->willReturn( [] );
+
+		$store = $this->createMock( $storeClass );
+		$store->method( 'refreshData' )
+			->willReturn( $rebuilder );
+
+		return $store;
+	}
+
+	private function rebuildWithSkippedProperties( Store $store ): void {
+		$instance = new DataRebuilder( $store, $this->createMock( TitleFactory::class ), $this->jobFactory );
+
+		$instance->setOptions( new Options( [
+			'e' => 1,
+			'skip-properties' => true,
+			'skip-dispose' => true
+		] ) );
+
+		$instance->rebuild();
 	}
 
 	public function testRebuildSelectedPagesWithCategoryNamespaceFilter() {

@@ -21,7 +21,10 @@ use SMW\SQLStore\EntityStore\DataItemHandlerFactory;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\EntityLookup;
 use SMW\SQLStore\Rebuilder\Rebuilder;
+use SMW\SQLStore\TableBuilder\Table;
+use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\Store;
+use Wikimedia\Rdbms\IDatabase;
 
 /*
  * Virtual "interwiki prefix" for old-style special SMW objects (no longer used)
@@ -454,6 +457,66 @@ class SQLStore extends Store {
 		);
 
 		return true;
+	}
+
+	/**
+	 * Gives the empty tables of user-defined fixed properties ($smwgFixedProperties)
+	 * the columns of the type currently declared for each property.
+	 *
+	 * A table with values is left to setupStore.php, as dropping a column empties
+	 * values that a rebuild does not restore unless it rewrites the entity. Without
+	 * a stored type, the property's page may still declare the type the table has.
+	 *
+	 * @since 7.4.0
+	 */
+	public function updateFixedPropertyTables(): void {
+		$connection = $this->getConnection( DB_PRIMARY );
+		$tableBuilder = TableBuilder::factory( $connection );
+		$tableSchemaManager = $this->factory->newTableSchemaManager();
+
+		foreach ( $this->getPropertyTables() as $propertyTable ) {
+			if ( !$propertyTable->isFixedPropertyTable() || $propertyTable->getFixedProperty()[0] === '_' ) {
+				continue;
+			}
+
+			$table = $tableSchemaManager->findTable( $propertyTable->getName() );
+
+			if (
+				$table !== null &&
+				$this->hasStoredType( $propertyTable->getFixedProperty() ) &&
+				$this->isEmptyAndMissingColumn( $connection, $table )
+			) {
+				$tableBuilder->create( $table );
+			}
+		}
+	}
+
+	private function hasStoredType( string $propertyKey ): bool {
+		$subject = ( new Property( $propertyKey ) )->getDiWikiPage();
+
+		return $this->getPropertyValues( $subject, new Property( Property::TYPE_HAS_TYPE ) ) !== [];
+	}
+
+	private function isEmptyAndMissingColumn( IDatabase $connection, Table $table ): bool {
+		$tableName = $table->getName();
+
+		$hasValues = $connection->newSelectQueryBuilder()
+			->select( '1' )
+			->from( $tableName )
+			->caller( __METHOD__ )
+			->fetchField() !== false;
+
+		if ( $hasValues ) {
+			return false;
+		}
+
+		foreach ( array_keys( $table->get( 'fields' ) ) as $field ) {
+			if ( !$connection->fieldExists( $tableName, $field, __METHOD__ ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public function refreshData( &$id, $count, $namespaces = false, $usejobs = true ): Rebuilder {
