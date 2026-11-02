@@ -224,6 +224,11 @@ class SQLiteTableBuilder extends TableBuilder {
 	}
 
 	private function doDropField( string $tableName, string $temp_table, int|string $fieldName, array $attributes ): void {
+		if ( strpos( $tableName, 'ft_search' ) !== false ) {
+			$this->reportMessage( "   ... virtual tables can not be altered in SQLite ...\n" );
+			return;
+		}
+
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$fields = $attributes['fields'];
