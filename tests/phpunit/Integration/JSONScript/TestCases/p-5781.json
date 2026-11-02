@@ -19,6 +19,10 @@
 			"contents": "{{#property_search_link:Has text|a::b|See it}}"
 		},
 		{
+			"page": "Example/P5781/4",
+			"contents": "{{#property_search_link:Has text|__NOTOC__}}"
+		},
+		{
 			"page": "Example/P5781/O'Reilly",
 			"contents": "{{#property_search_link:Has text|{{PAGENAME}}}}"
 		}
@@ -66,7 +70,17 @@
 		},
 		{
 			"type": "parser",
-			"about": "#3 a page name magic word searches for the plain name",
+			"about": "#3 a value is shown as written and not parsed as wikitext",
+			"subject": "Example/P5781/4",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Special:SearchByProperty/:Has-20text/-5F-5FNOTOC-5F-5F\">&#95;&#95;NOTOC_&#95;</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 a page name magic word searches for the plain name",
 			"subject": "Example/P5781/O'Reilly",
 			"assert-output": {
 				"to-contain": [

@@ -49,6 +49,13 @@ class PropertySearchLinkParserFunctionTest extends TestCase {
 		);
 	}
 
+	public function testValueCannotTurnTheLinkIntoAnAnnotationWithTheOlderSyntax() {
+		$this->assertStringContainsString(
+			'/:Has-20text/a-3A=b|',
+			$this->parse( 'Has text', 'a:=b', 'caption' )
+		);
+	}
+
 	public function testCaptionCannotAnnotate() {
 		$this->assertStringNotContainsString(
 			'[[Foo::Bar',
@@ -58,8 +65,22 @@ class PropertySearchLinkParserFunctionTest extends TestCase {
 
 	public function testDecodesTheCharacterReferencesOfPageNameMagicWords() {
 		$this->assertSame(
-			"[[Special:SearchByProperty/:Has-20text/O'Reilly|O&#039;Reilly]]",
+			"[[Special:SearchByProperty/:Has-20text/O'Reilly|O&#39;Reilly]]",
 			$this->parse( 'Has text', 'O&#039;Reilly', '' )
+		);
+	}
+
+	public function testDefaultCaptionIsNotParsedAsWikitext() {
+		$this->assertStringNotContainsString(
+			"|'''Foo'''",
+			$this->parse( 'Has text', "'''Foo'''", '' )
+		);
+	}
+
+	public function testCustomCaptionIsParsedAsWikitext() {
+		$this->assertStringContainsString(
+			"|'''Foo'''",
+			$this->parse( 'Has text', 'Foo', "'''Foo'''" )
 		);
 	}
 

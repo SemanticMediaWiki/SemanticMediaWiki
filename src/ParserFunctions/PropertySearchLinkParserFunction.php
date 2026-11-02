@@ -21,28 +21,27 @@ class PropertySearchLinkParserFunction {
 			return '';
 		}
 
-		if ( $caption === '' ) {
-			$caption = $value === '' ? $property : $value;
-		}
-
 		// Page name magic words such as {{PAGENAME}} return character references
+		$property = Sanitizer::decodeCharReferences( $property );
+		$value = Sanitizer::decodeCharReferences( $value );
+
 		$wikiText = Infolink::newPropertySearchLink(
-			LinksEncoder::neutralizeAnnotation( $caption ),
-			Sanitizer::decodeCharReferences( $property ),
-			Sanitizer::decodeCharReferences( $value ),
+			$caption === '' ? wfEscapeWikiText( $value === '' ? $property : $value ) : LinksEncoder::neutralizeAnnotation( $caption ),
+			$property,
+			$value,
 			false
 		)->getWikiText();
 
-		return $this->escapeDoubleColonInLinkTarget( $wikiText );
+		return $this->escapeAnnotationSyntaxInLinkTarget( $wikiText );
 	}
 
 	/**
-	 * InTextAnnotationParser would read a `::` in the target of a link as an annotation.
+	 * InTextAnnotationParser would read a `::` or `:=` in the target of a link as an annotation.
 	 */
-	private function escapeDoubleColonInLinkTarget( string $wikiText ): string {
+	private function escapeAnnotationSyntaxInLinkTarget( string $wikiText ): string {
 		return preg_replace_callback(
 			'/^\[\[[^|]*/',
-			static fn ( array $target ): string => str_replace( '::', '-3A-3A', $target[0] ),
+			static fn ( array $target ): string => str_replace( [ '::', ':=' ], [ '-3A-3A', '-3A=' ], $target[0] ),
 			$wikiText
 		);
 	}
