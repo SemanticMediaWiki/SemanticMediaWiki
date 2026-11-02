@@ -120,6 +120,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	 * {@inheritDoc}
 	 */
 	protected function doUpdateTable( $tableName, array $attributes ): void {
+		$tempTableName = $this->connection->tableName( "{$tableName}_temp" );
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
@@ -136,7 +137,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		// that differs from false, it's an obsolete one that should be removed.
 		foreach ( $currentFields as $fieldName => $value ) {
 			if ( $value !== false ) {
-				$this->doDropField( $tableName, $fieldName, $attributes );
+				$this->doDropField( $tableName, $tempTableName, $fieldName, $attributes );
 			}
 		}
 	}
@@ -222,11 +223,15 @@ class SQLiteTableBuilder extends TableBuilder {
 		$this->reportMessage( "       Please delete and reinitialize the tables to remove obsolete data, or just keep it.\n" );
 	}
 
-	private function doDropField( string $tableName, int|string $fieldName, array $attributes ): void {
+	private function doDropField( string $tableName, string $temp_table, int|string $fieldName, array $attributes ): void {
+		if ( strpos( $tableName, 'ft_search' ) !== false ) {
+			$this->reportMessage( "   ... virtual tables can not be altered in SQLite ...\n" );
+			return;
+		}
+
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$fields = $attributes['fields'];
-		$temp_table = "{$tableName}_temp";
 
 		// https://stackoverflow.com/questions/5938048/delete-column-from-sqlite-table
 		// Deleting obsolete fields is not possible in SQLite therefore create a
