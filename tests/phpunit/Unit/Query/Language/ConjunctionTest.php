@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
@@ -142,6 +143,30 @@ class ConjunctionTest extends TestCase {
 		];
 
 		return $provider;
+	}
+
+	public function testDisjunctionInConjunctionIsEnclosedInSubquery() {
+		$this->assertStringContainsString(
+			'<q>[[:Bar]] OR [[:Yim]]</q>',
+			$this->newConjunctionWithDisjunction()->getQueryString()
+		);
+	}
+
+	public function testDisjunctionInConjunctionUsedAsValueIsEnclosedInSubquery() {
+		$this->assertStringContainsString(
+			'<q>[[:Bar]] OR [[:Yim]]</q>',
+			$this->newConjunctionWithDisjunction()->getQueryString( true )
+		);
+	}
+
+	private function newConjunctionWithDisjunction(): Conjunction {
+		return new Conjunction( [
+			new ValueDescription( new WikiPage( 'Foo', NS_MAIN ) ),
+			new Disjunction( [
+				new ValueDescription( new WikiPage( 'Bar', NS_MAIN ) ),
+				new ValueDescription( new WikiPage( 'Yim', NS_MAIN ) )
+			] )
+		] );
 	}
 
 	public function testPrune() {
