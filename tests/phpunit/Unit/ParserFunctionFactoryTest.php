@@ -9,6 +9,7 @@ use SMW\ParserFunctions\AskParserFunction;
 use SMW\ParserFunctions\ConceptParserFunction;
 use SMW\ParserFunctions\DeclareParserFunction;
 use SMW\ParserFunctions\PropertyLinkParserFunction;
+use SMW\ParserFunctions\PropertySearchLinkParserFunction;
 use SMW\ParserFunctions\RecurringEventsParserFunction;
 use SMW\ParserFunctions\SetParserFunction;
 use SMW\ParserFunctions\ShowParserFunction;
@@ -144,6 +145,11 @@ class ParserFunctionFactoryTest extends TestCase {
 			'newPropertyLinkParserFunction'
 		];
 
+		$provider[] = [
+			PropertySearchLinkParserFunction::class,
+			'newPropertySearchLinkParserFunction'
+		];
+
 		return $provider;
 	}
 
@@ -186,6 +192,11 @@ class ParserFunctionFactoryTest extends TestCase {
 		$provider[] = [
 			'getPropertyLinkParserFunctionDefinition',
 			'property_link'
+		];
+
+		$provider[] = [
+			'getPropertySearchLinkParserFunctionDefinition',
+			'property_search_link'
 		];
 
 		return $provider;
