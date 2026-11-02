@@ -1,6 +1,6 @@
 # Semantic MediaWiki 7.4.0
 
-Released on TBD.
+Released on November 2, 2026.
 
 This is a [minor release](../RELEASE-POLICY.md). Thus, it contains no breaking changes, only new features and fixes. Some of the security fixes tighten input handling and may reject requests that previously succeeded.
 
