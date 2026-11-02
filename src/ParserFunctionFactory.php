@@ -17,6 +17,7 @@ use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\ExpensiveFuncExecutionWatcher;
 use SMW\ParserFunctions\InfoParserFunction;
 use SMW\ParserFunctions\PropertyLinkParserFunction;
+use SMW\ParserFunctions\PropertySearchLinkParserFunction;
 use SMW\ParserFunctions\RecurringEventsParserFunction as RecurringEventsParserFunc;
 use SMW\ParserFunctions\SetParserFunction;
 use SMW\ParserFunctions\ShowParserFunction;
@@ -79,6 +80,9 @@ class ParserFunctionFactory {
 		$parser->setFunctionHook( $name, $definition, $flag );
 
 		[ $name, $definition, $flag ] = $this->getPropertyLinkParserFunctionDefinition();
+		$parser->setFunctionHook( $name, $definition, $flag );
+
+		[ $name, $definition, $flag ] = $this->getPropertySearchLinkParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 	}
 
@@ -343,6 +347,13 @@ class ParserFunctionFactory {
 	}
 
 	/**
+	 * @since 7.4.0
+	 */
+	public function newPropertySearchLinkParserFunction(): PropertySearchLinkParserFunction {
+		return new PropertySearchLinkParserFunction();
+	}
+
+	/**
 	 * @since 2.3
 	 */
 	public function getAskParserFunctionDefinition(): array {
@@ -532,6 +543,22 @@ class ParserFunctionFactory {
 		};
 
 		return [ 'property_link', $propertyLinkParserFunctionDefinition, 0 ];
+	}
+
+	/**
+	 * @since 7.4.0
+	 */
+	public function getPropertySearchLinkParserFunctionDefinition(): array {
+		$propertySearchLinkParserFunctionDefinition = function (
+			Parser $parser,
+			string $property = '',
+			string $value = '',
+			string $caption = ''
+		): string {
+			return $this->newPropertySearchLinkParserFunction()->parse( $property, $value, $caption );
+		};
+
+		return [ 'property_search_link', $propertySearchLinkParserFunctionDefinition, 0 ];
 	}
 
 }

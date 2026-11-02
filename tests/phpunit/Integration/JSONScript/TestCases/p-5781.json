@@ -1,0 +1,101 @@
+{
+	"description": "Test `{{#property_search_link:}}` links with values a subpage link cannot carry (#5781, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/P5781/1",
+			"contents": "{{#property_search_link:Has text|Brandenburg Gate}}"
+		},
+		{
+			"page": "Example/P5781/2",
+			"contents": "{{#property_search_link:Has text|AC/DC #1 [x] a_b|See it}}"
+		},
+		{
+			"page": "Example/P5781/3",
+			"contents": "{{#property_search_link:Has text|a::b|See it}}"
+		},
+		{
+			"page": "Example/P5781/4",
+			"contents": "{{#property_search_link:Has text|__NOTOC__}}"
+		},
+		{
+			"page": "Example/P5781/O'Reilly",
+			"contents": "{{#property_search_link:Has text|{{PAGENAME}}}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 value as the caption",
+			"subject": "Example/P5781/1",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Special:SearchByProperty/:Has-20text/Brandenburg-20Gate\">Brandenburg Gate</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 characters a title cannot carry, with a custom caption",
+			"subject": "Example/P5781/2",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Special:SearchByProperty/:Has-20text/AC-2FDC-20-231-20-5Bx-5D-20a-5Fb\">See it</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 a double colon links and does not annotate",
+			"subject": "Example/P5781/3",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Special:SearchByProperty/:Has-20text/a-3A-3Ab\">See it</a>"
+				]
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 2,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 a value is shown as written and not parsed as wikitext",
+			"subject": "Example/P5781/4",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Special:SearchByProperty/:Has-20text/-5F-5FNOTOC-5F-5F\">&#95;&#95;NOTOC_&#95;</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 a page name magic word searches for the plain name",
+			"subject": "Example/P5781/O'Reilly",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Special:SearchByProperty/:Has-20text/Example-2FP5781-2FO&#39;Reilly\">Example/P5781/O&#39;Reilly</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

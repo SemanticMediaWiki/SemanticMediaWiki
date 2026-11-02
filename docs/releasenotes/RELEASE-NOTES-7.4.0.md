@@ -10,6 +10,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 ## New features and enhancements
 
 * Added chunked and job queue rebuilds to `rebuildFulltextSearchTable.php`, so the full-text search index can be rebuilt on hosts that stop long-running scripts ([#7133](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7133))
+* Added the `{{#property_search_link:}}` parser function for linking to `Special:SearchByProperty` with any value, including values with characters such as `/`, `#` or `[` that a hand-written subpage link cannot carry: `{{#property_search_link:Has text|AC/DC #1}}` and `{{#property_search_link:Has text|AC/DC #1|custom label}}` ([#7179](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7179))
 
 ## Bug fixes
 
