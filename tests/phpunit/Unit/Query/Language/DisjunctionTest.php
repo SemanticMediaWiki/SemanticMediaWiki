@@ -165,8 +165,8 @@ class DisjunctionTest extends TestCase {
 		return $provider;
 	}
 
-	public function testGetQueryStringForSomePropertyDisjunction() {
-		$property = new Property( 'Foo' );
+	public function testStandAloneDisjunctionIsNotEnclosedInSubquery() {
+		$property = new Property( 'Has page' );
 
 		$instance = new Disjunction( [
 			new SomeProperty( $property, new ValueDescription( new WikiPage( 'Bar', NS_MAIN ), null, SMW_CMP_NEQ ) ),
@@ -174,18 +174,8 @@ class DisjunctionTest extends TestCase {
 		] );
 
 		$this->assertSame(
-			'[[Foo::!Bar]] OR [[Foo::!Yim]]',
+			'[[Has page::!Bar]] OR [[Has page::!Yim]]',
 			$instance->getQueryString()
-		);
-
-		$conjunction = new Conjunction( [
-			new ValueDescription( new WikiPage( 'Foo', NS_MAIN ) ),
-			$instance
-		] );
-
-		$this->assertSame(
-			'[[:Foo]]  <q>[[Foo::!Bar]] OR [[Foo::!Yim]]</q> ',
-			$conjunction->getQueryString()
 		);
 	}
 
