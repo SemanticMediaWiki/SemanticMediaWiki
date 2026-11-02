@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Iwuala Lucy",
 			"Ukabia",
 			"Uzoma Ozurumba"
 		]
@@ -13,11 +14,11 @@
 	"smw_printername_template": "Àtụ",
 	"smw_printername_category": "Ụdàkọ",
 	"smw-categories": "Ụdàkọ",
-	"smw-ask-search": "Tùwe",
+	"smw-ask-search": "Chọọ",
 	"browse": "Ngaghari na wiki",
-	"smw-admin-idlookup-input": "Tùwe:",
+	"smw-admin-idlookup-input": "Chọọ",
 	"smw-livepreview-loading": "Ọ biágó...",
-	"smw-format-datatable-search": "Tùwe:",
+	"smw-format-datatable-search": "Chọọ",
 	"smw-property-reserved-category": "Ụdàkọ",
 	"smw-category": "Ụdàkọ",
 	"smw-listingcontinuesabbrev": "gàzi."

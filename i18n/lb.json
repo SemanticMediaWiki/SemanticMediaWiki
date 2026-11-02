@@ -409,7 +409,7 @@
 	"smw-facetedsearch-intro-tab-search": "Sichen",
 	"smw-facetedsearch-input-filter-placeholder": "Filteren...",
 	"smw-facetedsearch-no-filters": "Keng Filteren.",
-	"smw-facetedsearch-clear-filters": "{{PLURAL:$1|Filter|Filteren}} zrécksetzen",
+	"smw-facetedsearch-clear-filters": "{{PLURAL:$1|Filter|Filteren}} zerécksetzen",
 	"smw-search-placeholder": "Sichen...",
 	"smw-listingcontinuesabbrev": "(Fortsetzung)",
 	"smw-showingresults": "Hei gesitt der  {{PLURAL:$1| '''1''' Resultat|'''$1''' Resultater}}, ugefaange mat #'''$2'''."
