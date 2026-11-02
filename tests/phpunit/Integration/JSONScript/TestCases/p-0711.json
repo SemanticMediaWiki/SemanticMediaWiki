@@ -85,7 +85,7 @@
 						"_SKEY"
 					],
 					"propertyValues": [
-						"<q>[[Category:P0711/0]] [[Has number::1234]] OR [[Category:P0711/1]]</q>"
+						{ "serialization": "[[Category:P0711/0]] [[Has number::1234]] OR [[Category:P0711/1]]" }
 					]
 				}
 			}
@@ -106,7 +106,7 @@
 						"_SKEY"
 					],
 					"propertyValues": [
-						"<q>[[Category:P0711/0||P0711/1]] [[Has number::1234]] OR [[Category:P0711/1]]</q>"
+						{ "serialization": "[[Category:P0711/0||P0711/1]] [[Has number::1234]] OR [[Category:P0711/1]]" }
 					]
 				}
 			}
@@ -127,7 +127,7 @@
 						"_SKEY"
 					],
 					"propertyValues": [
-						"<q>[[Category:P0711/0||P0711/1]] OR  <q>[[Has number::1234]]</q> </q>"
+						{ "serialization": "[[Category:P0711/0||P0711/1]] OR [[Has number::1234]]" }
 					]
 				}
 			}

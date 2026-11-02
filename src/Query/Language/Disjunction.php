@@ -133,22 +133,14 @@ class Disjunction extends Description {
 		foreach ( $this->descriptions as $desc ) {
 			$subdesc = $desc->getQueryString( $asValue );
 
-			if ( $desc instanceof SomeProperty ) { // enclose in <q> for parsing
-				if ( $asValue ) {
-					$subdesc = ' <q>[[' . $subdesc . ']]</q> ';
-				} else {
-					$subdesc = ' <q>' . $subdesc . '</q> ';
-				}
+			if ( $asValue && $desc instanceof SomeProperty ) { // enclose in <q> for parsing
+				$subdesc = ' <q>[[' . $subdesc . ']]</q> ';
 			}
 
 			$result .= ( $result ? $sep : '' ) . $subdesc;
 		}
 
-		if ( $asValue ) {
-			return $result;
-		}
-
-		return ' <q>' . $result . '</q> ';
+		return $result;
 	}
 
 	public function isSingleton() {
