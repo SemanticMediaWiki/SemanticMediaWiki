@@ -28,6 +28,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed query results showing the namespace on pages whose display title repeats it; `Help:Bar (inactive)` is now listed as `Bar (inactive)` unless `prefix` asks for the long form ([#7169](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7169))
 * Fixed a slowdown since 7.0.0: reading a property's type, a page's display title or other cached page data ran a database query every time on wikis that cache in the database, which includes maintenance scripts such as `rebuildData.php` by default ([#7168](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7168))
 * Fixed a "further results" link being added to the page when an inline query with a `searchlabel` that holds only an HTML comment, such as `searchlabel=<!-- -->`, is substituted with `subst:` ([#7171](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7171))
+* Fixed valid language tags that MediaWiki has no name for being rejected, such as `ja-Latn-hepburn` in the `Monolingual text` value `Rashōmon@ja-Latn-hepburn`. A tag is now also accepted when it is well-formed and MediaWiki knows its primary language ([#7172](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7172))
 
 ## Upgrading
 
