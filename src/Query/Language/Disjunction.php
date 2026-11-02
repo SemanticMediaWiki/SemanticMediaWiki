@@ -140,8 +140,6 @@ class Disjunction extends Description {
 			$result .= ( $result ? $sep : '' ) . $subdesc;
 		}
 
-		// A Conjunction encloses a nested Disjunction in <q>, a stand-alone
-		// Disjunction needs none (#4291)
 		return $result;
 	}
 

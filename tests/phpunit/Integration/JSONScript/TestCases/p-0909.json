@@ -237,7 +237,7 @@
 						"_SKEY"
 					],
 					"propertyValues": [
-						"[[Has page.Has page::Example/P0909/1]] [[-Has page.Has page::Example/P0909/1]] OR [[Has page.-Has page::Example/P0909/1]]"
+						{ "serialization": "[[Has page.Has page::Example/P0909/1]] [[-Has page.Has page::Example/P0909/1]] OR [[Has page.-Has page::Example/P0909/1]]" }
 					]
 				}
 			}

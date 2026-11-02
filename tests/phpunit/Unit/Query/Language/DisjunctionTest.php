@@ -173,7 +173,6 @@ class DisjunctionTest extends TestCase {
 			new SomeProperty( $property, new ValueDescription( new WikiPage( 'Yim', NS_MAIN ), null, SMW_CMP_NEQ ) )
 		] );
 
-		// #4291
 		$this->assertSame(
 			'[[Foo::!Bar]] OR [[Foo::!Yim]]',
 			$instance->getQueryString()
