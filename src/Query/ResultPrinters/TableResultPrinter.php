@@ -6,6 +6,7 @@ use MediaWiki\Html\Html;
 use SMW\DataItems\Blob;
 use SMW\DataItems\WikiPage;
 use SMW\DataValues\DataValue;
+use SMW\DataValues\WikiPageValue;
 use SMW\DataValues\TimeValue;
 use SMW\Localizer\Message;
 use SMW\Query\PrintRequest;
@@ -96,7 +97,7 @@ class TableResultPrinter extends ResultPrinter {
 
 		$params['prefix'] = [
 			'message' => 'smw-paramdesc-prefix',
-			'default' => 'none',
+			'default' => 'auto',
 			'values' => [ 'all', 'subject', 'none', 'auto' ],
 		];
 
@@ -365,49 +366,100 @@ class TableResultPrinter extends ResultPrinter {
 	 */
 	protected function getCellContent( array $dataValues, $outputMode, $isSubject ): string {
 		$useLongText = $this->prefixParameterProcessor->useLongText( $isSubject );
-		$dataValueMethod = $useLongText ? 'getLongText' : 'getShortText';
+		$linker = $this->getLinker( $isSubject );
 
 		$values = [];
 		foreach ( $dataValues as $dv ) {
-
-			// Dates use the HTML accessor so the formatter's semantic <time>
-			// element is emitted even when the table is produced in wiki output
-			// mode (inline #ask). The <time> markup is valid in the parsed
-			// wikitext, and HTML output (Special:Ask) is unchanged.
-			if ( $dv instanceof TimeValue ) {
-				$value = $useLongText
-					? $dv->getLongHTMLText( $this->getLinker( $isSubject ) )
-					: $dv->getShortHTMLText( $this->getLinker( $isSubject ) );
-
-			// Restore output in Special:Ask on:
-			// - file/image parsing
-			// - text formatting on string elements including italic, bold etc.
-			} elseif ( ( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof WikiPage && $dv->getDataItem()->getNamespace() === NS_FILE ) ||
-				( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof Blob ) ) {
-				// Too lazy to handle the Parser object and besides the Message
-				// parse does the job and ensures no other hook is executed
-				$value = Message::get(
-					[ 'smw-parse', $dv->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) ],
-					Message::PARSE
-				);
-			} else {
-				$value = $dv->$dataValueMethod( $outputMode, $this->getLinker( $isSubject ) );
-			}
-
+			$value = $this->formatCellValue( $dv, $outputMode, $useLongText, $linker );
 			$values[] = $value === '' ? '&nbsp;' : $value;
 		}
 
+		return $this->joinCellValues( $values, $outputMode, $isSubject );
+	}
+
+	/**
+	 * Format a single data value for a cell.
+	 *
+	 * Dates use the HTML accessor so the formatter's semantic <time>
+	 * element is emitted even when the table is produced in wiki output
+	 * mode (inline #ask). The <time> markup is valid in the parsed
+	 * wikitext, and HTML output (Special:Ask) is unchanged.
+	 */
+	protected function formatCellValue( DataValue $dv, $outputMode, bool $useLongText, $linker ): string {
+		if ( $dv instanceof TimeValue ) {
+			return $useLongText
+				? $dv->getLongHTMLText( $linker )
+				: $dv->getShortHTMLText( $linker );
+		}
+
+		// Blobs and everything else always use the short text accessor.
+		$method = 'getShortText';
+
+		if ( $dv instanceof WikiPageValue ) {
+			// @see ListResultPrinter\ValueTextsBuilder -> getValueText
+			$dv->setOption(
+				$useLongText
+					? $dv::PREFIXED_FORM
+					: $dv::SHORT_FORM,
+				true
+			);
+			$method = $useLongText ? 'getLongText' : 'getShortText';
+		}
+
+		// Restore output in Special:Ask on:
+		// - file/image parsing
+		// - text formatting on string elements including italic, bold etc.
+		if ( !$this->shouldParseAsWikitext( $dv, $outputMode ) ) {
+			return $dv->$method( $outputMode, $linker );
+		}
+
+		// Parse via Message rather than a Parser object: Message avoids
+		// firing other extensions' parser hooks.
+		$raw = $dv->$method( SMW_OUTPUT_WIKI, $linker );
+		return Message::get(
+			[ 'smw-parse', $raw ],
+			Message::PARSE
+		);
+	}
+
+	/**
+	 * Whether a value must be parsed as wikitext rather than rendered
+	 * directly.
+	 *
+	 * Restore output in Special:Ask on:
+	 * - file/image parsing
+	 * - text formatting on string elements including italic, bold etc.
+	 */
+	protected function shouldParseAsWikitext( DataValue $dv, $outputMode ): bool {
+		if ( $outputMode !== SMW_OUTPUT_HTML ) {
+			return false;
+		}
+
+		$dataItem = $dv->getDataItem();
+
+		return (
+				$dataItem instanceof WikiPage &&
+				$dataItem->getNamespace() === NS_FILE
+			) ||
+			$dataItem instanceof Blob;
+	}
+
+	/**
+	 * Join formatted cell values into a single HTML string, honouring
+	 * the `sep` parameter (ul/ol) and the per-output-mode separator.
+	 */
+	protected function joinCellValues( array $values, $outputMode, $isSubject ): string {
 		$sep = strtolower( $this->params['sep'] );
 
 		if ( !$isSubject && $sep === 'ul' && count( $values ) > 1 ) {
-			$html = '<ul><li>' . implode( '</li><li>', $values ) . '</li></ul>';
-		} elseif ( !$isSubject && $sep === 'ol' && count( $values ) > 1 ) {
-			$html = '<ol><li>' . implode( '</li><li>', $values ) . '</li></ol>';
-		} else {
-			$html = implode( $this->getValueSeparator( $outputMode ), $values );
+			return '<ul><li>' . implode( '</li><li>', $values ) . '</li></ul>';
 		}
 
-		return $html;
+		if ( !$isSubject && $sep === 'ol' && count( $values ) > 1 ) {
+			return '<ol><li>' . implode( '</li><li>', $values ) . '</li></ol>';
+		}
+
+		return implode( $this->getValueSeparator( $outputMode ), $values );
 	}
 
 	/**
