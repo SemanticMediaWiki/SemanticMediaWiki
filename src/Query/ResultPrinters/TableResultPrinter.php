@@ -379,13 +379,12 @@ class TableResultPrinter extends ResultPrinter {
 
 	/**
 	 * Format a single data value for a cell.
-	 *
-	 * Dates use the HTML accessor so the formatter's semantic <time>
-	 * element is emitted even when the table is produced in wiki output
-	 * mode (inline #ask). The <time> markup is valid in the parsed
-	 * wikitext, and HTML output (Special:Ask) is unchanged.
 	 */
 	protected function formatCellValue( DataValue $dv, $outputMode, bool $useLongText, $linker ): string {
+		// Dates use the HTML accessor so the formatter's semantic <time>
+		// element is emitted even when the table is produced in wiki output
+		// mode (inline #ask). The <time> markup is valid in the parsed
+		// wikitext, and HTML output (Special:Ask) is unchanged.
 		if ( $dv instanceof TimeValue ) {
 			return $useLongText
 				? $dv->getLongHTMLText( $linker )
@@ -409,6 +408,7 @@ class TableResultPrinter extends ResultPrinter {
 		// Restore output in Special:Ask on:
 		// - file/image parsing
 		// - text formatting on string elements including italic, bold etc.
+
 		if ( !$this->shouldParseAsWikitext( $dv, $outputMode ) ) {
 			return $dv->$method( $outputMode, $linker );
 		}
