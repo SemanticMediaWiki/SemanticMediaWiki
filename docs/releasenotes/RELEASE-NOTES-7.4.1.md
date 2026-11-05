@@ -17,6 +17,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed `updateEntityCountMap.php` running slowly on large wikis and ignoring `-s` ([#7184](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7184))
 * Fixed `purgeEntityCache.php` running slowly on large wikis ([#7185](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7185))
 * Fixed `rebuildElasticIndex.php` running slowly on large wikis ([#7186](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7186))
+* Fixed `rebuildPropertyStatistics.php` running slowly on large wikis ([#7188](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7188))
 
 ## Upgrading
 

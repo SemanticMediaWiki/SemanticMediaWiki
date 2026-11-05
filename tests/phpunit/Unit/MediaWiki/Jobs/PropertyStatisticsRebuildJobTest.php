@@ -11,7 +11,6 @@ use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
-use stdClass;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob
@@ -44,16 +43,12 @@ class PropertyStatisticsRebuildJobTest extends TestCase {
 	}
 
 	private function newStore(): SQLStore {
-		$row = new stdClass();
-		$row->smw_title = 'Test';
-		$row->smw_id = 42;
-
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->method( 'newSelectQueryBuilder' )
-			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( [ $row ] ) );
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder() );
 		$connection->method( 'newDeleteQueryBuilder' )
 			->willReturnCallback( fn () => $this->createMockDeleteQueryBuilder() );
 		$connection->method( 'newInsertQueryBuilder' )
