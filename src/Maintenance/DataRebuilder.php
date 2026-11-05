@@ -36,6 +36,17 @@ class DataRebuilder {
 	const AUTO_RECOVERY_ID = 'ar_id';
 	const AUTO_RECOVERY_LAST_START = 'ar_last_start';
 
+	/**
+	 * IDs between two auto-recovery checkpoints, each a separate commit; a resumed
+	 * run repeats at most this many
+	 */
+	private const AUTO_RECOVERY_INTERVAL = 100;
+
+	/**
+	 * IDs dispatched per step with `--use-job`, so that each step queues its jobs in one insert
+	 */
+	private const USE_JOB_DISPATCH_RANGE = 100;
+
 	private ?Options $options = null;
 
 	/**
@@ -285,8 +296,6 @@ class DataRebuilder {
 			1
 		);
 
-		$this->entityRebuildDispatcher->setDispatchRangeLimit( 1 );
-
 		$this->entityRebuildDispatcher->setOptions(
 			[
 				'shallow-update' => $this->options->safeGet( 'shallow-update', false ),
@@ -326,7 +335,8 @@ class DataRebuilder {
 		);
 
 		if ( $this->autoRecovery !== null && $this->autoRecovery->has( self::AUTO_RECOVERY_ID ) ) {
-			$this->start = $this->autoRecovery->get( self::AUTO_RECOVERY_ID );
+			// The stored ID less the safety margin can be below the first ID
+			$this->start = max( 1, $this->autoRecovery->get( self::AUTO_RECOVERY_ID ) );
 
 			$this->reportMessage( "Detecting an incomplete rebuild run ...\n" );
 
@@ -379,10 +389,11 @@ class DataRebuilder {
 
 		$this->rebuildCount = $this->start;
 		$progress = 0;
-		$estimatedProgress = 0;
 		$skipped_update = 0;
-		$current_id = 0;
-		$max = ( $this->end ? "$this->end" : $maxId );
+		$nextCheckpointId = $id;
+		$last_id = 0;
+		$endId = $this->end ?: $maxId;
+		$max = $endId;
 
 		// Snapshot the exception count so the data-step failures can be
 		// distinguished from any logged during the preceding property rebuild.
@@ -390,23 +401,24 @@ class DataRebuilder {
 
 		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
 
-			if ( $this->autoRecovery !== null ) {
+			if ( $this->autoRecovery !== null && $id >= $nextCheckpointId ) {
 				$this->autoRecovery->set( self::AUTO_RECOVERY_ID, (int)$id );
+				$nextCheckpointId = $id + self::AUTO_RECOVERY_INTERVAL;
 			}
 
 			$current_id = $id;
+			$range = $this->getDispatchRange( $id, $endId );
 
 			// Changes the ID to next target!
-			$this->doUpdateById( $id );
+			$this->doUpdateById( $id, $range );
+			$last_id = $current_id + $range - 1;
 
-			// Refresh progressively
-			$modBase = (int)round( log10( $this->rebuildCount ) * 100, 0 );
-			if ( $modBase > 0 && $this->rebuildCount % $modBase === 0 ) {
-				$estimatedProgress = $this->entityRebuildDispatcher->getEstimatedProgress();
-				$max = $this->end ? "$this->end" : $this->entityRebuildDispatcher->getMaxId();
+			// IDs created during the run extend it
+			if ( !$this->end && $last_id > $max ) {
+				$max = $this->entityRebuildDispatcher->getMaxId();
 			}
 
-			$progress = $this->cliMsgFormatter->progressCompact( $current_id, $max );
+			$progress = $this->cliMsgFormatter->progressCompact( $last_id, $max );
 
 			foreach ( $this->entityRebuildDispatcher->getDispatchedEntities() as $value ) {
 
@@ -431,7 +443,7 @@ class DataRebuilder {
 		}
 
 		if ( !$this->options->has( 'v' ) ) {
-			$progress = $this->cliMsgFormatter->progressCompact( $current_id, $max );
+			$progress = $this->cliMsgFormatter->progressCompact( $last_id, $max );
 
 			$this->reportMessage(
 				$this->cliMsgFormatter->twoColsOverride( '   ... updating ...', $progress )
@@ -505,7 +517,24 @@ class DataRebuilder {
 		return true;
 	}
 
-	private function doUpdateById( &$id ): void {
+	private function getDispatchRange( int $id, int $endId ): int {
+		// --ignore-exceptions skips the whole step that failed, and -d waits after each
+		// step, so both need steps of one ID
+		$canBatch = $this->options->safeGet( 'use-job', false ) &&
+			!$this->options->has( 'ignore-exceptions' ) &&
+			$this->delay === false;
+
+		if ( !$canBatch ) {
+			return 1;
+		}
+
+		// IDs created after the run started are dispatched one at a time
+		return max( 1, min( self::USE_JOB_DISPATCH_RANGE, $endId - $id + 1 ) );
+	}
+
+	private function doUpdateById( &$id, int $range ): void {
+		$this->entityRebuildDispatcher->setDispatchRangeLimit( $range );
+
 		if ( !$this->options->has( 'ignore-exceptions' ) ) {
 			$this->entityRebuildDispatcher->rebuild( $id );
 		} else {
@@ -515,13 +544,8 @@ class DataRebuilder {
 			} catch ( Throwable $e ) {
 				$this->exceptionFileLogger->recordException( $id, $e );
 
-				// Rebuilder::rebuild() advances $id only via next_position() at
-				// the very end, after running its jobs; when a job throws that
-				// step is skipped and $id keeps pointing at the failing entity.
-				// Advance past it (the dispatch range is fixed to 1 in
-				// rebuildAll()) so the run continues instead of reprocessing the
-				// same id indefinitely.
-				$id++;
+				// Rebuilder::rebuild() advances $id only after running its jobs, so skip the failed step
+				$id += $range;
 			}
 		}
 
@@ -529,15 +553,22 @@ class DataRebuilder {
 			usleep( $this->delay );
 		}
 
-		if ( $this->rebuildCount % 100 === 0 ) { // every 100 pages only
+		$this->rebuildCount += $range;
+
+		if ( $this->hasCountPassedMultipleOf( 100, $range ) ) {
 			MediaWikiServices::getInstance()->getLinkCache()->clear(); // avoid memory leaks
 		}
 
 		if ( $this->statsFlusher !== null ) {
 			$this->statsFlusher->tick();
 		}
+	}
 
-		$this->rebuildCount++;
+	/**
+	 * Whether the rebuild count, just advanced by $range, passed a multiple of $interval
+	 */
+	private function hasCountPassedMultipleOf( int $interval, int $range ): bool {
+		return intdiv( $this->rebuildCount, $interval ) > intdiv( $this->rebuildCount - $range, $interval );
 	}
 
 	private function getHumanReadableTextFrom( $id, array $entities ): array {
