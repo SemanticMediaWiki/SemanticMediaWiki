@@ -396,12 +396,14 @@ class TableResultPrinter extends ResultPrinter {
 
 		if ( $dv instanceof WikiPageValue ) {
 			// @see ListResultPrinter\ValueTextsBuilder -> getValueText
+		/*
 			$dv->setOption(
 				$useLongText
 					? $dv::PREFIXED_FORM
 					: $dv::SHORT_FORM,
 				true
 			);
+			*/
 			$method = $useLongText ? 'getLongText' : 'getShortText';
 		}
 
