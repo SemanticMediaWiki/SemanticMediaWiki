@@ -93,7 +93,7 @@ class RebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		// matchAsTitle()'s newTitlesFromIDs() (call 0) and matchAsSubject()
+		// matchAsSubject() (call 0) and matchAsTitle()'s newTitlesFromIDs()
 		// (call 1) both need fetchResultSet() to iterate empty so emptyRange
 		// stays true. The remaining callsites in next_position() and
 		// getMaxId() use fetchField() and must return $expected.
@@ -184,18 +184,18 @@ class RebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		// matchAsTitle()'s newTitlesFromIDs() (call 0) feeds a minimal page
+		// matchAsSubject() (call 0) feeds the smw_object_ids row.
+		// matchAsTitle()'s newTitlesFromIDs() (call 1) feeds a minimal page
 		// row into fetchResultSet() so titleFactory->newFromRow() resolves to
-		// $title. matchAsSubject() (call 1) feeds the smw_object_ids row.
-		// Subsequent getMaxId() callsites use fetchField() and must return 500.
+		// $title. Subsequent getMaxId() callsites use fetchField() and must return 500.
 		$callIndex = 0;
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'newSelectQueryBuilder' )
 			->willReturnCallback( function () use ( $row, &$callIndex ) {
 				if ( $callIndex === 0 ) {
-					$rows = [ (object)[ 'page_id' => 1, 'page_namespace' => 0, 'page_title' => 'Foo' ] ];
-				} elseif ( $callIndex === 1 ) {
 					$rows = [ (object)$row ];
+				} elseif ( $callIndex === 1 ) {
+					$rows = [ (object)[ 'page_id' => 1, 'page_namespace' => 0, 'page_title' => 'Foo' ] ];
 				} else {
 					$rows = [ [ 500 ] ];
 				}
@@ -297,17 +297,17 @@ class RebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		// call 0: matchAsTitle()'s newTitlesFromIDs() page row -> title.
-		// call 1: matchAsSubject()'s smw_object_ids row.
+		// call 0: matchAsSubject()'s smw_object_ids row.
+		// call 1: matchAsTitle()'s newTitlesFromIDs() page row -> title.
 		// later calls: getMaxId()/next_position() fetchField() -> 500.
 		$callIndex = 0;
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'newSelectQueryBuilder' )
 			->willReturnCallback( function () use ( $row, &$callIndex ) {
 				if ( $callIndex === 0 ) {
-					$rows = [ (object)[ 'page_id' => 1, 'page_namespace' => 0, 'page_title' => 'Foo' ] ];
-				} elseif ( $callIndex === 1 ) {
 					$rows = [ (object)$row ];
+				} elseif ( $callIndex === 1 ) {
+					$rows = [ (object)[ 'page_id' => 1, 'page_namespace' => 0, 'page_title' => 'Foo' ] ];
 				} else {
 					$rows = [ [ 500 ] ];
 				}
@@ -349,6 +349,96 @@ class RebuilderTest extends TestCase {
 		$id = 999999999;
 
 		$instance->rebuild( $id );
+	}
+
+	public function testRedirectRowIsCleanedUpWhenItsPageIsDispatchedInTheSameStep(): void {
+		$title = $this->createMock( Title::class );
+		$title->method( 'getNamespace' )->willReturn( NS_MAIN );
+		$title->method( 'getDBKey' )->willReturn( 'Foo' );
+		$title->method( 'exists' )->willReturn( true );
+
+		$this->titleFactory->method( 'newFromRow' )->willReturn( $title );
+		$this->titleFactory->method( 'makeTitleSafe' )->willReturn( $title );
+		$this->entityValidator->method( 'inNamespace' )->willReturn( true );
+		$this->entityValidator->method( 'isSemanticEnabled' )->willReturn( true );
+		$this->entityValidator->method( 'isRedirect' )->willReturn( true );
+		$this->jobFactory->method( 'newUpdateJob' )->willReturn( $this->createMock( UpdateJob::class ) );
+
+		$instance = $this->newRebuilderAnswering( [
+			[ (object)[
+				'smw_id' => 600,
+				'smw_title' => 'Foo',
+				'smw_namespace' => NS_MAIN,
+				'smw_iw' => SMW_SQL3_SMWREDIIW,
+				'smw_subobject' => '',
+				'smw_sortkey' => 'Foo',
+				'smw_proptable_hash' => null,
+				'smw_rev' => null
+			] ],
+			[ (object)[ 'page_id' => 600, 'page_namespace' => NS_MAIN, 'page_title' => 'Foo' ] ]
+		] );
+
+		$this->propertyTableIdReferenceDisposer->expects( $this->once() )
+			->method( 'cleanUpTableEntriesById' )
+			->with( 600 );
+
+		$id = 600;
+
+		$instance->rebuild( $id );
+	}
+
+	/**
+	 * @dataProvider nextIdProvider
+	 */
+	public function testEmptyStepContinuesAtTheNearerOfTheNextPageAndEntityId( int $nextPageId, int $nextEntityId, int $expected ): void {
+		// Entity and title selects find nothing; then the next page ID and the next entity ID
+		$instance = $this->newRebuilderAnswering( [ [], [], [ [ $nextPageId ] ], [ [ $nextEntityId ] ] ] );
+		$id = 1001;
+
+		$instance->rebuild( $id );
+
+		$this->assertSame( $expected, $id );
+	}
+
+	public static function nextIdProvider(): iterable {
+		yield 'page ID nearer' => [ 1002, 1005, 1002 ];
+		yield 'entity ID nearer' => [ 1005, 1002, 1002 ];
+		yield 'no further page' => [ 0, 1005, 1005 ];
+		yield 'no further entity' => [ 1002, 0, 1002 ];
+	}
+
+	/**
+	 * Rebuilds one ID per step without jobs
+	 *
+	 * @param array[] $results Rows of each select, in order; later selects find the highest ID 2000
+	 */
+	private function newRebuilderAnswering( array $results ): Rebuilder {
+		$connection = $this->createMock( Database::class );
+		$connection->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( function () use ( &$results ) {
+				return $this->createMockSelectQueryBuilder( array_shift( $results ) ?? [ [ 2000 ] ] );
+			} );
+
+		$store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getConnection' ] )
+			->getMock();
+
+		$store->method( 'getConnection' )->willReturn( $connection );
+
+		$instance = new Rebuilder(
+			$store,
+			$this->titleFactory,
+			$this->entityValidator,
+			$this->propertyTableIdReferenceDisposer,
+			$this->jobFactory,
+			$this->hookContainer
+		);
+
+		$instance->setDispatchRangeLimit( 1 );
+		$instance->setOptions( [ 'use-job' => false ] );
+
+		return $instance;
 	}
 
 	public function idProvider() {

@@ -8,8 +8,10 @@ use MediaWiki\Title\TitleFactory;
 use Onoi\MessageReporter\SpyMessageReporter;
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
+use SMW\DatabaseMetaRepo;
 use SMW\DataItems\WikiPage;
 use SMW\Iterators\ResultIterator;
+use SMW\Maintenance\AutoRecovery;
 use SMW\Maintenance\DataRebuilder;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
@@ -42,6 +44,9 @@ class DataRebuilderTest extends TestCase {
 	protected $obLevel;
 	private $connectionManager;
 	private JobFactory $jobFactory;
+	private array $steps = [];
+	/** @var array<int|false> */
+	private array $resumePoints = [];
 
 	// The Store writes to the output buffer during drop/setupStore, to avoid
 	// inappropriate buffer settings which can cause interference during unit
@@ -1003,6 +1008,137 @@ class DataRebuilderTest extends TestCase {
 		] ) );
 
 		$this->assertTrue( $instance->rebuild() );
+	}
+
+	public function testUseJobDispatchesSeveralIdsPerStepUpToTheEndId(): void {
+		$instance = $this->newDataRebuilderFor( $this->newRebuilderRecordingSteps( 1000 ) );
+		$instance->setOptions( new Options( [ 's' => 1, 'e' => 250, 'use-job' => true ] ) );
+
+		$instance->rebuild();
+
+		$this->assertSame( [ 100, 100, 50 ], array_column( $this->steps, 'range' ) );
+	}
+
+	public function testUseJobDispatchesSeveralIdsPerStepUpToTheHighestId(): void {
+		$instance = $this->newDataRebuilderFor( $this->newRebuilderRecordingSteps( 250 ) );
+		$instance->setOptions( new Options( [ 'use-job' => true ] ) );
+
+		$instance->rebuild();
+
+		$this->assertSame( [ 100, 100, 50 ], array_column( $this->steps, 'range' ) );
+	}
+
+	/**
+	 * @dataProvider oneIdPerStepOptionProvider
+	 */
+	public function testUseJobDispatchesOneIdPerStepWith( array $option ): void {
+		$instance = $this->newDataRebuilderFor( $this->newRebuilderRecordingSteps( 1000 ) );
+		$instance->setOptions( new Options( [ 's' => 1, 'e' => 3, 'use-job' => true ] + $option ) );
+
+		$instance->rebuild();
+
+		$this->assertSame( [ 1, 1, 1 ], array_column( $this->steps, 'range' ) );
+	}
+
+	public static function oneIdPerStepOptionProvider(): iterable {
+		yield 'ignore-exceptions' => [ [ 'ignore-exceptions' => true ] ];
+		yield 'delay' => [ [ 'd' => 1 ] ];
+	}
+
+	public function testUseJobReportsEveryIdOfTheRangeAsRefreshed(): void {
+		$spyMessageReporter = new SpyMessageReporter();
+		$instance = $this->newDataRebuilderFor( $this->newRebuilderRecordingSteps( 1000 ) );
+		$instance->setMessageReporter( $spyMessageReporter );
+		$instance->setOptions( new Options( [ 's' => 1, 'e' => 250, 'use-job' => true ] ) );
+
+		$instance->rebuild();
+
+		$this->assertMatchesRegularExpression(
+			'/refreshed \(IDs\)[ .]*250\b/',
+			$spyMessageReporter->getMessagesAsString()
+		);
+	}
+
+	public function testAutoRecoveryRecordsTheResumePointAtIntervals(): void {
+		$instance = $this->newDataRebuilderFor( $this->newRebuilderRecordingSteps( 1000 ) );
+		$instance->setAutoRecovery( $this->newAutoRecovery( [] ) );
+		$instance->setOptions( new Options( [ 's' => 1, 'e' => 250 ] ) );
+
+		$instance->rebuild();
+
+		$this->assertSame( [ 1, 101, 201, false ], $this->resumePoints );
+	}
+
+	public function testAutoRecoveryResumesAtTheFirstIdWhenTheSafetyMarginReachesBelowIt(): void {
+		$instance = $this->newDataRebuilderFor( $this->newRebuilderRecordingSteps( 1000 ) );
+		$instance->setAutoRecovery( $this->newAutoRecovery( [ DataRebuilder::AUTO_RECOVERY_ID => 1 ] ) );
+		$instance->setOptions( new Options( [ 's' => 5, 'e' => 7 ] ) );
+
+		$instance->rebuild();
+
+		$this->assertSame( [ 1, 2, 3, 4, 5, 6, 7 ], array_column( $this->steps, 'id' ) );
+	}
+
+	/**
+	 * Advances each step by its dispatch range, ends the run past $maxId, and records the steps in $this->steps
+	 */
+	private function newRebuilderRecordingSteps( int $maxId ): Rebuilder {
+		$range = 1;
+		$rebuilder = $this->createMock( Rebuilder::class );
+
+		$rebuilder->method( 'setDispatchRangeLimit' )
+			->willReturnCallback( static function ( $limit ) use ( &$range ) {
+				$range = $limit;
+			} );
+
+		$rebuilder->method( 'rebuild' )
+			->willReturnCallback( function ( &$id ) use ( &$range, $maxId ) {
+				$this->steps[] = [ 'id' => $id, 'range' => $range ];
+				$id = $id + $range > $maxId ? -1 : $id + $range;
+				return 1;
+			} );
+
+		$rebuilder->method( 'getMaxId' )->willReturn( $maxId );
+		$rebuilder->method( 'getDispatchedEntities' )->willReturn( [] );
+
+		return $rebuilder;
+	}
+
+	private function newDataRebuilderFor( Rebuilder $rebuilder ): DataRebuilder {
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'refreshData' ] )
+			->getMockForAbstractClass();
+
+		$store->method( 'refreshData' )->willReturn( $rebuilder );
+		$store->setConnectionManager( $this->connectionManager );
+
+		return new DataRebuilder( $store, $this->createMock( TitleFactory::class ), $this->jobFactory );
+	}
+
+	/**
+	 * Records each resume point the run stores in $this->resumePoints
+	 *
+	 * @param array $storedContents What an earlier run left in the repository
+	 */
+	private function newAutoRecovery( array $storedContents ): AutoRecovery {
+		$repo = $this->createMock( DatabaseMetaRepo::class );
+		$repo->method( 'readValue' )->willReturn( $storedContents );
+
+		$repo->method( 'writeValue' )
+			->willReturnCallback( function ( $key, array $contents ) {
+				$resumePoint = $contents[DataRebuilder::AUTO_RECOVERY_ID] ?? false;
+
+				if ( $this->resumePoints === [] || end( $this->resumePoints ) !== $resumePoint ) {
+					$this->resumePoints[] = $resumePoint;
+				}
+			} );
+
+		$autoRecovery = new AutoRecovery( 'rebuildData.php', $repo );
+		$autoRecovery->enable( true );
+		$autoRecovery->safeMargin( 2 );
+
+		return $autoRecovery;
 	}
 
 	/**

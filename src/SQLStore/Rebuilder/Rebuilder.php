@@ -45,6 +45,8 @@ class Rebuilder {
 
 	private int|float $progress = 1;
 
+	private int $knownMaxId = 0;
+
 	private array $dispatchedEntities = [];
 
 	private array $updateJobs = [];
@@ -171,13 +173,13 @@ class Rebuilder {
 		// was nothing done in this run?
 		$emptyRange = true;
 
+		// Entity rows first: once a title is dispatched, its redirect and interwiki rows are skipped
+		$this->matchAsSubject( $id, $emptyRange );
 		$this->matchAsTitle( $id );
 
 		if ( $this->updateJobs !== [] ) {
 			$emptyRange = false;
 		}
-
-		$this->matchAsSubject( $id, $emptyRange );
 
 		$this->hookContainer->run( 'SMW::SQLStore::BeforeDataRebuildJobInsert', [ $this->store, &$this->updateJobs ] );
 
@@ -192,7 +194,12 @@ class Rebuilder {
 		// -1 means that no next position is available
 		$this->next_position( $id, $emptyRange );
 
-		$this->progress = $id > 0 && $this->getMaxId() !== 0 ? $id / $this->getMaxId() : 1;
+		// The estimate needs no exact highest ID, so fetch it again only once the position has passed it
+		if ( $id > $this->knownMaxId ) {
+			$this->knownMaxId = $this->getMaxId();
+		}
+
+		$this->progress = $id > 0 && $this->knownMaxId !== 0 ? $id / $this->knownMaxId : 1;
 		return $this->progress;
 	}
 
@@ -238,10 +245,6 @@ class Rebuilder {
 		$titles = $this->newTitlesFromIDs( $tids );
 
 		foreach ( $titles as $title ) {
-
-			if ( $this->lru->get( $title->getDBKey() . '#' . $title->getNamespace() ) !== null ) {
-				continue;
-			}
 
 			if ( ( $this->namespaces == false ) || ( in_array( $title->getNamespace(), $this->namespaces ) ) ) {
 				$this->addJob( $title );
@@ -336,15 +339,7 @@ class Rebuilder {
 			}
 
 			// objects representing pages
-			$title = $this->titleFactory->makeTitleSafe(
-				$row->smw_namespace,
-				$titleKey
-			);
-
-			if ( $title !== null ) {
-				$this->dispatchedEntities[] = [ 's' => $title->getPrefixedDBKey() ];
-				$this->addJob( $title, $row );
-			}
+			$this->dispatchIfPageIsMissing( $row, $titleKey );
 		} elseif ( $this->entityValidator->isRedirect( $row ) ) {
 
 			if ( $this->lru->get( $hash ) !== null || $titleKey === '' ) {
@@ -353,15 +348,7 @@ class Rebuilder {
 
 			// TODO: special treatment of redirects needed, since the store will
 			// not act on redirects that did not change according to its records
-			$title = $this->titleFactory->makeTitleSafe(
-				$row->smw_namespace,
-				$titleKey
-			);
-
-			if ( $title !== null && !$title->exists() ) {
-				$this->dispatchedEntities[] = [ 's' => $title->getPrefixedDBKey() ];
-				$this->addJob( $title, $row );
-			}
+			$this->dispatchIfPageIsMissing( $row, $titleKey );
 
 			$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
 		} elseif ( $this->entityValidator->isOutdated( $row ) ) { // remove outdated internal object references
@@ -387,6 +374,19 @@ class Rebuilder {
 
 		if ( $this->entityValidator->isRetiredProperty( $row ) ) {
 			$this->setDeleteFlag( $row->smw_id, $row->smw_title, $row->smw_namespace );
+		}
+	}
+
+	private function dispatchIfPageIsMissing( stdClass $row, string $titleKey ): void {
+		$title = $this->titleFactory->makeTitleSafe(
+			$row->smw_namespace,
+			$titleKey
+		);
+
+		// An existing page is updated through its page ID in matchAsTitle()
+		if ( $title !== null && !$title->exists() ) {
+			$this->dispatchedEntities[] = [ 's' => $title->getPrefixedDBKey() ];
+			$this->addJob( $title, $row );
 		}
 	}
 
@@ -437,8 +437,9 @@ class Rebuilder {
 				->caller( __METHOD__ )
 				->fetchField();
 
-			// Next position is determined by the pool with the maxId
-			$nextPosition = $nextBySmwId != 0 && $nextBySmwId > $nextByPageId ? $nextBySmwId : $nextByPageId;
+			// Continue at the nearer of the two, so that no row of either table is skipped
+			$candidates = array_filter( [ $nextByPageId, $nextBySmwId ] );
+			$nextPosition = $candidates === [] ? 0 : min( $candidates );
 		}
 
 		$id = $nextPosition ?: -1;

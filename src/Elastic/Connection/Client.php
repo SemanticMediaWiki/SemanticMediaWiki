@@ -454,6 +454,16 @@ class Client {
 	}
 
 	/**
+	 * @see Client::mget
+	 * @since 7.4.1
+	 *
+	 * @return mixed
+	 */
+	public function mget( array $params ) {
+		return $this->client->mget( $params );
+	}
+
+	/**
 	 * @see Client::delete
 	 * @since 3.0
 	 *

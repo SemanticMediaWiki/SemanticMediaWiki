@@ -6,6 +6,7 @@ use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\Localizer\Localizer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use Wikimedia\ObjectCache\CachedBagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -66,7 +67,8 @@ class PropertyRegistry {
 		$lang = $localizer->getLang();
 
 		$propertyAliasFinder = new PropertyAliasFinder(
-			$applicationFactory->getObjectCache(),
+			// Read for every property label looked up by language, so also kept in process memory
+			new CachedBagOStuff( $applicationFactory->getObjectCache() ),
 			$lang->getPropertyAliases(),
 			$lang->getCanonicalPropertyAliases()
 		);
@@ -357,7 +359,7 @@ class PropertyRegistry {
 		}
 
 		// Those are mostly from extension that register a msgKey as no dedicated
-		// lang. file exists; maybe this should be cached somehow?
+		// lang. file exists
 		foreach ( $this->propertyAliasFinder->getKnownPropertyAliasesByLanguageCode( $languageCode ) as $alias => $id ) {
 			if ( $label === $alias ) {
 				return $id;
