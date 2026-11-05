@@ -42,8 +42,8 @@ class PrefixParameterProcessor {
 			return true;
 		}
 
-		// prefix is auto
-		return $this->mixedResults;
+		// use auto prefix for subjects 
+		return $this->mixedResults && $isSubject;
 	}
 
 }
