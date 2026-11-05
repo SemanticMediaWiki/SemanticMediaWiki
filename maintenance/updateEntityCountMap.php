@@ -11,6 +11,10 @@ use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Utils\HmacSerializer;
 use SMW\Utils\PeriodicStatsFlusher;
+use stdClass;
+use Throwable;
+use Wikimedia\Rdbms\IExpression;
+use Wikimedia\Rdbms\IResultWrapper;
 
 /**
  * Load the required class
@@ -52,17 +56,13 @@ class updateEntityCountMap extends Maintenance {
 	private $cliMsgFormatter;
 
 	/**
-	 * @var int
-	 */
-	private $last = 0;
-
-	/**
 	 * @since 3.2
 	 */
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = 'Updates the smw_`countmap` field';
-		$this->addOption( 's', 'ID starting point', false, true );
+		$this->mDescription = 'Updates the `smw_countmap` field';
+		$this->addOption( 's', 'Update only the entities after this ID, such as the last ID a stopped run reported', false, true );
+		$this->setBatchSize( 1000 );
 	}
 
 	/**
@@ -131,150 +131,183 @@ class updateEntityCountMap extends Maintenance {
 			$this->cliMsgFormatter->oneCol( "Fetching fields ..." )
 		);
 
-		$count = $this->getCount();
+		$startId = (int)$this->getOption( 's', 0 );
+		$count = $this->countRows( $startId );
 		$setupFile = $applicationFactory->singleton( 'SetupFile' );
-
-		if ( $count === false ) {
-			$setupFile->removeIncompleteTask( self::COUNTMAP_INCOMPLETE );
-
-			return $this->messageReporter->reportMessage(
-				$this->cliMsgFormatter->oneCol( "... nothing selected!", 3 )
-			);
-		}
 
 		$this->messageReporter->reportMessage(
 			$this->cliMsgFormatter->twoCols( "... estimating required updates ...", "{$count} (rows)", 3 )
 		);
 
-		$this->runUpdate();
+		$this->runUpdate( $startId, $count );
 
 		$setupFile->removeIncompleteTask( self::COUNTMAP_INCOMPLETE );
 	}
 
-	private function getCount() {
-		$connection = $this->store->getConnection( 'mw.db' );
-
-		$this->last = (int)$connection->newSelectQueryBuilder()
-			->select( 'MAX(smw_id)' )
+	private function countRows( int $startId ): int {
+		return (int)$this->store->getConnection( 'mw.db' )->newSelectQueryBuilder()
+			->select( 'COUNT(*)' )
 			->from( SQLStore::ID_TABLE )
+			->where( $this->newConditions( $startId ) )
 			->caller( __METHOD__ )
 			->fetchField();
-
-		$row = $connection->newSelectQueryBuilder()
-			->select( [
-				'COUNT( smw_id ) AS count',
-			] )
-			->from( SQLStore::ID_TABLE )
-			->where( [
-				'smw_proptable_hash IS NOT NULL',
-				'smw_iw != ' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW ),
-				'smw_iw != ' . $connection->addQuotes( SMW_SQL3_SMWINTDEFIW ),
-			] )
-			->caller( __METHOD__ )
-			->fetchRow();
-
-		if ( $row === false ) {
-			return false;
-		}
-
-		return $row->count;
 	}
 
-	private function runUpdate() {
+	private function runUpdate( int $startId, int $count ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
-
 		$statsFlusher = PeriodicStatsFlusher::newFromGlobalState();
+		$lastId = $this->fetchLastId();
+		$afterId = $startId;
+		$updated = 0;
+		$rows = $this->fetchBatch( $afterId );
 
-		for ( $i = 0; $i <= $this->last; $i++ ) {
+		while ( $rows->numRows() > 0 ) {
+			// getSemanticData() reads each entity's sequence map, so load the batch's in one query
+			$this->store->getObjectIds()->loadSequenceMap( $this->fetchIds( $rows ) );
+			$countMaps = [];
 
-			$statsFlusher->tick();
-
-			$row = $connection->newSelectQueryBuilder()
-				->select( [
-					'smw_id',
-					'smw_title',
-					'smw_namespace',
-					'smw_iw',
-					'smw_subobject',
-					'smw_rev'
-				] )
-				->from( SQLStore::ID_TABLE )
-				->where( [
-					'smw_id' => $i,
-					'smw_proptable_hash IS NOT NULL',
-					'smw_iw != ' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW ),
-					'smw_iw != ' . $connection->addQuotes( SMW_SQL3_SMWINTDEFIW ),
-				] )
-				->caller( __METHOD__ )
-				->fetchRow();
-
-			if ( $row === false ) {
-				continue;
+			foreach ( $rows as $row ) {
+				$statsFlusher->tick();
+				$afterId = (int)$row->smw_id;
+				$countMaps[$afterId] = $this->newCountMap( $row );
 			}
 
-			$subject = new WikiPage(
-				$row->smw_title,
-				$row->smw_namespace,
-				$row->smw_iw,
-				$row->smw_subobject
-			);
+			// Commit per batch, since each commit waits for a disk sync, and only around
+			// the writes, so that the batch holds its row locks just while writing
+			$connection->beginSectionTransaction( __METHOD__ );
 
-			$semanticData = $this->store->getSemanticData( $subject );
-			$countMap = [];
-
-			foreach ( $semanticData->getProperties() as $property ) {
-
-				$key = $property->getKey();
-				$pv = $semanticData->getPropertyValues(
-					$property
-				);
-
-				if ( $key === '_INST' ) {
-					$countMap[$key] ??= [];
-
-					foreach ( $pv as $dataItem ) {
-						$countMap[$key] += [ $dataItem->getDBKey() => 1 ];
-					}
-
-				} else {
-					$countMap[$key] = count( $pv );
+			try {
+				foreach ( $countMaps as $id => $countMap ) {
+					$this->updateCountMap( $id, $countMap );
 				}
+
+				$connection->endSectionTransaction( __METHOD__ );
+			} catch ( Throwable $e ) {
+				$connection->cancelSectionTransaction( __METHOD__ );
+				throw $e;
 			}
 
-			$countMap = $connection->escape_bytea(
-				HmacSerializer::compress( $countMap )
-			);
-
-			$connection->newInsertQueryBuilder()
-				->insertInto( SQLStore::ID_AUXILIARY_TABLE )
-				->row( [
-					'smw_id' => $row->smw_id,
-					'smw_countmap' => $countMap
-				] )
-				->onDuplicateKeyUpdate()
-				->uniqueIndexFields( [ 'smw_id' ] )
-				->set( [
-					'smw_countmap' => $countMap
-				] )
-				->caller( __METHOD__ )
-				->execute();
-
-			$propgress = $this->cliMsgFormatter->progressCompact( $i, $this->last );
+			// Report only committed IDs, so that the shown ID is a safe `-s` to resume from
+			$updated += $rows->numRows();
+			$progress = $this->cliMsgFormatter->progressCompact( $updated, $count, $afterId, $lastId );
 
 			$this->messageReporter->reportMessage(
-				$this->cliMsgFormatter->twoColsOverride( "... updating (current/last) ...", $propgress, 3 )
+				$this->cliMsgFormatter->twoColsOverride( "... updating (current/last) ...", $progress, 3 )
 			);
+
+			$this->waitForReplication();
+			$rows = $this->fetchBatch( $afterId );
 		}
-
-		$propgress = $this->cliMsgFormatter->progressCompact( $this->last, $this->last );
-
-		$this->messageReporter->reportMessage(
-			$this->cliMsgFormatter->twoColsOverride( "... updating (current/last) ...", $propgress, 3 )
-		);
 
 		$this->messageReporter->reportMessage(
 			"\n" . $this->cliMsgFormatter->oneCol( "... done.", 3 )
 		);
+	}
+
+	/**
+	 * @return int[]
+	 */
+	private function fetchIds( IResultWrapper $rows ): array {
+		$ids = [];
+
+		foreach ( $rows as $row ) {
+			$ids[] = (int)$row->smw_id;
+		}
+
+		return $ids;
+	}
+
+	private function fetchLastId(): int {
+		return (int)$this->store->getConnection( 'mw.db' )->newSelectQueryBuilder()
+			->select( 'MAX(smw_id)' )
+			->from( SQLStore::ID_TABLE )
+			->caller( __METHOD__ )
+			->fetchField();
+	}
+
+	private function fetchBatch( int $afterId ): IResultWrapper {
+		return $this->store->getConnection( 'mw.db' )->newSelectQueryBuilder()
+			->select( [
+				'smw_id',
+				'smw_title',
+				'smw_namespace',
+				'smw_iw',
+				'smw_subobject'
+			] )
+			->from( SQLStore::ID_TABLE )
+			->where( $this->newConditions( $afterId ) )
+			->orderBy( 'smw_id' )
+			->limit( $this->getBatchSize() )
+			->caller( __METHOD__ )
+			->fetchResultSet();
+	}
+
+	/**
+	 * @return array<IExpression|string>
+	 */
+	private function newConditions( int $afterId ): array {
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		return [
+			'smw_proptable_hash IS NOT NULL',
+			$connection->expr( 'smw_iw', '!=', [ SMW_SQL3_SMWDELETEIW, SMW_SQL3_SMWINTDEFIW ] ),
+			$connection->expr( 'smw_id', '>', $afterId )
+		];
+	}
+
+	private function newCountMap( stdClass $row ): array {
+		$subject = new WikiPage(
+			$row->smw_title,
+			(int)$row->smw_namespace,
+			$row->smw_iw,
+			$row->smw_subobject
+		);
+
+		$semanticData = $this->store->getSemanticData( $subject );
+		$countMap = [];
+
+		foreach ( $semanticData->getProperties() as $property ) {
+
+			$key = $property->getKey();
+			$pv = $semanticData->getPropertyValues(
+				$property
+			);
+
+			if ( $key === '_INST' ) {
+				$countMap[$key] ??= [];
+
+				foreach ( $pv as $dataItem ) {
+					$countMap[$key] += [ $dataItem->getDBKey() => 1 ];
+				}
+
+			} else {
+				$countMap[$key] = count( $pv );
+			}
+		}
+
+		return $countMap;
+	}
+
+	private function updateCountMap( int $id, array $countMap ): void {
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$blob = $connection->escape_bytea(
+			HmacSerializer::compress( $countMap )
+		);
+
+		$connection->newInsertQueryBuilder()
+			->insertInto( SQLStore::ID_AUXILIARY_TABLE )
+			->row( [
+				'smw_id' => $id,
+				'smw_countmap' => $blob
+			] )
+			->onDuplicateKeyUpdate()
+			->uniqueIndexFields( [ 'smw_id' ] )
+			->set( [
+				'smw_countmap' => $blob
+			] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 }

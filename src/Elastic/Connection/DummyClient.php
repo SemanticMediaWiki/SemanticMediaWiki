@@ -185,6 +185,13 @@ class DummyClient extends Client {
 	}
 
 	/**
+	 * @see Client::mget
+	 */
+	public function mget( array $params ): array {
+		return [];
+	}
+
+	/**
 	 * @see Client::delete
 	 */
 	public function delete( array $params ): array {

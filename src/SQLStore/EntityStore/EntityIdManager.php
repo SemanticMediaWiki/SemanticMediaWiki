@@ -785,6 +785,34 @@ class EntityIdManager {
 	}
 
 	/**
+	 * @since 7.4.1
+	 *
+	 * @param int[] $ids
+	 *
+	 * @return array<int,int> The revision recorded for each ID, 0 where there is none
+	 */
+	public function findAssociatedRevs( array $ids ): array {
+		if ( $ids === [] ) {
+			return [];
+		}
+
+		$rows = $this->store->getConnection( 'mw.db' )->newSelectQueryBuilder()
+			->select( [ 'smw_id', 'smw_rev' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( [ 'smw_id' => array_values( $ids ) ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
+
+		$revisions = array_fill_keys( $ids, 0 );
+
+		foreach ( $rows as $row ) {
+			$revisions[(int)$row->smw_id] = (int)$row->smw_rev;
+		}
+
+		return $revisions;
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param int $sid
