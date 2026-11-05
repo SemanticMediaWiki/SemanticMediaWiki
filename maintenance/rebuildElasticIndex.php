@@ -422,6 +422,8 @@ class rebuildElasticIndex extends Maintenance {
 			$this->rebuildFromRow( ++$i, $count, $row, $last );
 		}
 
+		$this->rebuilder->flush();
+
 		// This is to match the last output to signal to the user that 100% were
 		// matched even in the case where last wasn't a "real" entity and would
 		// count towards the last. We don't want to confuse a user with some
@@ -467,7 +469,10 @@ class rebuildElasticIndex extends Maintenance {
 			return $this->rebuilder->delete( $row->smw_id );
 		}
 
-		$this->autoRecovery->set( 'ar_id', (int)$row->smw_id );
+		// Documents are sent in batches, so a resumed run starts with the first one not yet sent
+		if ( !$this->rebuilder->hasPendingDocuments() ) {
+			$this->autoRecovery->set( 'ar_id', (int)$row->smw_id );
+		}
 
 		$dataItem = $this->store->getObjectIds()->getDataItemById(
 			$row->smw_id

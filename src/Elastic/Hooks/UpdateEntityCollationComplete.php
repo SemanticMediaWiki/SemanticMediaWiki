@@ -146,6 +146,8 @@ class UpdateEntityCollationComplete {
 			$rebuilder->rebuild( $row->smw_id, $semanticData );
 		}
 
+		$rebuilder->flush();
+
 		$this->messageReporter->reportMessage( "\n   ... done.\n" );
 		$this->messageReporter->reportMessage( "\nSettings and mappings ..." );
 

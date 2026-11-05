@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\Elastic\Indexer;
 
+use ArrayObject;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
@@ -290,6 +291,26 @@ class IndexerTest extends TestCase {
 		$instance->indexDocument( $document, false );
 	}
 
+	public function testIndexDocumentsSendsTheDocumentsInOneRequest() {
+		$requests = new ArrayObject();
+
+		$this->newIndexerRecordingRequests( $requests, static fn () => [] )
+			->indexDocuments( [ new Document( 1 ), new Document( 2 ), new Document( 3 ) ] );
+
+		$this->assertSame( [ [ 1, 2, 3 ] ], $requests->getArrayCopy() );
+	}
+
+	public function testDocumentsOfAFailedRequestAreSentAgainOneAtATime() {
+		$requests = new ArrayObject();
+		$failWhenDocumentOneIsSent = static fn ( array $sentRequests ) =>
+			in_array( 1, end( $sentRequests ), true ) ? 'Request Entity Too Large' : [];
+
+		$this->newIndexerRecordingRequests( $requests, $failWhenDocumentOneIsSent )
+			->indexDocuments( [ new Document( 1 ), new Document( 2 ), new Document( 3 ) ] );
+
+		$this->assertSame( [ [ 1, 2, 3 ], [ 1 ], [ 2 ], [ 3 ] ], $requests->getArrayCopy() );
+	}
+
 	public function testIndexDocument_FailedConnection_PushJob() {
 		$subject = WikiPage::newFromText( 'Foo' );
 
@@ -317,6 +338,26 @@ class IndexerTest extends TestCase {
 
 		$instance->setLogger( $this->logger );
 		$instance->indexDocument( $document, Indexer::REQUIRE_SAFE_REPLICATION );
+	}
+
+	/**
+	 * @param ArrayObject $requests Receives the document IDs of each bulk request
+	 * @param callable $respond Returns the client's response, given the IDs of the requests sent so far
+	 */
+	private function newIndexerRecordingRequests( ArrayObject $requests, callable $respond ): Indexer {
+		$this->connection->method( 'getIndexName' )
+			->willReturn( 'smw-data' );
+
+		$this->connection->method( 'bulk' )
+			->willReturnCallback( static function ( array $params ) use ( $requests, $respond ) {
+				$requests[] = array_column( array_column( $params['body'], 'index' ), '_id' );
+				return $respond( $requests->getArrayCopy() );
+			} );
+
+		$indexer = new Indexer( $this->store, new Bulk( $this->connection ), $this->titleFactory, $this->revisionLookup );
+		$indexer->setLogger( $this->logger );
+
+		return $indexer;
 	}
 
 }

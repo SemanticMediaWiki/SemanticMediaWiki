@@ -2,11 +2,11 @@
 
 namespace SMW\Elastic\Indexer\Rebuilder;
 
-use Exception;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\Indexer\Document;
 use SMW\Elastic\Indexer\DocumentCreator;
 use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Indexer;
@@ -27,7 +27,21 @@ class Rebuilder {
 
 	use MessageReporterAwareTrait;
 
+	private const BATCH_SIZE = 100;
+
+	/**
+	 * Kept well below Elasticsearch's request size limit
+	 */
+	private const BATCH_BYTES = 10 * 1024 * 1024;
+
 	private array $settings = [];
+
+	/**
+	 * @var Document[]
+	 */
+	private array $pendingDocuments = [];
+
+	private int $pendingBytes = 0;
 
 	private array $versions = [];
 
@@ -198,22 +212,8 @@ class Rebuilder {
 	 * @param int $id
 	 */
 	public function delete( $id ): void {
-		$index = $this->client->getIndexName( ElasticClient::TYPE_DATA );
-
-		if ( isset( $this->versions[ElasticClient::TYPE_DATA] ) ) {
-			$index = $index . '-' . $this->versions[ElasticClient::TYPE_DATA];
-		}
-
-		$params = [
-			'index' => $index,
-			'id' => $id
-		];
-
-		try {
-			$this->client->delete( $params );
-		} catch ( Exception ) {
-			// Do nothing
-		}
+		// In the same batch as the documents before it, which can hold an upsert for this ID
+		$this->add( new Document( (int)$id, [], Document::TYPE_DELETE ) );
 	}
 
 	/**
@@ -226,35 +226,65 @@ class Rebuilder {
 		$dataItem = $semanticData->getSubject();
 		$dataItem->setId( $id );
 
-		$fileIndexer = null;
-		$skip = false;
-
-		if ( isset( $this->options['skip-fileindex'] ) ) {
-			$skip = (bool)$this->options['skip-fileindex'];
-		}
-
-		$config = $this->client->getConfig();
-
-		if ( !$skip && $config->dotGet( 'indexer.experimental.file.ingest', false ) ) {
-			$fileIndexer = $this->fileIndexer;
-		}
-
-		$this->indexer->setVersions( $this->versions );
-		$this->indexer->isRebuild();
-		// $this->indexer->setState( Indexer::REBUILD_STATE );
-
-		$dataItem = $semanticData->getSubject();
-		$dataItem->setId( $id );
-
 		$document = $this->documentCreator->newFromSemanticData( $semanticData );
 		$document->setTextBody( $this->fetchRawText( $dataItem ) );
 
-		$this->indexer->indexDocument( $document, false );
+		$this->add( $document );
 
-		if ( $fileIndexer !== null ) {
-			$fileIndexer->setVersions( $this->versions );
-			$fileIndexer->noSha1Check();
-			$fileIndexer->index( $dataItem );
+		if ( $dataItem->getNamespace() === NS_FILE && $this->indexesFiles() ) {
+			// The file indexer updates the page's document, so that has to be indexed first
+			$this->flush();
+
+			$this->fileIndexer->setVersions( $this->versions );
+			$this->fileIndexer->noSha1Check();
+			$this->fileIndexer->index( $dataItem );
+		}
+	}
+
+	private function indexesFiles(): bool {
+		if ( isset( $this->options['skip-fileindex'] ) && $this->options['skip-fileindex'] ) {
+			return false;
+		}
+
+		return (bool)$this->client->getConfig()->dotGet( 'indexer.experimental.file.ingest', false );
+	}
+
+	/**
+	 * Sends the documents and deletions that rebuild() and delete() have not sent yet
+	 *
+	 * @since 7.4.1
+	 */
+	public function flush(): void {
+		if ( $this->pendingDocuments === [] ) {
+			return;
+		}
+
+		$this->indexer->setVersions( $this->versions );
+		$this->indexer->indexDocuments( $this->pendingDocuments );
+
+		$this->pendingDocuments = [];
+		$this->pendingBytes = 0;
+	}
+
+	/**
+	 * @since 7.4.1
+	 */
+	public function hasPendingDocuments(): bool {
+		return $this->pendingDocuments !== [];
+	}
+
+	private function add( Document $document ): void {
+		$bytes = strlen( $document->jsonSerialize() );
+
+		if ( $this->pendingBytes + $bytes > self::BATCH_BYTES ) {
+			$this->flush();
+		}
+
+		$this->pendingDocuments[] = $document;
+		$this->pendingBytes += $bytes;
+
+		if ( count( $this->pendingDocuments ) >= self::BATCH_SIZE ) {
+			$this->flush();
 		}
 	}
 

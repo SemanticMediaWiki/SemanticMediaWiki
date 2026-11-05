@@ -94,44 +94,51 @@ class UpdateEntityCollationCompleteTest extends TestCase {
 	}
 
 	public function testRunUpdate() {
-		$dataItem = $this->getMockBuilder( WikiPage::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$row = [
-			'smw_id'  => 42,
-			'smw_iw'  => '',
-			'smw_rev' => 9999
-		];
-
-		$this->rebuilder->expects( $this->any() )
-			->method( 'ping' )
-			->willReturn( true );
-
-		$this->rebuilder->expects( $this->any() )
-			->method( 'select' )
-			->willReturn( [ new FakeResultWrapper( [ (object)$row ] ), 2 ] );
-
-		$this->entityIdManager->expects( $this->any() )
-			->method( 'getDataItemById' )
-			->willReturn( $dataItem );
-
-		$instance = new UpdateEntityCollationComplete(
-			$this->store,
-			$this->messageReporter
-		);
-
-		$instance->setMessageReporter(
-			$this->messageReporter
-		);
-
-		$instance->setCountDown( 0 );
-		$instance->runUpdate( $this->rebuilder );
+		$this->runUpdateOverRows( [ 42 ] );
 
 		$this->assertStringContainsString(
 			'... updating document ...                                   1 / 1 (100%)',
 			$this->messageReporter->getMessagesAsString()
 		);
+	}
+
+	public function testRunUpdateSendsTheDocumentsStillPendingAfterTheLastEntity() {
+		$this->rebuilder->method( 'hasPendingDocuments' )
+			->willReturn( true );
+
+		$calls = [];
+		$this->rebuilder->method( 'rebuild' )
+			->willReturnCallback( static function () use ( &$calls ) {
+				$calls[] = 'rebuild';
+			} );
+		$this->rebuilder->method( 'flush' )
+			->willReturnCallback( static function () use ( &$calls ) {
+				$calls[] = 'flush';
+			} );
+
+		$this->runUpdateOverRows( [ 42, 43 ] );
+
+		$this->assertSame( [ 'rebuild', 'rebuild', 'flush' ], $calls );
+	}
+
+	/**
+	 * @param int[] $ids Entity IDs of the selected rows
+	 */
+	private function runUpdateOverRows( array $ids ): void {
+		$this->rebuilder->method( 'ping' )
+			->willReturn( true );
+
+		$rows = array_map( static fn ( int $id ) => (object)[ 'smw_id' => $id, 'smw_iw' => '', 'smw_rev' => 9999 ], $ids );
+		$this->rebuilder->method( 'select' )
+			->willReturn( [ new FakeResultWrapper( $rows ), max( $ids ) ] );
+
+		$this->entityIdManager->method( 'getDataItemById' )
+			->willReturn( WikiPage::newFromText( 'Foo' ) );
+
+		$instance = new UpdateEntityCollationComplete( $this->store, $this->messageReporter );
+		$instance->setMessageReporter( $this->messageReporter );
+		$instance->setCountDown( 0 );
+		$instance->runUpdate( $this->rebuilder );
 	}
 
 }
