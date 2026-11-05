@@ -344,6 +344,19 @@ class EntityIdManagerTest extends TestCase {
 		);
 	}
 
+	public function testFindAssociatedRevsGivesTheRevisionOfEachIdAndZeroWithoutOne() {
+		$this->connection->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( [
+				(object)[ 'smw_id' => '1', 'smw_rev' => '10' ],
+				(object)[ 'smw_id' => '3', 'smw_rev' => null ]
+			] ) );
+
+		$this->assertSame(
+			[ 1 => 10, 2 => 0, 3 => 0 ],
+			$this->newEntityIdManager()->findAssociatedRevs( [ 1, 2, 3 ] )
+		);
+	}
+
 	private function newEntityIdManager(): EntityIdManager {
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
