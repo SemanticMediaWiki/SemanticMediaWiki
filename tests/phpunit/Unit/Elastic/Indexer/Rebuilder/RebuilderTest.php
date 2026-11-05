@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\Elastic\Indexer\Rebuilder;
 
+use ArrayObject;
 use Onoi\MessageReporter\NullMessageReporter;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
@@ -207,65 +208,125 @@ class RebuilderTest extends TestCase {
 		$instance->setDefaults();
 	}
 
-	public function testDelete() {
-		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'delete' );
+	public function testDeletionIsSentInTheBatchAfterTheDocumentsBeforeIt() {
+		$batches = $this->recordBatches();
+		$instance = $this->newRebuilderWithConfig( [] );
 
-		$instance = new Rebuilder(
-			$this->connection,
-			$this->indexer,
-			$this->fileIndexer,
-			$this->documentCreator,
-			$this->installer
+		$instance->rebuild( 10, new SemanticData( WikiPage::newFromText( 'Referencing page' ) ) );
+		$instance->delete( 50 );
+		$instance->flush();
+
+		$this->assertSame(
+			[ [ [ 10, Document::TYPE_INSERT ], [ 50, Document::TYPE_DELETE ] ] ],
+			$batches->getArrayCopy()
 		);
-
-		$instance->delete( 42 );
 	}
 
-	public function testRebuild() {
-		$options = $this->getMockBuilder( Config::class )
-			->disableOriginalConstructor()
-			->getMock();
+	public function testDocumentsAreSentInBatchesOfAHundredPages() {
+		$batches = $this->recordBatches();
+		$instance = $this->newRebuilderWithConfig( [] );
 
-		$document = $this->getMockBuilder( Document::class )
-			->disableOriginalConstructor()
-			->getMock();
+		for ( $id = 1; $id <= 250; $id++ ) {
+			$instance->rebuild( $id, new SemanticData( WikiPage::newFromText( "Page $id" ) ) );
+		}
 
-		$subject = $this->getMockBuilder( WikiPage::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$instance->flush();
 
-		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
-			->getMock();
+		$this->assertSame( [ 100, 100, 50 ], array_map( 'count', $batches->getArrayCopy() ) );
+	}
 
-		$semanticData->expects( $this->any() )
-			->method( 'getSubject' )
-			->willReturn( $subject );
+	public function testBatchIsSentBeforeItWouldExceedTenMegabytes() {
+		$batches = $this->recordBatches();
+		$instance = $this->newRebuilder( [], static fn ( SemanticData $semanticData ) => new Document(
+			$semanticData->getSubject()->getId(),
+			[ 'text' => str_repeat( 'x', 4 * 1024 * 1024 ) ]
+		) );
 
-		$this->documentCreator->expects( $this->any() )
-			->method( 'newFromSemanticData' )
-			->willReturn( $document );
+		for ( $id = 1; $id <= 4; $id++ ) {
+			$instance->rebuild( $id, new SemanticData( WikiPage::newFromText( "Page $id" ) ) );
+		}
 
-		$this->connection->expects( $this->any() )
-			->method( 'getConfig' )
-			->willReturn( $options );
+		$instance->flush();
 
-		$this->indexer->expects( $this->once() )
-			->method( 'indexDocument' )
-			->with(
-				$this->anything( $document ),
-				false );
+		$this->assertSame( [ 2, 2 ], array_map( 'count', $batches->getArrayCopy() ) );
+	}
 
-		$instance = new Rebuilder(
-			$this->connection,
-			$this->indexer,
-			$this->fileIndexer,
-			$this->documentCreator,
-			$this->installer
-		);
+	public function testDocumentsGoToTheIndexVersionsCreatedForTheRebuild() {
+		$this->connection->method( 'getLock' )->willReturn( false );
+		$this->connection->method( 'createIndex' )->willReturn( 'v2' );
+		$this->connection->method( 'hasIndex' )->willReturn( true );
+		$this->connection->method( 'indexExists' )->willReturn( true );
 
-		$instance->rebuild( 42, $semanticData );
+		$currentVersions = [];
+		$versionsWhenSent = [];
+		$this->indexer->method( 'setVersions' )
+			->willReturnCallback( static function ( array $versions ) use ( &$currentVersions ) {
+				$currentVersions = $versions;
+			} );
+		$this->indexer->method( 'indexDocuments' )
+			->willReturnCallback( static function () use ( &$currentVersions, &$versionsWhenSent ) {
+				$versionsWhenSent[] = $currentVersions;
+			} );
+
+		$instance = $this->newRebuilderWithConfig( [] );
+		$instance->createIndices();
+		$instance->rebuild( 1, new SemanticData( WikiPage::newFromText( 'Foo' ) ) );
+		$instance->flush();
+
+		$this->assertSame( [ [ Client::TYPE_DATA => 'v2', Client::TYPE_LOOKUP => 'v2' ] ], $versionsWhenSent );
+	}
+
+	public function testPagesOutsideTheFileNamespaceStayBatchedWithFileIngestEnabled() {
+		$batches = $this->recordBatches();
+		$instance = $this->newRebuilderWithConfig( [ 'indexer.experimental.file.ingest' => true ] );
+
+		$instance->rebuild( 1, new SemanticData( WikiPage::newFromText( 'Foo' ) ) );
+		$instance->rebuild( 2, new SemanticData( WikiPage::newFromText( 'Bar' ) ) );
+		$instance->flush();
+
+		$this->assertSame( [ 2 ], array_map( 'count', $batches->getArrayCopy() ) );
+	}
+
+	public function testHasPendingDocumentsUntilTheyAreSent() {
+		$instance = $this->newRebuilderWithConfig( [] );
+		$instance->rebuild( 1, new SemanticData( WikiPage::newFromText( 'Foo' ) ) );
+		$pendingBeforeFlush = $instance->hasPendingDocuments();
+
+		$instance->flush();
+
+		$this->assertSame( [ true, false ], [ $pendingBeforeFlush, $instance->hasPendingDocuments() ] );
+	}
+
+	public function testPageDocumentIsSentBeforeItsFileIsIndexed() {
+		$calls = [];
+		$this->indexer->method( 'indexDocuments' )
+			->willReturnCallback( static function () use ( &$calls ) {
+				$calls[] = 'page document';
+			} );
+		$this->fileIndexer->method( 'index' )
+			->willReturnCallback( static function () use ( &$calls ) {
+				$calls[] = 'file';
+			} );
+
+		$instance = $this->newRebuilderWithConfig( [ 'indexer.experimental.file.ingest' => true ] );
+		$instance->rebuild( 1, new SemanticData( WikiPage::newFromText( 'Foo.pdf', NS_FILE ) ) );
+
+		$this->assertSame( [ 'page document', 'file' ], $calls );
+	}
+
+	public function testFileIsNotIndexedWithFileIngestDisabled() {
+		$this->fileIndexer->expects( $this->never() )->method( 'index' );
+
+		$instance = $this->newRebuilderWithConfig( [] );
+		$instance->rebuild( 1, new SemanticData( WikiPage::newFromText( 'Foo.pdf', NS_FILE ) ) );
+	}
+
+	public function testFileIsNotIndexedWhenFileIndexingIsSkipped() {
+		$this->fileIndexer->expects( $this->never() )->method( 'index' );
+
+		$instance = $this->newRebuilderWithConfig( [ 'indexer.experimental.file.ingest' => true ] );
+		$instance->set( 'skip-fileindex', true );
+		$instance->rebuild( 1, new SemanticData( WikiPage::newFromText( 'Foo.pdf', NS_FILE ) ) );
 	}
 
 	public function testRefresh() {
@@ -289,6 +350,60 @@ class RebuilderTest extends TestCase {
 		);
 
 		$instance->refresh();
+	}
+
+	/**
+	 * @return ArrayObject Each batch sent to the indexer, as a list of [ document ID, document type ]
+	 */
+	private function recordBatches(): ArrayObject {
+		$batches = new ArrayObject();
+
+		$this->indexer->method( 'indexDocuments' )
+			->willReturnCallback( static function ( array $documents ) use ( $batches ) {
+				$batches[] = array_map(
+					static fn ( Document $document ) => [
+						$document->getId(),
+						$document->isType( Document::TYPE_DELETE ) ? Document::TYPE_DELETE : Document::TYPE_INSERT
+					],
+					$documents
+				);
+			} );
+
+		return $batches;
+	}
+
+	/**
+	 * @param array<string,mixed> $settings Config values by dotted key; others are false
+	 */
+	private function newRebuilderWithConfig( array $settings ): Rebuilder {
+		return $this->newRebuilder(
+			$settings,
+			static fn ( SemanticData $semanticData ) => new Document( $semanticData->getSubject()->getId() )
+		);
+	}
+
+	/**
+	 * @param array<string,mixed> $settings Config values by dotted key; others are false
+	 * @param callable $newDocument Creates the document of a page's SemanticData
+	 */
+	private function newRebuilder( array $settings, callable $newDocument ): Rebuilder {
+		$config = $this->createMock( Config::class );
+		$config->method( 'dotGet' )
+			->willReturnCallback( static fn ( string $key ) => $settings[$key] ?? false );
+
+		$this->connection->method( 'getConfig' )
+			->willReturn( $config );
+
+		$this->documentCreator->method( 'newFromSemanticData' )
+			->willReturnCallback( $newDocument );
+
+		return new Rebuilder(
+			$this->connection,
+			$this->indexer,
+			$this->fileIndexer,
+			$this->documentCreator,
+			$this->installer
+		);
 	}
 
 }
