@@ -11,6 +11,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 * Fixed `updateEntityCollation.php` running very slowly on large wikis ([#7181](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7181))
 * Fixed `updateEntityCollation.php` making predefined properties such as `Modification date` sort out of alphabetical order ([#7181](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7181))
+* Fixed `purgeEntityCache.php` running slowly on large wikis ([#7185](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7185))
 
 ## Upgrading
 

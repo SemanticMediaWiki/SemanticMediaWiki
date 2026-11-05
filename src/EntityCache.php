@@ -160,10 +160,19 @@ class EntityCache {
 	 * @since 3.1
 	 */
 	public function invalidate( WikiPage|Title $subject ): void {
-		$versionKey = $this->makeVersionKey( $subject );
+		$this->invalidateMulti( [ $subject ] );
+	}
 
-		$this->cache->set( $versionKey, $this->newVersion(), self::VERSION_TTL );
-		$this->processCache->clear( $versionKey );
+	/**
+	 * @since 7.4.1
+	 *
+	 * @param array<WikiPage|Title> $subjects
+	 */
+	public function invalidateMulti( array $subjects ): void {
+		$versionKeys = array_map( fn ( WikiPage|Title $subject ) => $this->makeVersionKey( $subject ), $subjects );
+
+		$this->createVersions( $versionKeys );
+		$this->processCache->clear( $versionKeys );
 	}
 
 	/**
