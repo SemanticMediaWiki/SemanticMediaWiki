@@ -76,6 +76,17 @@ class FulltextSearchTableRebuildJobTest extends SMWIntegrationTestCase {
 		$this->assertSame( [ [ 's' => $sid + 1, 'n' => 1 ] ], $this->queuedChunks() );
 	}
 
+	public function testFullModeJobRebuildsOneChunkAndQueuesTheNext() {
+		$this->clearQueuedChunks();
+		[ , $pid ] = $this->storeTexts( 'FullModeJobSubject', 'Has chunked text', [ 'alphaword' ] );
+		// Keeps the rebuild from ending with the first chunk
+		$this->writeIndexEntry( 1000, $pid, 'farword' );
+
+		$this->newJob( WikiPage::newFromText( __METHOD__ )->getTitle(), [ 'mode' => 'full' ] )->run();
+
+		$this->assertSame( [ [ 's' => 500, 'n' => 500 ] ], $this->queuedChunks() );
+	}
+
 	public function testChunkJobForTheLastChunkQueuesNoFurtherJob() {
 		$this->clearQueuedChunks();
 		$this->storeTexts( 'ChunkJobSubject', 'Has chunked text', [ 'alphaword' ] );
