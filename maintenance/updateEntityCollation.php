@@ -6,14 +6,16 @@ use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Maintenance\Maintenance;
 use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
-use SMW\DataItems\Property;
-use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SetupFile;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableFieldUpdater;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Utils\PeriodicStatsFlusher;
+use stdClass;
+use Throwable;
+use Wikimedia\Rdbms\IExpression;
+use Wikimedia\Rdbms\IResultWrapper;
 
 /**
  * Load the required class
@@ -51,15 +53,11 @@ class updateEntityCollation extends Maintenance {
 	 */
 	private $messageReporter;
 
-	/**
-	 * @var int
-	 */
-	private $lastId = 0;
-
 	public function __construct() {
 		parent::__construct();
 		$this->mDescription = 'Update the smw_sort field (relying on the $smwgEntityCollation setting)';
 		$this->addOption( 's', 'ID starting point', false, true );
+		$this->setBatchSize( 1000 );
 	}
 
 	/**
@@ -147,8 +145,8 @@ class updateEntityCollation extends Maintenance {
 			$cliMsgFormatter->firstCol( '... fetching from table ...', 3 )
 		);
 
-		$rows = $this->fetchRows();
-		$count = $rows->numRows();
+		$startId = (int)$this->getOption( 's', 0 );
+		$count = $this->countRows( $startId );
 
 		$this->messageReporter->reportMessage(
 			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
@@ -158,7 +156,7 @@ class updateEntityCollation extends Maintenance {
 			$cliMsgFormatter->twoCols( "... found `smw_sort` field records ...", "$count (rows)", 3 )
 		);
 
-		$this->runUpdate( $rows, $count );
+		$this->runUpdate( $startId, $count );
 		$this->messageReporter->reportMessage( "\n   ... done.\n" );
 
 		$setupFile->removeIncompleteTask( self::ENTITY_COLLATION_INCOMPLETE );
@@ -205,97 +203,97 @@ class updateEntityCollation extends Maintenance {
 		);
 	}
 
-	private function fetchRows() {
-		$connection = $this->store->getConnection( 'mw.db' );
+	private function countRows( int $startId ): int {
+		return (int)$this->store->getConnection( 'mw.db' )->newSelectQueryBuilder()
+			->select( 'COUNT(*)' )
+			->from( SQLStore::ID_TABLE )
+			->where( $this->newConditions( $startId ) )
+			->caller( __METHOD__ )
+			->fetchField();
+	}
 
-		$this->lastId = (int)$connection->newSelectQueryBuilder()
+	private function runUpdate( int $startId, int $count ): void {
+		$connection = $this->store->getConnection( 'mw.db' );
+		$tableFieldUpdater = new TableFieldUpdater( $this->store );
+		$cliMsgFormatter = new CliMsgFormatter();
+		$statsFlusher = PeriodicStatsFlusher::newFromGlobalState();
+		$lastId = $this->fetchLastId();
+		$afterId = $startId;
+		$updated = 0;
+		$rows = $this->fetchBatch( $afterId );
+
+		while ( $rows->numRows() > 0 ) {
+			// Commit per batch: each commit waits for a disk sync
+			$connection->beginSectionTransaction( __METHOD__ );
+
+			try {
+				foreach ( $rows as $row ) {
+					$statsFlusher->tick();
+					$afterId = (int)$row->smw_id;
+					$tableFieldUpdater->updateSortField( $afterId, $this->getSortKey( $row ) );
+				}
+
+				$connection->endSectionTransaction( __METHOD__ );
+			} catch ( Throwable $e ) {
+				$connection->cancelSectionTransaction( __METHOD__ );
+				throw $e;
+			}
+
+			// Report only committed IDs, so that the shown ID is a safe `-s` to resume from
+			$updated += $rows->numRows();
+			$progress = $cliMsgFormatter->progressCompact( $updated, $count, $afterId, $lastId );
+
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->twoColsOverride( "... updating entity (current/last) ...", $progress, 3 )
+			);
+
+			$this->waitForReplication();
+			$rows = $this->fetchBatch( $afterId );
+		}
+	}
+
+	private function fetchLastId(): int {
+		return (int)$this->store->getConnection( 'mw.db' )->newSelectQueryBuilder()
 			->select( 'MAX(smw_id)' )
 			->from( SQLStore::ID_TABLE )
 			->caller( __METHOD__ )
 			->fetchField();
+	}
 
-		$condition = '';
-
-		$condition .= " smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED );
-		$condition .= " AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWDELETEIW );
-
-		if ( $this->hasOption( 's' ) ) {
-			$condition .= ' AND smw_id > ' . $connection->addQuotes( $this->getOption( 's' ) );
-		}
-
-		// $condition is always non-empty here (the two `smw_iw!=` clauses are
-		// unconditional), so wrapping in `[ $condition ]` for ->where() is safe.
-		// If a future change ever makes $condition optional, switch to
-		// conditional ->where() invocation to avoid emitting `WHERE ()`.
-		return $connection->newSelectQueryBuilder()
+	private function fetchBatch( int $afterId ): IResultWrapper {
+		return $this->store->getConnection( 'mw.db' )->newSelectQueryBuilder()
 			->select( [
 				'smw_id',
 				'smw_title',
 				'smw_sortkey'
 			] )
 			->from( SQLStore::ID_TABLE )
-			->where( [ $condition ] )
+			->where( $this->newConditions( $afterId ) )
 			->orderBy( 'smw_id' )
+			->limit( $this->getBatchSize() )
 			->caller( __METHOD__ )
 			->fetchResultSet();
 	}
 
-	private function runUpdate( $rows, $count ) {
-		$tableFieldUpdater = new TableFieldUpdater(
-			$this->store
-		);
+	/**
+	 * @return IExpression[]
+	 */
+	private function newConditions( int $afterId ): array {
+		$connection = $this->store->getConnection( 'mw.db' );
 
-		$cliMsgFormatter = new CliMsgFormatter();
-		$property = new Property( '_SKEY' );
-		$i = 0;
-
-		$statsFlusher = PeriodicStatsFlusher::newFromGlobalState();
-
-		foreach ( $rows as $row ) {
-
-			$statsFlusher->tick();
-
-			if ( $row->smw_title === '' ) {
-				continue;
-			}
-
-			$dataItem = $this->store->getObjectIds()->getDataItemById(
-				$row->smw_id
-			);
-
-			$pv = $this->store->getPropertyValues( $dataItem, $property );
-			$search = $this->getSortKey( $row, $pv );
-
-			if ( $search === '' && $row->smw_title !== '' ) {
-				$search = str_replace( '_', ' ', $row->smw_title );
-			}
-
-			$progress = $cliMsgFormatter->progressCompact( ++$i, $count, $row->smw_id, $this->lastId );
-
-			$this->messageReporter->reportMessage(
-				$cliMsgFormatter->twoColsOverride( "... updating entity (current/last) ...", $progress, 3 )
-			);
-
-			$tableFieldUpdater->updateSortField( $row->smw_id, $search );
-		}
+		return [
+			$connection->expr( 'smw_iw', '!=', [ SMW_SQL3_SMWIW_OUTDATED, SMW_SQL3_SMWDELETEIW ] ),
+			$connection->expr( 'smw_title', '!=', '' ),
+			$connection->expr( 'smw_id', '>', $afterId )
+		];
 	}
 
-	private function getSortKey( $row, $pv ) {
-		if ( $pv !== [] ) {
-			return end( $pv )->getString();
-		}
-
-		if ( $row->smw_title[0] !== '_' ) {
+	private function getSortKey( stdClass $row ): string {
+		if ( $row->smw_sortkey !== '' ) {
 			return $row->smw_sortkey;
 		}
 
-		try {
-			$property = new Property( $row->smw_title );
-		} catch ( PredefinedPropertyLabelMismatchException ) {
-			return $row->smw_sortkey;
-		}
-
-		return $property->getCanonicalLabel();
+		return str_replace( '_', ' ', $row->smw_title );
 	}
 
 }
