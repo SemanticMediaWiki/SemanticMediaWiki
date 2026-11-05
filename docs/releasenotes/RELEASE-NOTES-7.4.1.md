@@ -9,9 +9,14 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ## Changes
 
+* Fixed `updateEntityCollation.php` running very slowly on large wikis ([#7181](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7181))
+* Fixed `updateEntityCollation.php` making predefined properties such as `Modification date` sort out of alphabetical order ([#7181](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7181))
+
 ## Upgrading
 
-No need to run "update.php" or any other migration scripts.
+No need to run "update.php" or any other migration scripts, unless you ran `updateEntityCollation.php` with an
+earlier version. In that case, run "update.php" once so that predefined properties such as `Modification date` sort
+by their label again.
 
 **Get the new version via Composer:**
 

@@ -618,8 +618,9 @@ Collation strategy for entity sort values. This must correspond to
 applies to all entities in the wiki — it cannot be applied selectively
 per-query because the `smw_sort` field stores a pre-computed sort value.
 
-Any change to this setting requires running the `updateEntityCollation.php`
-maintenance script.
+After changing this setting, run `update.php` or `setupStore.php`, then `updateEntityCollation.php`.
+You can keep the wiki online while it runs, but until it finishes, query results sort pages in a mix
+of the old and new collation.
 
 **Since:** 3.0
 **Default:** `"identity"`
