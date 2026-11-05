@@ -82,28 +82,88 @@ class ReplicationStatus {
 		];
 
 		if ( !$this->connection->exists( $params ) ) {
-			return [ 'modification_date' => false, 'associated_revision' => 0 ];
+			return $this->newStatusFromSource( [] );
 		}
 
-		$pid = $this->fieldMapper->getPID( EntityIdManager::$special_ids['_MDAT'] );
-		$field = $this->fieldMapper->getField( new Property( '_MDAT' ) );
+		$doc = $this->connection->get( $params + [ '_source_includes' => $this->statusFields() ] );
 
-		$doc = $this->connection->get( $params + [ '_source_includes' => [ "$pid.$field", "subject.rev_id" ] ] );
+		return $this->newStatusFromSource( $doc['_source'] ?? [] );
+	}
 
-		if ( isset( $doc['_source'][$pid][$field] ) ) {
-			$date = end( $doc['_source'][$pid][$field] );
+	/**
+	 * Reads the existence, modification date and associated revision of each document in one request
+	 *
+	 * @since 7.4.1
+	 *
+	 * @param int[] $ids
+	 *
+	 * @return array<int, array{exists: bool, modification_date: Time|false, associated_revision: mixed}>
+	 */
+	public function getStatusOfDocuments( array $ids ): array {
+		$response = $this->connection->mget( [
+			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
+			'body' => [ 'ids' => array_values( $ids ) ],
+			'_source_includes' => $this->statusFields()
+		] );
+
+		$found = [];
+
+		foreach ( $response['docs'] ?? [] as $doc ) {
+			// For example, a shard that is unavailable
+			if ( isset( $doc['error'] ) ) {
+				throw new RuntimeException( "Reading document {$doc['_id']} failed: " . json_encode( $doc['error'] ) );
+			}
+
+			if ( $doc['found'] ?? false ) {
+				$found[(int)$doc['_id']] = $doc['_source'] ?? [];
+			}
+		}
+
+		$statuses = [];
+
+		foreach ( $ids as $id ) {
+			$statuses[$id] = [ 'exists' => isset( $found[$id] ) ] + $this->newStatusFromSource( $found[$id] ?? [] );
+		}
+
+		return $statuses;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	private function statusFields(): array {
+		[ $pid, $field ] = $this->modificationDateField();
+
+		return [ "$pid.$field", 'subject.rev_id' ];
+	}
+
+	/**
+	 * @return array{modification_date: Time|false, associated_revision: mixed}
+	 */
+	private function newStatusFromSource( array $source ): array {
+		[ $pid, $field ] = $this->modificationDateField();
+
+		if ( isset( $source[$pid][$field] ) ) {
+			$date = end( $source[$pid][$field] );
 			$modification_date = Time::newFromJD( $date, Time::CM_GREGORIAN, Time::PREC_YMDT );
 		} else {
 			$modification_date = false;
 		}
 
-		if ( isset( $doc['_source']['subject']['rev_id'] ) ) {
-			$associated_revision = $doc['_source']['subject']['rev_id'];
-		} else {
-			$associated_revision = 0;
-		}
+		return [
+			'modification_date' => $modification_date,
+			'associated_revision' => $source['subject']['rev_id'] ?? 0
+		];
+	}
 
-		return [ 'modification_date' => $modification_date, 'associated_revision' => $associated_revision ];
+	/**
+	 * @return string[] The property ID and the field that hold the modification date in a document
+	 */
+	private function modificationDateField(): array {
+		return [
+			$this->fieldMapper->getPID( EntityIdManager::$special_ids['_MDAT'] ),
+			$this->fieldMapper->getField( new Property( '_MDAT' ) )
+		];
 	}
 
 	/**

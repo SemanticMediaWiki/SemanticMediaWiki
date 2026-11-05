@@ -3,7 +3,9 @@
 namespace SMW\Tests\Utils;
 
 use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
+use SMW\DataItems\Uri;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValues\TypesValue;
@@ -12,7 +14,7 @@ use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\SQLStore\SQLStore;
 
 /**
- * Stores text values and reads the full-text index and the queued rebuild
+ * Stores property values and reads the full-text index and the queued rebuild
  * chunks, for tests that run against the store of an `SMWIntegrationTestCase`.
  *
  * @license GPL-2.0-or-later
@@ -39,14 +41,33 @@ trait FulltextRebuildFixtureTrait {
 	 * @return int[] The subject ID and the property ID
 	 */
 	private function storeTexts( string $page, string $propertyLabel, array $texts ): array {
-		$property = Property::newFromUserLabel( $propertyLabel )->setPropertyValueType( '_txt' );
-		$this->storeTextType( $property );
+		return $this->storeValues(
+			$page,
+			$this->storeTypedProperty( $propertyLabel, '_txt' ),
+			array_map( static fn ( string $text ) => new Blob( $text ), $texts )
+		);
+	}
 
+	/**
+	 * @return int[] The subject ID and the property ID
+	 */
+	private function storeUrl( string $page, string $propertyLabel, Uri $url ): array {
+		return $this->storeValues( $page, $this->storeTypedProperty( $propertyLabel, '_uri' ), [ $url ] );
+	}
+
+	/**
+	 * @param string $page
+	 * @param Property $property
+	 * @param DataItem[] $dataItems
+	 *
+	 * @return int[] The subject ID and the property ID
+	 */
+	private function storeValues( string $page, Property $property, array $dataItems ): array {
 		$subject = WikiPage::newFromText( $page );
 		$semanticData = new SemanticData( $subject );
 
-		foreach ( $texts as $text ) {
-			$semanticData->addPropertyObjectValue( $property, new Blob( $text ) );
+		foreach ( $dataItems as $dataItem ) {
+			$semanticData->addPropertyObjectValue( $property, $dataItem );
 		}
 
 		$this->getStore()->updateData( $semanticData );
@@ -60,14 +81,7 @@ trait FulltextRebuildFixtureTrait {
 	 * @return int[] The subject ID and the property ID
 	 */
 	private function storeDisplayTitle( string $page, string $text ): array {
-		$property = new Property( '_DTITLE' );
-		$subject = WikiPage::newFromText( $page );
-		$semanticData = new SemanticData( $subject );
-		$semanticData->addPropertyObjectValue( $property, new Blob( $text ) );
-
-		$this->getStore()->updateData( $semanticData );
-
-		return $this->subjectAndPropertyIds( $subject, $property );
+		return $this->storeValues( $page, new Property( '_DTITLE' ), [ new Blob( $text ) ] );
 	}
 
 	/**
@@ -83,14 +97,18 @@ trait FulltextRebuildFixtureTrait {
 	/**
 	 * Without a stored type the index treats the property as exempted.
 	 */
-	private function storeTextType( Property $property ): void {
+	private function storeTypedProperty( string $label, string $typeId ): Property {
+		$property = Property::newFromUserLabel( $label )->setPropertyValueType( $typeId );
+
 		$semanticData = new SemanticData( $property->getDiWikiPage() );
 		$semanticData->addPropertyObjectValue(
 			new Property( '_TYPE' ),
-			TypesValue::newFromTypeId( '_txt' )->getDataItem()
+			TypesValue::newFromTypeId( $typeId )->getDataItem()
 		);
 
 		$this->getStore()->updateData( $semanticData );
+
+		return $property;
 	}
 
 	private function writeIndexEntry( int $sid, int $pid, string $text ): void {
@@ -101,6 +119,15 @@ trait FulltextRebuildFixtureTrait {
 
 	private function readIndexEntry( int $sid, int $pid ): false|string {
 		return $this->newSearchTableUpdater()->read( $sid, $pid );
+	}
+
+	private function readIndexSortKey( int $sid, int $pid ): false|string {
+		return $this->getStore()->getConnection( 'mw.db' )->newSelectQueryBuilder()
+			->select( 'o_sort' )
+			->from( SQLStore::FT_SEARCH_TABLE )
+			->where( [ 's_id' => $sid, 'p_id' => $pid ] )
+			->caller( __METHOD__ )
+			->fetchField();
 	}
 
 	private function flushIndex(): void {

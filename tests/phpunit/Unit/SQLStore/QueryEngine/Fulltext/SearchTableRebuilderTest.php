@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Unit\SQLStore\QueryEngine\Fulltext;
 
+use Onoi\MessageReporter\SpyMessageReporter;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use SMW\DataItems\DataItem;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\PropertyTableDefinition;
@@ -59,29 +61,8 @@ class SearchTableRebuilderTest extends TestCase {
 		);
 	}
 
-	public function testRebuildWithoutUpdate() {
-		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$tableDefinition->expects( $this->atLeastOnce() )
-			->method( 'getDiType' )
-			->willReturn( DataItem::TYPE_BLOB );
-
-		$this->searchTableUpdater->expects( $this->once() )
-			->method( 'isEnabled' )
-			->willReturn( true );
-
-		$this->searchTableUpdater->expects( $this->atLeastOnce() )
-			->method( 'getPropertyTables' )
-			->willReturn( [ $tableDefinition ] );
-
-		$instance = new SearchTableRebuilder(
-			$this->connection,
-			$this->searchTableUpdater
-		);
-
-		$instance->rebuild();
+	public function testRebuildReportsSuccessWhenEveryChunkSucceeds() {
+		$this->assertTrue( $this->newRebuilderOverBlobRows( [ 1, 2 ] )->rebuild() );
 	}
 
 	public function testNeverRebuildOnOptimization() {
@@ -109,57 +90,26 @@ class SearchTableRebuilderTest extends TestCase {
 		$instance->rebuild();
 	}
 
-	public function testRebuildWithUpdateOnBlob() {
-		$row = new stdClass;
-		$row->o_serialized = 'Foo';
-		$row->o_blob = null;
-		$row->s_id = 42;
+	public function testRebuildReportsFailureWhenAChunkFails() {
+		$this->assertFalse( $this->newRebuilderWhoseReadsFail()->rebuild() );
+	}
 
-		$selectBuilder = $this->createMockSelectQueryBuilder( [ $row ] );
+	public function testRebuildReportsWhyAChunkFailedToRead() {
+		$messageReporter = new SpyMessageReporter();
+		$instance = $this->newRebuilderWhoseReadsFail();
+		$instance->setMessageReporter( $messageReporter );
 
-		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'newSelectQueryBuilder' )
-			->willReturn( $selectBuilder );
-
-		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$tableDefinition->expects( $this->any() )
-			->method( 'getName' )
-			->willReturn( 'smw_di_blob' );
-
-		$tableDefinition->expects( $this->atLeastOnce() )
-			->method( 'getDiType' )
-			->willReturn( DataItem::TYPE_BLOB );
-
-		$this->searchTable->expects( $this->any() )
-			->method( 'isValidByType' )
-			->willReturn( true );
-
-		$this->searchTable->expects( $this->any() )
-			->method( 'hasMinTokenLength' )
-			->willReturn( true );
-
-		$this->searchTableUpdater->expects( $this->once() )
-			->method( 'isEnabled' )
-			->willReturn( true );
-
-		$this->searchTableUpdater->expects( $this->atLeastOnce() )
-			->method( 'getPropertyTables' )
-			->willReturn( [ $tableDefinition ] );
-
-		$this->searchTableUpdater->expects( $this->atLeastOnce() )
-			->method( 'update' )
-			->with( $row->s_id );
-
-		$instance = new SearchTableRebuilder(
-			$this->connection,
-			$this->searchTableUpdater
-		);
-
-		$instance->reportVerbose( true );
 		$instance->rebuild();
+
+		$this->assertStringContainsString( 'Table smw_di_blob is locked', $messageReporter->getMessagesAsString() );
+	}
+
+	private function newRebuilderWhoseReadsFail(): SearchTableRebuilder {
+		$this->connection->method( 'newSelectQueryBuilder' )
+			->willThrowException( new RuntimeException( 'Table smw_di_blob is locked' ) );
+		$this->searchTableUpdater->method( 'isEnabled' )->willReturn( true );
+
+		return new SearchTableRebuilder( $this->connection, $this->searchTableUpdater );
 	}
 
 	public function testgetQualifiedTableList() {
@@ -213,14 +163,6 @@ class SearchTableRebuilderTest extends TestCase {
 		);
 
 		$instance->rebuildByTable( 'Foo' );
-	}
-
-	public function testRebuildLooksUpExemptionOncePerProperty() {
-		$this->recordExemptionLookups();
-
-		$this->newRebuilderOverBlobRows( [ 1, 2, 1, 2, 1 ] )->rebuild();
-
-		$this->assertSame( [ 1, 2 ], $this->exemptionLookups );
 	}
 
 	public function testChunkedRebuildLooksUpExemptionOncePerProperty() {

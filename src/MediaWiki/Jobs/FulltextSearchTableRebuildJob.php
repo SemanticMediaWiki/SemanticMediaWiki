@@ -51,13 +51,12 @@ class FulltextSearchTableRebuildJob extends Job {
 
 		if ( $this->hasParameter( 'table' ) ) {
 			$searchTableRebuilder->rebuildByTable( $this->getParameter( 'table' ) );
-		} elseif ( $this->hasParameter( 'mode' ) && $this->getParameter( 'mode' ) === 'full' ) {
-			$searchTableRebuilder->rebuild();
 		} else {
-			// default, including 'chunked' mode
+			// Also jobs queued with mode 'full' before 7.4.1
 			try {
 				$this->rebuildChunk( $searchTableRebuilder );
-			} catch ( Throwable ) {
+			} catch ( Throwable $e ) {
+				$this->setLastError( $e->getMessage() );
 				return false;
 			}
 		}
