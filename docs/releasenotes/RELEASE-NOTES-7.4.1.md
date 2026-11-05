@@ -11,6 +11,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 * Fixed `updateEntityCollation.php` running very slowly on large wikis ([#7181](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7181))
 * Fixed `updateEntityCollation.php` making predefined properties such as `Modification date` sort out of alphabetical order ([#7181](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7181))
+* Fixed `rebuildElasticMissingDocuments.php` running slowly on large wikis ([#7187](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7187))
 * Fixed `rebuildData.php` parsing pages twice on large wikis, and made it faster with `--use-job` and `--auto-recovery` ([#7182](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7182))
 
 ## Upgrading
