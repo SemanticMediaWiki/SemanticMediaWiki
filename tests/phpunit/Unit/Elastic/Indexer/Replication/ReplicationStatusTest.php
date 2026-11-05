@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\Elastic\Indexer\Replication;
 
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use SMW\DataItems\Time;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Indexer\Replication\ReplicationStatus;
@@ -268,6 +269,56 @@ class ReplicationStatusTest extends TestCase {
 			],
 			$instance->get( 'modification_date_associated_revision', 42 )
 		);
+	}
+
+	public function testGetStatusOfDocumentsReadsEveryDocumentInOneRequest() {
+		$this->connection->method( 'getIndexName' )
+			->willReturnMap( [ [ Client::TYPE_DATA, 'FOO' ] ] );
+
+		$this->connection->expects( $this->once() )
+			->method( 'mget' )
+			->with( [
+				'index' => 'FOO',
+				'body' => [ 'ids' => [ 41, 42, 43 ] ],
+				'_source_includes' => [ 'P:29.datField', 'subject.rev_id' ]
+			] )
+			->willReturn( [ 'docs' => [
+				[ '_id' => '41', 'found' => true, '_source' => [ 'subject' => [ 'rev_id' => 1000 ] ] ],
+				[
+					'_id' => '42',
+					'found' => true,
+					'_source' => [ 'P:29' => [ 'datField' => [ 2458322.0910764 ] ], 'subject' => [ 'rev_id' => 1001 ] ]
+				],
+				[ '_id' => '43', 'found' => false ]
+			] ] );
+
+		$instance = new ReplicationStatus( $this->connection );
+
+		$this->assertEquals(
+			[
+				41 => [ 'exists' => true, 'modification_date' => false, 'associated_revision' => 1000 ],
+				42 => [
+					'exists' => true,
+					'modification_date' => Time::newFromJD( '2458322.0910764', Time::CM_GREGORIAN, Time::PREC_YMDT ),
+					'associated_revision' => 1001
+				],
+				43 => [ 'exists' => false, 'modification_date' => false, 'associated_revision' => 0 ]
+			],
+			$instance->getStatusOfDocuments( [ 41, 42, 43 ] )
+		);
+	}
+
+	public function testGetStatusOfDocumentsFailsOnADocumentThatCouldNotBeRead() {
+		$this->connection->method( 'mget' )
+			->willReturn( [ 'docs' => [
+				[ '_id' => '42', 'found' => true, '_source' => [] ],
+				[ '_id' => '43', 'error' => [ 'type' => 'no_shard_available_action_exception' ] ]
+			] ] );
+
+		$instance = new ReplicationStatus( $this->connection );
+
+		$this->expectException( RuntimeException::class );
+		$instance->getStatusOfDocuments( [ 42, 43 ] );
 	}
 
 	public function testGet_modification_date_associated_revision_not_exists() {
