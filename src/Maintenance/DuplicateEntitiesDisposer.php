@@ -11,6 +11,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Utils\PeriodicStatsFlusher;
+use Throwable;
 use Traversable;
 use Wikimedia\ObjectCache\BagOStuff;
 
@@ -23,6 +24,8 @@ use Wikimedia\ObjectCache\BagOStuff;
 class DuplicateEntitiesDisposer {
 
 	use MessageReporterAwareTrait;
+
+	private const BATCH_SIZE = 1000;
 
 	private ?PeriodicStatsFlusher $statsFlusher = null;
 
@@ -147,48 +150,59 @@ class DuplicateEntitiesDisposer {
 		$i = 0;
 
 		// Each duplicate-tuple needs its own DELETE (composite WHERE varies
-		// per row), but the canonical re-INSERTs accumulate into one shared
-		// builder so they execute as a single statement at the end.
-		$insertBuilder = $connection->newInsertQueryBuilder()
-			->insertInto( $table )
-			->caller( __METHOD__ );
+		// per row), but the canonical re-INSERTs of a batch accumulate into
+		// one builder so they execute as a single statement. It commits
+		// together with the batch's DELETEs, so a run that stops partway
+		// cannot leave a tuple without a copy.
+		foreach ( array_chunk( $duplicates, self::BATCH_SIZE ) as $batch ) {
+			$connection->beginSectionTransaction( __METHOD__ );
 
-		foreach ( $duplicates as $duplicate ) {
+			try {
+				$insertBuilder = $connection->newInsertQueryBuilder()
+					->insertInto( $table )
+					->caller( __METHOD__ );
 
-			if ( $this->statsFlusher !== null ) {
-				$this->statsFlusher->tick();
+				foreach ( $batch as $duplicate ) {
+
+					if ( $this->statsFlusher !== null ) {
+						$this->statsFlusher->tick();
+					}
+
+					if ( $i > 0 && ( $i ) % CliMsgFormatter::MAX_LEN === 0 ) {
+						$this->messageReporter->reportMessage( "\n       " );
+					} elseif ( $i == 0 ) {
+						$this->messageReporter->reportMessage( "       " );
+					}
+
+					$this->messageReporter->reportMessage( '.' );
+					$log[] = [ 'DELETE' => $duplicate['s_id'] . ", " . $duplicate['p_id'] . ', ' . $duplicate['o_id'] ];
+
+					$connection->newDeleteQueryBuilder()
+						->deleteFrom( $table )
+						->where( [
+							's_id' => $duplicate['s_id'],
+							'p_id' => $duplicate['p_id'],
+							'o_id' => $duplicate['o_id'],
+						] )
+						->caller( __METHOD__ )
+						->execute();
+
+					$insertBuilder->row( [
+						's_id' => $duplicate['s_id'],
+						'p_id' => $duplicate['p_id'],
+						'o_id' => $duplicate['o_id'],
+					] );
+
+					$i++;
+				}
+
+				$insertBuilder->execute();
+			} catch ( Throwable $e ) {
+				$connection->cancelSectionTransaction( __METHOD__ );
+				throw $e;
 			}
 
-			if ( $i > 0 && ( $i ) % CliMsgFormatter::MAX_LEN === 0 ) {
-				$this->messageReporter->reportMessage( "\n       " );
-			} elseif ( $i == 0 ) {
-				$this->messageReporter->reportMessage( "       " );
-			}
-
-			$this->messageReporter->reportMessage( '.' );
-			$log[] = [ 'DELETE' => $duplicate['s_id'] . ", " . $duplicate['p_id'] . ', ' . $duplicate['o_id'] ];
-
-			$connection->newDeleteQueryBuilder()
-				->deleteFrom( $table )
-				->where( [
-					's_id' => $duplicate['s_id'],
-					'p_id' => $duplicate['p_id'],
-					'o_id' => $duplicate['o_id'],
-				] )
-				->caller( __METHOD__ )
-				->execute();
-
-			$insertBuilder->row( [
-				's_id' => $duplicate['s_id'],
-				'p_id' => $duplicate['p_id'],
-				'o_id' => $duplicate['o_id'],
-			] );
-
-			$i++;
-		}
-
-		if ( $i > 0 ) {
-			$insertBuilder->execute();
+			$connection->endSectionTransaction( __METHOD__ );
 		}
 	}
 
@@ -198,52 +212,68 @@ class DuplicateEntitiesDisposer {
 		$i = 0;
 
 		// Each duplicate-tuple needs its own DELETE (composite WHERE varies
-		// per row), but the canonical re-INSERTs accumulate into one shared
-		// builder so they execute as a single statement at the end.
-		$insertBuilder = $connection->newInsertQueryBuilder()
-			->insertInto( $table )
-			->caller( __METHOD__ );
+		// per row), but the canonical re-INSERTs of a batch accumulate into
+		// one builder so they execute as a single statement. It commits
+		// together with the batch's DELETEs, so a run that stops partway
+		// cannot leave a tuple without a copy.
+		foreach ( array_chunk( $duplicates, self::BATCH_SIZE ) as $batch ) {
+			$connection->beginSectionTransaction( __METHOD__ );
 
-		foreach ( $duplicates as $duplicate ) {
+			try {
+				$insertBuilder = $connection->newInsertQueryBuilder()
+					->insertInto( $table )
+					->caller( __METHOD__ );
 
-			if ( $this->statsFlusher !== null ) {
-				$this->statsFlusher->tick();
+				$insertCount = 0;
+
+				foreach ( $batch as $duplicate ) {
+
+					if ( $this->statsFlusher !== null ) {
+						$this->statsFlusher->tick();
+					}
+
+					if ( $i > 0 && ( $i ) % CliMsgFormatter::MAX_LEN === 0 ) {
+						$this->messageReporter->reportMessage( "\n       " );
+					} elseif ( $i == 0 ) {
+						$this->messageReporter->reportMessage( "       " );
+					}
+
+					$this->messageReporter->reportMessage( '.' );
+					$log[] = [ 'DELETE' => $duplicate['o_id'] . " (" . $duplicate['s_title'] . '#' . $duplicate['s_namespace'] . ")" ];
+
+					$connection->newDeleteQueryBuilder()
+						->deleteFrom( $table )
+						->where( [
+							's_title' => $duplicate['s_title'],
+							's_namespace' => $duplicate['s_namespace'],
+							'o_id' => $duplicate['o_id'],
+						] )
+						->caller( __METHOD__ )
+						->execute();
+
+					if ( $duplicate['s_title'] === '' ) {
+						continue;
+					}
+
+					$insertBuilder->row( [
+						's_title' => $duplicate['s_title'],
+						's_namespace' => $duplicate['s_namespace'],
+						'o_id' => $duplicate['o_id'],
+					] );
+
+					$insertCount++;
+					$i++;
+				}
+
+				if ( $insertCount > 0 ) {
+					$insertBuilder->execute();
+				}
+			} catch ( Throwable $e ) {
+				$connection->cancelSectionTransaction( __METHOD__ );
+				throw $e;
 			}
 
-			if ( $i > 0 && ( $i ) % CliMsgFormatter::MAX_LEN === 0 ) {
-				$this->messageReporter->reportMessage( "\n       " );
-			} elseif ( $i == 0 ) {
-				$this->messageReporter->reportMessage( "       " );
-			}
-
-			$this->messageReporter->reportMessage( '.' );
-			$log[] = [ 'DELETE' => $duplicate['o_id'] . " (" . $duplicate['s_title'] . '#' . $duplicate['s_namespace'] . ")" ];
-
-			$connection->newDeleteQueryBuilder()
-				->deleteFrom( $table )
-				->where( [
-					's_title' => $duplicate['s_title'],
-					's_namespace' => $duplicate['s_namespace'],
-					'o_id' => $duplicate['o_id'],
-				] )
-				->caller( __METHOD__ )
-				->execute();
-
-			if ( $duplicate['s_title'] === '' ) {
-				continue;
-			}
-
-			$insertBuilder->row( [
-				's_title' => $duplicate['s_title'],
-				's_namespace' => $duplicate['s_namespace'],
-				'o_id' => $duplicate['o_id'],
-			] );
-
-			$i++;
-		}
-
-		if ( $i > 0 ) {
-			$insertBuilder->execute();
+			$connection->endSectionTransaction( __METHOD__ );
 		}
 	}
 
