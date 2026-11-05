@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\SQLStore\QueryEngine\Fulltext;
 
+use SMW\DataItems\Uri;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\Tests\SMWIntegrationTestCase;
@@ -37,6 +38,15 @@ class SearchTableRebuilderTest extends SMWIntegrationTestCase {
 		$this->assertStringContainsString( 'alphaword', $indexEntry );
 		$this->assertStringContainsString( 'bravoword', $indexEntry );
 		$this->assertStringContainsString( 'charlieword', $indexEntry );
+	}
+
+	public function testChunkedRebuildIndexesUrlValues() {
+		[ $sid, $pid ] = $this->storeUrl( 'ChunkedRebuildUrl', 'Has chunked url', new Uri( 'http', '//example.org/echopath', '', '' ) );
+		$this->flushIndex();
+
+		$this->newSearchTableRebuilder()->rebuildChunk( $sid, 1 );
+
+		$this->assertStringContainsString( 'echopath', $this->readIndexEntry( $sid, $pid ) );
 	}
 
 	public function testChunkedRebuildIndexesValuesOfFixedPropertyTables() {
