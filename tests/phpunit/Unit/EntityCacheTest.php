@@ -335,6 +335,53 @@ class EntityCacheTest extends TestCase {
 		);
 	}
 
+	public function testInvalidatingSeveralPagesRegeneratesTheValuesOfExactlyThosePages() {
+		$foo = WikiPage::newFromText( 'Foo' );
+		$bar = WikiPage::newFromText( 'Bar' );
+		$baz = WikiPage::newFromText( 'Baz' );
+		$entityCache = $this->newEntityCache();
+		$this->lookUp( $entityCache, $foo, 'outdated' );
+		$this->lookUp( $entityCache, $bar, 'cached' );
+		$this->lookUp( $entityCache, $baz, 'outdated' );
+
+		$entityCache->invalidateMulti( [ $foo, $baz ] );
+
+		$this->assertSame(
+			[ 'regenerated', 'cached', 'regenerated' ],
+			[
+				$this->lookUp( $entityCache, $foo, 'regenerated' ),
+				$this->lookUp( $entityCache, $bar, 'regenerated' ),
+				$this->lookUp( $entityCache, $baz, 'regenerated' )
+			]
+		);
+	}
+
+	public function testInvalidatingSeveralPagesWritesTheBackendOnce() {
+		$this->backend = new class extends HashBagOStuff {
+			public int $writes = 0;
+
+			public function set( $key, $value, $exptime = 0, $flags = 0 ) {
+				$this->writes++;
+
+				return parent::set( $key, $value, $exptime, $flags );
+			}
+
+			public function setMulti( array $valueByKey, $exptime = 0, $flags = 0 ) {
+				$this->writes++;
+
+				return parent::setMulti( $valueByKey, $exptime, $flags );
+			}
+		};
+
+		$this->newEntityCache()->invalidateMulti( [
+			WikiPage::newFromText( 'Foo' ),
+			WikiPage::newFromText( 'Bar' ),
+			WikiPage::newFromText( 'Baz' )
+		] );
+
+		$this->assertSame( 1, $this->backend->writes );
+	}
+
 	public function testInvalidatingAPageKeepsOtherPagesCached() {
 		$subject = WikiPage::newFromText( 'Foo' );
 		$this->lookUp( $this->newEntityCache(), $subject, 'cached' );

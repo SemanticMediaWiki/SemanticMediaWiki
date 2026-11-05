@@ -2,7 +2,6 @@
 
 namespace SMW\Maintenance;
 
-use Iterator;
 use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\DataItems\Property;
@@ -15,6 +14,8 @@ use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Utils\PeriodicStatsFlusher;
+use Wikimedia\Rdbms\IExpression;
+use Wikimedia\Rdbms\IResultWrapper;
 
 /**
  * Load the required class
@@ -51,16 +52,12 @@ class purgeEntityCache extends Maintenance {
 	private $messageReporter;
 
 	/**
-	 * @var int
-	 */
-	private $lastId = 0;
-
-	/**
 	 * @since 3.1
 	 */
 	public function __construct() {
 		parent::__construct();
 		$this->addDescription( "Purge cache entries for known entities and their associated data." );
+		$this->setBatchSize( 1000 );
 	}
 
 	/**
@@ -137,32 +134,41 @@ class purgeEntityCache extends Maintenance {
 		$this->reportMessage( "\nSelecting entities ...\n" );
 
 		$this->reportMessage(
-			$cliMsgFormatter->firstCol( "... fetching rows from table ...", 3 )
+			$cliMsgFormatter->firstCol( "... counting rows in table ...", 3 )
 		);
 
-		$rows = $this->fetchRows();
+		$count = $this->countRows();
 
 		$this->reportMessage(
 			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
 		);
 
-		$this->doPurge( $rows );
+		$this->doPurge( $count );
 
 		$this->reportMessage( "   ... done.\n" );
 
 		return true;
 	}
 
-	private function fetchRows() {
-		$connection = $this->store->getConnection( 'mw.db' );
+	private function countRows(): int {
+		return (int)$this->store->getConnection( 'mw.db' )->newSelectQueryBuilder()
+			->select( 'COUNT(*)' )
+			->from( SQLStore::ID_TABLE )
+			->where( $this->newConditions( 0 ) )
+			->caller( __METHOD__ )
+			->fetchField();
+	}
 
-		$this->lastId = (int)$connection->newSelectQueryBuilder()
+	private function fetchLastId(): int {
+		return (int)$this->store->getConnection( 'mw.db' )->newSelectQueryBuilder()
 			->select( 'MAX(smw_id)' )
 			->from( SQLStore::ID_TABLE )
 			->caller( __METHOD__ )
 			->fetchField();
+	}
 
-		return $connection->newSelectQueryBuilder()
+	private function fetchBatch( int $afterId ): IResultWrapper {
+		return $this->store->getConnection( 'mw.db' )->newSelectQueryBuilder()
 			->select( [
 				'smw_id',
 				'smw_title',
@@ -171,13 +177,24 @@ class purgeEntityCache extends Maintenance {
 				'smw_subobject'
 			] )
 			->from( SQLStore::ID_TABLE )
-			->where( [
-				"smw_subobject=''",
-				'smw_iw != ' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW )
-			] )
+			->where( $this->newConditions( $afterId ) )
 			->orderBy( 'smw_id' )
+			->limit( $this->getBatchSize() )
 			->caller( __METHOD__ )
 			->fetchResultSet();
+	}
+
+	/**
+	 * @return IExpression[]
+	 */
+	private function newConditions( int $afterId ): array {
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		return [
+			$connection->expr( 'smw_subobject', '=', '' ),
+			$connection->expr( 'smw_iw', '!=', SMW_SQL3_SMWDELETEIW ),
+			$connection->expr( 'smw_id', '>', $afterId )
+		];
 	}
 
 	private function canExecute() {
@@ -197,16 +214,12 @@ class purgeEntityCache extends Maintenance {
 		return true;
 	}
 
-	private function doPurge( Iterator $rows ) {
+	private function doPurge( int $count ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
-		$connection = $this->store->getConnection( 'mw.db' );
-
-		$count = $rows->numRows();
-		$i = 0;
-
-		if ( $count == 0 ) {
-			return $this->reportMessage( "   ... no entities selected ...\n" );
+		if ( $count === 0 ) {
+			$this->reportMessage( "   ... no entities selected ...\n" );
+			return;
 		}
 
 		$this->reportMessage(
@@ -214,18 +227,34 @@ class purgeEntityCache extends Maintenance {
 		);
 
 		$statsFlusher = PeriodicStatsFlusher::newFromGlobalState();
+		$lastId = $this->fetchLastId();
+		$afterId = 0;
+		$purged = 0;
+		$rows = $this->fetchBatch( $afterId );
 
-		foreach ( $rows as $row ) {
-			$statsFlusher->tick();
-			$i++;
+		while ( $rows->numRows() > 0 ) {
+			$subjects = [];
 
-			$msg = $cliMsgFormatter->progressCompact( $i, $count, $row->smw_id, $this->lastId );
+			foreach ( $rows as $row ) {
+				$statsFlusher->tick();
+				$afterId = (int)$row->smw_id;
+				$subjects[] = $this->newFromRow( $row );
+			}
+
+			// One cache write per batch: with the object cache in the database, each write is a commit
+			$this->entityCache->invalidateMulti( $subjects );
+			$purged += $rows->numRows();
 
 			$this->reportMessage(
-				$cliMsgFormatter->twoColsOverride( "... invalidating cache for ...", $msg, 3 )
+				$cliMsgFormatter->twoColsOverride(
+					"... invalidating cache for ...",
+					$cliMsgFormatter->progressCompact( $purged, $count, $afterId, $lastId ),
+					3
+				)
 			);
 
-			$this->entityCache->invalidate( $this->newFromRow( $row ) );
+			$this->waitForReplication();
+			$rows = $this->fetchBatch( $afterId );
 		}
 
 		$this->reportMessage( "\n" );
