@@ -11,7 +11,6 @@ use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Utils\PeriodicStatsFlusher;
 use stdClass;
-use Throwable;
 
 /**
  * Simple class for rebuilding property usage statistics.
@@ -165,9 +164,7 @@ class PropertyStatisticsRebuilder {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		// One commit per batch, since each commit waits for a disk sync
-		$connection->beginSectionTransaction( __METHOD__ );
-
-		try {
+		$connection->doSectionTransaction( __METHOD__, function () use ( $rows, $counts ): void {
 			foreach ( $rows as $row ) {
 				if ( $this->statsFlusher !== null ) {
 					$this->statsFlusher->tick();
@@ -178,12 +175,7 @@ class PropertyStatisticsRebuilder {
 					$counts[(int)$row->smw_id] ?? [ 0, 0 ]
 				);
 			}
-		} catch ( Throwable $e ) {
-			$connection->cancelSectionTransaction( __METHOD__ );
-			throw $e;
-		}
-
-		$connection->endSectionTransaction( __METHOD__ );
+		} );
 	}
 
 	/**

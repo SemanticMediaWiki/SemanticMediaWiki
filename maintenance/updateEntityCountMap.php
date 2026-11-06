@@ -12,7 +12,6 @@ use SMW\Utils\CliMsgFormatter;
 use SMW\Utils\HmacSerializer;
 use SMW\Utils\PeriodicStatsFlusher;
 use stdClass;
-use Throwable;
 use Wikimedia\Rdbms\IExpression;
 use Wikimedia\Rdbms\IResultWrapper;
 
@@ -174,18 +173,11 @@ class updateEntityCountMap extends Maintenance {
 
 			// Commit per batch, since each commit waits for a disk sync, and only around
 			// the writes, so that the batch holds its row locks just while writing
-			$connection->beginSectionTransaction( __METHOD__ );
-
-			try {
+			$connection->doSectionTransaction( __METHOD__, function () use ( $countMaps ): void {
 				foreach ( $countMaps as $id => $countMap ) {
 					$this->updateCountMap( $id, $countMap );
 				}
-			} catch ( Throwable $e ) {
-				$connection->cancelSectionTransaction( __METHOD__ );
-				throw $e;
-			}
-
-			$connection->endSectionTransaction( __METHOD__ );
+			} );
 
 			// Report only committed IDs, so that the shown ID is a safe `-s` to resume from
 			$updated += $rows->numRows();

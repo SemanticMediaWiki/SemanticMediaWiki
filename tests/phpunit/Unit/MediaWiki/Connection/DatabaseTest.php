@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\MediaWiki\Connection;
 
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use SMW\Connection\ConnectionProvider;
 use SMW\Connection\ConnRef;
 use SMW\MediaWiki\Connection\Database;
@@ -716,4 +717,52 @@ class DatabaseTest extends TestCase {
 
 		$this->assertSame( $builder, $instance->newReplaceQueryBuilder() );
 	}
+
+	public function testDoSectionTransactionCommitsWhenTheCallbackSucceeds() {
+		$write = $this->createMock( IDatabase::class );
+		$write->expects( $this->once() )->method( 'endAtomic' );
+		$write->expects( $this->never() )->method( 'cancelAtomic' );
+
+		$result = $this->newDatabaseWritingTo( $write )->doSectionTransaction( __METHOD__, static fn () => 'done' );
+
+		$this->assertSame( 'done', $result );
+	}
+
+	public function testDoSectionTransactionRollsBackAndRethrowsWhenTheCallbackThrows() {
+		$write = $this->createMock( IDatabase::class );
+		$write->expects( $this->once() )->method( 'cancelAtomic' );
+		$write->expects( $this->never() )->method( 'endAtomic' );
+		$instance = $this->newDatabaseWritingTo( $write );
+
+		$this->expectExceptionMessage( 'Failed update' );
+
+		$instance->doSectionTransaction( __METHOD__, static function (): void {
+			throw new RuntimeException( 'Failed update' );
+		} );
+	}
+
+	public function testDoSectionTransactionDoesNotRollBackAFailedCommit() {
+		$write = $this->createMock( IDatabase::class );
+		$write->method( 'endAtomic' )->willThrowException( new RuntimeException( 'Failed commit' ) );
+		$write->expects( $this->never() )->method( 'cancelAtomic' );
+		$instance = $this->newDatabaseWritingTo( $write );
+
+		$this->expectExceptionMessage( 'Failed commit' );
+
+		$instance->doSectionTransaction( __METHOD__, static fn () => null );
+	}
+
+	private function newDatabaseWritingTo( IDatabase $write ): Database {
+		$writeConnectionProvider = $this->createMock( ConnectionProvider::class );
+		$writeConnectionProvider->method( 'getConnection' )->willReturn( $write );
+
+		return new Database(
+			new ConnRef( [
+				'read' => $this->createMock( ConnectionProvider::class ),
+				'write' => $writeConnectionProvider
+			] ),
+			new TransactionHandler( $this->createMock( ILBFactory::class ) )
+		);
+	}
+
 }

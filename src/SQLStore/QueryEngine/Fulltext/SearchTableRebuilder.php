@@ -273,17 +273,12 @@ class SearchTableRebuilder {
 
 		// Using MW's section transaction methods to prevent possible
 		// outages from causing empty or incomplete ranges
-		$this->connection->beginSectionTransaction( __METHOD__ );
-		try {
-			// Period between removing entries from the chunk and
-			// repopulation must be kept as short as possible!
-			$this->replaceBySidRange( $texts, $fromSid, $toSid );
-		} catch ( Throwable $e ) {
-			$this->connection->cancelSectionTransaction( __METHOD__ );
-			throw $e;
-		}
-
-		$this->connection->endSectionTransaction( __METHOD__ );
+		// Period between removing entries from the chunk and
+		// repopulation must be kept as short as possible!
+		$this->connection->doSectionTransaction(
+			__METHOD__,
+			fn () => $this->replaceBySidRange( $texts, $fromSid, $toSid )
+		);
 
 		if ( $maxSid > 0 ) {
 			$cliMsgFormatter = new CliMsgFormatter();
