@@ -78,7 +78,7 @@ jobs:
   # one unit; it has inter-test ordering dependencies (fulltext index state,
   # query-result cache) that make splitting it by directory unsafe.
   tests:
-    name: Test (MW ${{ matrix.mw }}, PHP ${{ matrix.php }}, ${{ matrix.db }})
+    name: Test (MW ${{ matrix.mw }}, PHP ${{ matrix.php }}, ${{ matrix.db }}${{ matrix.sql_mode && ', strict SQL mode' || '' }})
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.experimental == true }}
     strategy:
@@ -90,6 +90,9 @@ jobs:
           - { mw: '1.44', php: 8.3, db: "mariadb:11.8" }
           - { mw: '1.45', php: 8.4, db: "mariadb:12.3" }
           - { mw: '1.46', php: 8.5, db: "mariadb:12.3" }
+          # The SQL mode of MediaWiki's DevelopmentSettings.php. Under it, MariaDB
+          # rejects columns outside the GROUP BY that MySQL accepts.
+          - { mw: '1.46', php: 8.5, db: "mariadb:11.8", sql_mode: "STRICT_ALL_TABLES,ONLY_FULL_GROUP_BY" }
     env:
       MW_VERSION: ${{ matrix.mw }}
       PHP_VERSION: ${{ matrix.php }}
@@ -109,6 +112,10 @@ jobs:
 
       - name: Configure containers
         run: cp .github/docker-compose.override.yml build/
+
+      - name: Set the SQL mode
+        if: matrix.sql_mode
+        run: printf '\n%s\n' "\$wgSQLMode = '${{ matrix.sql_mode }}';" >> __setup_extension__
 
       - name: Build image and install MediaWiki
         run: make install

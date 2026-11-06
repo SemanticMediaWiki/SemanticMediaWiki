@@ -212,19 +212,11 @@ class PropertySubjectsLookup {
 		$qb = $connection->newSelectQueryBuilder();
 
 		if ( $proptable->usesIdSubject() ) {
-			$group = true;
+			$group = !$requestOptions->getOption( 'NO_GROUPBY' );
 
 			$qb->from( SQLStore::ID_TABLE )
 				->join( $proptable->getName(), 't1', 't1.s_id=smw_id' )
-				->select( [
-					'smw_id',
-					'smw_title',
-					'smw_namespace',
-					'smw_iw',
-					'smw_subobject',
-					'smw_sortkey',
-					'smw_sort',
-				] );
+				->select( $this->subjectFields( $group && !$connection->isType( 'postgres' ), $sortField ) );
 
 			// Preserve the FORCE INDEX(...) hint by translating to useIndex( [ 't1' => $name ] ).
 			// This emits USE INDEX on MySQL (vs the original FORCE INDEX). Both restrict the
@@ -278,10 +270,6 @@ class PropertySubjectsLookup {
 			foreach ( [ SMW_SQL3_SMWIW_OUTDATED, SMW_SQL3_SMWDELETEIW, SMW_SQL3_SMWREDIIW ] as $iw ) {
 				$qb->andWhere( $connection->expr( 'smw_iw', '!=', $iw ) );
 			}
-		}
-
-		if ( $requestOptions->getOption( 'NO_GROUPBY' ) ) {
-			$group = false;
 		}
 
 		if ( $group && $connection->isType( 'postgres' ) ) {
@@ -365,6 +353,25 @@ class PropertySubjectsLookup {
 		}
 
 		return $res;
+	}
+
+	/**
+	 * Under GROUP BY ( $sortField, smw_id ), MariaDB's ONLY_FULL_GROUP_BY rejects the other
+	 * columns although smw_id determines them. MAX() returns each group's only value and,
+	 * unlike grouping by every column, leaves the smw_sort index able to serve the GROUP BY.
+	 *
+	 * @return string[]
+	 */
+	private function subjectFields( bool $groupBy, string $sortField ): array {
+		$columns = [ 'smw_id', 'smw_title', 'smw_namespace', 'smw_iw', 'smw_subobject', 'smw_sortkey', 'smw_sort' ];
+		$fields = [];
+
+		foreach ( $columns as $column ) {
+			$grouped = $column === 'smw_id' || $column === $sortField;
+			$fields[$column] = $groupBy && !$grouped ? "MAX($column)" : $column;
+		}
+
+		return $fields;
 	}
 
 	/**

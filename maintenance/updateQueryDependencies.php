@@ -157,7 +157,7 @@ class updateQueryDependencies extends Maintenance {
 				'smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED ),
 				'smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW ),
 			] )
-			->groupBy( 'smw_id' )
+			->distinct()
 			->caller( __METHOD__ )
 			->fetchResultSet();
 
