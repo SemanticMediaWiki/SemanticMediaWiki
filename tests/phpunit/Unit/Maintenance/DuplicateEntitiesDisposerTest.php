@@ -55,6 +55,9 @@ class DuplicateEntitiesDisposerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->connection->method( 'doSectionTransaction' )
+			->willReturnCallback( static fn ( string $fname, callable $callback ) => $callback() );
+
 		$this->cache = $this->getMockBuilder( BagOStuff::class )
 			->disableOriginalConstructor()
 			->getMock();
