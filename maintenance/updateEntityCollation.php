@@ -232,12 +232,12 @@ class updateEntityCollation extends Maintenance {
 					$afterId = (int)$row->smw_id;
 					$tableFieldUpdater->updateSortField( $afterId, $this->getSortKey( $row ) );
 				}
-
-				$connection->endSectionTransaction( __METHOD__ );
 			} catch ( Throwable $e ) {
 				$connection->cancelSectionTransaction( __METHOD__ );
 				throw $e;
 			}
+
+			$connection->endSectionTransaction( __METHOD__ );
 
 			// Report only committed IDs, so that the shown ID is a safe `-s` to resume from
 			$updated += $rows->numRows();

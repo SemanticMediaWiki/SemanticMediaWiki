@@ -278,11 +278,12 @@ class SearchTableRebuilder {
 			// Period between removing entries from the chunk and
 			// repopulation must be kept as short as possible!
 			$this->replaceBySidRange( $texts, $fromSid, $toSid );
-			$this->connection->endSectionTransaction( __METHOD__ );
 		} catch ( Throwable $e ) {
 			$this->connection->cancelSectionTransaction( __METHOD__ );
 			throw $e;
 		}
+
+		$this->connection->endSectionTransaction( __METHOD__ );
 
 		if ( $maxSid > 0 ) {
 			$cliMsgFormatter = new CliMsgFormatter();
