@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Connection;
 use Exception;
 use RuntimeException;
 use SMW\Connection\ConnRef;
+use Throwable;
 use Wikimedia\Rdbms\Blob;
 use Wikimedia\Rdbms\DBConnRef;
 use Wikimedia\Rdbms\DeleteQueryBuilder;
@@ -624,6 +625,30 @@ class Database {
 		}
 
 		$this->connRef->getConnection( 'write' )->cancelAtomic( $fname );
+	}
+
+	/**
+	 * Runs the callback in a section transaction. Commits what it wrote, or rolls that back and
+	 * rethrows when the callback throws. A failed commit is not rolled back, so that its own error
+	 * propagates.
+	 *
+	 * @since 7.4.1
+	 *
+	 * @return mixed What the callback returns
+	 */
+	public function doSectionTransaction( string $fname, callable $callback ): mixed {
+		$this->beginSectionTransaction( $fname );
+
+		try {
+			$result = $callback();
+		} catch ( Throwable $e ) {
+			$this->cancelSectionTransaction( $fname );
+			throw $e;
+		}
+
+		$this->endSectionTransaction( $fname );
+
+		return $result;
 	}
 
 	/**

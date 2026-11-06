@@ -52,6 +52,9 @@ class SearchTableRebuilderTest extends TestCase {
 		$this->searchTableUpdater->expects( $this->any() )
 			->method( 'getSearchTable' )
 			->willReturn( $this->searchTable );
+
+		$this->connection->method( 'doSectionTransaction' )
+			->willReturnCallback( static fn ( string $fname, callable $callback ) => $callback() );
 	}
 
 	public function testCanConstruct() {
@@ -104,16 +107,13 @@ class SearchTableRebuilderTest extends TestCase {
 		$this->assertStringContainsString( 'Table smw_di_blob is locked', $messageReporter->getMessagesAsString() );
 	}
 
-	public function testRebuildReportsWhyAChunkFailedToCommit() {
+	public function testRebuildReportsWhyAChunkFailedToWrite() {
 		$messageReporter = new SpyMessageReporter();
 		$instance = $this->newRebuilderOverBlobRows( [ 1 ] );
 		$instance->setMessageReporter( $messageReporter );
 
-		$this->connection->method( 'endSectionTransaction' )
+		$this->searchTableUpdater->method( 'deleteBySidRange' )
 			->willThrowException( new RuntimeException( 'Lock wait timeout exceeded' ) );
-		// As in MediaWiki core, where a failed commit has already closed the atomic section
-		$this->connection->method( 'cancelSectionTransaction' )
-			->willThrowException( new RuntimeException( 'Atomic section not found' ) );
 
 		$instance->rebuild();
 

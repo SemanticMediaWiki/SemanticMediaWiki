@@ -13,7 +13,6 @@ use SMW\SQLStore\TableFieldUpdater;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Utils\PeriodicStatsFlusher;
 use stdClass;
-use Throwable;
 use Wikimedia\Rdbms\IExpression;
 use Wikimedia\Rdbms\IResultWrapper;
 
@@ -223,21 +222,23 @@ class updateEntityCollation extends Maintenance {
 		$rows = $this->fetchBatch( $afterId );
 
 		while ( $rows->numRows() > 0 ) {
-			// Commit per batch: each commit waits for a disk sync
-			$connection->beginSectionTransaction( __METHOD__ );
+			$sortKeys = [];
 
-			try {
-				foreach ( $rows as $row ) {
-					$statsFlusher->tick();
-					$afterId = (int)$row->smw_id;
-					$tableFieldUpdater->updateSortField( $afterId, $this->getSortKey( $row ) );
-				}
-			} catch ( Throwable $e ) {
-				$connection->cancelSectionTransaction( __METHOD__ );
-				throw $e;
+			foreach ( $rows as $row ) {
+				$afterId = (int)$row->smw_id;
+				$sortKeys[$afterId] = $this->getSortKey( $row );
 			}
 
-			$connection->endSectionTransaction( __METHOD__ );
+			// Commit per batch: each commit waits for a disk sync
+			$connection->doSectionTransaction(
+				__METHOD__,
+				static function () use ( $sortKeys, $statsFlusher, $tableFieldUpdater ): void {
+					foreach ( $sortKeys as $id => $sortKey ) {
+						$statsFlusher->tick();
+						$tableFieldUpdater->updateSortField( $id, $sortKey );
+					}
+				}
+			);
 
 			// Report only committed IDs, so that the shown ID is a safe `-s` to resume from
 			$updated += $rows->numRows();
