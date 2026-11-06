@@ -16,7 +16,9 @@ use SMW\Elastic\Indexer\DocumentCreator;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
 use SMW\Elastic\Indexer\Replication\ReplicationCheck;
+use SMW\Elastic\Indexer\Replication\ReplicationError;
 use SMW\Elastic\Installer;
+use SMW\Localizer\MessageLocalizer;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Options;
 use SMW\SetupFile;
@@ -331,6 +333,51 @@ class ElasticStoreTest extends TestCase {
 		$this->updateData( $subject, new Config( [] ) );
 
 		$this->assertFalse( $cache->get( $replicationCheck->makeCacheKey( $subject ) ) );
+	}
+
+	public function testUpdateDataRemovesOnlyThePageFromTheReplicationFailures() {
+		$subject = WikiPage::newFromText( 'Foo' );
+		$otherPage = WikiPage::newFromText( 'Bar' );
+		$replicationCheck = $this->newReplicationCheckListingFailuresOf( $subject, $otherPage );
+
+		$this->elasticFactory->expects( $this->any() )
+			->method( 'newReplicationCheck' )
+			->willReturn( $replicationCheck );
+
+		$this->updateData( $subject, new Config( [] ) );
+
+		$this->assertSame(
+			[ $otherPage->getHash() ],
+			array_values( $replicationCheck->getReplicationFailures() ?: [] )
+		);
+	}
+
+	private function newReplicationCheckListingFailuresOf( WikiPage ...$subjects ): ReplicationCheck {
+		$client = $this->createMock( Client::class );
+		$client->method( 'ping' )->willReturn( true );
+
+		$store = $this->createMock( Store::class );
+		$store->method( 'getConnection' )->willReturn( $client );
+
+		$documentReplicationExaminer = $this->createMock( DocumentReplicationExaminer::class );
+		$documentReplicationExaminer->method( 'check' )->willReturn(
+			new ReplicationError( ReplicationError::TYPE_MODIFICATION_DATE_MISSING, [ 'id' => 42 ] )
+		);
+
+		$replicationCheck = new ReplicationCheck(
+			$store,
+			$documentReplicationExaminer,
+			new HashBagOStuff(),
+			new TemplateParser( __DIR__ . '/../../../../templates/EntityExaminer' )
+		);
+
+		$replicationCheck->setMessageLocalizer( $this->createMock( MessageLocalizer::class ) );
+
+		foreach ( $subjects as $subject ) {
+			$replicationCheck->checkReplication( $subject );
+		}
+
+		return $replicationCheck;
 	}
 
 	private function updateData( WikiPage $subject, Config $config ): void {
