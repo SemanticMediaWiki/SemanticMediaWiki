@@ -252,6 +252,37 @@ class WikiPageValue extends DataValue {
 	}
 
 	/**
+	 * Build the wiki markup for an embedded image/file value.
+	 *
+	 * The print-request parameters (`#width;format;caption`) are stored in
+	 * `$m_outformat` (width;format) and `$m_caption` (caption). Both the
+	 * short and long forms render the same embedded file, differing only in
+	 * the caption fallback when no explicit caption was supplied:
+	 *
+	 * - short form falls back to `getShortCaptionText()` (pipe-trick style)
+	 * - long form falls back to `getLongCaptionText()` (prefixed title)
+	 *
+	 * @param bool $useLongCaption whether the fallback caption is the long form
+	 */
+	private function getImageWikiText( bool $useLongCaption ): string {
+		$sanitizedHtml = Sanitizer::removeSomeTags( $this->m_outformat );
+
+		$options = $this->m_outformat === false
+			? 'frameless|border|text-top|'
+			: str_replace( ';', '|', $sanitizedHtml );
+
+		if ( $this->m_caption !== false && $this->m_caption !== null && $this->m_caption !== '' ) {
+			$caption = $this->m_caption;
+		} else {
+			$caption = $useLongCaption
+				? $this->getLongCaptionText()
+				: $this->getShortCaptionText();
+		}
+
+		return '[[' . $this->getWikiLinkTarget() . '|' . $caption . '|' . $options . ']]';
+	}
+
+	/**
 	 * Display the value on a wiki page. This is used to display the value
 	 * in the place where it was annotated on a wiki page. The desired
 	 * behavior is that the display in this case looks as if no property
@@ -303,22 +334,17 @@ class WikiPageValue extends DataValue {
 		if ( Image::isImage( $this->m_dataitem ) &&
 			$this->m_dataitem->getInterwiki() === '' && !$noImage
 		) {
-			$linkEscape = '';
-			$sanitizedHtml = Sanitizer::removeSomeTags( $this->m_outformat );
-			$options = $this->m_outformat === false ?
-				'frameless|border|text-top|' :
-				str_replace( ';', '|', $sanitizedHtml );
-			$defaultCaption = '|' . $this->getShortCaptionText() . '|' . $options;
+			$link = $this->getImageWikiText( false );
 		} else {
 			$linkEscape = ':';
 			$defaultCaption = '|' . $this->getShortCaptionText();
-		}
 
-		if ( $this->m_caption === false ) {
-			$link = '[[' . $linkEscape . $this->getWikiLinkTarget() . $defaultCaption . ']]';
-		} else {
-			$link =
-				'[[' . $linkEscape . $this->getWikiLinkTarget() . '|' . $this->m_caption . ']]';
+			if ( $this->m_caption === false ) {
+				$link = '[[' . $linkEscape . $this->getWikiLinkTarget() . $defaultCaption . ']]';
+			} else {
+				$link =
+					'[[' . $linkEscape . $this->getWikiLinkTarget() . '|' . $this->m_caption . ']]';
+			}
 		}
 
 		if ( $this->m_fragment !== '' ) {
@@ -397,13 +423,12 @@ class WikiPageValue extends DataValue {
 
 		if ( $linked === null || $linked === false || $this->m_outformat == '-' ) {
 			return $this->getWikiValue();
-		} elseif ( Image::isImage( $this->m_dataitem ) && $this->m_dataitem->getInterwiki() === '' && !$noImage ) {
-			// Embed images and other files
-			// Note that the embedded file links to the image, hence needs no additional link text.
-			// There should not be a linebreak after an impage, just like there is no linebreak after
-			// other values (whether formatted or not).
-			return '[[' . $this->getWikiLinkTarget() . '|' .
-				$this->getLongCaptionText() . '|frameless|border|text-top]]';
+		}
+
+		if ( Image::isImage( $this->m_dataitem ) &&
+			$this->m_dataitem->getInterwiki() === '' && !$noImage
+		) {
+			return $this->getImageWikiText( true );
 		}
 
 		$link = '[[:' . $this->getWikiLinkTarget() . '|' . $this->getLongCaptionText() . ']]';
