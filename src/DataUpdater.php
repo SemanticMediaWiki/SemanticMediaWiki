@@ -13,10 +13,12 @@ use SMW\DataItems\WikiPage as DIWikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\EventDispatcher\EventDispatcher;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate as DeferredUpdate;
+use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\Property\ChangePropagationNotifier;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use Wikimedia\Rdbms\DBError;
 use WikiPage;
 
 /**
@@ -276,6 +278,9 @@ class DataUpdater {
 
 		try {
 			$this->updateData();
+		} catch ( DBError $e ) {
+			$this->queueRetry( $e );
+			throw $e;
 		} finally {
 			// Also when the update fails, as the store may already have saved the data
 			$this->eventDispatcher->dispatch(
@@ -411,6 +416,39 @@ class DataUpdater {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Nothing else stores the page's data again once its update failed. Update jobs cannot create
+	 * update jobs; one that fails in the job queue is retried by the queue.
+	 */
+	private function queueRetry( DBError $e ): void {
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		if ( !$this->canCreateUpdateJob || !$applicationFactory->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
+			return;
+		}
+
+		$title = $this->getSubject()->getTitle();
+
+		try {
+			$applicationFactory->newJobFactory()->newUpdateJob(
+				$title,
+				[ UpdateJob::FORCED_UPDATE => true, 'origin' => 'DataUpdater' ]
+			)->lazyPush();
+		} catch ( Exception $queueError ) {
+			// The caller has to see why the update failed, not why queuing its retry failed
+			$this->logger->warning(
+				'Queuing an update job for {title} failed: {error}',
+				[ 'role' => 'production', 'title' => $title->getPrefixedDBkey(), 'error' => $queueError->getMessage() ]
+			);
+			return;
+		}
+
+		$this->logger->info(
+			'Queued an update job for {title} because storing its semantic data failed: {error}',
+			[ 'role' => 'production', 'title' => $title->getPrefixedDBkey(), 'error' => $e->getMessage() ]
+		);
 	}
 
 	private function checkForPossibleRedirectPreUpdate(

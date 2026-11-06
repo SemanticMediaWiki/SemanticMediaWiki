@@ -186,63 +186,6 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 		);
 	}
 
-	public function testAddToUsageCountsOnTransactionIdle() {
-		$connection = $this->createMock( Database::class );
-
-		$connection->expects( $this->once() )
-			->method( 'onTransactionCommitOrIdle' )
-			->willReturnCallback( static function ( $callback ) {
-				return call_user_func( $callback );
-			}
-			);
-
-		$connection->expects( $this->atLeastOnce() )
-			->method( 'newUpdateQueryBuilder' )
-			->willReturnCallback( fn () => $this->createMockUpdateQueryBuilder() );
-
-		$instance = new PropertyStatisticsStore(
-			$connection
-		);
-
-		$additions = [
-			2 => 42,
-			9001 => -9000,
-			9003 => 0,
-		];
-
-		$instance->waitOnTransactionIdle();
-
-		$this->assertTrue(
-			$instance->addToUsageCounts( $additions )
-		);
-	}
-
-	public function testAddToUsageCountsWillNotWaitOnTransactionIdleWhenCommandLineModeIsActive() {
-		$connection = $this->createMock( Database::class );
-
-		$connection->expects( $this->never() )
-			->method( 'onTransactionCommitOrIdle' );
-
-		$connection->expects( $this->atLeastOnce() )
-			->method( 'newUpdateQueryBuilder' )
-			->willReturnCallback( fn () => $this->createMockUpdateQueryBuilder() );
-
-		$instance = new PropertyStatisticsStore(
-			$connection
-		);
-
-		$additions = [
-			2 => 42,
-			9001 => -9000,
-			9003 => 0,
-		];
-
-		$instance->isCommandLineMode( true );
-		$instance->waitOnTransactionIdle();
-
-		$instance->addToUsageCounts( $additions );
-	}
-
 	public function testUpsertWithInsertUsageCountWithArrayValue() {
 		$capturedTables = [];
 		$capturedRows = [];

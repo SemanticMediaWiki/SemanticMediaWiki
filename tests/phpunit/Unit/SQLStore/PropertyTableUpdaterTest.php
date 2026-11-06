@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\SQLStore;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LogLevel;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Parameters;
@@ -13,6 +14,8 @@ use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\PropertyTableUpdater;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\Unit\MediaWiki\Connection\MockWriteQueryBuilderTrait;
+use SMW\Tests\Utils\SpyLogger;
+use Wikimedia\Rdbms\DBError;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableUpdater
@@ -33,6 +36,14 @@ class PropertyTableUpdaterTest extends TestCase {
 	private $propertyTable;
 	private $propertyStatisticsStore;
 	private $propertyChangeListener;
+	private SpyLogger $logger;
+
+	/**
+	 * @var callable[]
+	 */
+	private array $callbacksOnCommit = [];
+
+	private array $usageCountWrites = [];
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -40,6 +51,12 @@ class PropertyTableUpdaterTest extends TestCase {
 		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->connection->expects( $this->any() )
+			->method( 'onTransactionCommitOrIdle' )
+			->willReturnCallback( function ( callable $callback ): void {
+				$this->callbacksOnCommit[] = $callback;
+			} );
 
 		$this->idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
@@ -65,15 +82,24 @@ class PropertyTableUpdaterTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->propertyStatisticsStore->expects( $this->any() )
+			->method( 'addToUsageCounts' )
+			->willReturnCallback( function ( array $changes ): bool {
+				$this->usageCountWrites[] = $changes;
+				return true;
+			} );
+
 		$this->propertyChangeListener = $this->getMockBuilder( PropertyChangeListener::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->logger = new SpyLogger();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			PropertyTableUpdater::class,
-			new PropertyTableUpdater( $this->store, $this->propertyStatisticsStore )
+			new PropertyTableUpdater( $this->store, $this->propertyStatisticsStore, $this->logger )
 		);
 	}
 
@@ -82,23 +108,12 @@ class PropertyTableUpdaterTest extends TestCase {
 			->method( 'getPropertyTables' )
 			->willReturn( [] );
 
-		$this->propertyStatisticsStore->expects( $this->once() )
-			->method( 'addToUsageCounts' );
+		$instance = $this->newPropertyTableUpdater();
 
-		$instance = new PropertyTableUpdater(
-			$this->store,
-			$this->propertyStatisticsStore
-		);
+		$instance->update( 42, new Parameters( [ 'insert_rows' => [], 'delete_rows' => [], 'new_hashes' => [] ] ) );
+		$instance->writeSharedRowsOnCommit();
 
-		$params = new Parameters(
-			[
-				'insert_rows' => [],
-				'delete_rows' => [],
-				'new_hashes'  => []
-			]
-		);
-
-		$instance->update( 42, $params );
+		$this->assertSame( [], $this->callbacksOnCommit );
 	}
 
 	public function testUpdate_WithInsertRows() {
@@ -108,8 +123,6 @@ class PropertyTableUpdaterTest extends TestCase {
 		$deleteTables = $deleteWheres = [];
 		$deleteBuilder = $this->createMockDeleteQueryBuilder( $deleteTables, $deleteWheres );
 
-		$updateBuilder = $this->createMockUpdateQueryBuilder();
-
 		$this->connection->expects( $this->once() )
 			->method( 'newInsertQueryBuilder' )
 			->willReturn( $insertBuilder );
@@ -120,124 +133,108 @@ class PropertyTableUpdaterTest extends TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'newUpdateQueryBuilder' )
-			->willReturn( $updateBuilder );
+			->willReturn( $this->createMockUpdateQueryBuilder() );
 
 		$this->idTable->expects( $this->once() )
 			->method( 'setPropertyTableHashes' );
 
-		$this->propertyTable->expects( $this->any() )
-			->method( 'usesIdSubject' )
-			->willReturn( true );
+		$this->usePropertyTable();
 
-		$this->propertyTable->expects( $this->any() )
-			->method( 'getName' )
-			->willReturn( 'table_foo' );
-
-		$this->store->expects( $this->any() )
-			->method( 'getPropertyTables' )
-			->willReturn( [ 'table_foo' => $this->propertyTable ] );
-
-		$this->propertyStatisticsStore->expects( $this->once() )
-			->method( 'addToUsageCounts' )
-			->with( $this->equalTo( [ 99998 => -1, 99999 => 1 ] ) );
-
-		$instance = new PropertyTableUpdater(
-			$this->store,
-			$this->propertyStatisticsStore
-		);
-
-		$instance->setPropertyChangeListener(
-			$this->propertyChangeListener
-		);
-
-		$params = new Parameters(
-			[
-				'insert_rows' => [
-					'table_foo' => [
-						[ 's_id' => 1001, 'p_id' => 99999 ]
-					]
-				],
-				'delete_rows' => [
-					'table_foo' => [
-						[ 's_id' => 1001, 'p_id' => 99998 ]
-					]
-				],
-				'new_hashes'  => []
-			]
-		);
-
-		$instance->update( 42, $params );
+		$this->newPropertyTableUpdater()->update( 42, $this->changedValue() );
 
 		$this->assertContains( 'table_foo', $insertTables );
 		$this->assertContains( [ [ 's_id' => 1001, 'p_id' => 99999 ] ], $insertRows );
 		$this->assertContains( 'table_foo', $deleteTables );
 	}
 
-	public function testUpdate_Touched() {
-		$this->connection->expects( $this->once() )
-			->method( 'timestamp' )
-			->willReturn( '19700101000000' );
+	public function testSubjectIsTouchedWithinTheUpdate() {
+		$updateWheres = [];
+		$this->stubWrites( $updateWheres );
+		$this->usePropertyTable();
 
-		$insertBuilder = $this->createMockInsertQueryBuilder();
-		$deleteBuilder = $this->createMockDeleteQueryBuilder();
+		$this->newPropertyTableUpdater()->update( 42, $this->changedValue() );
 
-		$updateTables = $updateSets = $updateWheres = [];
-		$updateBuilder = $this->createMockUpdateQueryBuilder( $updateTables, $updateSets, $updateWheres );
+		$this->assertSame( [ [ 'smw_id' => [ 1001 ] ] ], $updateWheres );
+	}
 
-		$this->connection->expects( $this->any() )
-			->method( 'newInsertQueryBuilder' )
-			->willReturn( $insertBuilder );
+	public function testPropertiesAreTouchedOnCommit() {
+		$updateWheres = [];
+		$this->stubWrites( $updateWheres );
+		$this->runsSectionTransactions();
+		$this->usePropertyTable();
 
-		$this->connection->expects( $this->any() )
-			->method( 'newDeleteQueryBuilder' )
-			->willReturn( $deleteBuilder );
+		$instance = $this->newPropertyTableUpdater();
+		$instance->update( 42, $this->changedValue() );
+		$instance->writeSharedRowsOnCommit();
+		$touchedBeforeCommit = $updateWheres;
+		$this->commit();
 
-		$this->connection->expects( $this->once() )
-			->method( 'newUpdateQueryBuilder' )
-			->willReturn( $updateBuilder );
-
-		$this->propertyTable->expects( $this->any() )
-			->method( 'usesIdSubject' )
-			->willReturn( true );
-
-		$this->propertyTable->expects( $this->any() )
-			->method( 'getName' )
-			->willReturn( 'table_foo' );
-
-		$this->store->expects( $this->any() )
-			->method( 'getPropertyTables' )
-			->willReturn( [ 'table_foo' => $this->propertyTable ] );
-
-		$instance = new PropertyTableUpdater(
-			$this->store,
-			$this->propertyStatisticsStore
-		);
-
-		$instance->setPropertyChangeListener(
-			$this->propertyChangeListener
-		);
-
-		$params = new Parameters(
+		$this->assertSame(
 			[
-				'insert_rows' => [
-					'table_foo' => [
-						[ 's_id' => 1001, 'p_id' => 99999 ]
-					]
-				],
-				'delete_rows' => [
-					'table_foo' => [
-						[ 's_id' => 1001, 'p_id' => 99998 ]
-					]
-				],
-				'new_hashes'  => []
-			]
+				'before commit' => [ [ 'smw_id' => [ 1001 ] ] ],
+				'after commit' => [ [ 'smw_id' => [ 1001 ] ], [ 'smw_id' => [ 99998, 99999 ] ] ]
+			],
+			[ 'before commit' => $touchedBeforeCommit, 'after commit' => $updateWheres ]
 		);
+	}
 
-		$instance->update( 42, $params );
+	public function testUsageCountChangesAreWrittenOnCommit() {
+		$this->stubWrites();
+		$this->runsSectionTransactions();
+		$this->usePropertyTable();
 
-		$this->assertContains( SQLStore::ID_TABLE, $updateTables );
-		$this->assertContains( [ 'smw_touched' => '19700101000000' ], $updateSets );
-		$this->assertContains( [ 'smw_id' => [ 1001, 99999, 99998 ] ], $updateWheres );
+		$instance = $this->newPropertyTableUpdater();
+		$instance->update( 42, $this->changedValue() );
+		$instance->writeSharedRowsOnCommit();
+		$writesBeforeCommit = $this->usageCountWrites;
+		$this->commit();
+
+		$this->assertSame(
+			[ 'before commit' => [], 'after commit' => [ [ 99998 => -1, 99999 => 1 ] ] ],
+			[ 'before commit' => $writesBeforeCommit, 'after commit' => $this->usageCountWrites ]
+		);
+	}
+
+	public function testUsageCountChangesOfSeveralUpdatesAreWrittenTogether() {
+		$this->stubWrites();
+		$this->runsSectionTransactions();
+		$this->usePropertyTable();
+
+		$instance = $this->newPropertyTableUpdater();
+		$instance->update( 42, $this->newParameters( [ [ 's_id' => 42, 'p_id' => 99999 ] ], [] ) );
+		$instance->update( 43, $this->newParameters( [ [ 's_id' => 43, 'p_id' => 99999 ] ], [] ) );
+		$instance->writeSharedRowsOnCommit();
+		$this->commit();
+
+		$this->assertSame( [ [ 99999 => 2 ] ], $this->usageCountWrites );
+	}
+
+	public function testDiscardedChangesAreNotWritten() {
+		$this->stubWrites();
+		$this->usePropertyTable();
+
+		$instance = $this->newPropertyTableUpdater();
+		$instance->update( 42, $this->changedValue() );
+		$instance->discardSharedRows();
+		$instance->writeSharedRowsOnCommit();
+
+		$this->assertSame( [], $this->callbacksOnCommit );
+	}
+
+	public function testFailedWriteOnCommitIsLogged() {
+		$this->stubWrites();
+		$this->usePropertyTable();
+
+		$this->connection->expects( $this->any() )
+			->method( 'doSectionTransaction' )
+			->willThrowException( new DBError( null, 'Lock wait timeout exceeded' ) );
+
+		$instance = $this->newPropertyTableUpdater();
+		$instance->update( 42, $this->changedValue() );
+		$instance->writeSharedRowsOnCommit();
+		$this->commit();
+
+		$this->assertSame( [ LogLevel::WARNING ], array_column( $this->logger->getLogs(), 0 ) );
 	}
 
 	public function testUpdate_WithInsertRowsButMissingIdFieldThrowsException() {
@@ -245,25 +242,76 @@ class PropertyTableUpdaterTest extends TestCase {
 			->method( 'getPropertyTables' )
 			->willReturn( [ 'table_foo' => $this->propertyTable ] );
 
-		$instance = new PropertyTableUpdater(
-			$this->store,
-			$this->propertyStatisticsStore
-		);
-
-		$params = new Parameters(
-			[
-				'insert_rows' => [
-					'table_foo' => []
-				],
-				'delete_rows' => [
-					'table_foo' => []
-				],
-				'new_hashes'  => []
-			]
-		);
+		$instance = $this->newPropertyTableUpdater();
 
 		$this->expectException( TableMissingIdFieldException::class );
-		$instance->update( 42, $params );
+		$instance->update( 42, $this->newParameters( [], [] ) );
+	}
+
+	private function newPropertyTableUpdater(): PropertyTableUpdater {
+		$instance = new PropertyTableUpdater( $this->store, $this->propertyStatisticsStore, $this->logger );
+		$instance->setPropertyChangeListener( $this->propertyChangeListener );
+
+		return $instance;
+	}
+
+	/**
+	 * Page 1001 changes its value of property 99998 to one of property 99999.
+	 */
+	private function changedValue(): Parameters {
+		return $this->newParameters( [ [ 's_id' => 1001, 'p_id' => 99999 ] ], [ [ 's_id' => 1001, 'p_id' => 99998 ] ] );
+	}
+
+	private function newParameters( array $insertRows, array $deleteRows ): Parameters {
+		return new Parameters(
+			[
+				'insert_rows' => [ 'table_foo' => $insertRows ],
+				'delete_rows' => [ 'table_foo' => $deleteRows ],
+				'new_hashes' => []
+			]
+		);
+	}
+
+	private function usePropertyTable(): void {
+		$this->propertyTable->expects( $this->any() )
+			->method( 'usesIdSubject' )
+			->willReturn( true );
+
+		$this->propertyTable->expects( $this->any() )
+			->method( 'getName' )
+			->willReturn( 'table_foo' );
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->willReturn( [ 'table_foo' => $this->propertyTable ] );
+	}
+
+	private function stubWrites( array &$updateWheres = [] ): void {
+		$updateTables = $updateSets = [];
+
+		$this->connection->expects( $this->any() )
+			->method( 'newInsertQueryBuilder' )
+			->willReturn( $this->createMockInsertQueryBuilder() );
+
+		$this->connection->expects( $this->any() )
+			->method( 'newDeleteQueryBuilder' )
+			->willReturn( $this->createMockDeleteQueryBuilder() );
+
+		$this->connection->expects( $this->any() )
+			->method( 'newUpdateQueryBuilder' )
+			->willReturn( $this->createMockUpdateQueryBuilder( $updateTables, $updateSets, $updateWheres ) );
+	}
+
+	private function runsSectionTransactions(): void {
+		$this->connection->expects( $this->any() )
+			->method( 'doSectionTransaction' )
+			->willReturnCallback( static fn ( string $fname, callable $callback ) => $callback() );
+	}
+
+	private function commit(): void {
+		foreach ( $this->callbacksOnCommit as $callback ) {
+			$callback();
+		}
 	}
 
 }

@@ -346,6 +346,9 @@ class SQLStoreUpdaterTest extends TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
+		$store->method( 'getObjectIds' )
+			->willReturn( $this->idTable );
+
 		return $store;
 	}
 

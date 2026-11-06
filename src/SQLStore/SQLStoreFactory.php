@@ -155,7 +155,7 @@ class SQLStoreFactory {
 	 * @return PropertyTableUpdater
 	 */
 	public function newPropertyTableUpdater(): PropertyTableUpdater {
-		return new PropertyTableUpdater( $this->store, $this->newPropertyStatisticsStore() );
+		return new PropertyTableUpdater( $this->store, $this->newPropertyStatisticsStore(), $this->getLogger() );
 	}
 
 	/**
@@ -613,21 +613,9 @@ class SQLStoreFactory {
 	 * @return PropertyStatisticsStore
 	 */
 	public function newPropertyStatisticsStore(): PropertyStatisticsStore {
-		$propertyStatisticsStore = new PropertyStatisticsStore(
+		return new PropertyStatisticsStore(
 			$this->store->getConnection( 'mw.db' )
 		);
-
-		$propertyStatisticsStore->setLogger(
-			$this->getLogger()
-		);
-
-		$propertyStatisticsStore->isCommandLineMode(
-			Site::isCommandLineMode()
-		);
-
-		$propertyStatisticsStore->waitOnTransactionIdle();
-
-		return $propertyStatisticsStore;
 	}
 
 	/**
@@ -818,14 +806,14 @@ class SQLStoreFactory {
 	 *
 	 * @return RedirectUpdater
 	 */
-	public function newRedirectUpdater(): RedirectUpdater {
+	public function newRedirectUpdater( PropertyTableUpdater $propertyTableUpdater ): RedirectUpdater {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$redirectUpdater = new RedirectUpdater(
 			$this->store,
 			$this->newIdChanger(),
 			$this->newTableFieldUpdater(),
-			$this->newPropertyStatisticsStore()
+			$propertyTableUpdater
 		);
 
 		$redirectUpdater->setEqualitySupport(

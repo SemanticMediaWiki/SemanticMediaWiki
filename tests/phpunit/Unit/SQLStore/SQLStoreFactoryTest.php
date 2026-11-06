@@ -761,7 +761,7 @@ class SQLStoreFactoryTest extends TestCase {
 
 		$this->assertInstanceOf(
 			RedirectUpdater::class,
-			$instance->newRedirectUpdater()
+			$instance->newRedirectUpdater( $instance->newPropertyTableUpdater() )
 		);
 	}
 
