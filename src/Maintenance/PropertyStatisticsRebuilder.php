@@ -5,10 +5,13 @@ namespace SMW\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\SQLStore\PropertyStatisticsStore;
+use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Utils\PeriodicStatsFlusher;
+use stdClass;
+use Throwable;
 
 /**
  * Simple class for rebuilding property usage statistics.
@@ -20,6 +23,8 @@ use SMW\Utils\PeriodicStatsFlusher;
  * @author Nischay Nahata
  */
 class PropertyStatisticsRebuilder {
+
+	private const BATCH_SIZE = 1000;
 
 	private MessageReporter $messageReporter;
 
@@ -94,120 +99,213 @@ class PropertyStatisticsRebuilder {
 			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
 		);
 
-		$connection = $this->store->getConnection( 'mw.db' );
-
-		$res = $connection->newSelectQueryBuilder()
-			->select( [ 'smw_id', 'smw_title' ] )
-			->from( SQLStore::ID_TABLE )
-			->where( [
-				'smw_namespace' => SMW_NS_PROPERTY,
-				'smw_subobject' => ''
-			] )
-			->caller( __METHOD__ )
-			->fetchResultSet();
-
-		$propCount = $res->numRows();
+		$propCount = $this->countProperties();
 
 		$this->reportMessage(
 			$cliMsgFormatter->twoCols( '... properties count:', "$propCount (rows)", 3 )
 		);
 
 		$i = 0;
+		$rows = $this->fetchProperties( 0 );
 
-		foreach ( $res as $row ) {
-
-			if ( $this->statsFlusher !== null ) {
-				$this->statsFlusher->tick();
-			}
-
-			$i++;
+		while ( $rows !== [] ) {
+			$this->insertUsageCounts( $rows );
+			$i += count( $rows );
 
 			$this->reportMessage(
 				$cliMsgFormatter->twoColsOverride( '... updating ...', $cliMsgFormatter->progressCompact( $i, $propCount ), 3 )
 			);
 
-			$this->propertyStatisticsStore->insertUsageCount(
-				(int)$row->smw_id,
-				$this->getCountFormRow( $row )
-			);
+			$rows = $this->fetchProperties( (int)end( $rows )->smw_id );
 		}
-
-		$res->free();
 
 		$this->reportMessage( "\n   ... done.\n" );
 	}
 
-	private function getCountFormRow( $row ): array {
-		$usageCount = 0;
-		$nullCount = 0;
+	private function countProperties(): int {
+		return (int)$this->store->getConnection( 'mw.db' )->newSelectQueryBuilder()
+			->select( 'COUNT(*)' )
+			->from( SQLStore::ID_TABLE )
+			->where( $this->propertyConditions() )
+			->caller( __METHOD__ )
+			->fetchField();
+	}
+
+	/**
+	 * @return stdClass[] The next batch of properties after the given ID, in ID order
+	 */
+	private function fetchProperties( int $afterId ): array {
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		return iterator_to_array( $connection->newSelectQueryBuilder()
+			->select( [ 'smw_id', 'smw_title' ] )
+			->from( SQLStore::ID_TABLE )
+			->where( $this->propertyConditions() )
+			->andWhere( $connection->expr( 'smw_id', '>', $afterId ) )
+			->orderBy( 'smw_id' )
+			->limit( self::BATCH_SIZE )
+			->caller( __METHOD__ )
+			->fetchResultSet() );
+	}
+
+	private function propertyConditions(): array {
+		return [
+			'smw_namespace' => SMW_NS_PROPERTY,
+			'smw_subobject' => ''
+		];
+	}
+
+	/**
+	 * Counts a batch just before writing it, as edits in between would be lost: they only update existing rows
+	 *
+	 * @param stdClass[] $rows
+	 */
+	private function insertUsageCounts( array $rows ): void {
+		$counts = $this->countValues( $rows );
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		// One commit per batch, since each commit waits for a disk sync
+		$connection->beginSectionTransaction( __METHOD__ );
+
+		try {
+			foreach ( $rows as $row ) {
+				if ( $this->statsFlusher !== null ) {
+					$this->statsFlusher->tick();
+				}
+
+				$this->propertyStatisticsStore->insertUsageCount(
+					(int)$row->smw_id,
+					$counts[(int)$row->smw_id] ?? [ 0, 0 ]
+				);
+			}
+		} catch ( Throwable $e ) {
+			$connection->cancelSectionTransaction( __METHOD__ );
+			throw $e;
+		}
+
+		$connection->endSectionTransaction( __METHOD__ );
+	}
+
+	/**
+	 * @param stdClass[] $rows
+	 *
+	 * @return array<int, int[]> The usage and null count of each property's values, by property ID
+	 */
+	private function countValues( array $rows ): array {
+		$ids = array_map( static fn ( stdClass $row ) => (int)$row->smw_id, $rows );
+		$counts = [];
 
 		foreach ( $this->store->getPropertyTables() as $propertyTable ) {
+			if ( $propertyTable->isFixedPropertyTable() ) {
+				// A fixed property table holds the values of the property whose key matches
+				foreach ( $rows as $row ) {
+					if ( $row->smw_title === $propertyTable->getFixedProperty() ) {
+						$counts[(int)$row->smw_id] = $this->addCounts(
+							$counts[(int)$row->smw_id] ?? [ 0, 0 ],
+							$this->countFixedTable( $propertyTable )
+						);
+					}
+				}
 
-			if ( $propertyTable->isFixedPropertyTable() && $propertyTable->getFixedProperty() !== $row->smw_title ) {
-				// This table cannot store values for this property
 				continue;
 			}
 
-			[ $uCount, $nCount ] = $this->getPropertyTableRowCount(
-				$propertyTable,
-				$row->smw_id
-			);
-
-			$usageCount += $uCount;
-			$nullCount += $nCount;
+			foreach ( $this->countByProperty( $propertyTable, $ids ) as $pid => $tableCounts ) {
+				$counts[$pid] = $this->addCounts( $counts[$pid] ?? [ 0, 0 ], $tableCounts );
+			}
 		}
 
-		return [ $usageCount, $nullCount ];
+		return $counts;
 	}
 
-	private function getPropertyTableRowCount( $propertyTable, $pid ): array {
-		$condition = [];
-		$connection = $this->store->getConnection( 'mw.db' );
+	/**
+	 * @param PropertyTableDefinition $propertyTable
+	 * @param int[] $ids
+	 *
+	 * @return array<int, int[]> The usage and null count by property ID
+	 */
+	private function countByProperty( PropertyTableDefinition $propertyTable, array $ids ): array {
+		$nullCounts = $this->fetchCountsByProperty(
+			$propertyTable->getName(),
+			array_merge( [ 'p_id' => $ids ], $this->nullConditions( $propertyTable ) )
+		);
 
-		if ( !$propertyTable->isFixedPropertyTable() ) {
-			$condition = [ 'p_id' => $pid ];
+		$counts = [];
+
+		foreach ( $this->fetchCountsByProperty( $propertyTable->getName(), [ 'p_id' => $ids ] ) as $pid => $total ) {
+			$counts[$pid] = $this->toCounts( $total, $nullCounts[$pid] ?? 0 );
 		}
 
-		$tableFields = $this->store->getDataItemHandlerForDIType( $propertyTable->getDiType() )->getTableFields();
-		$tableName = $propertyTable->getName();
+		return $counts;
+	}
 
-		$usageCount = 0;
-		$nullCount = 0;
+	/**
+	 * @return int[] The usage and null count of the table's values
+	 */
+	private function countFixedTable( PropertyTableDefinition $propertyTable ): array {
+		return $this->toCounts(
+			$this->fetchCount( $propertyTable->getName(), [] ),
+			$this->fetchCount( $propertyTable->getName(), $this->nullConditions( $propertyTable ) )
+		);
+	}
 
-		// Select all (incl. NULL since for example blob table can have a null
-		// for when only the hash field is used, substract NULL in a second step)
-		$row = $connection->newSelectQueryBuilder()
-			->select( 'Count(*) as count' )
+	/**
+	 * Rows whose value fields are all NULL, such as a blob row that only uses the hash field, count as nulls
+	 * rather than usages.
+	 *
+	 * @return string[]
+	 */
+	private function nullConditions( PropertyTableDefinition $propertyTable ): array {
+		$fields = $this->store->getDataItemHandlerForDIType( $propertyTable->getDiType() )->getTableFields();
+
+		return array_map( static fn ( string $field ) => "$field IS NULL", array_keys( $fields ) );
+	}
+
+	/**
+	 * @return array<int, int> The number of rows by property ID
+	 */
+	private function fetchCountsByProperty( string $tableName, array $conditions ): array {
+		$rows = $this->store->getConnection( 'mw.db' )->newSelectQueryBuilder()
+			->select( [ 'p_id', 'count' => 'COUNT(*)' ] )
 			->from( $tableName )
-			->where( $condition )
+			->where( $conditions )
+			->groupBy( 'p_id' )
 			->caller( __METHOD__ )
-			->fetchRow();
+			->fetchResultSet();
 
-		if ( $row !== false ) {
-			$usageCount = $row->count;
+		$counts = [];
+
+		foreach ( $rows as $row ) {
+			$counts[(int)$row->p_id] = (int)$row->count;
 		}
 
-		// Select only those that match NULL for all fields
-		foreach ( $tableFields as $field => $type ) {
-			$condition[] = "$field IS NULL";
-		}
+		return $counts;
+	}
 
-		$nRow = $connection->newSelectQueryBuilder()
-			->select( 'Count(*) as count' )
+	private function fetchCount( string $tableName, array $conditions ): int {
+		return (int)$this->store->getConnection( 'mw.db' )->newSelectQueryBuilder()
+			->select( 'COUNT(*)' )
 			->from( $tableName )
-			->where( $condition )
+			->where( $conditions )
 			->caller( __METHOD__ )
-			->fetchRow();
+			->fetchField();
+	}
 
-		if ( $nRow !== false ) {
-			$nullCount = $nRow->count;
-		}
+	/**
+	 * @return int[] The usage and null count
+	 */
+	private function toCounts( int $total, int $nullCount ): array {
+		return [ $total - $nullCount, $nullCount ];
+	}
 
-		if ( $usageCount > 0 ) {
-			$usageCount -= $nullCount;
-		}
-
-		return [ $usageCount, $nullCount ];
+	/**
+	 * @param int[] $counts
+	 * @param int[] $moreCounts
+	 *
+	 * @return int[]
+	 */
+	private function addCounts( array $counts, array $moreCounts ): array {
+		return [ $counts[0] + $moreCounts[0], $counts[1] + $moreCounts[1] ];
 	}
 
 	protected function reportMessage( $message ): void {

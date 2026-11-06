@@ -18,6 +18,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed `purgeEntityCache.php` running slowly on large wikis ([#7185](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7185))
 * Fixed `rebuildElasticIndex.php` running slowly on large wikis ([#7186](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7186))
 * Fixed `removeDuplicateEntities.php` deleting every copy of a duplicated property value or redirect when it stopped partway ([#7189](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7189))
+* Fixed `rebuildPropertyStatistics.php` running slowly on large wikis ([#7188](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7188))
 
 ## Upgrading
 
