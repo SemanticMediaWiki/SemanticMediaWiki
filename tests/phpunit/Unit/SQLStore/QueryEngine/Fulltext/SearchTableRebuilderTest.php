@@ -104,6 +104,22 @@ class SearchTableRebuilderTest extends TestCase {
 		$this->assertStringContainsString( 'Table smw_di_blob is locked', $messageReporter->getMessagesAsString() );
 	}
 
+	public function testRebuildReportsWhyAChunkFailedToCommit() {
+		$messageReporter = new SpyMessageReporter();
+		$instance = $this->newRebuilderOverBlobRows( [ 1 ] );
+		$instance->setMessageReporter( $messageReporter );
+
+		$this->connection->method( 'endSectionTransaction' )
+			->willThrowException( new RuntimeException( 'Lock wait timeout exceeded' ) );
+		// As in MediaWiki core, where a failed commit has already closed the atomic section
+		$this->connection->method( 'cancelSectionTransaction' )
+			->willThrowException( new RuntimeException( 'Atomic section not found' ) );
+
+		$instance->rebuild();
+
+		$this->assertStringContainsString( 'Lock wait timeout exceeded', $messageReporter->getMessagesAsString() );
+	}
+
 	private function newRebuilderWhoseReadsFail(): SearchTableRebuilder {
 		$this->connection->method( 'newSelectQueryBuilder' )
 			->willThrowException( new RuntimeException( 'Table smw_di_blob is locked' ) );
