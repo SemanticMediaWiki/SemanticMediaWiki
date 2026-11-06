@@ -10,7 +10,6 @@ use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\Enum;
-use SMW\Listener\EventListener\EventHandler;
 use SMW\MediaWiki\Job;
 use SMW\MediaWiki\PageCreator;
 use SMW\SerializerFactory;
@@ -252,17 +251,6 @@ class UpdateJob extends Job {
 				'origin' => $this->getParameter( 'origin', 'N/A' ),
 				'updateType' => $this->getParameter( 'updateType' ),
 				'forcedUpdate' => $this->getParameter( self::FORCED_UPDATE )
-			]
-		);
-
-		$eventHandler = EventHandler::getInstance();
-		$eventDispatcher = $eventHandler->getEventDispatcher();
-
-		$eventDispatcher->dispatch(
-			'InvalidateEntityCache',
-			[
-				'context' => 'UpdateJob',
-				'title' => $this->getTitle()
 			]
 		);
 

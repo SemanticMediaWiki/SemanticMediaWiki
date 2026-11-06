@@ -273,14 +273,16 @@ class DataUpdater {
 		}
 
 		$this->checkChangePropagation();
-		$this->updateData();
 
-		$context = [
-			'context' => 'DataUpdater',
-			'subject' => $this->getSubject()
-		];
-
-		$this->eventDispatcher->dispatch( 'InvalidatePropertySpecificationLookupCache', $context );
+		try {
+			$this->updateData();
+		} finally {
+			// Also when the update fails, as the store may already have saved the data
+			$this->eventDispatcher->dispatch(
+				'InvalidatePropertySpecificationLookupCache',
+				[ 'context' => 'DataUpdater', 'subject' => $this->getSubject() ]
+			);
+		}
 
 		return true;
 	}
