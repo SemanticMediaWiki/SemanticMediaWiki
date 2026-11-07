@@ -151,7 +151,7 @@ class ByGroupPropertyValuesLookup {
 		$diType = $propTable->getDiType();
 
 		if ( $diType === DataItem::TYPE_WIKIPAGE ) {
-			$fields = [
+			$columns = [
 				'i.smw_id',
 				'i.smw_title',
 				'i.smw_namespace',
@@ -159,10 +159,10 @@ class ByGroupPropertyValuesLookup {
 				'i.smw_subobject',
 				'i.smw_hash',
 				'i.smw_sort',
-				"COUNT( $groupBy ) as count"
 			];
 
-			$groupBy = 'p.o_id, i.smw_id';
+			$fields = [ ...$columns, "COUNT( $groupBy ) as count" ];
+			$groupBy = [ 'p.o_id', ...$columns ];
 			$orderBy = 'count DESC, i.smw_sort ASC';
 		} elseif ( $diType === DataItem::TYPE_BLOB ) {
 			$fields = [ 'p.o_hash, p.o_blob', 'COUNT( p.o_hash ) as count' ];
