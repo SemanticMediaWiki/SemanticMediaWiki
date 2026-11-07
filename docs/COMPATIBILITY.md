@@ -29,7 +29,7 @@ Increases of minimum requirements are indicated in bold.
         <td>2026-11-02</td>
         <td>2026-11-02</td>
         <td>8.1 - 8.5</td>
-        <td>1.43 - 1.46</td>
+        <td>1.43.4 - 1.46</td>
         <td></td>
     </tr>
     <tr>
@@ -38,7 +38,7 @@ Increases of minimum requirements are indicated in bold.
         <td>2026-09-16</td>
         <td>2026-09-28</td>
         <td>8.1 - 8.5</td>
-        <td>1.43 - 1.46</td>
+        <td>1.43.4 - 1.46</td>
         <td></td>
     </tr>
     <tr>
@@ -47,7 +47,7 @@ Increases of minimum requirements are indicated in bold.
         <td>2026-07-17</td>
         <td>2026-08-18</td>
         <td>8.1 - 8.5</td>
-        <td>1.43 - 1.46</td>
+        <td>1.43.4 - 1.46</td>
         <td></td>
     </tr>
     <tr>
@@ -56,7 +56,7 @@ Increases of minimum requirements are indicated in bold.
         <td>2026-07-09</td>
         <td>2026-07-09</td>
         <td>8.1 - 8.5</td>
-        <td>1.43 - 1.46</td>
+        <td>1.43.4 - 1.46</td>
         <td></td>
     </tr>
     <tr>
@@ -65,7 +65,7 @@ Increases of minimum requirements are indicated in bold.
         <td>2026-06-04</td>
         <td>2026-06-04</td>
         <td>8.1 - 8.5</td>
-        <td>1.43 - 1.46</td>
+        <td><strong>1.43.4</strong> - 1.46</td>
         <td></td>
     </tr>
     <tr>

@@ -4,11 +4,12 @@ Released on TBD.
 
 This is a [patch release](../RELEASE-POLICY.md). Thus, it contains only bug fixes, no new features, and no breaking changes.
 
-Like SMW 7.4.0, this version is compatible with MediaWiki 1.43 up to 1.46 and PHP 8.1 up to 8.5.
+This version is compatible with MediaWiki 1.43.4 up to 1.46 and PHP 8.1 up to 8.5.
 For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
 
 ## Changes
 
+* Raised the minimum MediaWiki version to 1.43.4. On MediaWiki 1.43.0 to 1.43.3, pages whose `#ask` query shows a "further results" link failed with a `ParameterTypeException` ([#7194](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7194))
 * Fixed `updateEntityCollation.php` running very slowly on large wikis ([#7181](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7181))
 * Fixed `updateEntityCollation.php` making predefined properties such as `Modification date` sort out of alphabetical order ([#7181](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7181))
 * Fixed `rebuildElasticMissingDocuments.php` running slowly on large wikis ([#7187](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7187))
@@ -21,8 +22,12 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed `rebuildPropertyStatistics.php` running slowly on large wikis ([#7188](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7188))
 * Fixed update jobs, which `rebuildData.php` also runs, running slowly where SMW's object cache is in the database ([#7191](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7191))
 * Fixed property pages, other lists of the pages that use a property, `Special:FacetedSearch` and `updateQueryDependencies.php` failing on MariaDB with "isn't in GROUP BY" when the SQL mode includes `ONLY_FULL_GROUP_BY`, as MediaWiki's `DevelopmentSettings.php` sets it ([#5071](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5071))
+* Fixed the attachments table in the factbox not being sortable ([#7195](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7195))
 
 ## Upgrading
+
+If you run MediaWiki 1.43.0 to 1.43.3, update MediaWiki to 1.43.4 or later first, as this version of SMW does not
+load on older versions.
 
 No need to run "update.php" or any other migration scripts, unless you ran `updateEntityCollation.php` with an
 earlier version. In that case, run "update.php" once so that predefined properties such as `Modification date` sort
