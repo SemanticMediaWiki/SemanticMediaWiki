@@ -636,6 +636,8 @@ class EntityIdManager {
 
 		$db->beginAtomicTransaction( __METHOD__ );
 
+		$sortkey = TableFieldUpdater::fitSortColumn( (string)$sortkey );
+
 		if ( $id == 0 ) {
 			$sortkey = $sortkey ?: ( str_replace( '_', ' ', $title ) );
 
@@ -643,9 +645,6 @@ class EntityIdManager {
 			$sequenceValue = $db->nextSequenceValue(
 				Sequence::makeSequence( SQLStore::ID_TABLE, 'smw_id' )
 			);
-
-			// #2089 (MySQL 5.7 complained with "Data too long for column")
-			$sortkey = mb_substr( $sortkey, 0, 254 );
 
 			$db->newInsertQueryBuilder()
 				->insertInto( SQLStore::ID_TABLE )
@@ -656,7 +655,7 @@ class EntityIdManager {
 					'smw_iw' => $iw,
 					'smw_subobject' => $subobjectName,
 					'smw_sortkey' => $sortkey,
-					'smw_sort' => $collator->armoredSortKey( $sortkey ),
+					'smw_sort' => TableFieldUpdater::fitSortColumn( $collator->armoredSortKey( $sortkey ) ),
 					'smw_hash' => $db->escape_bytea( $this->computeSha1( [ $title, (int)$namespace, $iw, $subobjectName ] ) ),
 					'smw_touched' => $db->timestamp(),
 				] )

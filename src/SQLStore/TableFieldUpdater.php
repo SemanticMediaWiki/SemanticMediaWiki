@@ -22,6 +22,17 @@ class TableFieldUpdater {
 	}
 
 	/**
+	 * smw_sortkey and smw_sort hold 255 bytes on MySQL and MariaDB, or 255 characters with
+	 * SMW_FIELDT_CHAR_NOCASE. Cutting at a character boundary keeps the value valid UTF-8,
+	 * which PostgreSQL requires, and the same input always gives the same stored value.
+	 *
+	 * @since 7.4.1
+	 */
+	public static function fitSortColumn( string $value ): string {
+		return mb_strcut( $value, 0, 255 );
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param int $id
@@ -58,14 +69,16 @@ class TableFieldUpdater {
 			$this->collator = Collator::singleton();
 		}
 
+		$sortKey = self::fitSortColumn( (string)$searchKey );
+
 		$connection = $this->store->getConnection( 'mw.db' );
 		$connection->beginAtomicTransaction( __METHOD__ );
 
 		$connection->newUpdateQueryBuilder()
 			->update( SQLStore::ID_TABLE )
 			->set( [
-				'smw_sortkey' => mb_strcut( $searchKey, 0, 255 ),
-				'smw_sort'    => substr( $this->collator->armoredSortKey( $searchKey ), 0, 255 ),
+				'smw_sortkey' => $sortKey,
+				'smw_sort'    => self::fitSortColumn( $this->collator->armoredSortKey( $sortKey ) ),
 				'smw_touched' => $connection->timestamp()
 			] )
 			->where( [ 'smw_id' => $id ] )
