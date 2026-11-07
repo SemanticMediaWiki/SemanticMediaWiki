@@ -279,7 +279,7 @@ class PropertySubjectsLookup {
 			// DISTINCT ON keeps one row per (smw_sort, smw_id); the matching
 			// ORDER BY makes both the kept row and the output order deterministic.
 			$requestOptions->setOption( 'DISTINCT', 'ON (smw_sort, smw_id)' );
-			$requestOptions->setOption( 'ORDER BY', $sortField . ', smw_id' );
+			$requestOptions->setOption( 'ORDER BY', $this->subjectOrder( $sortField, $requestOptions ) );
 		} elseif ( $group ) {
 			// GROUP BY (smw_sort, smw_id) collapses duplicate subjects. An
 			// explicit ORDER BY on the same columns is required for a stable
@@ -287,7 +287,7 @@ class PropertySubjectsLookup {
 			// (MariaDB still does), so without it the subject list comes back
 			// unordered on MySQL.
 			$requestOptions->setOption( 'GROUP BY', $sortField . ', smw_id' );
-			$requestOptions->setOption( 'ORDER BY', $sortField . ', smw_id' );
+			$requestOptions->setOption( 'ORDER BY', $this->subjectOrder( $sortField, $requestOptions ) );
 		} elseif ( $requestOptions->getOption( 'NO_DISTINCT' ) ) {
 			$requestOptions->setOption( 'DISTINCT', false );
 		} else {
@@ -353,6 +353,12 @@ class PropertySubjectsLookup {
 		}
 
 		return $res;
+	}
+
+	private function subjectOrder( string $sortField, RequestOptions $requestOptions ): string {
+		$direction = $requestOptions->sort && !$requestOptions->ascending ? ' DESC' : '';
+
+		return $sortField . $direction . ', smw_id' . $direction;
 	}
 
 	/**
