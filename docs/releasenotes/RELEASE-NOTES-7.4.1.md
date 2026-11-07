@@ -16,7 +16,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed `rebuildElasticMissingDocuments.php` running slowly on large wikis ([#7187](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7187))
 * Fixed `rebuildData.php` parsing pages twice on large wikis, and made it faster with `--use-job` and `--auto-recovery` ([#7182](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7182))
 * Fixed `rebuildFulltextSearchTable.php` emptying the search index for the whole run, running slowly with an InnoDB index table, and changing the order of full-text query results sorted by a property. It now rebuilds in chunks by default ([#7183](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7183))
-* Fixed property pages opened with the `until` URL parameter listing the first pages of the list, in reverse order, instead of the pages just before the given page ([#7199](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7199))
+* Fixed property pages opened with the `until` URL parameter listing the first pages of the list, in reverse order, instead of the pages just before the given page. Their previous and next links now work as on other property pages ([#7199](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7199))
 * Fixed `updateEntityCountMap.php` running slowly on large wikis and ignoring `-s` ([#7184](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7184))
 * Fixed `purgeEntityCache.php` running slowly on large wikis ([#7185](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7185))
 * Fixed `rebuildElasticIndex.php` running slowly on large wikis ([#7186](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7186))
