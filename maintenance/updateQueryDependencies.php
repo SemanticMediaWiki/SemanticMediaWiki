@@ -182,8 +182,14 @@ class updateQueryDependencies extends Maintenance {
 				"\r" . sprintf( "%-55s%s", "   ... update ...", sprintf( "%4.0f%% (%s/%s)", ( $i / $expected ) * 100, $i, $expected ) )
 			);
 
+			$title = $titleFactory->makeTitleSafe( $row->smw_namespace, $row->smw_title );
+
+			if ( $title === null ) {
+				continue;
+			}
+
 			$updateJob = $this->jobFactory->newUpdateJob(
-				$titleFactory->makeTitleSafe( $row->smw_namespace, $row->smw_title ),
+				$title,
 				[
 					'origin' => 'updateQueryDependencies.php'
 				]

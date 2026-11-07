@@ -26,6 +26,8 @@ class UpdateQueryDependenciesTest extends TestCase {
 
 	use MockSelectQueryBuilderTrait;
 
+	private const UNREGISTERED_NAMESPACE = 3000;
+
 	private $messageReporter;
 	private $store;
 	private $connection;
@@ -68,28 +70,58 @@ class UpdateQueryDependenciesTest extends TestCase {
 			->method( 'newUpdateJob' )
 			->willReturn( $updateJob );
 
+		$this->runWithRows( [ $this->newRow( NS_MAIN, 'Foo' ) ], $jobFactory );
+	}
+
+	public function testUpdatesThePagesAfterOneWhoseNamespaceNoLongerExists() {
+		$updatedTitles = [];
+
+		$jobFactory = $this->createStub( JobFactory::class );
+		$jobFactory->method( 'newUpdateJob' )
+			->willReturnCallback( function ( $title ) use ( &$updatedTitles ) {
+				$updateJob = $this->createStub( UpdateJob::class );
+				$updateJob->method( 'run' )
+					->willReturnCallback( static function () use ( &$updatedTitles, $title ) {
+						$updatedTitles[] = $title->getPrefixedText();
+						return true;
+					} );
+
+				return $updateJob;
+			} );
+
+		$this->runWithRows(
+			[ $this->newRow( self::UNREGISTERED_NAMESPACE, 'Orphan' ), $this->newRow( NS_MAIN, 'Foo' ) ],
+			$jobFactory
+		);
+
+		$this->assertSame( [ 'Foo' ], $updatedTitles );
+	}
+
+	private function newRow( int $namespace, string $title ): stdClass {
+		$row = new stdClass;
+		$row->smw_title = $title;
+		$row->smw_namespace = (string)$namespace;
+
+		return $row;
+	}
+
+	/**
+	 * @param stdClass[] $rows
+	 */
+	private function runWithRows( array $rows, JobFactory $jobFactory ): void {
 		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$row = new stdClass;
-		$row->smw_id = 42;
-		$row->smw_title = 'Foo';
-		$row->smw_namespace = '0';
-		$row->smw_iw = '';
-		$row->smw_subobject = '';
-
 		$this->connection->method( 'newSelectQueryBuilder' )
 			->willReturnCallback(
-				fn () => $this->createMockSelectQueryBuilder( [ $row ] )
+				fn () => $this->createMockSelectQueryBuilder( $rows )
 			);
 
-		$this->store->expects( $this->atLeastOnce() )
-			->method( 'getPropertyTableInfoFetcher' )
+		$this->store->method( 'getPropertyTableInfoFetcher' )
 			->willReturn( $propertyTableInfoFetcher );
 
-		$this->store->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
+		$this->store->method( 'getConnection' )
 			->willReturn( $this->connection );
 
 		$instance = new updateQueryDependencies();
