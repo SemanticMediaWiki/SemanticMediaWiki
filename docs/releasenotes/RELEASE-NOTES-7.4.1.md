@@ -12,7 +12,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Raised the minimum MediaWiki version to 1.43.4. On MediaWiki 1.43.0 to 1.43.3, pages whose `#ask` query shows a "further results" link failed with a `ParameterTypeException` ([#7194](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7194))
 * Fixed `updateEntityCollation.php` running very slowly on large wikis ([#7181](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7181))
 * Fixed `updateEntityCollation.php` making predefined properties such as `Modification date` sort out of alphabetical order ([#7181](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7181))
-* Fixed SMW storing no data for new pages with long sort keys on MySQL and MariaDB in strict SQL mode ([#7198](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7198))
+* Fixed SMW storing no data for new pages with long sort keys on MySQL and MariaDB in strict SQL mode ([#7202](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7202))
 * Fixed `rebuildElasticMissingDocuments.php` running slowly on large wikis ([#7187](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7187))
 * Fixed `rebuildData.php` parsing pages twice on large wikis, and made it faster with `--use-job` and `--auto-recovery` ([#7182](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7182))
 * Fixed `rebuildFulltextSearchTable.php` emptying the search index for the whole run, running slowly with an InnoDB index table, and changing the order of full-text query results sorted by a property. It now rebuilds in chunks by default ([#7183](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7183))
