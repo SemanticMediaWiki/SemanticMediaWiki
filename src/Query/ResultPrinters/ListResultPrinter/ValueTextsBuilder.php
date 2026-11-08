@@ -52,12 +52,12 @@ class ValueTextsBuilder {
 		$valueTexts = [];
 
 		$field->reset();
-
+		$printRequest = $field->getPrintRequest();
 		$dataValue = $field->getNextDataValue();
 		while ( $dataValue !== false ) {
 			$valueTexts[] =
 				$this->get( 'value-open-tag' ) .
-				$this->getValueText( $dataValue, $column ) .
+				$this->getValueText( $dataValue, $column, $printRequest?->getMode() ) .
 				$this->get( 'value-close-tag' );
 			$dataValue = $field->getNextDataValue();
 		}
@@ -66,17 +66,27 @@ class ValueTextsBuilder {
 	}
 
 	/**
-	 * @param DataValue $dataValue
+	 * @param DataValue $value
 	 * @param int $column
 	 *
 	 * @return string
 	 */
-	private function getValueText( DataValue $dataValue, $column = 0 ): string {
+/*
+	private function getValueText( DataValue $value, $column = 0 ): string {
+		$isSubject = ( $column === 0 );
+		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
+
+		$text = $value->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) );
+
+		return $this->sanitizeValueText( $text );
+	}
+*/
+	private function getValueText( DataValue $dataValue, $column = 0, int $printRequestMode = PrintRequest::PRINT_PROP ): string {
 		$isSubject = ( $column === 0 );
 		$linker = $this->getLinkerForColumn( $column );
 
 		// @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6305
-		$useLongText = $this->prefixParameterProcessor->useLongText( $isSubject, $dataValue );
+		$useLongText = $this->prefixParameterProcessor->useLongText( $printRequestMode, $dataValue );
 		$dataValueMethod = $useLongText ? 'getLongText' : 'getShortText';
 
 		if ( $dataValue instanceof WikiPageValue ) {
@@ -90,7 +100,7 @@ class ValueTextsBuilder {
 
 		$text = $dataValue->$dataValueMethod( SMW_OUTPUT_WIKI, $linker );
 		return $this->sanitizeValueText( $text );
-	}
+	}	
 
 	/**
 	 * Depending on current linking settings, returns a linker object
