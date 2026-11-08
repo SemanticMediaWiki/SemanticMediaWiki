@@ -58,7 +58,7 @@ class ValueTextsBuilder {
 		while ( $dataValue !== false ) {
 			$valueTexts[] =
 				$this->get( 'value-open-tag' ) .
-				$this->getValueText( $dataValue, $column, $printRequest?->getMode() ) .
+				$this->getValueText( $dataValue, $column, $printRequest ) .
 				$this->get( 'value-close-tag' );
 			$dataValue = $field->getNextDataValue();
 		}
@@ -82,16 +82,11 @@ class ValueTextsBuilder {
 		return $this->sanitizeValueText( $text );
 	}
 */
-	private function getValueText( DataValue $dataValue, $column = 0, ?int $printRequestMode = null ): string {
-		$isSubject = ( $column === 0 );
+	private function getValueText( DataValue $dataValue, $column = 0, ?PrintRequest $printRequest = null ): string {
 		$linker = $this->getLinkerForColumn( $column );
 
-		// Fall back to PRINT_PROP when no mode was supplied (e.g. unstubbed
-		// PrintRequest mocks in unit tests, or callers that omit the mode).
-		$printRequestMode ??= PrintRequest::PRINT_PROP;
-
 		// @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6305
-		$useLongText = $this->prefixParameterProcessor->useLongText( $printRequestMode, $dataValue );
+		$useLongText = $this->prefixParameterProcessor->useLongText( $printRequest, $dataValue );
 		$dataValueMethod = $useLongText ? 'getLongText' : 'getShortText';
 
 		if ( $dataValue instanceof WikiPageValue ) {
