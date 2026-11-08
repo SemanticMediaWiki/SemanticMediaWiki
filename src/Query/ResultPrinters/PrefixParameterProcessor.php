@@ -10,7 +10,7 @@ use SMWDataValue as DataValue;
 
 class PrefixParameterProcessor {
 
-	private bool $mixedResults;
+	private bool $mixedResults = false;
 
 	public function __construct(
 		private readonly Query $query,
