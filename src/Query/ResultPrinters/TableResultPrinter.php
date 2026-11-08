@@ -6,8 +6,8 @@ use MediaWiki\Html\Html;
 use SMW\DataItems\Blob;
 use SMW\DataItems\WikiPage;
 use SMW\DataValues\DataValue;
-use SMW\DataValues\TimeValue;
 use SMW\DataValues\WikiPageValue;
+use SMW\DataValues\TimeValue;
 use SMW\Localizer\Message;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
@@ -343,7 +343,7 @@ class TableResultPrinter extends ResultPrinter {
 			$content = $this->getCellContent(
 				$dataValues,
 				$outputMode,
-				$printRequest->getMode() == PrintRequest::PRINT_THIS
+				$printRequest->getMode()
 			);
 		}
 
@@ -353,23 +353,25 @@ class TableResultPrinter extends ResultPrinter {
 		$this->htmlTable->cell( $content, $attributes );
 	}
 
-	/**
+
+/**
 	 * Gets the contents for a table cell for all values of a property of a subject.
 	 *
 	 * @since 1.6.1
 	 *
 	 * @param DataValue[] $dataValues
 	 * @param $outputMode
-	 * @param bool $isSubject
+	 * @param int $printRequestMode
 	 *
 	 * @return string
 	 */
-	protected function getCellContent( array $dataValues, $outputMode, $isSubject ): string {
+	protected function getCellContent( array $dataValues, $outputMode, $printRequestMode ): string {
+		$isSubject = $printRequestMode == PrintRequest::PRINT_THIS;
 		$linker = $this->getLinker( $isSubject );
 
 		$values = [];
 		foreach ( $dataValues as $dv ) {
-			$value = $this->formatCellValue( $dv, $outputMode, $isSubject, $linker );
+			$value = $this->formatCellValue( $dv, $outputMode, $printRequestMode, $linker );
 			$values[] = $value === '' ? '&nbsp;' : $value;
 		}
 
@@ -381,13 +383,13 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @param DataValue $dv
 	 * @param mixed $outputMode SMW_OUTPUT_* constant
-	 * @param bool $isSubject
+	 * @param int $printRequestMode
 	 * @param Linker|null $linker
 	 *
 	 * @return string
 	 */
-	protected function formatCellValue( DataValue $dv, $outputMode, bool $isSubject, $linker ): string {
-		$useLongText = $this->prefixParameterProcessor->useLongText( $isSubject, $dv );
+	protected function formatCellValue( DataValue $dv, $outputMode, int $printRequestMode, $linker ): string {
+		$useLongText = $this->prefixParameterProcessor->useLongText( $printRequestMode, $dv );
 
 		// Dates use the HTML accessor so the formatter's semantic <time>
 		// element is emitted even when the table is produced in wiki output
@@ -469,6 +471,129 @@ class TableResultPrinter extends ResultPrinter {
 
 		return implode( $this->getValueSeparator( $outputMode ), $values );
 	}
+	
+	
+	/**
+	 * Gets the contents for a table cell for all values of a property of a subject.
+	 *
+	 * @since 1.6.1
+	 *
+	 * @param DataValue[] $dataValues
+	 * @param $outputMode
+	 * @param bool $isSubject
+	 *
+	 * @return string
+	 */
+/*
+	protected function getCellContent( array $dataValues, $outputMode, $isSubject ): string {
+		$pageDataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
+		$isHtmlOutput = $outputMode === SMW_OUTPUT_HTML;
+		
+		$values = [];
+		foreach ( $dataValues as $dv ) {
+			$linker = $this->getLinker( $isSubject );
+			$dataItem = $dv->getDataItem();
+			$itemDataValueMethod = 'getShortText';
+
+			// Restore output in Special:Ask on:
+			// - file/image parsing
+			// - text formatting on string elements including italic, bold etc.
+			$parseAsWikitext =
+				$isHtmlOutput && (
+					( $dataItem instanceof WikiPage && $dataItem->getNamespace() === NS_FILE ) ||
+					( $dataItem instanceof Blob )
+				);
+
+			// @see ListResultPrinter\ValueTextsBuilder -> getValueText
+			if ( $dv instanceof WikiPageValue ) {
+				$itemDataValueMethod = $pageDataValueMethod;
+				$dv->setOption(
+					$pageDataValueMethod === 'getLongText'
+						? $dv::PREFIXED_FORM
+						: $dv::SHORT_FORM,
+					true
+				);
+			}
+
+			if ( $parseAsWikitext ) {
+				$raw = $dv->$itemDataValueMethod( SMW_OUTPUT_WIKI, $linker );
+
+				// Too lazy to handle the Parser object and besides the Message
+				// parse does the job and ensures no other hook is executed
+				$value = Message::get(
+					[ 'smw-parse', $raw ],
+					Message::PARSE
+				);
+			} else {
+				$value = $dv->$itemDataValueMethod( $outputMode, $linker );
+			}
+
+			$values[] = $value === '' ? '&nbsp;' : $value;
+		}
+
+		$sep = strtolower( $this->params['sep'] );
+
+		if ( !$isSubject && $sep === 'ul' && count( $values ) > 1 ) {
+			$html = '<ul><li>' . implode( '</li><li>', $values ) . '</li></ul>';
+		} elseif ( !$isSubject && $sep === 'ol' && count( $values ) > 1 ) {
+			$html = '<ol><li>' . implode( '</li><li>', $values ) . '</li></ol>';
+		} else {
+			$html = implode( $this->params['sep'], $values );
+		}
+
+		return $html;
+	}
+*/
+
+/*
+	protected function getCellContent( array $dataValues, $outputMode, $isSubject ): string {
+		$useLongText = $this->prefixParameterProcessor->useLongText( $isSubject );
+		$dataValueMethod = $useLongText ? 'getLongText' : 'getShortText';
+
+		$values = [];
+		foreach ( $dataValues as $dv ) {
+
+			// Dates use the HTML accessor so the formatter's semantic <time>
+			// element is emitted even when the table is produced in wiki output
+			// mode (inline #ask). The <time> markup is valid in the parsed
+			// wikitext, and HTML output (Special:Ask) is unchanged.
+			if ( $dv instanceof TimeValue ) {
+				$value = $useLongText
+					? $dv->getLongHTMLText( $this->getLinker( $isSubject ) )
+					: $dv->getShortHTMLText( $this->getLinker( $isSubject ) );
+
+			// Restore output in Special:Ask on:
+			// - file/image parsing
+			// - text formatting on string elements including italic, bold etc.
+			} elseif ( ( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof WikiPage && $dv->getDataItem()->getNamespace() === NS_FILE ) ||
+				( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof Blob ) ) {
+				// Too lazy to handle the Parser object and besides the Message
+				// parse does the job and ensures no other hook is executed
+				$value = Message::get(
+					[ 'smw-parse', $dv->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) ],
+					Message::PARSE
+				);
+			} else {
+				$value = $dv->$dataValueMethod( $outputMode, $this->getLinker( $isSubject ) );
+			}
+
+			$values[] = $value === '' ? '&nbsp;' : $value;
+		}
+
+		$sep = strtolower( $this->params['sep'] );
+
+		if ( !$isSubject && $sep === 'ul' && count( $values ) > 1 ) {
+			$html = '<ul><li>' . implode( '</li><li>', $values ) . '</li></ul>';
+		} elseif ( !$isSubject && $sep === 'ol' && count( $values ) > 1 ) {
+			$html = '<ol><li>' . implode( '</li><li>', $values ) . '</li></ol>';
+		} else {
+			$html = implode( $this->getValueSeparator( $outputMode ), $values );
+		}
+
+		return $html;
+	}
+*/
+
 
 	/**
 	 * Returns the separator placed between the multiple values of a table cell.
