@@ -98,7 +98,6 @@ class ListResultBuilderTest extends TestCase {
 
 		$printRequest = $this->createMock( PrintRequest::class );
 		$printRequest->method( 'getLabel' )->willReturn( '' );
-		$printRequest->method( 'getMode' )->willReturn( PrintRequest::PRINT_PROP );
 
 		$field = $this->createMock( ResultArray::class );
 		$field->method( 'getPrintRequest' )->willReturn( $printRequest );
