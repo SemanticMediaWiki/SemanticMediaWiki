@@ -95,9 +95,10 @@ error_log( sprintf(
 		// text would suppress the pipe trick, so keep the short form for
 		// non-subject property printouts.
 		if (
-			$printRequestMode === PrintRequest::PRINT_PROP &&
-			$dataValue instanceof WikiPageValue &&
-			$dataValue->hasFeature( SMW_DV_WPV_PIPETRICK )
+			$this->prefix === 'auto' &&
+			( $printRequestMode === PrintRequest::PRINT_PROP ||
+			  $printRequestMode === PrintRequest::PRINT_THIS ) &&
+			$dataValue instanceof WikiPageValue
 		) {
 			return false;
 		}
