@@ -272,12 +272,14 @@ class WikiPageValue extends DataValue {
 			: str_replace( ';', '|', $sanitizedHtml );
 
 		if ( $this->m_caption !== false && $this->m_caption !== null && $this->m_caption !== '' ) {
+			// User-supplied caption: original code ignored $options here.
 			$caption = $this->m_caption;
-		} else {
-			$caption = $useLongCaption
-				? $this->getLongCaptionText()
-				: $this->getShortCaptionText();
+			return '[[' . $this->getWikiLinkTarget() . '|' . $caption . ']]';
 		}
+
+		$caption = $useLongCaption
+			? $this->getLongCaptionText()
+			: $this->getShortCaptionText();
 
 		return '[[' . $this->getWikiLinkTarget() . '|' . $caption . '|' . $options . ']]';
 	}
