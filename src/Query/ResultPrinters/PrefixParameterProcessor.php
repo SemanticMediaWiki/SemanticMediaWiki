@@ -29,7 +29,7 @@ class PrefixParameterProcessor {
 		return !( $this->query->getDescription() instanceof NamespaceDescription );
 	}
 
-	private function isNamespaceBearingValue( ?DataValue $dataValue ): bool {
+		private function isNamespaceBearingValue( ?DataValue $dataValue ): bool {
 		if ( $dataValue === null ) {
 			return false;
 		}
@@ -52,20 +52,9 @@ class PrefixParameterProcessor {
 	}
 
 	public function useLongText( ?PrintRequest $printRequest, ?DataValue $dataValue = null ): bool {
-		
-		
 		$printRequestMode = $printRequest?->getMode() ?? PrintRequest::PRINT_PROP;
 		$isSubject = $printRequestMode === PrintRequest::PRINT_THIS;
 
-		
-		error_log( sprintf(
-	'useLongText: mode=%s label=%s expected=%s',
-	var_export( $printRequestMode, true ),
-	var_export( $printRequest?->getLabel(), true ),
-	var_export( Localizer::getInstance()->getNsText( NS_CATEGORY ), true )
-) );
-		error_log( 'serialised=' . $printRequest->getSerialisation() );
-		
 		if ( $this->prefix === 'all' ) {
 			return true;
 		}
@@ -80,11 +69,12 @@ class PrefixParameterProcessor {
 			return false;
 		}
 
-		// `?Category` (PRINT_CATS, label = the category namespace name)
-		// prints the canonical `Category:Foo` form; `?category` (PRINT_CATS,
-		// label = the alias) prints the literal name `Foo`.
+		// `?Category` (PRINT_CATS) prints the canonical `Category:Foo` form.
+		// The lowercase `?category` alias is canonicalized to `?Category`
+		// by the deserializer, so it cannot be distinguished here; both
+		// render canonically.
 		if ( $printRequestMode === PrintRequest::PRINT_CATS ) {
-			return $printRequest?->getLabel() === Localizer::getInstance()->getNsText( NS_CATEGORY );
+			return true;
 		}
 
 		if ( $this->isNamespaceBearingValue( $dataValue ) ) {
