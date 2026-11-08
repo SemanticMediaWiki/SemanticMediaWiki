@@ -7,6 +7,7 @@ use SMW\DIProperty;
 use SMW\Localizer\Localizer;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\PrintRequest;
+use SMW\DataValues\WikiPageValue;
 use SMW\Query\Query;
 use SMWDataValue as DataValue;
 
