@@ -50,7 +50,8 @@ class PrefixParameterProcessor {
 		], true );
 	}
 
-	public function useLongText( int $printRequestMode, ?DataValue $dataValue = null ): bool {
+	public function useLongText( ?int $printRequestMode, ?DataValue $dataValue = null ): bool {
+		$printRequestMode ??= PrintRequest::PRINT_PROP;
 		$isSubject = $printRequestMode === PrintRequest::PRINT_THIS;
 
 		if ( $this->prefix === 'all' ) {
