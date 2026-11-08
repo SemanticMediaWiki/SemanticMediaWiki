@@ -50,8 +50,8 @@ class PrefixParameterProcessor {
 		], true );
 	}
 
-	public function useLongText( ?int $printRequestMode, ?DataValue $dataValue = null ): bool {
-		$printRequestMode ??= PrintRequest::PRINT_PROP;
+	public function useLongText( ?PrintRequest $printRequest, ?DataValue $dataValue = null ): bool {
+		$printRequestMode = $printRequest?->getMode() ?? PrintRequest::PRINT_PROP;
 		$isSubject = $printRequestMode === PrintRequest::PRINT_THIS;
 
 		if ( $this->prefix === 'all' ) {
@@ -62,11 +62,17 @@ class PrefixParameterProcessor {
 			return false;
 		}
 
-		// `?Category` (PRINT_CATS) prints the canonical `Category:Foo` form;
-		// the special membership check `?Category:Foo` (PRINT_CCAT) is a
-		// boolean and must keep the short form.
+		// `?Category:Foo` (PRINT_CCAT) is a boolean membership check and
+		// must keep the short form.
+		if ( $printRequestMode === PrintRequest::PRINT_CCAT ) {
+			return false;
+		}
+
+		// `?Category` (PRINT_CATS, label = the category namespace name)
+		// prints the canonical `Category:Foo` form; `?category` (PRINT_CATS,
+		// label = the alias) prints the literal name `Foo`.
 		if ( $printRequestMode === PrintRequest::PRINT_CATS ) {
-			return true;
+			return $printRequest?->getLabel() === Localizer::getInstance()->getNsText( NS_CATEGORY );
 		}
 
 		if ( $this->isNamespaceBearingValue( $dataValue ) ) {
