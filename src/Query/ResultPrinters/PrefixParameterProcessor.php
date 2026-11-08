@@ -7,6 +7,7 @@ use SMW\DIProperty;
 use SMW\Localizer\Localizer;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\PrintRequest;
+use SMW\MediaWiki\Pipetrick;
 use SMW\DataValues\WikiPageValue;
 use SMW\Query\Query;
 use SMWDataValue as DataValue;
@@ -51,23 +52,26 @@ class PrefixParameterProcessor {
 			DIProperty::TYPE_CONCEPT,    // '_CONC'
 		], true );
 	}
+	/**
+	 * Whether the pipe trick would change this title's display form.
+	 *
+	 * `Pipetrick::apply()` is the same transformation
+	 * `WikiPageValue::getShortCaptionText()` uses when the
+	 * `SMW_DV_WPV_PIPETRICK` feature is enabled. Comparing its result
+	 * against the raw title tells us whether forcing the short form
+	 * would actually produce a different (pipe-tricked) caption, which
+	 * is the only case where `auto` should prefer short over long.
+	 */
+	private function isPipeTrickEligible( WikiPageValue $dataValue ): bool {
+		$text = $dataValue->getText();
+
+		return Pipetrick::apply( $text ) !== $text;
+	}
 
 	public function useLongText( ?PrintRequest $printRequest, ?DataValue $dataValue = null ): bool {
 		$printRequestMode = $printRequest?->getMode() ?? PrintRequest::PRINT_PROP;
 		$isSubject = $printRequestMode === PrintRequest::PRINT_THIS;
 
-error_log( sprintf(
-	'useLongText: prefix=%s mode=%s isWPV=%s hasPipetrick=%s dvFeatures=%s',
-	var_export( $this->prefix, true ),
-	var_export( $printRequestMode, true ),
-	var_export( $dataValue instanceof WikiPageValue, true ),
-	var_export(
-		$dataValue instanceof WikiPageValue ? $dataValue->hasFeature( SMW_DV_WPV_PIPETRICK ) : null,
-		true
-	),
-	var_export( $GLOBALS['smwgDVFeatures'] ?? null, true )
-) );
-		
 		if ( $this->prefix === 'all' ) {
 			return true;
 		}
@@ -76,29 +80,26 @@ error_log( sprintf(
 			return false;
 		}
 
-		// `?Category:Foo` (PRINT_CCAT) is a boolean membership check and
-		// must keep the short form.
-		if ( $printRequestMode === PrintRequest::PRINT_CCAT ) {
-			return false;
-		}
-
-		// `?Category` (PRINT_CATS) prints the canonical `Category:Foo` form.
-		// The lowercase `?category` alias is canonicalized to `?Category`
-		// by the deserializer, so it cannot be distinguished here; both
-		// render canonically.
+		// `?Category` (PRINT_CATS) always prints the canonical
+		// `Category:Foo` form, independent of the prefix mode.
 		if ( $printRequestMode === PrintRequest::PRINT_CATS ) {
 			return true;
 		}
 
-		// Pipe-trick-eligible values rely on the short caption
-		// (getShortCaptionText() applies Pipetrick::apply()). Forcing long
-		// text would suppress the pipe trick, so keep the short form for
-		// non-subject property printouts.
+		// `?Category:Foo` (PRINT_CCAT) is a boolean membership check.
+		if ( $printRequestMode === PrintRequest::PRINT_CCAT ) {
+			return false;
+		}
+
+		// Under `auto`, a page value whose title has a pipe-trick
+		// disambiguator renders short so the pipe trick applies.
+		// Ordinary prefixed titles keep the long form.
 		if (
 			$this->prefix === 'auto' &&
 			( $printRequestMode === PrintRequest::PRINT_PROP ||
 			  $printRequestMode === PrintRequest::PRINT_THIS ) &&
-			$dataValue instanceof WikiPageValue
+			$dataValue instanceof WikiPageValue &&
+			$this->isPipeTrickEligible( $dataValue )
 		) {
 			return false;
 		}
