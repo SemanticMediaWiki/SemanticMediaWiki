@@ -412,7 +412,39 @@ class WikiPageValue extends DataValue {
 	 * @param Linker|null|bool $linked mixed if true the result will be linked
 	 * @return string
 	 */
-	public function getLongWikiText( $linked = null ) {
+		public function getLongWikiText( $linked = null ) {
+		if ( !$this->isValid() ) {
+			return $this->getErrorText();
+		}
+
+		$noImage = $this->getOption( self::NO_IMAGE, false );
+
+		if ( $this->m_outformat == 'noimage' ) {
+			$noImage = true;
+		}
+
+		if ( $linked === null || $linked === false || $this->m_outformat == '-' ) {
+			return $this->getWikiValue();
+		}
+
+		$link = '[[:' . $this->getWikiLinkTarget() . '|' . $this->getLongCaptionText() . ']]';
+
+		if ( $this->m_fragment !== '' ) {
+			$this->linkAttributes['class'] = 'smw-subobject-entity';
+		}
+
+		if ( $this->linkAttributes !== [] ) {
+			$link = Html::rawElement(
+				'span',
+				$this->linkAttributes,
+				$link
+			);
+		}
+
+		return $link;
+	}
+	
+	public function getLongWikiText_( $linked = null ) {
 		if ( !$this->isValid() ) {
 			return $this->getErrorText();
 		}
