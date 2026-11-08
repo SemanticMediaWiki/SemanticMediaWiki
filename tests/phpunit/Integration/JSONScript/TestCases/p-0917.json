@@ -49,7 +49,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<td class=\"smwtype&#95;wpg\"><a href=\".*/P0917/1\" title=\"P0917/1\">P0917/1</a></td>",
-					"<td class=\"Category smwtype&#95;wpg\"><a href=\".*/Category:P0917\" title=\"Category:P0917\">P0917</a>",
+					"<td class=\"Category smwtype&#95;wpg\"><a href=\".*/Category:P0917\" title=\"Category:P0917\">Category:P0917</a>",
 					"<td class=\"smwtype&#95;wpg\"><a href=\".*/P0917/2\" title=\"P0917/2\">P0917/2</a></td>",
 					"<td class=\"Category smwtype&#95;wpg\"></td></tr>"
 				]
