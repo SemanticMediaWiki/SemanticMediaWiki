@@ -4,6 +4,7 @@ namespace SMW\Query\ResultPrinters;
 
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
+use SMW\Localizer\Localizer;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\PrintRequest;
 use SMW\Query\Query;
