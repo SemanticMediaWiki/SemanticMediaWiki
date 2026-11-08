@@ -77,6 +77,18 @@ class PrefixParameterProcessor {
 			return true;
 		}
 
+		// Pipe-trick-eligible values rely on the short caption
+		// (getShortCaptionText() applies Pipetrick::apply()). Forcing long
+		// text would suppress the pipe trick, so keep the short form for
+		// non-subject property printouts.
+		if (
+			$printRequestMode === PrintRequest::PRINT_PROP &&
+			$dataValue instanceof WikiPageValue &&
+			$dataValue->hasFeature( SMW_DV_WPV_PIPETRICK )
+		) {
+			return false;
+		}
+
 		if ( $this->isNamespaceBearingValue( $dataValue ) ) {
 			return true;
 		}
