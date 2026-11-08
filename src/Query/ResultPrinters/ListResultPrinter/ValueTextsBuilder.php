@@ -6,6 +6,7 @@ use MediaWiki\Linker\Linker;
 use MediaWiki\Parser\Sanitizer;
 use SMW\DataValues\DataValue;
 use SMW\DataValues\WikiPageValue;
+use SMW\Query\PrintRequest;
 use SMW\Query\Result\ResultArray;
 use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 use SMW\Query\ResultPrinters\SeparatorEscaper;
