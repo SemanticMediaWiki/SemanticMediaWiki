@@ -55,6 +55,18 @@ class PrefixParameterProcessor {
 		$printRequestMode = $printRequest?->getMode() ?? PrintRequest::PRINT_PROP;
 		$isSubject = $printRequestMode === PrintRequest::PRINT_THIS;
 
+error_log( sprintf(
+	'useLongText: prefix=%s mode=%s isWPV=%s hasPipetrick=%s dvFeatures=%s',
+	var_export( $this->prefix, true ),
+	var_export( $printRequestMode, true ),
+	var_export( $dataValue instanceof WikiPageValue, true ),
+	var_export(
+		$dataValue instanceof WikiPageValue ? $dataValue->hasFeature( SMW_DV_WPV_PIPETRICK ) : null,
+		true
+	),
+	var_export( $GLOBALS['smwgDVFeatures'] ?? null, true )
+) );
+		
 		if ( $this->prefix === 'all' ) {
 			return true;
 		}
