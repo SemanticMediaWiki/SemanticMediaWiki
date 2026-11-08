@@ -2,7 +2,6 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Query;
@@ -41,6 +40,7 @@ class PrefixParameterProcessor {
 
 		// Category / Concept values are identified by their data item
 		// namespace, which is independent of the property context.
+/*
 		$dataItem = $dataValue->getDataItem();
 
 		if ( $dataItem instanceof \SMW\DIWikiPage ) {
@@ -50,7 +50,7 @@ class PrefixParameterProcessor {
 				return true;
 			}
 		}
-
+*/
 		// Fall back to the property key when a property is attached.
 		$property = $dataValue->getProperty();
 
