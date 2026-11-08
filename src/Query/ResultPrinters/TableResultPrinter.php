@@ -365,12 +365,11 @@ class TableResultPrinter extends ResultPrinter {
 	 * @return string
 	 */
 	protected function getCellContent( array $dataValues, $outputMode, $isSubject ): string {
-		$useLongText = $this->prefixParameterProcessor->useLongText( $isSubject );
 		$linker = $this->getLinker( $isSubject );
 
 		$values = [];
 		foreach ( $dataValues as $dv ) {
-			$value = $this->formatCellValue( $dv, $outputMode, $useLongText, $linker );
+			$value = $this->formatCellValue( $dv, $outputMode, $isSubject, $linker );
 			$values[] = $value === '' ? '&nbsp;' : $value;
 		}
 
@@ -379,8 +378,17 @@ class TableResultPrinter extends ResultPrinter {
 
 	/**
 	 * Format a single data value for a cell.
+	 *
+	 * @param DataValue $dv
+	 * @param mixed $outputMode SMW_OUTPUT_* constant
+	 * @param bool $isSubject
+	 * @param Linker|null $linker
+	 *
+	 * @return string
 	 */
-	protected function formatCellValue( DataValue $dv, $outputMode, bool $useLongText, $linker ): string {
+	protected function formatCellValue( DataValue $dv, $outputMode, bool $isSubject, $linker ): string {
+		$useLongText = $this->prefixParameterProcessor->useLongText( $isSubject, $dv );
+
 		// Dates use the HTML accessor so the formatter's semantic <time>
 		// element is emitted even when the table is produced in wiki output
 		// mode (inline #ask). The <time> markup is valid in the parsed
