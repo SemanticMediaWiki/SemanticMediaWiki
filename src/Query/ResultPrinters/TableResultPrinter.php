@@ -343,7 +343,7 @@ class TableResultPrinter extends ResultPrinter {
 			$content = $this->getCellContent(
 				$dataValues,
 				$outputMode,
-				$printRequest->getMode()
+				$printRequest
 			);
 		}
 
@@ -365,13 +365,14 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @return string
 	 */
-	protected function getCellContent( array $dataValues, $outputMode, $printRequestMode ): string {
-		$isSubject = $printRequestMode == PrintRequest::PRINT_THIS;
+		protected function getCellContent( array $dataValues, $outputMode, ?PrintRequest $printRequest ): string {
+		$printRequestMode = $printRequest?->getMode() ?? PrintRequest::PRINT_PROP;
+		$isSubject = $printRequestMode === PrintRequest::PRINT_THIS;
 		$linker = $this->getLinker( $isSubject );
 
 		$values = [];
 		foreach ( $dataValues as $dv ) {
-			$value = $this->formatCellValue( $dv, $outputMode, $printRequestMode, $linker );
+			$value = $this->formatCellValue( $dv, $outputMode, $printRequest, $linker );
 			$values[] = $value === '' ? '&nbsp;' : $value;
 		}
 
@@ -383,13 +384,13 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @param DataValue $dv
 	 * @param mixed $outputMode SMW_OUTPUT_* constant
-	 * @param int $printRequestMode
+	 * @param PrintRequest|null $printRequest
 	 * @param Linker|null $linker
 	 *
 	 * @return string
 	 */
-	protected function formatCellValue( DataValue $dv, $outputMode, int $printRequestMode, $linker ): string {
-		$useLongText = $this->prefixParameterProcessor->useLongText( $printRequestMode, $dv );
+	protected function formatCellValue( DataValue $dv, $outputMode, ?PrintRequest $printRequest, $linker ): string {
+		$useLongText = $this->prefixParameterProcessor->useLongText( $printRequest, $dv );
 
 		// Dates use the HTML accessor so the formatter's semantic <time>
 		// element is emitted even when the table is produced in wiki output
