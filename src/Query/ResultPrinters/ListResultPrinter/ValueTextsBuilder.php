@@ -81,9 +81,13 @@ class ValueTextsBuilder {
 		return $this->sanitizeValueText( $text );
 	}
 */
-	private function getValueText( DataValue $dataValue, $column = 0, int $printRequestMode = PrintRequest::PRINT_PROP ): string {
+	private function getValueText( DataValue $dataValue, $column = 0, ?int $printRequestMode = null ): string {
 		$isSubject = ( $column === 0 );
 		$linker = $this->getLinkerForColumn( $column );
+
+		// Fall back to PRINT_PROP when no mode was supplied (e.g. unstubbed
+		// PrintRequest mocks in unit tests, or callers that omit the mode).
+		$printRequestMode ??= PrintRequest::PRINT_PROP;
 
 		// @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6305
 		$useLongText = $this->prefixParameterProcessor->useLongText( $printRequestMode, $dataValue );
@@ -100,7 +104,7 @@ class ValueTextsBuilder {
 
 		$text = $dataValue->$dataValueMethod( SMW_OUTPUT_WIKI, $linker );
 		return $this->sanitizeValueText( $text );
-	}	
+	}
 
 	/**
 	 * Depending on current linking settings, returns a linker object
