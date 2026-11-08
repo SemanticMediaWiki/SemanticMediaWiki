@@ -25,6 +25,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed `rebuildPropertyStatistics.php` running slowly on large wikis ([#7188](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7188))
 * Fixed update jobs, which `rebuildData.php` also runs, running slowly where SMW's object cache is in the database ([#7191](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7191))
 * Fixed property pages, other lists of the pages that use a property, `Special:FacetedSearch` and `updateQueryDependencies.php` failing on MariaDB with "isn't in GROUP BY" when the SQL mode includes `ONLY_FULL_GROUP_BY`, as MediaWiki's `DevelopmentSettings.php` sets it ([#7196](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7196))
+* Fixed SMW on PostgreSQL listing a page once per value on property pages and in other lists of the pages that use a property ([#7204](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7204))
 * Fixed the attachments table in the factbox not being sortable ([#7195](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7195))
 
 ## Upgrading

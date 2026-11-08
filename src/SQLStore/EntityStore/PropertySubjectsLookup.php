@@ -273,12 +273,10 @@ class PropertySubjectsLookup {
 		}
 
 		if ( $group && $connection->isType( 'postgres' ) ) {
-			// Avoid a "... 42803 ERROR:  column "s....smw_title" must appear in
-			// the GROUP BY clause or be used in an aggregate function ..."
-			// https://stackoverflow.com/questions/1769361/postgresql-group-by-different-from-mysql
-			// DISTINCT ON keeps one row per (smw_sort, smw_id); the matching
-			// ORDER BY makes both the kept row and the output order deterministic.
-			$requestOptions->setOption( 'DISTINCT', 'ON (smw_sort, smw_id)' );
+			// PostgreSQL reduces GROUP BY (smw_sort, smw_id) to the primary key smw_id, and so
+			// aggregates every row of the property before it can return a page. smw_id determines
+			// all selected columns, so DISTINCT drops only the duplicates.
+			$requestOptions->setOption( 'DISTINCT', true );
 			$requestOptions->setOption( 'ORDER BY', $this->subjectOrder( $sortField, $requestOptions ) );
 		} elseif ( $group ) {
 			// GROUP BY (smw_sort, smw_id) collapses duplicate subjects. An
@@ -309,13 +307,6 @@ class PropertySubjectsLookup {
 			$requestOptions,
 			$sortField
 		);
-
-		// Preserve Postgres-specific `DISTINCT ON (...)` (a string DISTINCT value),
-		// which the legacy options array supports but `->distinct()` does not.
-		if ( isset( $opts['DISTINCT'] ) && is_string( $opts['DISTINCT'] ) ) {
-			$qb->option( 'DISTINCT', $opts['DISTINCT'] );
-			unset( $opts['DISTINCT'] );
-		}
 
 		if ( $requestOptions->exclude_limit ) {
 			unset( $opts['LIMIT'], $opts['OFFSET'] );
