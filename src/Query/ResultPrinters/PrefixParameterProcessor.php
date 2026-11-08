@@ -59,8 +59,8 @@ class PrefixParameterProcessor {
 		}
 
 		return in_array( $property->getKey(), [
-			DIProperty::TYPE_CATEGORY,   // '_INST'
-			DIProperty::TYPE_CONCEPT,    // '_CONC'
+			DIProperty::TYPE_CATEGORY,
+			DIProperty::TYPE_CONCEPT,
 		], true );
 	}
 
