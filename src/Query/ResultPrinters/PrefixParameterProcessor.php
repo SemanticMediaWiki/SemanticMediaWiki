@@ -52,9 +52,20 @@ class PrefixParameterProcessor {
 	}
 
 	public function useLongText( ?PrintRequest $printRequest, ?DataValue $dataValue = null ): bool {
+		
+		
 		$printRequestMode = $printRequest?->getMode() ?? PrintRequest::PRINT_PROP;
 		$isSubject = $printRequestMode === PrintRequest::PRINT_THIS;
 
+		
+		error_log( sprintf(
+	'useLongText: mode=%s label=%s expected=%s',
+	var_export( $printRequestMode, true ),
+	var_export( $printRequest?->getLabel(), true ),
+	var_export( Localizer::getInstance()->getNsText( NS_CATEGORY ), true )
+) );
+		error_log( 'serialised=' . $printRequest->getSerialisation() );
+		
 		if ( $this->prefix === 'all' ) {
 			return true;
 		}
