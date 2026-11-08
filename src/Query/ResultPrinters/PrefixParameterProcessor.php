@@ -2,14 +2,16 @@
 
 namespace SMW\Query\ResultPrinters;
 
+use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
 use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\PrintRequest;
 use SMW\Query\Query;
 use SMWDataValue as DataValue;
 
 class PrefixParameterProcessor {
 
-	private bool $mixedResults = false;
+	private bool $mixedResults;
 
 	public function __construct(
 		private readonly Query $query,
@@ -26,32 +28,16 @@ class PrefixParameterProcessor {
 		return !( $this->query->getDescription() instanceof NamespaceDescription );
 	}
 
-	/**
-	 * Values whose long text carries semantic meaning beyond the bare
-	 * page name (e.g. `Category:Foo`, `Property:Bar`, `Concept:Baz`)
-	 * must always be shown with their namespace prefix, otherwise the
-	 * rendered result is indistinguishable from an ordinary page of the
-	 * same name and breaks tests such as format-table-0003.
-	 */
 	private function isNamespaceBearingValue( ?DataValue $dataValue ): bool {
 		if ( $dataValue === null ) {
 			return false;
 		}
 
-		// Category / Concept values are identified by their data item
-		// namespace, which is independent of the property context.
-/*
-		$dataItem = $dataValue->getDataItem();
-
-		if ( $dataItem instanceof \SMW\DIWikiPage ) {
-			$ns = $dataItem->getNamespace();
-
-			if ( in_array( $ns, [ NS_CATEGORY, SMW_NS_CONCEPT, SMW_NS_PROPERTY ], true ) ) {
-				return true;
-			}
-		}
-*/
 		// Fall back to the property key when a property is attached.
+		// `_INST` / `_CONC` are the property-keyed forms whose canonical
+		// printed output includes the namespace; the special category
+		// membership check (`?Category:Foo`, PRINT_CCAT) is handled by
+		// the mode check in useLongText() and never reaches this branch.
 		$property = $dataValue->getProperty();
 
 		if ( $property === null ) {
@@ -59,13 +45,14 @@ class PrefixParameterProcessor {
 		}
 
 		return in_array( $property->getKey(), [
-			DIProperty::TYPE_CATEGORY,
-			DIProperty::TYPE_CONCEPT,
+			DIProperty::TYPE_CATEGORY,   // '_INST'
+			DIProperty::TYPE_CONCEPT,    // '_CONC'
 		], true );
 	}
 
-	public function useLongText( bool $isSubject, ?DataValue $dataValue = null ): bool {
-		// Explicit modes take precedence.
+	public function useLongText( int $printRequestMode, ?DataValue $dataValue = null ): bool {
+		$isSubject = $printRequestMode === PrintRequest::PRINT_THIS;
+
 		if ( $this->prefix === 'all' ) {
 			return true;
 		}
@@ -74,21 +61,21 @@ class PrefixParameterProcessor {
 			return false;
 		}
 
-		// Namespace-bearing values always use their long text, regardless
-		// of the prefix mode. The prefix is part of the value's identity.
+		// `?Category` (PRINT_CATS) prints the canonical `Category:Foo` form;
+		// the special membership check `?Category:Foo` (PRINT_CCAT) is a
+		// boolean and must keep the short form.
+		if ( $printRequestMode === PrintRequest::PRINT_CATS ) {
+			return true;
+		}
+
 		if ( $this->isNamespaceBearingValue( $dataValue ) ) {
 			return true;
 		}
 
-		// 'subject' prefixes the subject only.
 		if ( $this->prefix === 'subject' && $isSubject ) {
 			return true;
 		}
 
-		// 'auto': when results may have mixed prefixes, prefix the subject
-		// so the reader can tell which namespace each row belongs to.
-		// Non-subject values fall back to short text unless they are
-		// namespace-bearing (handled above).
 		return $this->mixedResults && $isSubject;
 	}
 }
