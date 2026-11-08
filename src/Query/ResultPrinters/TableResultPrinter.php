@@ -259,13 +259,30 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @return void
 	 */
+/*
 	private function getRowForSubject( array $subject, $outputMode, array $columnClasses ): void {
 		foreach ( $subject as $i => $field ) {
 			// $columnClasses will be empty if "headers=hide" was set.
 			$this->getCellForPropVals( $field, $outputMode, $columnClasses[$i] ?? '' );
 		}
 	}
+*/
+	private function getRowForSubject( array $subject, $outputMode, array $columnClasses ): void {
+	error_log( sprintf( 'row: %d fields, %d columnClasses', count( $subject ), count( $columnClasses ) ) );
 
+	foreach ( $subject as $i => $field ) {
+		$pr = $field->getPrintRequest();
+		error_log( sprintf(
+			' field %d: class=%s mode=%s label=%s serialised=%s',
+			$i,
+			get_class( $field ),
+			var_export( $pr?->getMode(), true ),
+			var_export( $pr?->getLabel(), true ),
+			var_export( $pr?->getSerialisation(), true )
+		) );
+		$this->getCellForPropVals( $field, $outputMode, $columnClasses[$i] ?? '' );
+	}
+}
 	/**
 	 * Gets a table cell for all values of a property of a subject.
 	 *
