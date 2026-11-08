@@ -8,7 +8,7 @@
 		},
 		{
 			"page": "Example/P1123/Q.1",
-			"contents": "{{#ask: [[Category:P1123]] |format=ul }}"
+			"contents": "{{#ask: [[Category:P1123]] |format=ul |prefix=none }}"
 		}
 	],
 	"tests": [
