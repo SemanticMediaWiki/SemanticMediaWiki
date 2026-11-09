@@ -20,6 +20,12 @@ use SMW\Query\Parser as QueryParser;
 class ConceptDescriptionInterpreter {
 
 	/**
+	 * Concepts currently being expanded on the active recursion branch, keyed by
+	 * hash, used to break reference cycles between concepts.
+	 */
+	private array $activeConcepts = [];
+
+	/**
 	 * @since 3.0
 	 */
 	public function __construct(
@@ -36,6 +42,18 @@ class ConceptDescriptionInterpreter {
 		bool $isConjunction = false
 	): array|Condition {
 		$concept = $description->getConcept();
+
+		// Break mutual/transitive concept cycles (for example A -> B -> A). The
+		// `hasCircularConceptDescription` check below only catches a concept that
+		// references itself directly, so re-entering a concept already being
+		// expanded on this branch would otherwise recurse until memory is
+		// exhausted.
+		$hash = $concept->getHash();
+
+		if ( isset( $this->activeConcepts[$hash] ) ) {
+			$this->conditionBuilder->addError( [ 'smw-query-condition-circular', $description->getQueryString() ] );
+			return [];
+		}
 
 		$value = $this->conditionBuilder->getStore()->getPropertyValues(
 			$concept,
@@ -56,19 +74,25 @@ class ConceptDescriptionInterpreter {
 			return [];
 		}
 
-		$params = $this->conditionBuilder->interpretDescription(
-			$description,
-			$isConjunction
-		);
+		$this->activeConcepts[$hash] = true;
 
-		$params = $this->terms_lookup( $description, $concept, $params );
+		try {
+			$params = $this->conditionBuilder->interpretDescription(
+				$description,
+				$isConjunction
+			);
 
-		$condition = $this->conditionBuilder->newCondition( $params );
-		$condition->type( '' );
+			$params = $this->terms_lookup( $description, $concept, $params );
 
-		$condition->log( [ 'ConceptDescription' => $description->getQueryString() ] );
+			$condition = $this->conditionBuilder->newCondition( $params );
+			$condition->type( '' );
 
-		return $condition;
+			$condition->log( [ 'ConceptDescription' => $description->getQueryString() ] );
+
+			return $condition;
+		} finally {
+			unset( $this->activeConcepts[$hash] );
+		}
 	}
 
 	private function terms_lookup( $description, WikiPage $concept, $params ) {

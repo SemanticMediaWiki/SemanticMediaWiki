@@ -127,4 +127,51 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 		);
 	}
 
+	public function testInterpretDescription_MutualConceptCycleIsBroken() {
+		$conceptDescription = $this->descriptionFactory->newConceptDescription(
+			WikiPage::newFromText( 'Foo', SMW_NS_CONCEPT )
+		);
+
+		$value = $this->getMockBuilder( Concept::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->willReturn( [ $value ] );
+
+		$description = $this->getMockBuilder( Description::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->queryParser->expects( $this->any() )
+			->method( 'getQueryDescription' )
+			->willReturn( $description );
+
+		$instance = new ConceptDescriptionInterpreter(
+			$this->conditionBuilder,
+			$this->queryParser
+		);
+
+		// Re-enter the same concept once during expansion to simulate a cycle; the
+		// nested call must short-circuit to [] instead of recursing without bound.
+		$reentryResult = null;
+		$reentered = false;
+
+		$this->conditionBuilder->expects( $this->any() )
+			->method( 'interpretDescription' )
+			->willReturnCallback( function () use ( $instance, $conceptDescription, &$reentryResult, &$reentered ) {
+				if ( !$reentered ) {
+					$reentered = true;
+					$reentryResult = $instance->interpretDescription( $conceptDescription );
+				}
+
+				return $this->conditionBuilder->newCondition( [ 'Foo' ] );
+			} );
+
+		$instance->interpretDescription( $conceptDescription );
+
+		$this->assertSame( [], $reentryResult );
+	}
+
 }
