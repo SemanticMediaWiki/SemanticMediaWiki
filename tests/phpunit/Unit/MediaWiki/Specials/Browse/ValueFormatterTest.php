@@ -60,6 +60,23 @@ class ValueFormatterTest extends TestCase {
 		);
 	}
 
+	public function testCanonicalLabelSuffixSplitKeepsUserMarkupOffTheRawSuffix() {
+		$method = new \ReflectionMethod( ValueFormatter::class, 'splitCanonicalLabelSuffix' );
+		$method->setAccessible( true );
+
+		// A preferred label that itself contains `&nbsp;` and markup, followed by
+		// the SMW-generated canonical-label span suffix.
+		$input = 'x&nbsp;<img src=x onerror=alert(1)>&nbsp;<span style="font-size:small;">(X)</span>';
+
+		[ $label, $extra ] = $method->invoke( $this->valueFormatter, $input );
+
+		// Only the SMW span is split off into the raw-appended suffix; the user
+		// markup stays on the label, which getLongHTMLText then sanitises.
+		$this->assertSame( '&nbsp;<span style="font-size:small;">(X)</span>', $extra );
+		$this->assertStringNotContainsString( '<img', $extra );
+		$this->assertStringContainsString( '<img', $label );
+	}
+
 	public function testGetFormattedValue() {
 		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()

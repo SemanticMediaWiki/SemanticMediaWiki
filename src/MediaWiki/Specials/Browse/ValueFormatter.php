@@ -44,15 +44,34 @@ class ValueFormatter {
 
 			// Those with a formatted displayTitle
 			// foaf:homepage&nbsp;<span style="font-size:small;">(Foaf:homepage)</span>
-			if ( strpos( $label, '&nbsp;<span' ) !== false ) {
-				[ $label, $extra ] = explode( '&nbsp;', $label );
-				$extra = '&nbsp;' . $extra;
-			}
+			[ $label, $extra ] = $this->splitCanonicalLabelSuffix( $label );
 
 			$dataValue->setCaption( $label );
 		}
 
 		return $dataValue->getLongHTMLText( smwfGetLinker() ) . $extra;
+	}
+
+	/**
+	 * `getFormattedLabel` appends the canonical property label as a trailing
+	 * `&nbsp;<span ...>(...)</span>`. Separate only that suffix, by its last
+	 * occurrence: a preferred label may itself contain `&nbsp;`, and splitting on
+	 * the first one leaked the label's unsanitised remainder into the raw-appended
+	 * suffix (while dropping the real one). Keeping the user-influenced text on the
+	 * label keeps it on the caption path, which is sanitised by getLongHTMLText.
+	 * The canonical label is a property page title and so cannot contain `<`, which
+	 * makes the SMW-generated `&nbsp;<span` reliably the last such occurrence.
+	 *
+	 * @return array{0: string, 1: string} the label and the suffix to append raw
+	 */
+	private function splitCanonicalLabelSuffix( string $label ): array {
+		$suffix = strrpos( $label, '&nbsp;<span' );
+
+		if ( $suffix === false ) {
+			return [ $label, '' ];
+		}
+
+		return [ substr( $label, 0, $suffix ), substr( $label, $suffix ) ];
 	}
 
 	/**
