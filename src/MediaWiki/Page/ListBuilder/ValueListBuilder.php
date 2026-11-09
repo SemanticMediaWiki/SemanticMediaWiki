@@ -6,9 +6,11 @@ use Iterator;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Html\Html;
 use MediaWiki\Navigation\PagerNavigationBuilder;
+use MediaWiki\Title\Title;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\Time;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
 use SMW\DataValues\DataValue;
 use SMW\Formatters\Infolink;
@@ -214,15 +216,7 @@ class ValueListBuilder {
 
 		if ( $cursorMode ) {
 			$isFirstPage = !$options->hasCursor();
-			$navBuilder = new PagerNavigationBuilder( RequestContext::getMain() );
-			$navBuilder
-				->setPage( $title )
-				->setLinkQuery( [ 'limit' => $limit ] + array_diff_key( $query, array_flip( self::PAGINATION_QUERY_KEYS ) ) )
-				->setLimitLinkQueryParam( 'limit' )
-				->setCurrentLimit( $limit )
-				->setPrevTooltipMsg( 'prevn-title' )
-				->setNextTooltipMsg( 'nextn-title' )
-				->setLimitTooltipMsg( 'shown-title' );
+			$navBuilder = $this->newNavigationBuilder( $title, $limit, $query );
 
 			$isBackward = $options->getCursorBefore() !== null;
 			$isAtEnd = !$options->getCursorHasMore();
@@ -238,6 +232,14 @@ class ValueListBuilder {
 			}
 
 			$paginationHtml = $navBuilder->getHtml();
+		} elseif ( !$options->ascending && !$isValueSearch ) {
+			$paginationHtml = $this->createUntilNavigation(
+				$dataItems,
+				$this->hasSubjectsFrom( $property, $until ),
+				$title,
+				$limit,
+				$query
+			);
 		} else {
 			// Legacy path: strip the cursor params introduced by this PR so
 			// they do not echo as `&after=0&before=0` into offset URLs.
@@ -282,6 +284,56 @@ class ValueListBuilder {
 			[ 'id' => 'mw-pages' ],
 			$result
 		);
+	}
+
+	private function newNavigationBuilder( Title $title, int $limit, array $query ): PagerNavigationBuilder {
+		return ( new PagerNavigationBuilder( RequestContext::getMain() ) )
+			->setPage( $title )
+			->setLinkQuery( [ 'limit' => $limit ] + array_diff_key( $query, array_flip( self::PAGINATION_QUERY_KEYS ) ) )
+			->setLimitLinkQueryParam( 'limit' )
+			->setCurrentLimit( $limit )
+			->setPrevTooltipMsg( 'prevn-title' )
+			->setNextTooltipMsg( 'nextn-title' )
+			->setLimitTooltipMsg( 'shown-title' );
+	}
+
+	/**
+	 * Offsets count back from the `until` boundary, so an `until` page links to the
+	 * cursor pages before its first and after its last subject.
+	 *
+	 * @param WikiPage[] $dataItems In display order, led by the look-ahead row if there is one
+	 */
+	private function createUntilNavigation(
+		array $dataItems,
+		bool $hasLaterSubjects,
+		Title $title,
+		int $limit,
+		array $query
+	): string {
+		$navBuilder = $this->newNavigationBuilder( $title, $limit, $query );
+
+		if ( count( $dataItems ) > $limit ) {
+			$navBuilder->setPrevLinkQuery( [ 'before' => (string)$dataItems[1]->getId() ] );
+		}
+
+		if ( $hasLaterSubjects ) {
+			$navBuilder->setNextLinkQuery( [ 'after' => (string)end( $dataItems )->getId() ] );
+		}
+
+		return $navBuilder->getHtml();
+	}
+
+	private function hasSubjectsFrom( Property $property, string $boundary ): bool {
+		$options = new RequestOptions();
+		$options->setLimit( 1 );
+		$options->boundary = $boundary;
+		$options->include_boundary = true;
+
+		foreach ( $this->store->getAllPropertySubjects( $property, $options ) as $subject ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private function createValueList( Property $property, DataItem $dataItem, $diWikiPages, int $limit, $until ): string {
@@ -482,8 +534,8 @@ class ValueListBuilder {
 	}
 
 	/**
-	 * Decides whether the no-filter branch should render cursor-style
-	 * pagination (`?after=`/`?before=`) or stay on the legacy offset/boundary
+	 * Decides whether the no-filter branch fetches the subjects by cursor
+	 * (`?after=`/`?before=`) or stays on the legacy offset/boundary
 	 * path. Extracted to a static helper so it can be unit-tested without
 	 * spinning up the full lookup; the predicate is the most regression-
 	 * prone part of the cursor flow.

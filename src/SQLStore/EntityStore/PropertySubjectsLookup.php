@@ -277,7 +277,7 @@ class PropertySubjectsLookup {
 			// aggregates every row of the property before it can return a page. smw_id determines
 			// all selected columns, so DISTINCT drops only the duplicates.
 			$requestOptions->setOption( 'DISTINCT', true );
-			$requestOptions->setOption( 'ORDER BY', $sortField . ', smw_id' );
+			$requestOptions->setOption( 'ORDER BY', $this->subjectOrder( $sortField, $requestOptions ) );
 		} elseif ( $group ) {
 			// GROUP BY (smw_sort, smw_id) collapses duplicate subjects. An
 			// explicit ORDER BY on the same columns is required for a stable
@@ -285,7 +285,7 @@ class PropertySubjectsLookup {
 			// (MariaDB still does), so without it the subject list comes back
 			// unordered on MySQL.
 			$requestOptions->setOption( 'GROUP BY', $sortField . ', smw_id' );
-			$requestOptions->setOption( 'ORDER BY', $sortField . ', smw_id' );
+			$requestOptions->setOption( 'ORDER BY', $this->subjectOrder( $sortField, $requestOptions ) );
 		} elseif ( $requestOptions->getOption( 'NO_DISTINCT' ) ) {
 			$requestOptions->setOption( 'DISTINCT', false );
 		} else {
@@ -344,6 +344,12 @@ class PropertySubjectsLookup {
 		}
 
 		return $res;
+	}
+
+	private function subjectOrder( string $sortField, RequestOptions $requestOptions ): string {
+		$direction = $requestOptions->sort && !$requestOptions->ascending ? ' DESC' : '';
+
+		return $sortField . $direction . ', smw_id' . $direction;
 	}
 
 	/**
