@@ -245,6 +245,16 @@
 			// DataTables default display class
 			context.addClass( 'display' );
 
+			// Author-authored `.smw-datatable` tables may carry DataTables cell
+			// `data-search`/`data-filter` attributes, which DataTables reads as a
+			// column's orthogonal filter data, decodes and, for a value containing
+			// `&`, assigns to a detached element's innerHTML -- executing author
+			// markup on initialisation. Strip them before DataTables reads them.
+			// `data-order`/`data-sort` feed only sorting and type detection, never
+			// innerHTML, and carry SMW's own numeric/date sort values, so they stay.
+			context.find( '[data-search], [data-filter]' )
+				.removeAttr( 'data-search data-filter' );
+
 			mw.loader.using( 'onoi.dataTables' ).done( function () {
 
 				self.initColumnSort( context );
@@ -359,5 +369,11 @@
 			}
 		} );
 	} );
+
+	// Expose the handler for Node-based QUnit tests; `module` is undefined in the
+	// browser, so this is a no-op there.
+	if ( typeof module !== 'undefined' && module.exports ) {
+		module.exports = dataTable;
+	}
 
 }( jQuery, mediaWiki ) );
