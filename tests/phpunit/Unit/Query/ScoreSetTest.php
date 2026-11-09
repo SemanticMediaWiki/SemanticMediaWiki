@@ -24,6 +24,18 @@ class ScoreSetTest extends TestCase {
 		);
 	}
 
+	public function testAsTableEscapesTheSubjectCell() {
+		$instance = new ScoreSet();
+
+		// The subject is a subobject name that may carry markup.
+		$instance->addScore( '<img src=x onerror=alert(1)>', 0.5, 0 );
+
+		$table = $instance->asTable();
+
+		$this->assertStringNotContainsString( '<img', $table );
+		$this->assertStringContainsString( '&lt;img', $table );
+	}
+
 	public function testAddScore() {
 		$instance = new ScoreSet();
 

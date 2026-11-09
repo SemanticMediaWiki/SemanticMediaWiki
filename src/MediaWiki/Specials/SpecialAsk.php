@@ -509,7 +509,8 @@ class SpecialAsk extends SpecialPage {
 		// A debug query (format=debug) returns the debug output as a string rather
 		// than a QueryResult, so only query results expose a score set.
 		$scoreSet = $res instanceof QueryResult ? $res->getScoreSet() : null;
-		if ( $this->getRequest()->getVal( 'score_set', false ) && $scoreSet !== null ) {
+		if ( $this->getRequest()->getVal( 'score_set', false ) && $scoreSet !== null
+			&& $this->canViewQueryDebugOutput() ) {
 			$table = $scoreSet->asTable( 'sortable wikitable smwtable-striped broadtable' );
 
 			if ( $table !== '' ) {
@@ -518,7 +519,7 @@ class SpecialAsk extends SpecialPage {
 		}
 
 		if ( $native_result !== '' ) {
-			$result .= '<h2>Native result</h2>' . '<pre>' . $native_result . '</pre>';
+			$result .= '<h2>Native result</h2>' . '<pre>' . htmlspecialchars( $native_result ) . '</pre>';
 		}
 
 		return [ $result, $res, $duration ];
@@ -536,6 +537,16 @@ class SpecialAsk extends SpecialPage {
 		$response->header( 'X-Content-Type-Options: nosniff' );
 	}
 
+	/**
+	 * The `native_result`, `score_set` and `q_engine` request parameters expose
+	 * query-engine internals (including the raw backend response) and are intended
+	 * as administrative diagnostics, so honour them only for the `smw-admin`
+	 * administration right rather than for every reader.
+	 */
+	private function canViewQueryDebugOutput(): bool {
+		return $this->getAuthority()->isAllowed( 'smw-admin' );
+	}
+
 	private function getQueryLog( $duration, bool $isFromCache = false ): array {
 		$source = null;
 
@@ -543,7 +554,8 @@ class SpecialAsk extends SpecialPage {
 			$source = $this->parameters['source'];
 		}
 
-		if ( $this->getRequest()->getVal( 'q_engine' ) === 'sql_store' ) {
+		if ( $this->getRequest()->getVal( 'q_engine' ) === 'sql_store'
+			&& $this->canViewQueryDebugOutput() ) {
 			$source = 'sql_store';
 		}
 
@@ -691,7 +703,8 @@ class SpecialAsk extends SpecialPage {
 			$queryobj->setOption( Query::NO_CACHE, true );
 		}
 
-		if ( $this->getRequest()->getVal( 'native_result', false ) ) {
+		if ( $this->getRequest()->getVal( 'native_result', false )
+			&& $this->canViewQueryDebugOutput() ) {
 			$queryobj->setOption( 'native_result', true );
 		}
 
@@ -699,7 +712,8 @@ class SpecialAsk extends SpecialPage {
 		$source = $params['source']->getValue();
 		$noSource = $source === '';
 
-		if ( $this->getRequest()->getVal( 'q_engine' ) === 'sql_store' ) {
+		if ( $this->getRequest()->getVal( 'q_engine' ) === 'sql_store'
+			&& $this->canViewQueryDebugOutput() ) {
 			$source = 'sql_store';
 		}
 
@@ -728,7 +742,8 @@ class SpecialAsk extends SpecialPage {
 			$queryobj
 		);
 
-		if ( $this->getRequest()->getVal( 'native_result', false ) && $queryobj->native_result !== '' ) {
+		if ( $this->getRequest()->getVal( 'native_result', false ) && $this->canViewQueryDebugOutput()
+			&& $queryobj->native_result !== '' ) {
 			$native_result = $queryobj->native_result;
 		}
 

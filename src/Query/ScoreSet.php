@@ -137,7 +137,9 @@ class ScoreSet {
 		ksort( $this->scores );
 
 		foreach ( $this->scores as $pos => $set ) {
-			$table .= '<tr><td>' . $set[1] . '</td><td>' . $set[0] . '</td><td>' . $pos . '</td></tr>';
+			$table .= '<tr><td>' . htmlspecialchars( (string)$set[1] ) . '</td><td>'
+				. htmlspecialchars( (string)$set[0] ) . '</td><td>'
+				. htmlspecialchars( (string)$pos ) . '</td></tr>';
 		}
 
 		$table .= '</tbody></table>';
