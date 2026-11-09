@@ -147,6 +147,55 @@ class TimeValueFormatterTest extends TestCase {
 		);
 	}
 
+	public function testFreeFormatCaptionIsHtmlEscaped() {
+		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory( $this->dataValueServiceFactory );
+		$timeValue->setUserValue( '2000-02-23 12:02:00' );
+
+		// The free output format copies backslash-escaped literals verbatim, so a
+		// crafted format injects markup into the caption.
+		$timeValue->setOutputFormat( '-F[\<\s\c\r\i\p\t\>\a\l\e\r\t\(\1\)\<\/\s\c\r\i\p\t\>]' );
+
+		$instance = new TimeValueFormatter( $timeValue );
+
+		// HTML_LONG always renders through the free output format (the short form
+		// can use a stored caption); the injected markup must be escaped.
+		$output = $instance->format( TimeValueFormatter::HTML_LONG );
+
+		$this->assertStringNotContainsString( '<script', $output );
+		$this->assertStringContainsString( '&lt;script&gt;', $output );
+	}
+
+	public function testFreeFormatCaptionStaysRawInWikiOutput() {
+		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory( $this->dataValueServiceFactory );
+		$timeValue->setUserValue( '2000-02-23 12:02:00' );
+		$timeValue->setOutputFormat( '-F[\<\s\c\r\i\p\t\>]' );
+
+		$instance = new TimeValueFormatter( $timeValue );
+
+		// Wiki/plain-text output (format=csv, the API and RSS consume it without
+		// re-parsing wikitext) must keep the free-format literal raw; the HTML
+		// escaping belongs on the HTML boundary only.
+		$output = $instance->format( TimeValueFormatter::WIKI_LONG );
+
+		$this->assertStringContainsString( '<script>', $output );
+		$this->assertStringNotContainsString( '&lt;script', $output );
+	}
+
+	public function testPlainFreeFormatDateStillRendersWrappedInTime() {
+		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory( $this->dataValueServiceFactory );
+		$timeValue->setUserValue( '2000-02-23 12:02:00' );
+		$timeValue->setOutputFormat( '-F[Y-m-d]' );
+
+		$instance = new TimeValueFormatter( $timeValue );
+		$output = $instance->format( TimeValueFormatter::HTML_LONG );
+
+		$this->assertStringContainsString( '<time datetime="2000-02-23T12:02:00">', $output );
+		$this->assertStringContainsString( '2000-02-23', $output );
+	}
+
 	public function testTimeElementIsOmittedForBceDates() {
 		$timeValue = new TimeValue( '_dat' );
 		$timeValue->setDataValueServiceFactory( $this->dataValueServiceFactory );

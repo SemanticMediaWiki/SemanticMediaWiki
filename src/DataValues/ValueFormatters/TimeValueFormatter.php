@@ -45,14 +45,14 @@ class TimeValueFormatter extends DataValueFormatter {
 		if (
 			$this->dataValue->isValid() &&
 			( $type === self::WIKI_SHORT || $type === self::HTML_SHORT ) ) {
-			$caption = ( $this->dataValue->getCaption() !== false ) ? $this->dataValue->getCaption() : $this->getPreferredCaption();
+			$caption = ( $this->dataValue->getCaption() !== false ) ? $this->dataValue->getCaption() : $this->getPreferredCaption( $type === self::HTML_SHORT );
 			return $type === self::HTML_SHORT ? $this->wrapInTimeElement( $caption ) : $caption;
 		}
 
 		if (
 			$this->dataValue->isValid() &&
 			( $type === self::WIKI_LONG || $type === self::HTML_LONG ) ) {
-			$caption = $this->getPreferredCaption();
+			$caption = $this->getPreferredCaption( $type === self::HTML_LONG );
 			return $type === self::HTML_LONG ? $this->wrapInTimeElement( $caption ) : $caption;
 		}
 
@@ -309,7 +309,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * @return string
 	 */
-	public function getCaptionFromFreeFormat( ?Time $dataItem = null ): string {
+	public function getCaptionFromFreeFormat( ?Time $dataItem, bool $asHtml ): string {
 		$language = Localizer::getInstance()->getLanguage(
 			$this->dataValue->getOption( DataValue::OPT_USER_LANGUAGE )
 		);
@@ -329,6 +329,17 @@ class TimeValueFormatter extends DataValueFormatter {
 			$intlTimeFormatter = new IntlTimeFormatter( $dataItem, $language );
 
 			$caption = $intlTimeFormatter->format( $matches[1] );
+
+			// The free output format copies non-format characters verbatim, so the
+			// user-supplied format can carry markup. For HTML output, escape it
+			// before it reaches the <time> wrapper, which emits the caption without
+			// escaping; wiki/plain-text output (format=csv, the API, RSS) keeps it
+			// raw. The calendar-model hint below is SMW-generated HTML and stays
+			// unescaped.
+			if ( $asHtml ) {
+				$caption = htmlspecialchars( $caption );
+			}
+
 			if ( $intlTimeFormatter->containsValidDateFormatRule( $matches[1] ) ) {
 				$caption .= $this->hintCalendarModel( $dataItem );
 			}
@@ -435,7 +446,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * @return string
 	 */
-	protected function getPreferredCaption() {
+	protected function getPreferredCaption( bool $asHtml ) {
 		/**
 		 * @var Time $dataItem
 		 */
@@ -466,7 +477,7 @@ class TimeValueFormatter extends DataValueFormatter {
 		}
 
 		if ( strpos( $format, '-F[' ) !== false ) {
-			return $this->getCaptionFromFreeFormat( $this->dataValue->getDataItemForCalendarModel( $model ) );
+			return $this->getCaptionFromFreeFormat( $this->dataValue->getDataItemForCalendarModel( $model ), $asHtml );
 		} elseif ( strpos( $format, 'LOCL' ) !== false ) {
 			return $this->getLocalizedFormat( $this->dataValue->getDataItemForCalendarModel( $model ) );
 		} elseif ( $dataItem->getYear() > TimeValue::PREHISTORY && $dataItem->getPrecision() >= Time::PREC_YM ) {
