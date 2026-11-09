@@ -3,6 +3,7 @@
 namespace SMW;
 
 use Exception;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
@@ -270,7 +271,7 @@ class DataUpdater {
 		// In case of a restricted update, only the protection update is required
 		// hence the process bails-out early to avoid unnecessary DB connections
 		// or updates
-		if ( $this->checkUpdateEditProtection( $wikiPage, $user ) === true ) {
+		if ( $this->checkUpdateEditProtection( $wikiPage ) === true ) {
 			return true;
 		}
 
@@ -364,13 +365,19 @@ class DataUpdater {
 			);
 	}
 
-	private function checkUpdateEditProtection( $wikiPage, ?User $user ) {
+	private function checkUpdateEditProtection( $wikiPage ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
+		// Authorize the annotation-driven protection change against the user
+		// performing the current action rather than the page's latest-revision
+		// author. A change to a transcluded `Is edit protected` annotation
+		// re-parses the including page, whose last author may hold the
+		// edit-protection right, which would otherwise let an unprivileged edit of
+		// a transcluded template flip the including page's protection.
 		$editProtectionUpdater = $applicationFactory->create(
 			'EditProtectionUpdater',
 			$wikiPage,
-			$user
+			RequestContext::getMain()->getUser()
 		);
 
 		$editProtectionUpdater->doUpdateFrom( $this->semanticData );

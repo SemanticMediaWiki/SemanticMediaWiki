@@ -3,8 +3,14 @@
 namespace SMW\Tests\Unit\Updater;
 
 use MediaWiki\Content\Content;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Permissions\PermissionManager;
+use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItemFactory;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
@@ -43,6 +49,7 @@ class DataUpdaterTest extends TestCase {
 	private SpecificationLookup $propertySpecificationLookup;
 	private $pageCreator;
 	private $revision;
+	private $restoreUser;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -105,9 +112,12 @@ class DataUpdaterTest extends TestCase {
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
+
+		$this->restoreUser = RequestContext::getMain()->getUser();
 	}
 
 	protected function tearDown(): void {
+		RequestContext::getMain()->setUser( $this->restoreUser );
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
@@ -149,6 +159,84 @@ class DataUpdaterTest extends TestCase {
 		$this->assertTrue(
 			$instance->doUpdate()
 		);
+	}
+
+	public function testEditProtectionIsAuthorizedAgainstTheActingUserNotTheRevisionAuthor() {
+		// The acting user lacks the right, so the annotation-driven protection must
+		// not be applied even though the revision author (who holds it) authored
+		// the page's latest revision.
+		$this->runEditProtectionUpdate(
+			'TriageActingUser',
+			static fn ( string $name ): bool => $name === 'TriageProtectionAuthor',
+			false
+		);
+	}
+
+	public function testEditProtectionIsAppliedWhenTheActingUserHoldsTheRight() {
+		// The acting user holds the right, so the annotation-driven protection is
+		// applied. Guards the negative case above against a vacuous pass and
+		// against an over-correction that stops applying protection entirely.
+		$this->runEditProtectionUpdate(
+			'TriageActingUser',
+			static fn ( string $name ): bool => $name === 'TriageActingUser',
+			true
+		);
+	}
+
+	private function runEditProtectionUpdate( string $actingUserName, callable $holdsRight, bool $expectProtectionApplied ): void {
+		$this->testEnvironment->addConfiguration( 'smwgEditProtectionRight', 'smw-pageedit' );
+
+		// The page's latest revision was authored by TriageProtectionAuthor.
+		$this->revision->method( 'getUser' )->willReturn( User::newFromName( 'TriageProtectionAuthor' ) );
+		$this->revisionGuard->method( 'getRevision' )->willReturn( $this->revision );
+
+		// The user performing the current action (restored in tearDown). Setting it
+		// resets MediaWiki's service instances, so the service overrides below must
+		// follow this call.
+		RequestContext::getMain()->setUser( User::newFromName( $actingUserName ) );
+
+		$this->testEnvironment->redefineMediaWikiService( 'PermissionManager', function () use ( $holdsRight ) {
+			$permissionManager = $this->createMock( PermissionManager::class );
+			$permissionManager->method( 'userHasRight' )->willReturnCallback(
+				static fn ( $user, $right ): bool => $holdsRight( $user->getName() )
+			);
+			return $permissionManager;
+		} );
+
+		$this->testEnvironment->redefineMediaWikiService( 'RestrictionStore', function () {
+			$restrictionStore = $this->createMock( RestrictionStore::class );
+			$restrictionStore->method( 'isProtected' )->willReturn( false );
+			$restrictionStore->method( 'getRestrictions' )->willReturn( [] );
+			return $restrictionStore;
+		} );
+
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->method( 'getTitle' )->willReturn( Title::newFromText( 'TriageProtectedPage' ) );
+		$wikiPage->expects( $expectProtectionApplied ? $this->once() : $this->never() )
+			->method( 'doUpdateRestrictions' );
+
+		$this->pageCreator->method( 'createPage' )->willReturn( $wikiPage );
+
+		$dataItemFactory = new DataItemFactory();
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( 'TriageProtectedPage' );
+		$semanticData->addPropertyObjectValue(
+			new Property( '_EDIP' ),
+			$dataItemFactory->newDIBoolean( true )
+		);
+
+		$instance = new DataUpdater(
+			$this->store,
+			$semanticData,
+			$this->changePropagationNotifier,
+			$this->pageCreator,
+			$this->eventDispatcher
+		);
+
+		$instance->setRevisionGuard( $this->revisionGuard );
+		$instance->doUpdate();
 	}
 
 	public function testDeferredUpdate() {
