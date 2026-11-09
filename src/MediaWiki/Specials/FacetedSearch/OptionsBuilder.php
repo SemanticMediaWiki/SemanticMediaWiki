@@ -21,6 +21,10 @@ class OptionsBuilder {
 	public function __construct( private Profile $profile ) {
 	}
 
+	private function option( $value, $label, bool $selected ): string {
+		return Html::element( 'option', [ 'value' => $value, 'selected' => $selected ], (string)$label );
+	}
+
 	/**
 	 * @since 3.2
 	 */
@@ -39,14 +43,13 @@ class OptionsBuilder {
 			$message_key = $val;
 			$key = str_replace( '_profile', '', $key );
 
-			$opt = $profile === $key ? ' selected' : '';
 			$val = $this->msg( $val );
 
 			if ( strpos( $val, $message_key ) ) {
 				$val = $key;
 			}
 
-			$html[] = "<option value='$key'$opt>$val</option>";
+			$html[] = $this->option( $key, $val, $profile === $key );
 		}
 
 		return implode( '', $html );
@@ -66,14 +69,7 @@ class OptionsBuilder {
 		}
 
 		foreach ( $list as $key => $val ) {
-
-			$opt = '';
-
-			if ( $format === $key ) {
-				$opt = ' selected';
-			}
-
-			$html[] = "<option value='$key'$opt>$val</option>";
+			$html[] = $this->option( $key, $val, $format === $key );
 		}
 
 		return implode( '', $html );
@@ -91,15 +87,7 @@ class OptionsBuilder {
 		}
 
 		foreach ( $list as $val ) {
-
-			$opt = '';
-			$key = $val;
-
-			if ( $size === $key ) {
-				$opt = ' selected';
-			}
-
-			$html[] = "<option value='$key'$opt>$val</option>";
+			$html[] = $this->option( $val, $val, $size === $val );
 		}
 
 		return implode( '', $html );
@@ -119,14 +107,7 @@ class OptionsBuilder {
 		];
 
 		foreach ( $list as $key => $val ) {
-
-			$opt = '';
-
-			if ( $order === $key ) {
-				$opt = ' selected';
-			}
-
-			$html[] = "<option value='$key'$opt>$val</option>";
+			$html[] = $this->option( $key, $val, $order === $key );
 		}
 
 		return implode( '', $html );
