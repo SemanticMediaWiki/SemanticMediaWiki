@@ -528,7 +528,8 @@ return [
 			$servicesFactory->getStore(),
 			$servicesFactory->getEntityCache(),
 			$servicesFactory->getPermissionManager(),
-			$servicesFactory->getPageCreator()
+			$servicesFactory->getPageCreator(),
+			$services->getRestrictionStore()
 		);
 
 		$protectionValidator->setImportPerformers(

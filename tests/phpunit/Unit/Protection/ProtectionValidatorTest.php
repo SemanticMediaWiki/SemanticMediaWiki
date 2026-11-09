@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\Protection;
 
+use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
@@ -36,6 +37,7 @@ class ProtectionValidatorTest extends TestCase {
 	private $entityCache;
 	private $permissionManager;
 	private $pageCreator;
+	private $restrictionStore;
 	private $jobQueue;
 	private $testEnvironment;
 
@@ -58,6 +60,10 @@ class ProtectionValidatorTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->restrictionStore = $this->getMockBuilder( RestrictionStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -71,20 +77,33 @@ class ProtectionValidatorTest extends TestCase {
 		parent::tearDown();
 	}
 
+	private function newProtectionValidator(): ProtectionValidator {
+		return new ProtectionValidator(
+			$this->store,
+			$this->entityCache,
+			$this->permissionManager,
+			$this->pageCreator,
+			$this->restrictionStore
+		);
+	}
+
+	private function expectEditRestriction( string $right ): void {
+		$this->restrictionStore->method( 'isProtected' )
+			->willReturn( true );
+
+		$this->restrictionStore->method( 'getRestrictions' )
+			->willReturn( [ $right ] );
+	}
+
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ProtectionValidator::class,
-			new ProtectionValidator( $this->store, $this->entityCache, $this->permissionManager, $this->pageCreator )
+			$this->newProtectionValidator()
 		);
 	}
 
 	public function testSetGetEditProtectionRight() {
-		$instance = new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
+		$instance = $this->newProtectionValidator();
 
 		$instance->setEditProtectionRight(
 			'foo'
@@ -107,16 +126,13 @@ class ProtectionValidatorTest extends TestCase {
 				$property )
 			->willReturn( [ $this->dataItemFactory->newDIBoolean( true ) ] );
 
-		$instance = new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
+		$instance = $this->newProtectionValidator();
 
 		$instance->setEditProtectionRight(
 			'foo'
 		);
+
+		$this->expectEditRestriction( 'foo' );
 
 		$this->assertTrue(
 			$instance->hasEditProtectionOnNamespace( $subject->getTitle() )
@@ -134,14 +150,57 @@ class ProtectionValidatorTest extends TestCase {
 				$property )
 			->willReturn( [ $this->dataItemFactory->newDIBoolean( true ) ] );
 
-		$instance = new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
+		$instance = $this->newProtectionValidator();
+		$instance->setEditProtectionRight( 'smw-pageedit' );
+		$this->expectEditRestriction( 'smw-pageedit' );
 
 		$this->assertTrue(
+			$instance->hasProtection( $subject->getTitle() )
+		);
+	}
+
+	public function testHasProtectionIgnoresAnnotationWithoutAMediaWikiEditRestriction() {
+		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN, '', 'Bar' );
+
+		// `_EDIP` is stored (the `[[Is edit protected::true]]` annotation) ...
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->willReturn( [ $this->dataItemFactory->newDIBoolean( true ) ] );
+
+		// ... but no MediaWiki edit restriction is in place, the state an editor
+		// lacking the edit-protection right leaves behind (EditProtectionUpdater
+		// skips the restriction). The stored flag alone must not protect the page.
+		$this->restrictionStore->method( 'isProtected' )
+			->willReturn( false );
+
+		$instance = $this->newProtectionValidator();
+		$instance->setEditProtectionRight( 'smw-pageedit' );
+
+		$this->assertFalse(
+			$instance->hasProtection( $subject->getTitle() )
+		);
+	}
+
+	public function testHasProtectionIgnoresAnEditRestrictionAtADifferentRight() {
+		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN, '', 'Bar' );
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->willReturn( [ $this->dataItemFactory->newDIBoolean( true ) ] );
+
+		// The page is edit protected, but at a different right (core `sysop`) than
+		// the configured edit-protection right, so the `_EDIP` annotation is not the
+		// cause of the restriction and must not be honoured as annotation protection.
+		$this->restrictionStore->method( 'isProtected' )
+			->willReturn( true );
+
+		$this->restrictionStore->method( 'getRestrictions' )
+			->willReturn( [ 'sysop' ] );
+
+		$instance = $this->newProtectionValidator();
+		$instance->setEditProtectionRight( 'smw-pageedit' );
+
+		$this->assertFalse(
 			$instance->hasProtection( $subject->getTitle() )
 		);
 	}
@@ -153,12 +212,7 @@ class ProtectionValidatorTest extends TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [] );
 
-		$instance = new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
+		$instance = $this->newProtectionValidator();
 
 		$instance->hasProtection( $subject->getTitle() );
 
@@ -174,12 +228,7 @@ class ProtectionValidatorTest extends TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [ $this->dataItemFactory->newDIBoolean( false ) ] );
 
-		$instance = new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
+		$instance = $this->newProtectionValidator();
 
 		$this->assertFalse(
 			$instance->hasProtection( $subject->getTitle() )
@@ -197,12 +246,7 @@ class ProtectionValidatorTest extends TestCase {
 			->method( 'hasPendingJob' )
 			->willReturn( true );
 
-		$instance = new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
+		$instance = $this->newProtectionValidator();
 
 		$this->assertFalse(
 			$instance->hasChangePropagationProtection( $subject->getTitle() )
@@ -215,12 +259,7 @@ class ProtectionValidatorTest extends TestCase {
 		$this->store->expects( $this->never() )
 			->method( 'getPropertyValues' );
 
-		$instance = new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
+		$instance = $this->newProtectionValidator();
 
 		$instance->setChangePropagationProtection(
 			false
@@ -242,12 +281,7 @@ class ProtectionValidatorTest extends TestCase {
 			->method( 'hasPendingJob' )
 			->willReturn( true );
 
-		$instance = new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
+		$instance = $this->newProtectionValidator();
 
 		$this->assertTrue(
 			$instance->hasChangePropagationProtection( $subject->getTitle() )
@@ -273,12 +307,7 @@ class ProtectionValidatorTest extends TestCase {
 			->method( 'getQueueSize' )
 			->willReturn( 0 );
 
-		$instance = new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
+		$instance = $this->newProtectionValidator();
 
 		$this->assertFalse(
 			$instance->hasChangePropagationProtection( $subject->getTitle() )
@@ -296,12 +325,7 @@ class ProtectionValidatorTest extends TestCase {
 			->method( 'hasPendingJob' )
 			->willReturn( true );
 
-		$instance = new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
+		$instance = $this->newProtectionValidator();
 
 		$this->assertTrue(
 			$instance->hasChangePropagationProtection( $subject->getTitle() )
@@ -374,7 +398,12 @@ class ProtectionValidatorTest extends TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [ $this->dataItemFactory->newDIBoolean( $isProtected ) ] );
 
-		$this->assertSame( $expected, $this->newProtectionValidator()->hasEditProtection( $subject->getTitle() ) );
+		$this->expectEditRestriction( 'smw-pageedit' );
+
+		$instance = $this->newProtectionValidator();
+		$instance->setEditProtectionRight( 'smw-pageedit' );
+
+		$this->assertSame( $expected, $instance->hasEditProtection( $subject->getTitle() ) );
 	}
 
 	public function editProtectionProvider(): iterable {
@@ -401,15 +430,6 @@ class ProtectionValidatorTest extends TestCase {
 		$this->assertFalse( $this->newProtectionValidator()->hasCreateProtection( $this->createMock( Title::class ) ) );
 	}
 
-	private function newProtectionValidator(): ProtectionValidator {
-		return new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
-	}
-
 	public function testEditProtectionCacheIsNotPoisonedByChangePropagationCheck() {
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', SMW_NS_PROPERTY );
 
@@ -423,12 +443,9 @@ class ProtectionValidatorTest extends TestCase {
 					: [];
 			} );
 
-		$instance = new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
+		$instance = $this->newProtectionValidator();
+		$instance->setEditProtectionRight( 'smw-pageedit' );
+		$this->expectEditRestriction( 'smw-pageedit' );
 
 		// A change-propagation check runs first and caches its own (`_CHGPRO`)
 		// result; it must not poison the unrelated edit-protection (`_EDIP`)
@@ -456,12 +473,7 @@ class ProtectionValidatorTest extends TestCase {
 			->method( 'hasPendingJob' )
 			->willReturn( true );
 
-		$instance = new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
+		$instance = $this->newProtectionValidator();
 
 		// An edit-protection check runs first and caches its (`_EDIP`) result; it
 		// must not make the unrelated change-propagation check report a lock.
@@ -473,12 +485,7 @@ class ProtectionValidatorTest extends TestCase {
 	}
 
 	public function testSetGetCreateProtectionRight() {
-		$instance = new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
+		$instance = $this->newProtectionValidator();
 
 		$instance->setCreateProtectionRight(
 			'foo'
@@ -503,12 +510,7 @@ class ProtectionValidatorTest extends TestCase {
 				$title )
 			->willReturn( false );
 
-		$instance = new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
+		$instance = $this->newProtectionValidator();
 
 		$instance->setCreateProtectionRight(
 			'foo'
@@ -520,12 +522,7 @@ class ProtectionValidatorTest extends TestCase {
 	}
 
 	public function testHasCreateProtection_NullTitle() {
-		$instance = new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
+		$instance = $this->newProtectionValidator();
 
 		$this->assertFalse(
 			$instance->hasCreateProtection( null )
@@ -533,12 +530,7 @@ class ProtectionValidatorTest extends TestCase {
 	}
 
 	public function testHasEditProtection_NullTitle() {
-		$instance = new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
+		$instance = $this->newProtectionValidator();
 
 		$this->assertFalse(
 			$instance->hasEditProtection( null )
@@ -554,12 +546,7 @@ class ProtectionValidatorTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
+		$instance = $this->newProtectionValidator();
 
 		$this->assertFalse(
 			$instance->isClassifiedAsImportPerformerProtected( $title, $user )
@@ -603,7 +590,8 @@ class ProtectionValidatorTest extends TestCase {
 			$this->store,
 			$this->entityCache,
 			$this->permissionManager,
-			$pageCreator
+			$pageCreator,
+			$this->restrictionStore
 		);
 
 		$instance->setImportPerformers(
@@ -656,7 +644,8 @@ class ProtectionValidatorTest extends TestCase {
 			$this->store,
 			$this->entityCache,
 			$this->permissionManager,
-			$pageCreator
+			$pageCreator,
+			$this->restrictionStore
 		);
 
 		$instance->setImportPerformers(
@@ -679,12 +668,7 @@ class ProtectionValidatorTest extends TestCase {
 				$this->dataItemFactory->newDIProperty( '_CHGPRO' ),
 				$this->anything() );
 
-		$instance = new ProtectionValidator(
-			$this->store,
-			$this->entityCache,
-			$this->permissionManager,
-			$this->pageCreator
-		);
+		$instance = $this->newProtectionValidator();
 
 		$instance->registerPropertyChangeListener( $propertyChangeListener );
 	}
@@ -717,7 +701,8 @@ class ProtectionValidatorTest extends TestCase {
 			$store,
 			$this->entityCache,
 			$this->permissionManager,
-			$this->pageCreator
+			$this->pageCreator,
+			$this->restrictionStore
 		);
 
 		$instance->hasChangePropagationProtection( $subject->getTitle() );

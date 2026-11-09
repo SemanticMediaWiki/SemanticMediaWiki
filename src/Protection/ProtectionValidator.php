@@ -3,6 +3,7 @@
 namespace SMW\Protection;
 
 use MediaWiki\Permissions\PermissionManager as MwPermissionManager;
+use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use SMW\DataItems\Property;
@@ -49,6 +50,7 @@ class ProtectionValidator {
 		private readonly EntityCache $entityCache,
 		private readonly PermissionManager $permissionManager,
 		private readonly PageCreator $pageCreator,
+		private readonly RestrictionStore $restrictionStore,
 	) {
 	}
 
@@ -308,7 +310,36 @@ class ProtectionValidator {
 			fn () => $this->findProtection( $subject, $property ) ? 'yes' : 'no'
 		);
 
-		return $hasProtection === 'yes';
+		if ( $hasProtection !== 'yes' ) {
+			return false;
+		}
+
+		// A stored `_EDIP` value only constitutes edit protection when the matching
+		// MediaWiki edit restriction is actually in place. Applying that restriction
+		// requires the configured edit-protection right (see EditProtectionUpdater),
+		// so a bare `[[Is edit protected::true]]` from an editor without the right
+		// records the value but leaves the page unrestricted and must not lock it.
+		if ( $property->getKey() === '_EDIP' ) {
+			return $this->hasActiveEditProtectionRestriction( $subject );
+		}
+
+		return true;
+	}
+
+	private function hasActiveEditProtectionRestriction( WikiPage $subject ): bool {
+		$title = $subject->getTitle();
+
+		if ( $title === null ) {
+			return false;
+		}
+
+		if ( !$this->restrictionStore->isProtected( $title, 'edit' ) ) {
+			return false;
+		}
+
+		$restrictions = array_flip( $this->restrictionStore->getRestrictions( $title, 'edit' ) );
+
+		return isset( $restrictions[$this->editProtectionRight] );
 	}
 
 	private function findProtection( WikiPage $subject, Property $property ): bool {
