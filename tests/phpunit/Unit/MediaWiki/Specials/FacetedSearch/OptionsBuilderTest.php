@@ -3,6 +3,7 @@
 namespace SMW\Tests\Unit\MediaWiki\Specials\FacetedSearch;
 
 use PHPUnit\Framework\TestCase;
+use SMW\Localizer\MessageLocalizer;
 use SMW\MediaWiki\Specials\FacetedSearch\OptionsBuilder;
 use SMW\MediaWiki\Specials\FacetedSearch\Profile;
 
@@ -70,6 +71,31 @@ class OptionsBuilderTest extends TestCase {
 		$this->assertStringContainsString( '<option value="mid&amp;val" selected=""', $html );
 		$this->assertStringNotContainsString( 'value="before" selected', $html );
 		$this->assertStringNotContainsString( 'value="zz" selected', $html );
+	}
+
+	public function testProfilesFallsBackToTheProfileKeyWhenTheLabelMessageIsUndefined() {
+		$this->profile->expects( $this->any() )
+			->method( 'getProfileList' )
+			->willReturn( [ 'myprofile_profile' => 'smw-fs-label-undefined' ] );
+
+		$this->profile->expects( $this->any() )
+			->method( 'getProfileName' )
+			->willReturn( '' );
+
+		$builder = new OptionsBuilder( $this->profile );
+
+		// An undefined label message resolves to the bare message key; the option
+		// must then show the cleaned profile key, not the raw message key.
+		$builder->setMessageLocalizer( new class implements MessageLocalizer {
+			public function msg( ...$args ): string {
+				return (string)$args[0];
+			}
+		} );
+
+		$html = $builder->profiles();
+
+		$this->assertStringContainsString( '>myprofile</option>', $html );
+		$this->assertStringNotContainsString( 'smw-fs-label-undefined', $html );
 	}
 
 }

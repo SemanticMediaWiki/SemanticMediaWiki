@@ -45,7 +45,7 @@ class OptionsBuilder {
 
 			$val = $this->msg( $val );
 
-			if ( strpos( $val, $message_key ) ) {
+			if ( strpos( $val, $message_key ) !== false ) {
 				$val = $key;
 			}
 
