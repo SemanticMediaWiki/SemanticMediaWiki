@@ -47,6 +47,7 @@ use SMW\Services\ServicesContainer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use SMW\Utils\ConceptExpansionGuard;
 
 /**
  * @license GPL-2.0-or-later
@@ -410,7 +411,8 @@ class ElasticFactory {
 	): ConceptDescriptionInterpreter {
 		return new ConceptDescriptionInterpreter(
 			$containerBuilder,
-			ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser()
+			ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser(),
+			new ConceptExpansionGuard( ConceptExpansionGuard::DEFAULT_MAX_EXPANSIONS )
 		);
 	}
 

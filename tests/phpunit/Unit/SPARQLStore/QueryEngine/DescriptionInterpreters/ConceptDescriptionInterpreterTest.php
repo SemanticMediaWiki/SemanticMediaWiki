@@ -17,6 +17,7 @@ use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterp
 use SMW\Store;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Utils\CircularReferenceGuard;
+use SMW\Utils\ConceptExpansionGuard;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter
@@ -31,6 +32,7 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 
 	private $applicationFactory;
 	private $descriptionInterpreterFactory;
+	private int $expansionProbe = 0;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -53,7 +55,7 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 
 		$this->assertInstanceOf(
 			ConceptDescriptionInterpreter::class,
-			new ConceptDescriptionInterpreter( $conditionBuilder )
+			new ConceptDescriptionInterpreter( $conditionBuilder, new ConceptExpansionGuard( ConceptExpansionGuard::DEFAULT_MAX_EXPANSIONS ) )
 		);
 	}
 
@@ -66,7 +68,7 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new ConceptDescriptionInterpreter( $conditionBuilder );
+		$instance = new ConceptDescriptionInterpreter( $conditionBuilder, new ConceptExpansionGuard( ConceptExpansionGuard::DEFAULT_MAX_EXPANSIONS ) );
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )
@@ -89,7 +91,7 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 		$conditionBuilder->setJoinVariable( $resultVariable );
 		$conditionBuilder->setOrderByProperty( $orderByProperty );
 
-		$instance = new ConceptDescriptionInterpreter( $conditionBuilder );
+		$instance = new ConceptDescriptionInterpreter( $conditionBuilder, new ConceptExpansionGuard( ConceptExpansionGuard::DEFAULT_MAX_EXPANSIONS ) );
 
 		$condition = $instance->interpretDescription( $description );
 
@@ -141,7 +143,7 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 		$conditionBuilder->setJoinVariable( $resultVariable );
 		$conditionBuilder->setOrderByProperty( $orderByProperty );
 
-		$instance = new ConceptDescriptionInterpreter( $conditionBuilder );
+		$instance = new ConceptDescriptionInterpreter( $conditionBuilder, new ConceptExpansionGuard( ConceptExpansionGuard::DEFAULT_MAX_EXPANSIONS ) );
 
 		$condition = $instance->interpretDescription( $description );
 
@@ -158,6 +160,101 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 			$expectedConditionString,
 			$conditionBuilder->convertConditionToString( $condition )
 		);
+	}
+
+	private function newCountingConditionBuilder(): ConditionBuilder {
+		$semanticData = $this->getMockBuilder( SemanticData::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->willReturnCallback( function () {
+				$this->expansionProbe++;
+				return [ new Concept( '[[Foo::+]]', 'Bar', 1, 0, 0 ) ];
+			} );
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->willReturn( $semanticData );
+
+		$this->applicationFactory->registerObject( 'Store', $store );
+
+		$circularReferenceGuard = $this->getMockBuilder( CircularReferenceGuard::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getJoinVariable', 'getOrderByProperty', 'getCircularReferenceGuard',
+				'setJoinVariable', 'setOrderByProperty', 'mapDescriptionToCondition', 'addError' ] )
+			->getMock();
+
+		$conditionBuilder->expects( $this->any() )
+			->method( 'getCircularReferenceGuard' )
+			->willReturn( $circularReferenceGuard );
+
+		return $conditionBuilder;
+	}
+
+	public function testInterpretDescriptionBoundsConceptFanOut() {
+		// A budget of 4, with a harness that would otherwise expand 10 concepts.
+		// The circular reference guard is stubbed to never fire, so only the
+		// per-build expansion budget can stop the fan-out.
+		$maxExpansions = 4;
+		$harnessDepthLimit = 10;
+
+		$this->expansionProbe = 0;
+		$conditionBuilder = $this->newCountingConditionBuilder();
+
+		$instance = new ConceptDescriptionInterpreter(
+			$conditionBuilder,
+			new ConceptExpansionGuard( $maxExpansions )
+		);
+
+		// Each mapped condition recurses into a fresh concept, up to the harness
+		// limit, so nothing but the budget bounds the expansion.
+		$conditionBuilder->method( 'mapDescriptionToCondition' )
+			->willReturnCallback( function () use ( $instance, $harnessDepthLimit ) {
+				if ( $this->expansionProbe < $harnessDepthLimit ) {
+					$instance->interpretDescription(
+						new ConceptDescription( new WikiPage( 'Nested' . $this->expansionProbe, SMW_NS_CONCEPT ) )
+					);
+				}
+
+				return new FalseCondition();
+			} );
+
+		$instance->interpretDescription(
+			new ConceptDescription( new WikiPage( 'Top', SMW_NS_CONCEPT ) )
+		);
+
+		$this->assertSame( $maxExpansions, $this->expansionProbe );
+	}
+
+	public function testInterpretDescriptionReleasesBudgetBetweenTopLevelConcepts() {
+		// Budget of 1 with no nested expansion: each top-level concept must still
+		// expand. If release() were not called, the first build would never return
+		// the budget and the second concept would be wrongly rejected.
+		$this->expansionProbe = 0;
+		$conditionBuilder = $this->newCountingConditionBuilder();
+
+		$conditionBuilder->method( 'mapDescriptionToCondition' )
+			->willReturn( new FalseCondition() );
+
+		$instance = new ConceptDescriptionInterpreter(
+			$conditionBuilder,
+			new ConceptExpansionGuard( 1 )
+		);
+
+		$instance->interpretDescription( new ConceptDescription( new WikiPage( 'First', SMW_NS_CONCEPT ) ) );
+		$instance->interpretDescription( new ConceptDescription( new WikiPage( 'Second', SMW_NS_CONCEPT ) ) );
+
+		$this->assertSame( 2, $this->expansionProbe );
 	}
 
 	public function descriptionProvider() {

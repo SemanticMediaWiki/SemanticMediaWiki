@@ -10,6 +10,7 @@ use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Parser as QueryParser;
+use SMW\Utils\ConceptExpansionGuard;
 
 /**
  * @license GPL-2.0-or-later
@@ -31,6 +32,7 @@ class ConceptDescriptionInterpreter {
 	public function __construct(
 		private readonly ConditionBuilder $conditionBuilder,
 		private readonly QueryParser $queryParser,
+		private readonly ConceptExpansionGuard $expansionGuard,
 	) {
 	}
 
@@ -55,28 +57,37 @@ class ConceptDescriptionInterpreter {
 			return [];
 		}
 
-		$value = $this->conditionBuilder->getStore()->getPropertyValues(
-			$concept,
-			new Property( '_CONC' )
-		);
-
-		if ( $value === null || $value === [] ) {
+		// Bound the total concept expansion for this query build. The cycle guard
+		// above only stops a concept re-entering itself on one branch; an acyclic
+		// fan-out (shared sub-concepts reached by several disjuncts) is otherwise
+		// re-expanded once per path and grows without limit.
+		if ( !$this->expansionGuard->acquire() ) {
+			$this->conditionBuilder->addError( [ 'smw-query-condition-circular', $description->getQueryString() ] );
 			return [];
 		}
-
-		$value = end( $value );
-
-		$description = $this->queryParser->getQueryDescription(
-			$value->getConceptQuery()
-		);
-
-		if ( $this->hasCircularConceptDescription( $description, $concept ) ) {
-			return [];
-		}
-
-		$this->activeConcepts[$hash] = true;
 
 		try {
+			$value = $this->conditionBuilder->getStore()->getPropertyValues(
+				$concept,
+				new Property( '_CONC' )
+			);
+
+			if ( $value === null || $value === [] ) {
+				return [];
+			}
+
+			$value = end( $value );
+
+			$description = $this->queryParser->getQueryDescription(
+				$value->getConceptQuery()
+			);
+
+			if ( $this->hasCircularConceptDescription( $description, $concept ) ) {
+				return [];
+			}
+
+			$this->activeConcepts[$hash] = true;
+
 			$params = $this->conditionBuilder->interpretDescription(
 				$description,
 				$isConjunction
@@ -92,6 +103,7 @@ class ConceptDescriptionInterpreter {
 			return $condition;
 		} finally {
 			unset( $this->activeConcepts[$hash] );
+			$this->expansionGuard->release();
 		}
 	}
 
