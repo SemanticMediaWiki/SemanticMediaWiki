@@ -14,6 +14,7 @@ use SMW\Options;
 use SMW\Setup;
 use SMW\Setup\MigrateSmwJsonToDb;
 use SMW\SetupFile;
+use SMW\SQLStore\Installer\ParserExaminer;
 use SMW\SQLStore\Installer\TableOptimizer;
 use SMW\SQLStore\Installer\VersionExaminer;
 use SMW\SQLStore\TableBuilder\TableBuilder;
@@ -78,6 +79,7 @@ class Installer implements MessageReporter {
 		private TableBuildExaminer $tableBuildExaminer,
 		private VersionExaminer $versionExaminer,
 		private TableOptimizer $tableOptimizer,
+		private readonly ParserExaminer $parserExaminer,
 		private readonly TitleFactory $titleFactory,
 		private readonly JobFactory $jobFactory,
 	) {
@@ -164,6 +166,10 @@ class Installer implements MessageReporter {
 		);
 
 		$this->tableOptimizer->setMessageReporter(
+			$this->messageReporter
+		);
+
+		$this->parserExaminer->setMessageReporter(
 			$this->messageReporter
 		);
 
@@ -268,6 +274,7 @@ class Installer implements MessageReporter {
 		);
 
 		$this->outputReport( $timer );
+		$this->parserExaminer->reportParsoidUse();
 		$this->printBottom();
 
 		return true;

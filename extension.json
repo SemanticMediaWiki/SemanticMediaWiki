@@ -259,6 +259,7 @@
 				"SMW.ContentParserFactory",
 				"SMW.RevisionGuard",
 				"SMW.SiteReadiness",
+				"SMW.ParsoidUse",
 				"SMW.Logger"
 			]
 		},

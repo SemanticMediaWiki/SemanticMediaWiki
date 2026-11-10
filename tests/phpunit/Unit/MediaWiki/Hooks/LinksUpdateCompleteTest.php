@@ -10,8 +10,10 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use SMW\MediaWiki\Hooks\LinksUpdateComplete;
 use SMW\MediaWiki\Jobs\ContentParserFactory;
+use SMW\MediaWiki\ParsoidUse;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\NamespaceExaminer;
+use SMW\Parser\ContentParser;
 use SMW\SiteReadiness;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
@@ -33,6 +35,7 @@ class LinksUpdateCompleteTest extends TestCase {
 	private $revisionGuard;
 	private $contentParserFactory;
 	private $siteReadiness;
+	private $parsoidUse;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -49,6 +52,8 @@ class LinksUpdateCompleteTest extends TestCase {
 
 		$this->siteReadiness = $this->createMock( SiteReadiness::class );
 		$this->siteReadiness->method( 'isReady' )->willReturn( true );
+
+		$this->parsoidUse = $this->createStub( ParsoidUse::class );
 	}
 
 	protected function tearDown(): void {
@@ -62,6 +67,7 @@ class LinksUpdateCompleteTest extends TestCase {
 			$this->contentParserFactory,
 			$this->revisionGuard,
 			$this->siteReadiness,
+			$this->parsoidUse,
 			$this->spyLogger
 		);
 	}
@@ -76,6 +82,7 @@ class LinksUpdateCompleteTest extends TestCase {
 				$this->contentParserFactory,
 				$this->revisionGuard,
 				$this->siteReadiness,
+				$this->parsoidUse,
 				$logger
 			)
 		);
@@ -198,6 +205,64 @@ class LinksUpdateCompleteTest extends TestCase {
 		$this->assertTrue(
 			$instance->onLinksUpdateComplete( $linksUpdate, null )
 		);
+	}
+
+	public function testWarnsWhenParsoidRunsTheLinksUpdate() {
+		$this->parsoidUse->method( 'forLinksUpdates' )->willReturn( true );
+		$this->namespaceExaminer->method( 'isSemanticEnabled' )->willReturn( true );
+
+		$warnings = $this->warningsFromLinksUpdateOf( 'Parsoid check' );
+
+		$this->assertCount( 1, $warnings );
+		$this->assertStringContainsString( 'parsed "Parsoid check" with Parsoid', $warnings[0] );
+	}
+
+	public function testDoesNotWarnWhenTheLegacyParserRunsTheLinksUpdate() {
+		$this->parsoidUse->method( 'forLinksUpdates' )->willReturn( false );
+		$this->namespaceExaminer->method( 'isSemanticEnabled' )->willReturn( true );
+
+		$this->assertSame( [], $this->warningsFromLinksUpdateOf( 'Legacy parser check' ) );
+	}
+
+	public function testDoesNotWarnForPagesInNamespacesWithoutSemanticLinks() {
+		$this->parsoidUse->method( 'forLinksUpdates' )->willReturn( true );
+		$this->namespaceExaminer->method( 'isSemanticEnabled' )->willReturn( false );
+
+		$this->assertSame( [], $this->warningsFromLinksUpdateOf( 'Namespace check' ) );
+	}
+
+	/**
+	 * @return string[]
+	 */
+	private function warningsFromLinksUpdateOf( string $pageName ): array {
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $pageName );
+
+		$linksUpdate = $this->createStub( LinksUpdate::class );
+		$linksUpdate->method( 'getTitle' )->willReturn( $title );
+		$linksUpdate->method( 'getParserOutput' )->willReturn( new ParserOutput() );
+
+		$contentParser = $this->createStub( ContentParser::class );
+		$contentParser->method( 'parse' )->willReturnSelf();
+		$this->contentParserFactory->method( 'newContentParser' )->willReturn( $contentParser );
+
+		$this->registerStoreWithEmptyIdTable();
+
+		$instance = $this->newInstance();
+		$instance->disableDeferredUpdate();
+
+		$warnings = [];
+		set_error_handler( static function ( int $level, string $message ) use ( &$warnings ): bool {
+			$warnings[] = $message;
+			return true;
+		}, E_USER_WARNING );
+
+		try {
+			$instance->onLinksUpdateComplete( $linksUpdate, null );
+		} finally {
+			restore_error_handler();
+		}
+
+		return $warnings;
 	}
 
 	public function testIsNotReady_DoNothing() {

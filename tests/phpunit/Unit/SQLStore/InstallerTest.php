@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\SQLStore;
 
+use MediaWiki\Config\HashConfig;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\JobQueue\JobFactory;
 use MediaWiki\Title\Title;
@@ -9,8 +10,10 @@ use MediaWiki\Title\TitleFactory;
 use Onoi\MessageReporter\MessageReporterFactory;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Job;
+use SMW\MediaWiki\ParsoidUse;
 use SMW\SetupFile;
 use SMW\SQLStore\Installer;
+use SMW\SQLStore\Installer\ParserExaminer;
 use SMW\SQLStore\Installer\TableOptimizer;
 use SMW\SQLStore\Installer\VersionExaminer;
 use SMW\SQLStore\TableBuilder\Table;
@@ -37,6 +40,7 @@ class InstallerTest extends TestCase {
 	private $tableBuildExaminer;
 	private $versionExaminer;
 	private $tableOptimizer;
+	private ParserExaminer $parserExaminer;
 	private TitleFactory $titleFactory;
 	private JobFactory $jobFactory;
 	private $hookContainer;
@@ -67,6 +71,8 @@ class InstallerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->parserExaminer = $this->createStub( ParserExaminer::class );
+
 		$this->titleFactory = $this->getMockBuilder( TitleFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -91,6 +97,7 @@ class InstallerTest extends TestCase {
 			$this->tableBuildExaminer,
 			$this->versionExaminer,
 			$this->tableOptimizer,
+			$this->parserExaminer,
 			$this->titleFactory,
 			$this->jobFactory
 		);
@@ -131,6 +138,7 @@ class InstallerTest extends TestCase {
 			$this->tableBuildExaminer,
 			$this->versionExaminer,
 			$this->tableOptimizer,
+			$this->parserExaminer,
 			$this->titleFactory,
 			$this->jobFactory
 		);
@@ -141,6 +149,33 @@ class InstallerTest extends TestCase {
 
 		$this->assertTrue(
 			$instance->install()
+		);
+	}
+
+	public function testInstallReportsParsoidUse() {
+		$this->versionExaminer->method( 'meetsVersionMinRequirement' )
+			->willReturn( true );
+
+		$instance = new Installer(
+			$this->tableSchemaManager,
+			$this->tableBuilder,
+			$this->tableBuildExaminer,
+			$this->versionExaminer,
+			$this->tableOptimizer,
+			new ParserExaminer( new ParsoidUse( new HashConfig( [ 'UseParsoidParser' => true ] ) ) ),
+			$this->titleFactory,
+			$this->jobFactory
+		);
+
+		$instance->setHookContainer( $this->hookContainer );
+		$instance->setMessageReporter( $this->spyMessageReporter );
+		$instance->setSetupFile( $this->setupFile );
+
+		$instance->install();
+
+		$this->assertStringContainsString(
+			'Parsoid',
+			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
 
@@ -155,6 +190,7 @@ class InstallerTest extends TestCase {
 			$this->tableBuildExaminer,
 			$this->versionExaminer,
 			$this->tableOptimizer,
+			$this->parserExaminer,
 			$this->titleFactory,
 			$this->jobFactory
 		);
@@ -211,6 +247,7 @@ class InstallerTest extends TestCase {
 			$this->tableBuildExaminer,
 			$this->versionExaminer,
 			$this->tableOptimizer,
+			$this->parserExaminer,
 			$this->titleFactory,
 			$this->jobFactory
 		);
@@ -252,6 +289,7 @@ class InstallerTest extends TestCase {
 			$this->tableBuildExaminer,
 			$this->versionExaminer,
 			$this->tableOptimizer,
+			$this->parserExaminer,
 			$this->titleFactory,
 			$this->jobFactory
 		);
@@ -288,6 +326,7 @@ class InstallerTest extends TestCase {
 			$this->tableBuildExaminer,
 			$this->versionExaminer,
 			$this->tableOptimizer,
+			$this->parserExaminer,
 			$this->titleFactory,
 			$this->jobFactory
 		);
@@ -308,6 +347,7 @@ class InstallerTest extends TestCase {
 			$this->tableBuildExaminer,
 			$this->versionExaminer,
 			$this->tableOptimizer,
+			$this->parserExaminer,
 			$this->titleFactory,
 			$this->jobFactory
 		);
