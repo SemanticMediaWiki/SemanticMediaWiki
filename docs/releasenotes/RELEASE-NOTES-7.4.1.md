@@ -1,11 +1,23 @@
 # Semantic MediaWiki 7.4.1
 
-Released on TBD.
+Released on November 10, 2026.
 
 This is a [patch release](../RELEASE-POLICY.md). Thus, it contains only bug fixes, no new features, and no breaking changes.
 
 This version is compatible with MediaWiki 1.43.4 up to 1.46 and PHP 8.1 up to 8.5.
 For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
+
+## Security fixes
+
+* Fixed a missing authorization check where an `Is edit protected` annotation set by an editor without the edit-protection right still locked the page, completing the earlier fix for GHSA-9824 ([GHSA-9w3p-9m8x-j2mw](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-9w3p-9m8x-j2mw))
+* Fixed a missing authorization check where annotation-driven page protection was authorized against the page's last author instead of the editor making the change, so an editor could remove administrator-set protection through a transcluded template ([GHSA-gh59-2vh3-6cgm](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-gh59-2vh3-6cgm))
+* Fixed a cross-site scripting (XSS) vulnerability in `Special:Ask` where the free-format date output format (`?Date#-F[…]`) was emitted without HTML escaping ([GHSA-h252-mj7p-58q7](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-h252-mj7p-58q7))
+* Fixed a cross-site scripting (XSS) vulnerability in the `Special:Browse` factbox title where part of a property's preferred label was appended as raw HTML ([GHSA-mc5x-2j7v-x8hp](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-mc5x-2j7v-x8hp))
+* Fixed a cross-site scripting (XSS) vulnerability in `Special:Ask` with ElasticStore where the raw query-engine debug output was rendered without HTML escaping, and restricted that debug output to users with the `smw-admin` right ([GHSA-7j96-w9cc-r7rq](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-7j96-w9cc-r7rq))
+* Fixed a cross-site scripting (XSS) vulnerability where the DataTables result format rendered author-supplied cell attributes as HTML ([GHSA-gg2q-rc52-22pp](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-gg2q-rc52-22pp))
+* Fixed a denial-of-service vulnerability where ElasticStore concept expansion had no guard against mutually recursive concepts, which could exhaust memory ([GHSA-jwx8-mm92-gv95](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-jwx8-mm92-gv95))
+* Fixed a denial-of-service vulnerability where concept expansion in the ElasticStore and SPARQLStore query engines was not bounded, so an acyclic concept fan-out could exhaust memory ([GHSA-24v2-mf3g-84ch](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-24v2-mf3g-84ch))
+* Fixed a cross-site scripting (XSS) vulnerability in `Special:FacetedSearch` where profile keys were interpolated into the profile option list without HTML escaping ([GHSA-cw86-j46r-2x7x](https://github.com/SemanticMediaWiki/SemanticMediaWiki/security/advisories/GHSA-cw86-j46r-2x7x))
 
 ## Changes
 

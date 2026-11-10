@@ -27,7 +27,7 @@ Increases of minimum requirements are indicated in bold.
         <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_7.4.0">7.4.x</a></th>
         <td><strong>Stable release</strong></td>
         <td>2026-11-02</td>
-        <td>2026-11-02</td>
+        <td>2026-11-10</td>
         <td>8.1 - 8.5</td>
         <td>1.43.4 - 1.46</td>
         <td></td>
