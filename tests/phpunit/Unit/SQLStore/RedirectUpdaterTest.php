@@ -11,8 +11,8 @@ use SMW\Options;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\IdChanger;
-use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\PropertyTableInfoFetcher;
+use SMW\SQLStore\PropertyTableUpdater;
 use SMW\SQLStore\RedirectUpdater;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableFieldUpdater;
@@ -36,7 +36,7 @@ class RedirectUpdaterTest extends TestCase {
 
 	private $store;
 	private $tableFieldUpdater;
-	private $propertyStatisticsStore;
+	private $propertyTableUpdater;
 	private $testEnvironment;
 	private $idChanger;
 	private $jobFactory;
@@ -54,7 +54,7 @@ class RedirectUpdaterTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertyStatisticsStore = $this->getMockBuilder( PropertyStatisticsStore::class )
+		$this->propertyTableUpdater = $this->getMockBuilder( PropertyTableUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -73,7 +73,7 @@ class RedirectUpdaterTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			RedirectUpdater::class,
-			new RedirectUpdater( $this->store, $this->idChanger, $this->tableFieldUpdater, $this->propertyStatisticsStore )
+			$this->newRedirectUpdater( $this->store )
 		);
 	}
 
@@ -93,12 +93,7 @@ class RedirectUpdaterTest extends TestCase {
 			->method( 'newUpdateJob' )
 			->willReturn( $updateJob );
 
-		$instance = new RedirectUpdater(
-			$this->store,
-			$this->idChanger,
-			$this->tableFieldUpdater,
-			$this->propertyStatisticsStore
-		);
+		$instance = $this->newRedirectUpdater( $this->store );
 
 		$instance->triggerChangeTitleUpdate(
 			WikiPage::newFromText( __METHOD__ . '-old', NS_MAIN )->getTitle(),
@@ -207,7 +202,7 @@ class RedirectUpdaterTest extends TestCase {
 			$this->store,
 			$this->idChanger,
 			$this->tableFieldUpdater,
-			$this->propertyStatisticsStore
+			$this->propertyTableUpdater
 		) extends RedirectUpdater {
 			protected function isCommandLineMode(): bool {
 				return false;
@@ -240,16 +235,15 @@ class RedirectUpdaterTest extends TestCase {
 			->method( 'findRedirect' )
 			->willReturn( 1001 );
 
+		$idTable->expects( $this->any() )
+			->method( 'getSMWPropertyID' )
+			->willReturn( 15 );
+
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
 
-		$instance = new RedirectUpdater(
-			$this->store,
-			$this->idChanger,
-			$this->tableFieldUpdater,
-			$this->propertyStatisticsStore
-		);
+		$instance = $this->newRedirectUpdater( $this->store );
 
 		$instance->setEqualitySupport( SMW_EQ_NONE );
 
@@ -327,12 +321,7 @@ class RedirectUpdaterTest extends TestCase {
 			->method( 'getOptions' )
 			->willReturn( new Options() );
 
-		$instance = new RedirectUpdater(
-			$store,
-			$this->idChanger,
-			$this->tableFieldUpdater,
-			$this->propertyStatisticsStore
-		);
+		$instance = $this->newRedirectUpdater( $store );
 
 		$instance->doUpdate(
 			WikiPage::newFromText( __METHOD__ . '-old', NS_MAIN ),
@@ -404,12 +393,7 @@ class RedirectUpdaterTest extends TestCase {
 			->method( 'getOptions' )
 			->willReturn( new Options() );
 
-		$instance = new RedirectUpdater(
-			$store,
-			$this->idChanger,
-			$this->tableFieldUpdater,
-			$this->propertyStatisticsStore
-		);
+		$instance = $this->newRedirectUpdater( $store );
 
 		$instance->doUpdate(
 			WikiPage::newFromText( __METHOD__ . '-old', NS_MAIN ),
@@ -421,6 +405,10 @@ class RedirectUpdaterTest extends TestCase {
 			[ SQLStore::ID_TABLE ],
 			$capturedTables
 		);
+	}
+
+	private function newRedirectUpdater( SQLStore $store ): RedirectUpdater {
+		return new RedirectUpdater( $store, $this->idChanger, $this->tableFieldUpdater, $this->propertyTableUpdater );
 	}
 
 }

@@ -69,7 +69,7 @@ class SQLStoreUpdater {
 		$this->propertyTableRowDiffer = $this->factory->newPropertyTableRowDiffer();
 		$this->propertyTableUpdater = $this->factory->newPropertyTableUpdater();
 		$this->semanticDataLookup = $this->factory->newSemanticDataLookup();
-		$this->redirectUpdater = $this->factory->newRedirectUpdater();
+		$this->redirectUpdater = $this->factory->newRedirectUpdater( $this->propertyTableUpdater );
 		$this->hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 	}
 
@@ -244,6 +244,8 @@ class SQLStoreUpdater {
 				}
 			}
 
+			$this->propertyTableUpdater->writeSharedRowsOnCommit();
+
 			$rev_id = $semanticData->getExtensionData( 'revision_id' );
 			if ( $rev_id !== null ) {
 				$this->store->getObjectIds()->updateRevField( $sid, $rev_id );
@@ -279,6 +281,11 @@ class SQLStoreUpdater {
 			// section back and rethrow so callers (e.g. rebuildData
 			// --ignore-exceptions) can log and skip this entity and continue.
 			$this->cancelUpdateSectionTransaction( $connection, $subject, $e );
+			$this->propertyTableUpdater->discardSharedRows();
+
+			// The ID table's cache still holds the IDs and hashes the rolled-back update wrote, so
+			// repeating the update in this process would find nothing to change
+			$this->store->getObjectIds()->initCache();
 
 			throw $e;
 		}
@@ -463,11 +470,18 @@ class SQLStoreUpdater {
 			'redirect_id' => $redirectId
 		];
 
-		$this->redirectUpdater->doUpdate(
-			WikiPage::newFromTitle( $oldTitle ),
-			WikiPage::newFromTitle( $newTitle ),
-			$options
-		);
+		try {
+			$this->redirectUpdater->doUpdate(
+				WikiPage::newFromTitle( $oldTitle ),
+				WikiPage::newFromTitle( $newTitle ),
+				$options
+			);
+		} catch ( Throwable $e ) {
+			$this->propertyTableUpdater->discardSharedRows();
+			throw $e;
+		}
+
+		$this->propertyTableUpdater->writeSharedRowsOnCommit();
 
 		$this->redirectUpdater->invalidateLookupCache(
 			$this->semanticDataLookup

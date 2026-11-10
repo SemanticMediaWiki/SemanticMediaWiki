@@ -2,7 +2,6 @@
 
 namespace SMW\SQLStore;
 
-use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException;
 use Wikimedia\Rdbms\IDatabase;
@@ -19,38 +18,10 @@ use Wikimedia\Rdbms\IDatabase;
  */
 class PropertyStatisticsStore {
 
-	use LoggerAwareTrait;
-
-	/**
-	 * @var bool
-	 */
-	private $isCommandLineMode = false;
-
-	private bool $onTransactionIdle = false;
-
 	/**
 	 * @since 1.9
 	 */
 	public function __construct( private Database $connection ) {
-	}
-
-	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
-	 * Indicates whether MW is running in command-line mode or not.
-	 *
-	 * @since 2.5
-	 *
-	 * @param bool $isCommandLineMode
-	 */
-	public function isCommandLineMode( $isCommandLineMode ): void {
-		$this->isCommandLineMode = $isCommandLineMode;
-	}
-
-	/**
-	 * @since 2.5
-	 */
-	public function waitOnTransactionIdle(): void {
-		$this->onTransactionIdle = !$this->isCommandLineMode;
 	}
 
 	/**
@@ -137,18 +108,6 @@ class PropertyStatisticsStore {
 		$success = true;
 
 		if ( $additions === [] ) {
-			return $success;
-		}
-
-		$method = __METHOD__;
-
-		if ( $this->onTransactionIdle ) {
-			$this->connection->onTransactionCommitOrIdle( function () use ( $method, $additions ): void {
-				$this->log( $method . ' (onTransactionIdle)' );
-				$this->onTransactionIdle = false;
-				$this->addToUsageCounts( $additions );
-			} );
-
 			return $success;
 		}
 
@@ -290,14 +249,6 @@ class PropertyStatisticsStore {
 			->where( IDatabase::ALL_ROWS )
 			->caller( __METHOD__ )
 			->execute();
-	}
-
-	private function log( string $message, array $context = [] ): void {
-		if ( $this->logger === null ) {
-			return;
-		}
-
-		$this->logger->info( $message, $context );
 	}
 
 }

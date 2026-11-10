@@ -2,11 +2,13 @@
 
 namespace SMW\SQLStore;
 
+use Psr\Log\LoggerInterface;
 use SMW\DataItems\Property;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Parameters;
 use SMW\SQLStore\Exception\TableMissingIdFieldException;
 use SMW\Store;
+use Wikimedia\Rdbms\DBError;
 
 /**
  * @private
@@ -20,7 +22,15 @@ class PropertyTableUpdater {
 
 	private ?PropertyChangeListener $propertyChangeListener = null;
 
-	private array $stats = [];
+	/**
+	 * @var int[] Usage count changes by property ID
+	 */
+	private array $usageCountChanges = [];
+
+	/**
+	 * @var true[] IDs of the properties and categories to touch, as keys
+	 */
+	private array $sharedIds = [];
 
 	/**
 	 * @since 3.0
@@ -28,6 +38,7 @@ class PropertyTableUpdater {
 	public function __construct(
 		private readonly Store $store,
 		private readonly PropertyStatisticsStore $propertyStatisticsStore,
+		private readonly LoggerInterface $logger,
 	) {
 	}
 
@@ -41,11 +52,12 @@ class PropertyTableUpdater {
 	}
 
 	/**
-	 * Update all property tables and any dependent data (hashes,
-	 * statistics, etc.) by inserting/deleting the given values. The ID of
-	 * the page that is updated, and the hashes of the properties must be
-	 * given explicitly (the hashes could not be computed from the insert
-	 * and delete data alone anyway).
+	 * Update all property tables and any dependent data (hashes, etc.) by
+	 * inserting/deleting the given values. The ID of the page that is
+	 * updated, and the hashes of the properties must be given explicitly
+	 * (the hashes could not be computed from the insert and delete data
+	 * alone anyway). The usage counts and touched fields of the properties
+	 * and categories involved are written by writeSharedRowsOnCommit().
 	 *
 	 * @since 3.0
 	 *
@@ -53,8 +65,6 @@ class PropertyTableUpdater {
 	 * @param Parameters $parameters
 	 */
 	public function update( $id, Parameters $parameters ): void {
-		$this->stats = [];
-
 		$insert_rows = $parameters->get( 'insert_rows' );
 		$delete_rows = $parameters->get( 'delete_rows' );
 
@@ -73,10 +83,68 @@ class PropertyTableUpdater {
 		if ( $insert_rows !== [] || $delete_rows !== [] ) {
 			$this->store->getObjectIds()->setPropertyTableHashes( $id, $new_hashes );
 		}
+	}
 
-		$this->propertyStatisticsStore->addToUsageCounts(
-			$this->stats
+	/**
+	 * Writes the usage counts and touched fields of the properties and categories that update()
+	 * and addToUsageCount() changed once the open transaction commits, in one transaction of
+	 * their own, and drops them if it rolls back. Every page using a property or category shares
+	 * these rows, so writing them inside a page update's transaction makes concurrent updates
+	 * conflict and roll back each other's data.
+	 *
+	 * @since 7.4.1
+	 */
+	public function writeSharedRowsOnCommit(): void {
+		$usageCountChanges = array_filter( $this->usageCountChanges );
+		$sharedIds = array_keys( $this->sharedIds );
+		$this->discardSharedRows();
+
+		if ( $usageCountChanges === [] && $sharedIds === [] ) {
+			return;
+		}
+
+		// Concurrent writers then lock the rows in the same order and cannot deadlock
+		ksort( $usageCountChanges );
+		sort( $sharedIds );
+
+		$this->store->getConnection( 'mw.db' )->onTransactionCommitOrIdle(
+			fn () => $this->writeSharedRows( $usageCountChanges, $sharedIds )
 		);
+	}
+
+	private function writeSharedRows( array $usageCountChanges, array $sharedIds ): void {
+		try {
+			$this->store->getConnection( 'mw.db' )->doSectionTransaction(
+				__METHOD__,
+				function () use ( $usageCountChanges, $sharedIds ): void {
+					$this->propertyStatisticsStore->addToUsageCounts( $usageCountChanges );
+					$this->update_touched( $sharedIds );
+				}
+			);
+		} catch ( DBError $e ) {
+			// The page's data has committed, so the update has not failed
+			$this->logger->warning(
+				'Writing the usage counts and touched fields of properties and categories failed: {error}',
+				[ 'error' => $e->getMessage(), 'exception' => $e ]
+			);
+		}
+	}
+
+	/**
+	 * Adds a usage count change for writeSharedRowsOnCommit() to write.
+	 *
+	 * @since 7.4.1
+	 */
+	public function addToUsageCount( int $pid, int $change ): void {
+		$this->usageCountChanges[$pid] = ( $this->usageCountChanges[$pid] ?? 0 ) + $change;
+	}
+
+	/**
+	 * @since 7.4.1
+	 */
+	public function discardSharedRows(): void {
+		$this->usageCountChanges = [];
+		$this->sharedIds = [];
 	}
 
 	/**
@@ -165,11 +233,7 @@ class PropertyTableUpdater {
 				[ 'row' => $row ]
 			);
 
-			if ( !array_key_exists( $pid, $this->stats ) ) {
-				$this->stats[$pid] = 0;
-			}
-
-			$this->stats[$pid] += ( $insert ? 1 : -1 );
+			$this->addToUsageCount( $pid, $insert ? 1 : -1 );
 		}
 	}
 
@@ -237,16 +301,19 @@ class PropertyTableUpdater {
 
 			$pid = $this->store->getObjectIds()->makeSMWPropertyID( $property );
 			$isCategory = $property->getKey() === '_INST';
-			$ids[$pid] = true;
+			$this->sharedIds[$pid] = true;
 		}
 
 		foreach ( $rows as $row ) {
-			$sid = $isCategory ? $row['o_id'] : $row['s_id'];
-			$ids[$sid] = true;
+			if ( $isCategory ) {
+				$this->sharedIds[$row['o_id']] = true;
+			} else {
+				$ids[$row['s_id']] = true;
+			}
 
 			// Individual pid for non-fixed tables
 			if ( isset( $row['p_id'] ) ) {
-				$ids[$row['p_id']] = true;
+				$this->sharedIds[$row['p_id']] = true;
 			}
 		}
 	}
@@ -258,11 +325,6 @@ class PropertyTableUpdater {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 		$touched = $connection->timestamp();
-
-		// Updating across the entity table with some properties (Modification
-		// date etc.) to see more frequent updates than others. Do we need to use
-		// onTransctionIdle( ... ) to avoid locking the rows for succeeding
-		// updates?
 
 		$connection->newUpdateQueryBuilder()
 			->update( SQLStore::ID_TABLE )

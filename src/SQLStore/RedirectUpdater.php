@@ -37,7 +37,7 @@ class RedirectUpdater {
 		private readonly Store $store,
 		private readonly IdChanger $idChanger,
 		private readonly TableFieldUpdater $tableFieldUpdater,
-		private readonly PropertyStatisticsStore $propertyStatisticsStore,
+		private readonly PropertyTableUpdater $propertyTableUpdater,
 	) {
 		$this->equalitySupport = new Flag( 0 );
 	}
@@ -471,7 +471,7 @@ class RedirectUpdater {
 		// with redirect updates
 		$this->lookupCache = [ $sid, $new_tid, $old_tid ];
 
-		$this->propertyStatisticsStore->addToUsageCount(
+		$this->propertyTableUpdater->addToUsageCount(
 			$idTable->getSMWPropertyID( new Property( '_REDI' ) ),
 			$count
 		);
@@ -552,7 +552,7 @@ class RedirectUpdater {
 			$source->getNamespace()
 		);
 
-		$this->propertyStatisticsStore->addToUsageCount(
+		$this->propertyTableUpdater->addToUsageCount(
 			$idTable->getSMWPropertyID( new Property( '_REDI' ) ),
 			1
 		);

@@ -30,15 +30,14 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed the attachments table in the factbox not being sortable ([#7195](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7195))
 * Fixed `format=feed` exports failing on MediaWiki 1.47 ([#7206](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7206))
 * Fixed Elasticsearch replication and `rebuildElasticIndex.php` with `indexer.raw.text` enabled failing on MediaWiki 1.47, and on earlier versions for pages with some content models that are not text ([#7206](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7206))
+* Fixed pages keeping outdated property values, and queries missing them, when several job runners or other processes updated pages at the same time. A page update that fails because of a database error is now retried by an update job ([#7208](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7208))
 
 ## Upgrading
 
 If you run MediaWiki 1.43.0 to 1.43.3, update MediaWiki to 1.43.4 or later first, as this version of SMW does not
 load on older versions.
 
-No need to run "update.php" or any other migration scripts, unless you ran `updateEntityCollation.php` with an
-earlier version. In that case, run "update.php" once so that predefined properties such as `Modification date` sort
-by their label again.
+Run [update.php](https://www.mediawiki.org/wiki/Manual:Update.php) once.
 
 If your wiki runs MySQL or MariaDB in strict SQL mode, run `rebuildData.php` once, so that pages with long sort keys
 get the data SMW could not store before.
