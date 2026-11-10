@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
+use MediaWiki\Maintenance\MaintenanceFatalError;
 use MediaWiki\MediaWikiServices;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\SMWDeclarativeHookReseater;
@@ -116,6 +117,20 @@ class SetupStoreMaintenanceTest extends SMWIntegrationTestCase {
 			'Core table(s)',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
+	}
+
+	public function testUnknownBackendAbortsTheScript() {
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\setupStore' );
+
+		$maintenanceRunner->setOptions(
+			[
+				'backend' => 'SMW\NonExistentStore',
+				'quiet' => true
+			]
+		);
+
+		$this->expectException( MaintenanceFatalError::class );
+		$maintenanceRunner->run();
 	}
 
 }

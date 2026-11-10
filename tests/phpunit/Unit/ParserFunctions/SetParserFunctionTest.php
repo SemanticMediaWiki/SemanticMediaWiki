@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\ParserFunctions;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Parser\ParserOutputLinkTypes;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage as DIWikiPage;
@@ -536,9 +537,9 @@ class SetParserFunctionTest extends TestCase {
 			ParameterProcessorFactory::newFromArray( [ 'Foo=File:Example.png', '+display' ], true )
 		);
 
-		$this->assertArrayHasKey(
+		$this->assertContains(
 			'Example.png',
-			$parserOutput->getImages()
+			$this->getUsedFiles( $parserOutput )
 		);
 	}
 
@@ -553,7 +554,17 @@ class SetParserFunctionTest extends TestCase {
 
 		$this->assertSame(
 			[],
-			$parserOutput->getImages()
+			$this->getUsedFiles( $parserOutput )
+		);
+	}
+
+	/**
+	 * @return string[]
+	 */
+	private function getUsedFiles( ParserOutput $parserOutput ): array {
+		return array_map(
+			static fn ( array $file ) => $file['link']->getDBkey(),
+			$parserOutput->getLinkList( ParserOutputLinkTypes::MEDIA )
 		);
 	}
 

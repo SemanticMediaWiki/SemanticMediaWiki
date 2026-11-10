@@ -55,7 +55,7 @@ class TooltipResourceDeliveryTest extends TestCase {
 
 		$this->assertStringContainsString(
 			'smw-highlighter',
-			$parserOutput->getRawText(),
+			$parserOutput->getContentHolderText(),
 			'guard: the rendering parse is expected to output a highlighter'
 		);
 

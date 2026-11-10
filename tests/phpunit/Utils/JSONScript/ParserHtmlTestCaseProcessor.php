@@ -102,38 +102,23 @@ class ParserHtmlTestCaseProcessor extends MediaWikiIntegrationTestCase {
 			$subject->getTitle()
 		);
 
-		if ( !$this->isSetAndTrueish( $case[ 'assert-output' ], [ 'withOutputPageContext', 'onPageView' ] ) ) {
+		if ( !$this->isSetAndTrueish( $case[ 'assert-output' ], 'onPageView' ) ) {
 			return $parserOutput->runOutputPipeline( ParserOptions::newFromAnon() )->getContentHolderText();
 		}
 
 		$context = new RequestContext();
 		$context->setTitle( $subject->getTitle() );
 
-		if ( $this->isSetAndTrueish( $case[ 'assert-output' ], 'withOutputPageContext' ) ) {
-			// Ensures the OutputPageBeforeHTML hook is run
-			$context->getOutput()->addParserOutput( $parserOutput );
-		} else {
-			Article::newFromTitle( $subject->getTitle(), $context )->view();
-		}
+		Article::newFromTitle( $subject->getTitle(), $context )->view();
 
 		return $context->getOutput()->getHTML();
 	}
 
 	/**
-	 * @param $array
-	 * @param string | string[] $keys
-	 * @return bool True if any of the $keys is defined in $array and true-ish
+	 * @return bool True if $key is defined in $array and true-ish
 	 */
-	private function isSetAndTrueish( $array, $keys ) {
-		$keys = (array)$keys;
-
-		foreach ( $keys as $key ) {
-			if ( isset( $array[ $key ] ) && $array[ $key ] ) {
-				return true;
-			}
-		}
-
-		return false;
+	private function isSetAndTrueish( array $array, string $key ): bool {
+		return !empty( $array[$key] );
 	}
 
 }

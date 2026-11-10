@@ -24,7 +24,7 @@ class SpyLogger extends AbstractLogger {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function log( $level, $message, array $context = [] ) {
+	public function log( $level, $message, array $context = [] ): void {
 		if ( is_array( $message ) ) {
 			$message = json_encode( $message );
 		}

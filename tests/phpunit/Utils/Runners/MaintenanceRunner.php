@@ -3,11 +3,12 @@
 namespace SMW\Tests\Utils\Runners;
 
 use DomainException;
-use Maintenance;
 use MediaWiki\HookContainer\HookContainer;
+use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use RuntimeException;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use Wikimedia\TestingAccessWrapper;
 
 /**
  * Running maintenance scripts via phpunit is not really possible but instead
@@ -91,6 +92,12 @@ class MaintenanceRunner {
 			throw new DomainException( "Expected a Maintenance instance" );
 		}
 
+		// From MediaWiki 1.46, fatalError() exits the test run instead of
+		// throwing unless the script is marked as under test
+		if ( property_exists( Maintenance::class, 'isTesting' ) ) {
+			TestingAccessWrapper::newFromObject( $maintenance )->isTesting = true;
+		}
+
 		// isset/ null
 		if ( isset( $this->options['quiet'] ) && $this->options['quiet'] === false ) {
 			unset( $this->options['quiet'] );
@@ -110,11 +117,15 @@ class MaintenanceRunner {
 		}
 
 		ob_start();
-		$result = $maintenance->execute();
-		$this->output = ob_get_contents();
 
-		while ( ob_get_level() > $obLevel ) {
-			ob_end_clean();
+		try {
+			$result = $maintenance->execute();
+		} finally {
+			$this->output = ob_get_contents();
+
+			while ( ob_get_level() > $obLevel ) {
+				ob_end_clean();
+			}
 		}
 
 		return $result;

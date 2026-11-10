@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use MediaWiki\Content\TextContent;
 use MediaWiki\Title\Title;
 use SMW\Services\ServicesFactory;
 use UnexpectedValueException;
@@ -45,7 +46,7 @@ class PageReader {
 		$this->page = new WikiPage( $title );
 		$content = $this->page->getContent();
 
-		return $content->getNativeData();
+		return $content instanceof TextContent ? $content->getText() : '';
 	}
 
 	/**

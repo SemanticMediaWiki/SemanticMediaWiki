@@ -203,7 +203,7 @@ class setupStore extends Maintenance {
 		if ( class_exists( $storeClass ) ) {
 			$smwgDefaultStore = $storeClass;
 		} else {
-			$this->error( "\nError: There is no backend class \"$storeClass\". Aborting.", 1 );
+			$this->fatalError( "\nError: There is no backend class \"$storeClass\". Aborting." );
 		}
 
 		return StoreFactory::getStore( $storeClass );

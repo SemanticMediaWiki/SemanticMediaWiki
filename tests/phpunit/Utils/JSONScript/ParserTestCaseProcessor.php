@@ -143,13 +143,7 @@ class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 			$title
 		);
 
-		if ( isset( $case['assert-output']['onOutputPage'] ) && $case['assert-output']['onOutputPage'] ) {
-			$context = new RequestContext();
-			$context->setTitle( $title );
-			// Ensures the OutputPageBeforeHTML hook is run
-			$context->getOutput()->addParserOutput( $parserOutput );
-			$output = $context->getOutput()->getHtml();
-		} elseif ( isset( $case['assert-output']['onPageView'] ) ) {
+		if ( isset( $case['assert-output']['onPageView'] ) ) {
 			$parameters = isset( $case['assert-output']['onPageView']['parameters'] ) ? $case['assert-output']['onPageView']['parameters'] : [];
 			$context = RequestContext::newExtraneousContext(
 				$title,

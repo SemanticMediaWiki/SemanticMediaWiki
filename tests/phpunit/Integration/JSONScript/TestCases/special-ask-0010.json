@@ -33,6 +33,11 @@
 		},
 		{
 			"namespace": "NS_MAIN",
+			"page": "SA0010/5",
+			"contents": "Text that only the page content carries [[Category:SA0010 page content]]"
+		},
+		{
+			"namespace": "NS_MAIN",
 			"page": "SA0010/Q.1",
 			"contents": "{{#ask: [[Category:SA0010]] |format=feed |type=atom |limit=10 |searchlabel=feed output }}"
 		},
@@ -145,6 +150,32 @@
 			"assert-output": {
 				"to-contain": [
 					"-5B-5BCategory:SA0010-5D-5D/mainlabel=/offset=3/limit=10/order=desc/sort=/format=feed/searchlabel=feed-20output/type=atom"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#5 (page=full)",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"format": "feed",
+						"page": "full"
+					},
+					"q": "[[Category:SA0010 page content]]",
+					"po": ""
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<title>SA0010/5</title>",
+					"Text that only the page content carries",
+					"</rss>"
 				]
 			}
 		}

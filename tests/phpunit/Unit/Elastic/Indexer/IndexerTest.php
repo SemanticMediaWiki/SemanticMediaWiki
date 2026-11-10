@@ -3,7 +3,10 @@
 namespace SMW\Tests\Unit\Elastic\Indexer;
 
 use ArrayObject;
+use MediaWiki\Content\Content;
+use MediaWiki\Content\TextContent;
 use MediaWiki\Revision\RevisionLookup;
+use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
 use PHPUnit\Framework\TestCase;
@@ -358,6 +361,33 @@ class IndexerTest extends TestCase {
 		$indexer->setLogger( $this->logger );
 
 		return $indexer;
+	}
+
+	public function testFetchNativeDataReturnsTheRevisionText() {
+		$instance = $this->newIndexerForRevisionContent( new TextContent( 'Some page text' ) );
+
+		$this->assertSame(
+			'Some page text',
+			$instance->fetchNativeData( 42 )
+		);
+	}
+
+	public function testFetchNativeDataIsEmptyForNonTextContent() {
+		$instance = $this->newIndexerForRevisionContent( $this->createStub( Content::class ) );
+
+		$this->assertSame(
+			'',
+			$instance->fetchNativeData( 42 )
+		);
+	}
+
+	private function newIndexerForRevisionContent( Content $content ): Indexer {
+		$revision = $this->createStub( RevisionRecord::class );
+		$revision->method( 'getContent' )->willReturn( $content );
+
+		$this->revisionLookup->method( 'getRevisionById' )->willReturn( $revision );
+
+		return new Indexer( $this->store, $this->bulk, $this->titleFactory, $this->revisionLookup );
 	}
 
 }

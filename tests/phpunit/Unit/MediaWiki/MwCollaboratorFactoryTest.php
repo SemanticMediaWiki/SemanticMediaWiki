@@ -15,7 +15,6 @@ use SMW\MediaWiki\EditInfo;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\MwCollaboratorFactory;
-use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\PageInfoProvider;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\MediaWiki\Renderer\HtmlColumnListRenderer;
@@ -78,14 +77,6 @@ class MwCollaboratorFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructDeepRedirectTargetResolver() {
-		$pageCreator = $this->getMockBuilder( PageCreator::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->applicationFactory->expects( $this->atLeastOnce() )
-			->method( 'newPageCreator' )
-			->willReturn( $pageCreator );
-
 		$instance = new MwCollaboratorFactory(
 			$this->applicationFactory
 		);

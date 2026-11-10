@@ -2,6 +2,7 @@
 
 namespace SMW\Elastic\Indexer;
 
+use MediaWiki\Content\TextContent;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
@@ -235,7 +236,7 @@ class Indexer {
 
 		$content = $revision->getContent( SlotRecord::MAIN, RevisionRecord::RAW );
 
-		return $content->getNativeData();
+		return $content instanceof TextContent ? $content->getText() : '';
 	}
 
 	/**
