@@ -15,6 +15,7 @@ use SMW\Lookup\CachedListLookup;
 use SMW\Lookup\ListLookup;
 use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
+use SMW\MediaWiki\ParsoidUse;
 use SMW\RequestOptions;
 use SMW\Services\ServicesContainer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -41,6 +42,7 @@ use SMW\SQLStore\EntityStore\SemanticDataLookup;
 use SMW\SQLStore\EntityStore\SequenceMapFinder;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
 use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
+use SMW\SQLStore\Installer\ParserExaminer;
 use SMW\SQLStore\Installer\TableOptimizer;
 use SMW\SQLStore\Installer\VersionExaminer;
 use SMW\SQLStore\Lookup\ByGroupPropertyValuesLookup;
@@ -473,6 +475,7 @@ class SQLStoreFactory {
 			$tableBuildExaminer,
 			$versionExaminer,
 			$tableOptimizer,
+			new ParserExaminer( new ParsoidUse( $mwServices->getMainConfig() ) ),
 			$mwServices->getTitleFactory(),
 			$mwServices->getJobFactory()
 		);

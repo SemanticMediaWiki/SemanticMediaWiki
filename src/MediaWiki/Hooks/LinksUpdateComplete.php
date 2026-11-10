@@ -8,6 +8,7 @@ use MediaWiki\Title\Title;
 use Psr\Log\LoggerInterface;
 use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Jobs\ContentParserFactory;
+use SMW\MediaWiki\ParsoidUse;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\NamespaceExaminer;
 use SMW\ParserData;
@@ -35,6 +36,7 @@ class LinksUpdateComplete implements LinksUpdateCompleteHook {
 		private readonly ContentParserFactory $contentParserFactory,
 		private readonly RevisionGuard $revisionGuard,
 		private readonly SiteReadiness $siteReadiness,
+		private readonly ParsoidUse $parsoidUse,
 		private readonly LoggerInterface $logger,
 	) {
 	}
@@ -64,6 +66,10 @@ class LinksUpdateComplete implements LinksUpdateCompleteHook {
 		$parserData->setLogger( $this->logger );
 
 		if ( $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
+			if ( $this->parsoidUse->forLinksUpdates() ) {
+				$this->warnAboutParsoid( $title );
+			}
+
 			// #347 showed that an external process (e.g. RefreshLinksJob) can inject a
 			// ParserOutput without/cleared SemanticData which forces the Store updater
 			// to create an empty container that will clear all existing data.
@@ -94,6 +100,16 @@ class LinksUpdateComplete implements LinksUpdateCompleteHook {
 		$parserData->updateStore( $opts );
 
 		return true;
+	}
+
+	private function warnAboutParsoid( Title $title ): void {
+		wfLogWarning(
+			'MediaWiki parsed "' . $title->getPrefixedText() . '" with Parsoid for its links update, so ' .
+			'Semantic MediaWiki stored none of its in-text annotations and categories. Semantic MediaWiki ' .
+			'does not support Parsoid yet, see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7205. ' .
+			'To use the legacy parser, set $wgUseParsoidParser = false; and do not set $wgUseParsoidLinksUpdate ' .
+			'to true. Then run rebuildData.php for all pages.'
+		);
 	}
 
 	/**

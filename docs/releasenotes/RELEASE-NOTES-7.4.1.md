@@ -10,6 +10,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 ## Changes
 
 * Raised the minimum MediaWiki version to 1.43.4. On MediaWiki 1.43.0 to 1.43.3, pages whose `#ask` query shows a "further results" link failed with a `ParameterTypeException` ([#7194](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7194))
+* Added warnings when MediaWiki parses pages with Parsoid ([#7207](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7207))
 * Fixed `updateEntityCollation.php` running very slowly on large wikis ([#7181](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7181))
 * Fixed `updateEntityCollation.php` making predefined properties such as `Modification date` sort out of alphabetical order ([#7181](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7181))
 * Fixed SMW storing no data for new pages with long sort keys on MySQL and MariaDB in strict SQL mode ([#7202](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7202))

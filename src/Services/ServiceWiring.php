@@ -40,6 +40,7 @@ use SMW\MediaWiki\LinkBatch;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
+use SMW\MediaWiki\ParsoidUse;
 use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\MediaWiki\PermissionManager;
 use SMW\MediaWiki\PostProcHandlerFactory;
@@ -599,6 +600,10 @@ return [
 
 	'SMW.Logger' => static function ( MediaWikiServices $services ): LoggerInterface {
 		return LoggerFactory::getInstance( 'smw' );
+	},
+
+	'SMW.ParsoidUse' => static function ( MediaWikiServices $services ): ParsoidUse {
+		return new ParsoidUse( $services->getMainConfig() );
 	},
 
 	'SMW.PropertyLabelFinder' => static function ( MediaWikiServices $services ): PropertyLabelFinder {
