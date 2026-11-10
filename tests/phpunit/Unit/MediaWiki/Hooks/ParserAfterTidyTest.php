@@ -248,10 +248,6 @@ class ParserAfterTidyTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parserOutput->expects( $this->any() )
-			->method( 'getImages' )
-			->willReturn( [] );
-
 		$this->cache->expects( $this->any() )
 			->method( 'get' )
 			->with( $this->stringContains( "smw:parseraftertidy" ) )

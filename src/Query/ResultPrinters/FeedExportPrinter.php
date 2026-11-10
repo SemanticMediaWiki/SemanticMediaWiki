@@ -7,6 +7,7 @@ use MediaWiki\Context\RequestContext;
 use MediaWiki\Feed\ChannelFeed;
 use MediaWiki\Feed\FeedItem;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Parser\Sanitizer;
 use MediaWiki\Title\Title;
@@ -206,22 +207,43 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 			$this->feedURL()
 		);
 
-		// Create feed header
+		// MediaWiki 1.46 added ChannelFeed methods that take the OutputPage and
+		// 1.47 removed the old ones
+		if ( version_compare( MW_VERSION, '1.46', '<' ) ) {
+			$this->printFeedBeforeMediaWiki146( $feed, $results );
+		} else {
+			$this->printFeed( $feed, $results, RequestContext::getMain()->getOutput() );
+		}
+
+		return null;
+	}
+
+	private function printFeed( ChannelFeed $feed, QueryResult $results, OutputPage $output ): void {
+		if ( $this->httpHeader ) {
+			$feed->outputHeader( $output );
+		}
+
+		$row = $results->getNext();
+		while ( $row ) {
+			$feed->outputItem( $this->feedItem( $row ), $output );
+			$row = $results->getNext();
+		}
+
+		$feed->outputFooter( $output );
+	}
+
+	private function printFeedBeforeMediaWiki146( ChannelFeed $feed, QueryResult $results ): void {
 		if ( $this->httpHeader ) {
 			$feed->outHeader();
 		}
 
-		// Create feed items
 		$row = $results->getNext();
 		while ( $row ) {
 			$feed->outItem( $this->feedItem( $row ) );
 			$row = $results->getNext();
 		}
 
-		// Create feed footer
 		$feed->outFooter();
-
-		return null;
 	}
 
 	/**
@@ -341,7 +363,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		$content = $wikiPage->getContent();
 
 		if ( $content instanceof TextContent ) {
-			$text = $content->getNativeData();
+			$text = $content->getText();
 		} else {
 			return '';
 		}

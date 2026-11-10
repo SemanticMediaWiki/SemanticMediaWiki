@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Unit\MediaWiki;
 
+use MediaWiki\Page\RedirectLookup;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\DeepRedirectTargetResolver;
-use SMW\MediaWiki\PageCreator;
 use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
@@ -20,37 +20,23 @@ use SMW\Tests\Utils\Mock\MockTitle;
 class DeepRedirectTargetResolverTest extends TestCase {
 
 	public function testCanConstruct() {
-		$pageCreator = $this->getMockBuilder( PageCreator::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			DeepRedirectTargetResolver::class,
-			 new DeepRedirectTargetResolver( $pageCreator )
+			 new DeepRedirectTargetResolver( $this->createStub( RedirectLookup::class ) )
 		);
 	}
 
 	public function testResolveRedirectTarget() {
 		$title = MockTitle::buildMock( 'Uuuuuuuuuu' );
 
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
-			->getMock();
+		$redirectLookup = $this->createMock( RedirectLookup::class );
 
-		$wikiPage->expects( $this->atLeastOnce() )
+		$redirectLookup->expects( $this->atLeastOnce() )
 			->method( 'getRedirectTarget' )
 			->willReturn( MockTitle::buildMock( 'Ooooooo' ) );
 
-		$pageCreator = $this->getMockBuilder( PageCreator::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$pageCreator->expects( $this->any() )
-			->method( 'createPage' )
-			->willReturn( $wikiPage );
-
 		$instance = $this->getMockBuilder( DeepRedirectTargetResolver::class )
-			->setConstructorArgs( [ $pageCreator ] )
+			->setConstructorArgs( [ $redirectLookup ] )
 			->setMethods( [ 'isValidRedirectTarget', 'isRedirect' ] )
 			->getMock();
 
@@ -74,23 +60,13 @@ class DeepRedirectTargetResolverTest extends TestCase {
 	public function testResolveRedirectTargetThrowsException() {
 		$title = MockTitle::buildMock( 'Uuuuuuuuuu' );
 
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
-			->getMock();
+		$redirectLookup = $this->createMock( RedirectLookup::class );
 
-		$wikiPage->expects( $this->never() )
+		$redirectLookup->expects( $this->never() )
 			->method( 'getRedirectTarget' );
 
-		$pageCreator = $this->getMockBuilder( PageCreator::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$pageCreator->expects( $this->any() )
-			->method( 'createPage' )
-			->willReturn( $wikiPage );
-
 		$instance = $this->getMockBuilder( DeepRedirectTargetResolver::class )
-			->setConstructorArgs( [ $pageCreator ] )
+			->setConstructorArgs( [ $redirectLookup ] )
 			->setMethods( [ 'isValidRedirectTarget', 'isRedirect' ] )
 			->getMock();
 
@@ -109,24 +85,14 @@ class DeepRedirectTargetResolverTest extends TestCase {
 	public function testTryToResolveCircularRedirectThrowsException() {
 		$title = MockTitle::buildMock( 'Uuuuuuuuuu' );
 
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
-			->getMock();
+		$redirectLookup = $this->createMock( RedirectLookup::class );
 
-		$wikiPage->expects( $this->atLeastOnce() )
+		$redirectLookup->expects( $this->atLeastOnce() )
 			->method( 'getRedirectTarget' )
 			->willReturn( $title );
 
-		$pageCreator = $this->getMockBuilder( PageCreator::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$pageCreator->expects( $this->any() )
-			->method( 'createPage' )
-			->willReturn( $wikiPage );
-
 		$instance = $this->getMockBuilder( DeepRedirectTargetResolver::class )
-			->setConstructorArgs( [ $pageCreator ] )
+			->setConstructorArgs( [ $redirectLookup ] )
 			->setMethods( [ 'isRedirect' ] )
 			->getMock();
 

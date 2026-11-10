@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Page\RedirectLookup;
 use MediaWiki\Title\Title;
 use RuntimeException;
 
@@ -22,7 +23,7 @@ class DeepRedirectTargetResolver {
 	/**
 	 * @since 2.1
 	 */
-	public function __construct( private readonly PageCreator $pageCreator ) {
+	public function __construct( private readonly RedirectLookup $redirectLookup ) {
 	}
 
 	/**
@@ -53,7 +54,7 @@ class DeepRedirectTargetResolver {
 		}
 
 		if ( $this->isRedirect( $title ) ) {
-			$title = $this->pageCreator->createPage( $title )->getRedirectTarget();
+			$title = Title::castFromLinkTarget( $this->redirectLookup->getRedirectTarget( $title ) );
 
 			if ( $title instanceof Title ) {
 				$title = $this->doResolveRedirectTarget( $title );

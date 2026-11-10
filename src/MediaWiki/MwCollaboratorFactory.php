@@ -60,7 +60,7 @@ class MwCollaboratorFactory {
 	 * @return DeepRedirectTargetResolver
 	 */
 	public function newDeepRedirectTargetResolver(): DeepRedirectTargetResolver {
-		return new DeepRedirectTargetResolver( $this->applicationFactory->newPageCreator() );
+		return new DeepRedirectTargetResolver( MediaWikiServices::getInstance()->getRedirectLookup() );
 	}
 
 	/**

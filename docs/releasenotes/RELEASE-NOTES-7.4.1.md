@@ -27,6 +27,8 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed property pages, other lists of the pages that use a property, `Special:FacetedSearch` and `updateQueryDependencies.php` failing on MariaDB with "isn't in GROUP BY" when the SQL mode includes `ONLY_FULL_GROUP_BY`, as MediaWiki's `DevelopmentSettings.php` sets it ([#7196](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7196))
 * Fixed SMW on PostgreSQL listing a page once per value on property pages and in other lists of the pages that use a property ([#7204](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7204))
 * Fixed the attachments table in the factbox not being sortable ([#7195](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7195))
+* Fixed `format=feed` exports failing on MediaWiki 1.47 ([#7206](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7206))
+* Fixed Elasticsearch replication and `rebuildElasticIndex.php` with `indexer.raw.text` enabled failing on MediaWiki 1.47, and on earlier versions for pages with some content models that are not text ([#7206](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/7206))
 
 ## Upgrading
 
