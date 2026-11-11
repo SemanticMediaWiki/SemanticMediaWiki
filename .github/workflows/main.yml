@@ -35,6 +35,7 @@ jobs:
           - { mw: '1.44', php: 8.3, db: "mariadb:11.8", full: false }
           - { mw: '1.45', php: 8.4, db: "mariadb:12.3", full: false }
           - { mw: '1.46', php: 8.5, db: "mariadb:12.3", full: false }
+          - { mw: '1.47', php: 8.5, db: "mariadb:12.3", full: false }
     env:
       MW_VERSION: ${{ matrix.mw }}
       PHP_VERSION: ${{ matrix.php }}
@@ -93,6 +94,9 @@ jobs:
           # The SQL mode of MediaWiki's DevelopmentSettings.php. Under it, MariaDB
           # rejects columns outside the GROUP BY that MySQL accepts.
           - { mw: '1.46', php: 8.5, db: "mariadb:11.8", sql_mode: "STRICT_ALL_TABLES,ONLY_FULL_GROUP_BY" }
+          # MediaWiki 1.47 parses with Parsoid by default, which Semantic MediaWiki
+          # does not support yet: https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/7205
+          - { mw: '1.47', php: 8.5, db: "mariadb:12.3", legacy_parser: true }
     env:
       MW_VERSION: ${{ matrix.mw }}
       PHP_VERSION: ${{ matrix.php }}
@@ -116,6 +120,10 @@ jobs:
       - name: Set the SQL mode
         if: matrix.sql_mode
         run: printf '\n%s\n' "\$wgSQLMode = '${{ matrix.sql_mode }}';" >> __setup_extension__
+
+      - name: Use the legacy parser
+        if: matrix.legacy_parser
+        run: printf '\n%s\n' '$wgUseParsoidParser = false;' >> __setup_extension__
 
       - name: Build image and install MediaWiki
         run: make install
