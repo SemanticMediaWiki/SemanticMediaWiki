@@ -62,7 +62,6 @@ class ValueFormatterTest extends TestCase {
 
 	public function testCanonicalLabelSuffixSplitKeepsUserMarkupOffTheRawSuffix() {
 		$method = new \ReflectionMethod( ValueFormatter::class, 'splitCanonicalLabelSuffix' );
-		$method->setAccessible( true );
 
 		// A preferred label that itself contains `&nbsp;` and markup, followed by
 		// the SMW-generated canonical-label span suffix.
