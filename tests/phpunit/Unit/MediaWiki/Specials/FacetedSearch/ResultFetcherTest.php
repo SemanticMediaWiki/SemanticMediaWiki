@@ -52,7 +52,6 @@ class ResultFetcherTest extends TestCase {
 
 	private function setErrors( ResultFetcher $instance, array $errors ): void {
 		$property = new ReflectionProperty( ResultFetcher::class, 'errors' );
-		$property->setAccessible( true );
 		$property->setValue( $instance, $errors );
 	}
 
