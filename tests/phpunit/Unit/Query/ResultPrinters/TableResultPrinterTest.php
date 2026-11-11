@@ -55,11 +55,9 @@ class TableResultPrinterTest extends TestCase {
 		$instance = new TableResultPrinter( 'table' );
 
 		$params = new \ReflectionProperty( ResultPrinter::class, 'params' );
-		$params->setAccessible( true );
 		$params->setValue( $instance, [ 'sep' => $sep ] );
 
 		$method = new \ReflectionMethod( TableResultPrinter::class, 'getValueSeparator' );
-		$method->setAccessible( true );
 
 		$this->assertSame( $expected, $method->invoke( $instance, $outputMode ) );
 	}
