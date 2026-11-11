@@ -92,11 +92,9 @@ class CsvFileExportPrinterTest extends TestCase {
 		$instance = new CsvFileExportPrinter( 'csv' );
 
 		$params = new \ReflectionProperty( ResultPrinter::class, 'params' );
-		$params->setAccessible( true );
 		$params->setValue( $instance, [ 'sep' => $sep, 'valuesep' => ',', 'merge' => false ] );
 
 		$method = new \ReflectionMethod( CsvFileExportPrinter::class, 'getCsv' );
-		$method->setAccessible( true );
 
 		return (string)$method->invoke( $instance, new Csv( false, false ), $this->newQueryResult() );
 	}
