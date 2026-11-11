@@ -124,7 +124,6 @@ class CategoryResultPrinterTest extends TestCase {
 		$this->setPrivate( $instance, 'templateRenderer', $templateRenderer );
 
 		$method = new \ReflectionMethod( CategoryResultPrinter::class, 'row_to_template' );
-		$method->setAccessible( true );
 
 		$firstCol = true;
 		$method->invokeArgs(
@@ -136,7 +135,6 @@ class CategoryResultPrinterTest extends TestCase {
 
 	private function setPrivate( object $instance, string $property, $value ): void {
 		$reflection = new \ReflectionProperty( CategoryResultPrinter::class, $property );
-		$reflection->setAccessible( true );
 		$reflection->setValue( $instance, $value );
 	}
 
@@ -144,11 +142,9 @@ class CategoryResultPrinterTest extends TestCase {
 		$instance = new CategoryResultPrinter( 'category' );
 
 		$delimProperty = new \ReflectionProperty( CategoryResultPrinter::class, 'delim' );
-		$delimProperty->setAccessible( true );
 		$delimProperty->setValue( $instance, $delim );
 
 		$method = new \ReflectionMethod( CategoryResultPrinter::class, 'row_to_contents' );
-		$method->setAccessible( true );
 
 		$firstCol = true;
 
