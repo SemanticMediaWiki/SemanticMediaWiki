@@ -637,7 +637,8 @@ class SQLStoreFactory {
 			$caches[$key] = new InstrumentedCache(
 				$inMemoryPoolCache->getPoolCacheById( $poolId, $cacheSize ),
 				$statsFactory,
-				$poolId
+				$poolId,
+				Site::isCommandLineMode()
 			);
 		}
 
