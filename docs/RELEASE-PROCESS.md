@@ -13,8 +13,9 @@ For *which* changes belong in a patch, minor, or major release, see [RELEASE-POL
 
 Branch off `master` and make these changes in a single commit named `X.Y.Z release`:
 
-* **`extension.json`**: drop the `-alpha` suffix, for example `7.1.0-alpha` to `7.1.0`.
-* **`docs/releasenotes/RELEASE-NOTES-X.Y.Z.md`**: set the header date (`Released on TBD.` to `Released on Month D, YYYY.`) and confirm every user-facing change since the previous release has a bullet. The notes file and its index entry in `docs/releasenotes/README.md` already exist from the development cycle. To check completeness, review `git log <previous-release-tag>..master` (for example `git log 7.0.0..master`); internal, CI, test, and localisation commits are intentionally left out.
+* **`extension.json`**: set the release version. `master` carries the next patch version (for example `7.1.1-alpha`), so choose patch, minor (`7.2.0`) or major by the changes being released, as [RELEASE-POLICY.md](RELEASE-POLICY.md) defines them.
+* **`docs/releasenotes/RELEASE-NOTES-X.Y.Z.md`**: write the notes, using the latest notes of the same kind (patch, minor or major) as a template, with the header `Released on Month D, YYYY.` Add a bullet linking the PR for every user-facing change in `git log <previous-release-tag>..master` (for example `git log 7.0.0..master`); internal, CI, test, and localisation commits are intentionally left out. Take what users notice, and any steps they need after upgrading, from each PR's description.
+* **`docs/releasenotes/README.md`**: link the new notes (bold for minor and major, plain text for patch).
 * **`docs/COMPATIBILITY.md`**: in the platform status table, add a new `X.Y.x` **Stable release** row (First release and Latest release both set to the release date in ISO `YYYY-MM-DD` form; PHP and MediaWiki ranges) and change the previous stable line to Obsolete release. Add a matching `X.Y.x` row to the ElasticStore support table. Exactly one row is ever "Stable release". Leave the PHP-version cells of old rows alone; some read like a version number (for example `7.1.0`) but are PHP versions, not SMW versions.
 
 Only touch `docs/INSTALL.md` or `composer.json` when the minimum requirements or install instructions actually change (typically major releases).
@@ -56,8 +57,4 @@ Then update the version listed on [Wikidata](https://www.wikidata.org/wiki/Q2072
 
 ## 4. Start the next development cycle
 
-Bump `master` to the next version with an `-alpha` suffix, in one commit:
-
-* **`extension.json`**: set the next `-alpha` version. **Default to the next patch** (for example `7.1.0` becomes `7.1.1-alpha`). Only move to the next minor (`7.2.0-alpha`) once a feature change actually lands and warrants it.
-* **`docs/releasenotes/RELEASE-NOTES-<next>.md`**: add a scaffold (a patch scaffold states "only bug fixes"; use a minor scaffold when features are expected).
-* **`docs/releasenotes/README.md`**: link the new notes (bold for minor and major, plain text for patch).
+In `extension.json`, bump `master` to the next patch version with an `-alpha` suffix, for example `7.1.0` to `7.1.1-alpha`.
