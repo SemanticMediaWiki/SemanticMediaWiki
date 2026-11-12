@@ -4,6 +4,8 @@ namespace SMW\Tests\Unit\Query\Result;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryToken;
 use SMW\Query\Result\ItemFetcher;
@@ -171,6 +173,66 @@ class ItemFetcherTest extends TestCase {
 			$expected,
 			$instance->fetch( [ $dataItem ], $property, $this->requestOptions )
 		);
+	}
+
+	public function testFirstChainLinkPrefetchesTheWholeResultOnce() {
+		$prefetchCache = $this->newRecordingPrefetchCache();
+
+		$this->fetchChainLinkForTwoRows( $prefetchCache, isFirstChain: true );
+
+		$this->assertSame( [ [ 'Row1', 'Row2' ] ], $prefetchCache->prefetchedSubjects );
+	}
+
+	public function testLaterChainLinkPrefetchesTheValuesOfEachRow() {
+		$prefetchCache = $this->newRecordingPrefetchCache();
+
+		$this->fetchChainLinkForTwoRows( $prefetchCache, isFirstChain: false );
+
+		$this->assertSame( [ [ 'Row1' ], [ 'Row2' ] ], $prefetchCache->prefetchedSubjects );
+	}
+
+	private function fetchChainLinkForTwoRows( PrefetchCache $prefetchCache, bool $isFirstChain ): void {
+		$this->store->method( 'service' )
+			->willReturn( $prefetchCache );
+
+		$firstRow = $this->dataItemFactory->newDIWikiPage( 'Row1' );
+		$secondRow = $this->dataItemFactory->newDIWikiPage( 'Row2' );
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->isChain = true;
+		$requestOptions->isFirstChain = $isFirstChain;
+
+		$instance = new ItemFetcher( $this->store, [ $firstRow, $secondRow ] );
+		$instance->setPrefetchFlag( SMW_QUERYRESULT_PREFETCH );
+
+		$property = $this->dataItemFactory->newDIProperty( 'Bar' );
+		$instance->fetch( [ $firstRow ], $property, $requestOptions );
+		$instance->fetch( [ $secondRow ], $property, $requestOptions );
+	}
+
+	private function newRecordingPrefetchCache(): PrefetchCache {
+		return new class extends PrefetchCache {
+
+			/** @var string[][] DB keys of the subjects of each prefetch */
+			public array $prefetchedSubjects = [];
+			private array $prefetchedKeys = [];
+
+			public function __construct() {
+			}
+
+			public function prefetch( array $subjects, Property $property, RequestOptions $requestOptions ): void {
+				$this->prefetchedSubjects[] = array_map( static fn ( WikiPage $subject ) => $subject->getDBkey(), $subjects );
+				$this->prefetchedKeys[self::makeCacheKey( $property, $requestOptions )] = true;
+			}
+
+			public function isCached( Property $property, RequestOptions $requestOptions ): bool {
+				return isset( $this->prefetchedKeys[self::makeCacheKey( $property, $requestOptions )] );
+			}
+
+			public function getPropertyValues( WikiPage $subject, Property $property, RequestOptions $requestOptions ): array {
+				return [];
+			}
+		};
 	}
 
 }
