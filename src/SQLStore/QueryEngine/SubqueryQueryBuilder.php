@@ -124,6 +124,9 @@ class SubqueryQueryBuilder {
 	/**
 	 * Builds COUNT(*) SQL for a query segment.
 	 *
+	 * The root segment must read `smw_object_ids`, as ConditionBuilder anchors
+	 * it; the ID table is joined again only for `$outerWhere`.
+	 *
 	 * $sqlOptions['LIMIT']/['OFFSET']/['ORDER BY'] are intentionally
 	 * ignored — applying LIMIT or ORDER BY to a single-row aggregate is
 	 * meaningless. The parameter is kept for signature parity with
@@ -136,8 +139,6 @@ class SubqueryQueryBuilder {
 		array $sqlOptions,
 		string $outerWhere
 	): string {
-		$idTable = $this->connection->tableName( self::ID_TABLE );
-		$outer = self::OUTER_ALIAS;
 		$inner = self::INNER_ALIAS;
 
 		$innerSelect = "SELECT DISTINCT {$root->joinfield} AS s_id"
@@ -145,13 +146,12 @@ class SubqueryQueryBuilder {
 			. $root->from
 			. ( $root->where !== '' ? " WHERE {$root->where}" : '' );
 
-		$sql = "SELECT COUNT(*) AS count "
-			. "FROM ($innerSelect) AS $inner "
-			. "INNER JOIN $idTable AS $outer "
-			. "ON $outer.smw_id = $inner.s_id";
+		$sql = "SELECT COUNT(*) AS count FROM ($innerSelect) AS $inner";
 
 		if ( $outerWhere !== '' ) {
-			$sql .= " WHERE $outerWhere";
+			$idTable = $this->connection->tableName( self::ID_TABLE );
+			$outer = self::OUTER_ALIAS;
+			$sql .= " INNER JOIN $idTable AS $outer ON $outer.smw_id = $inner.s_id WHERE $outerWhere";
 		}
 
 		return $sql;

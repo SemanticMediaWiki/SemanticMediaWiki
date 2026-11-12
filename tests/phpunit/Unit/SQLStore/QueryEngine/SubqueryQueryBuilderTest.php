@@ -166,6 +166,7 @@ class SubqueryQueryBuilderTest extends TestCase {
 
 		$this->assertStringContainsString( 'COUNT(*)', $sql );
 		$this->assertStringContainsString( 'SELECT DISTINCT t0.s_id', $sql );
+		$this->assertStringContainsString( '`smw_object_ids` AS outer_q', $sql );
 		$this->assertStringContainsString( "outer_q.smw_iw!=':smw'", $sql );
 		$this->assertStringNotContainsString( 'ORDER BY', $sql );
 		$this->assertStringNotContainsString( 'LIMIT', $sql );
@@ -413,6 +414,20 @@ class SubqueryQueryBuilderTest extends TestCase {
 		$sql = $builder->buildInstanceQuerySQL( $root, $sqlOptions, '' );
 
 		$this->assertStringNotContainsString( 'cursor_sort_', $sql );
+	}
+
+	public function testCountQueryWithoutOuterFilterReadsTheIdTableOnce() {
+		$root = new QuerySegment();
+		$root->joinTable = 'smw_object_ids';
+		$root->alias = 't0';
+		$root->joinfield = 't0.smw_id';
+		$root->from = ' INNER JOIN `smw_fpt_inst` AS t1 ON t0.smw_id=t1.s_id';
+		$root->where = "t1.o_id=42 AND t0.smw_iw!=':smw'";
+
+		$builder = new SubqueryQueryBuilder( $this->connection );
+		$sql = $builder->buildCountQuerySQL( $root, [ 'LIMIT' => 51, 'OFFSET' => 0, 'ORDER BY' => '' ], '' );
+
+		$this->assertSame( 1, substr_count( $sql, 'smw_object_ids' ) );
 	}
 
 	public function testCountQueryWithIdAnchoredRoot() {
