@@ -29,6 +29,7 @@ final class InMemoryLruCache {
 	private int $deletes = 0;
 	private int $hits = 0;
 	private int $misses = 0;
+	private int $count = 0;
 
 	/**
 	 * @since 7.0.0
@@ -79,6 +80,11 @@ final class InMemoryLruCache {
 	 */
 	public function save( $key, $value, $ttl = 0 ): void {
 		$this->inserts++;
+
+		if ( !$this->cache->has( $key ) ) {
+			$this->count = min( $this->count + 1, $this->cache->getMaxSize() );
+		}
+
 		$this->cache->set( $key, $value );
 	}
 
@@ -95,6 +101,7 @@ final class InMemoryLruCache {
 		}
 
 		$this->deletes++;
+		$this->count--;
 		$this->cache->clear( [ $key ] );
 		return true;
 	}
@@ -111,7 +118,7 @@ final class InMemoryLruCache {
 			'inserts' => $this->inserts,
 			'deletes' => $this->deletes,
 			'max' => $this->cache->getMaxSize(),
-			'count' => count( $this->cache->getAllKeys() ),
+			'count' => $this->count,
 			'hits' => $this->hits,
 			'misses' => $this->misses,
 		];
