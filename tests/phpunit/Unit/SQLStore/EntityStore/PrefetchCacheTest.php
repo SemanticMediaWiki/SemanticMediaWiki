@@ -196,9 +196,7 @@ class PrefetchCacheTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$idTable->expects( $this->atLeastOnce() )
-			->method( 'getSMWPageID' )
-			->with( __METHOD__ )
+		$idTable->method( 'findCanonicalId' )
 			->willReturn( 42 );
 
 		$this->store->expects( $this->atLeastOnce() )
@@ -266,8 +264,8 @@ class PrefetchCacheTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$idTable->method( 'getSMWPageID' )
-			->willReturnOnConsecutiveCalls( 101, 102 );
+		$idTable->method( 'findCanonicalId' )
+			->willReturnCallback( static fn ( WikiPage $subject ) => [ 'Subject1' => 101, 'Subject2' => 102 ][$subject->getDBkey()] );
 
 		$this->store->method( 'getObjectIds' )
 			->willReturn( $idTable );
@@ -307,7 +305,7 @@ class PrefetchCacheTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$idTable->method( 'getSMWPageID' )
+		$idTable->method( 'findCanonicalId' )
 			->willReturn( 103 );
 
 		$this->store->method( 'getObjectIds' )

@@ -289,4 +289,67 @@ class PrefetchItemLookupTest extends TestCase {
 		);
 	}
 
+	public function testInvertedPropertyQueriesTheIdsItsSubjectsCarry() {
+		$subject = WikiPage::newFromText( 'Foo' );
+		$subject->setId( 42 );
+
+		$this->assertSame( [ 42 ], $this->prefetchInverted( $subject, idFoundByLookup: 7 ) );
+	}
+
+	public function testInvertedPropertyGivesASubjectWithoutIdTheIdFoundByLookup() {
+		$subject = WikiPage::newFromText( 'Foo' );
+
+		$this->prefetchInverted( $subject, idFoundByLookup: 7 );
+
+		$this->assertSame( 7, $subject->getId() );
+	}
+
+	/**
+	 * @return int[] subject IDs the inverse prefetch queries
+	 */
+	private function prefetchInverted( WikiPage $subject, int $idFoundByLookup ): array {
+		$this->store->method( 'getObjectIds' )
+			->willReturn( $this->newEntityIdManagerFinding( $idFoundByLookup ) );
+
+		$this->store->method( 'getPropertyTables' )
+			->willReturn( [ 'smw_foo' => $this->createStub( PropertyTableDefinition::class ) ] );
+
+		$this->store->method( 'findPropertyTableID' )
+			->willReturn( 'smw_foo' );
+
+		$queriedIds = [];
+
+		$this->propertySubjectsLookup->method( 'prefetchFromTable' )
+			->willReturnCallback( static function ( array $ids ) use ( &$queriedIds ): array {
+				$queriedIds = $ids;
+				return [];
+			} );
+
+		$instance = new PrefetchItemLookup(
+			$this->store,
+			$this->semanticDataLookup,
+			$this->propertySubjectsLookup,
+			$this->linkBatch
+		);
+
+		$instance->getPropertyValues( [ $subject ], new Property( 'Foo', true ), new RequestOptions() );
+
+		return $queriedIds;
+	}
+
+	/**
+	 * An ID manager whose database lookup finds the given ID for every page.
+	 */
+	private function newEntityIdManagerFinding( int $id ): EntityIdManager {
+		return new class( $id ) extends EntityIdManager {
+
+			public function __construct( private readonly int $id ) {
+			}
+
+			public function getSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $fetchHashes = false ): int {
+				return $this->id;
+			}
+		};
+	}
+
 }

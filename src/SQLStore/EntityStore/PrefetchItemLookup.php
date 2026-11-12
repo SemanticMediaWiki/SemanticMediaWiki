@@ -184,13 +184,7 @@ class PrefetchItemLookup {
 				continue;
 			}
 
-			$sid = $idTable->getSMWPageID(
-				$subject->getDBkey(),
-				$subject->getNamespace(),
-				$subject->getInterwiki(),
-				$subject->getSubobjectName(),
-				true
-			);
+			$sid = $idTable->findCanonicalId( $subject );
 
 			if ( $sid == 0 ) {
 				continue;

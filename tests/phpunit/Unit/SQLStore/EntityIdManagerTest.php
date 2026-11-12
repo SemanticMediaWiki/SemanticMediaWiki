@@ -357,6 +357,33 @@ class EntityIdManagerTest extends TestCase {
 		);
 	}
 
+	public function testFindCanonicalIdReturnsTheIdThePageCarries() {
+		$subject = WikiPage::newFromText( 'Foo' );
+		$subject->setId( 42 );
+
+		$this->assertSame( 42, $this->newEntityIdManagerFindingId( 9999 )->findCanonicalId( $subject ) );
+	}
+
+	public function testFindCanonicalIdLooksUpAPageWithoutId() {
+		$this->assertSame(
+			9999,
+			$this->newEntityIdManagerFindingId( 9999 )->findCanonicalId( WikiPage::newFromText( 'Foo' ) )
+		);
+	}
+
+	public function testFindCanonicalIdResolvesARedirectToItsTarget() {
+		$this->connection->method( 'newInsertQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockInsertQueryBuilder() );
+
+		$instance = $this->newEntityIdManagerFindingId( 9999 );
+		$instance->addRedirect( 7, 'Redirect', NS_MAIN );
+
+		$redirect = new WikiPage( 'Redirect', NS_MAIN, SMW_SQL3_SMWREDIIW );
+		$redirect->setId( 42 );
+
+		$this->assertSame( 7, $instance->findCanonicalId( $redirect ) );
+	}
+
 	private function newEntityIdManager(): EntityIdManager {
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -367,6 +394,15 @@ class EntityIdManagerTest extends TestCase {
 			->willReturn( $this->connection );
 
 		return new EntityIdManager( $store, $this->factory, $this->settings );
+	}
+
+	private function newEntityIdManagerFindingId( int $id ): EntityIdManager {
+		$row = (object)[ 'smw_id' => $id, 'smw_sort' => '', 'smw_sortkey' => 'Foo', 'smw_hash' => '___hash___' ];
+
+		$this->connection->method( 'newSelectQueryBuilder' )
+			->willReturnCallback( fn () => $this->createMockSelectQueryBuilder( [ $row ] ) );
+
+		return $this->newEntityIdManager();
 	}
 
 	/**
