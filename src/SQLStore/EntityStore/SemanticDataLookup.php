@@ -224,13 +224,7 @@ class SemanticDataLookup {
 				continue;
 			}
 
-			$id = $entityIdManager->getSMWPageID(
-				$subject->getDBkey(),
-				$subject->getNamespace(),
-				$subject->getInterwiki(),
-				$subject->getSubobjectName(),
-				true
-			);
+			$id = $entityIdManager->findCanonicalId( $subject );
 
 			$subject->setId( $id );
 			$ids[$id] = true;

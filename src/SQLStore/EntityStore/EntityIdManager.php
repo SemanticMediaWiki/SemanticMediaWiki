@@ -525,6 +525,27 @@ class EntityIdManager {
 	}
 
 	/**
+	 * The ID the page's values are stored under: the ID the page carries, or,
+	 * when it carries none or is a redirect, the ID found with redirects
+	 * resolved.
+	 *
+	 * @since 7.4.2
+	 */
+	public function findCanonicalId( WikiPage $subject ): int {
+		if ( $subject->getId() !== 0 && $subject->getInterwiki() !== SMW_SQL3_SMWREDIIW ) {
+			return $subject->getId();
+		}
+
+		return $this->getSMWPageID(
+			$subject->getDBkey(),
+			$subject->getNamespace(),
+			$subject->getInterwiki(),
+			$subject->getSubobjectName(),
+			true
+		);
+	}
+
+	/**
 	 * Convenience method for calling getSMWPageIDandSort without
 	 * specifying a sortkey (if not asked for).
 	 *

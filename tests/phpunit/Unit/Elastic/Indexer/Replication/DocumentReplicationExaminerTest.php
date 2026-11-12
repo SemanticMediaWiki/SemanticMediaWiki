@@ -685,6 +685,8 @@ class DocumentReplicationExaminerTest extends TestCase {
 		$idTable = $this->createMock( EntityIdManager::class );
 		$idTable->method( 'getSMWPageID' )
 			->willReturnCallback( static fn ( string $dbKey ) => $ids[$dbKey] );
+		$idTable->method( 'findCanonicalId' )
+			->willReturnCallback( static fn ( WikiPage $subject ) => $ids[$subject->getDBkey()] );
 		$idTable->method( 'findAssociatedRev' )
 			->willReturnCallback( function ( int $id ) use ( $revisions ) {
 				$this->countRequest( 'revisions' );

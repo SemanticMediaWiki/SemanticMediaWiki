@@ -10,12 +10,15 @@ use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
+use SMW\Schema\SchemaFactory;
+use SMW\Schema\SchemaFinder;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\SemanticDataLookup;
 use SMW\SQLStore\EntityStore\StubSemanticData;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\TestEnvironment;
 use SMW\Tests\Unit\MediaWiki\Connection\MockSelectQueryBuilderTrait;
 use stdClass;
 
@@ -35,6 +38,7 @@ class SemanticDataLookupTest extends TestCase {
 	private $store;
 	private $connection;
 	private $dataItemHandler;
+	private ?TestEnvironment $testEnvironment = null;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -72,6 +76,7 @@ class SemanticDataLookupTest extends TestCase {
 	}
 
 	public function tearDown(): void {
+		$this->testEnvironment?->tearDown();
 		parent::tearDown();
 	}
 
@@ -632,6 +637,90 @@ class SemanticDataLookupTest extends TestCase {
 		// extra-condition `p_id` discovered from the first query's row.
 		$this->assertContainsEquals( [ 's_id' => 42 ], $whereConditions );
 		$this->assertContainsEquals( [ 'p_id' => 9000 ], $whereConditions );
+	}
+
+	public function testPrefetchQueriesTheIdsItsSubjectsCarry() {
+		$first = WikiPage::newFromText( 'First' );
+		$first->setId( 42 );
+
+		$second = WikiPage::newFromText( 'Second' );
+		$second->setId( 43 );
+
+		$this->assertSame( [ 42, 43 ], $this->prefetch( [ $first, $second ], idFoundByLookup: 7 ) );
+	}
+
+	public function testPrefetchGivesASubjectWithoutIdTheIdFoundByLookup() {
+		$subject = WikiPage::newFromText( 'First' );
+
+		$this->prefetch( [ $subject ], idFoundByLookup: 7 );
+
+		$this->assertSame( 7, $subject->getId() );
+	}
+
+	/**
+	 * The mock database returns the same rows whatever the query, so the
+	 * queried subjects are read from the query's WHERE condition.
+	 *
+	 * @param WikiPage[] $subjects
+	 *
+	 * @return int[] subject IDs the prefetch query selects
+	 */
+	private function prefetch( array $subjects, int $idFoundByLookup ): array {
+		$this->store->method( 'getObjectIds' )
+			->willReturn( $this->newEntityIdManagerFinding( $idFoundByLookup ) );
+
+		$propertyTable = $this->createStub( PropertyTableDefinition::class );
+
+		$propertyTable->method( 'usesIdSubject' )
+			->willReturn( true );
+
+		$this->dataItemHandler->method( 'getFetchFields' )
+			->willReturn( [ 'o_hash' => 't' ] );
+
+		$whereConditions = [];
+
+		$this->connection->method( 'newSelectQueryBuilder' )
+			->willReturn( $this->createMockSelectQueryBuilder( [], $whereConditions ) );
+
+		$this->registerPropertiesWithoutSequenceMap();
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		$instance->prefetchDataFromTable( $subjects, new Property( 'Prefetched' ), $propertyTable, new RequestOptions() );
+
+		return array_column( array_filter( $whereConditions, 'is_array' ), 's_id' )[0] ?? [];
+	}
+
+	/**
+	 * An ID manager whose database lookup finds the given ID for every page.
+	 */
+	private function newEntityIdManagerFinding( int $id ): EntityIdManager {
+		return new class( $id ) extends EntityIdManager {
+
+			public function __construct( private readonly int $id ) {
+			}
+
+			public function getSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $fetchHashes = false ): int {
+				return $this->id;
+			}
+
+			public function getSMWPropertyID( Property $property ): int {
+				return 9;
+			}
+		};
+	}
+
+	private function registerPropertiesWithoutSequenceMap(): void {
+		$schemaFinder = $this->createStub( SchemaFinder::class );
+		$schemaFactory = $this->createStub( SchemaFactory::class );
+
+		$schemaFactory->method( 'newSchemaFinder' )
+			->willReturn( $schemaFinder );
+
+		$this->testEnvironment = new TestEnvironment();
+		$this->testEnvironment->registerObject( 'SchemaFactory', $schemaFactory );
 	}
 
 }
