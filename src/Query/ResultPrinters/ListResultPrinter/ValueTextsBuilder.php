@@ -5,6 +5,8 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
 use MediaWiki\Linker\Linker;
 use MediaWiki\Parser\Sanitizer;
 use SMW\DataValues\DataValue;
+use SMW\DataValues\WikiPageValue;
+use SMW\Query\PrintRequest;
 use SMW\Query\Result\ResultArray;
 use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 use SMW\Query\ResultPrinters\SeparatorEscaper;
@@ -51,12 +53,12 @@ class ValueTextsBuilder {
 		$valueTexts = [];
 
 		$field->reset();
-
+		$printRequest = $field->getPrintRequest();
 		$dataValue = $field->getNextDataValue();
 		while ( $dataValue !== false ) {
 			$valueTexts[] =
 				$this->get( 'value-open-tag' ) .
-				$this->getValueText( $dataValue, $column ) .
+				$this->getValueText( $dataValue, $column, $printRequest ) .
 				$this->get( 'value-close-tag' );
 			$dataValue = $field->getNextDataValue();
 		}
@@ -70,12 +72,33 @@ class ValueTextsBuilder {
 	 *
 	 * @return string
 	 */
+/*
 	private function getValueText( DataValue $value, $column = 0 ): string {
 		$isSubject = ( $column === 0 );
 		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
 
 		$text = $value->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) );
 
+		return $this->sanitizeValueText( $text );
+	}
+*/
+	private function getValueText( DataValue $dataValue, $column = 0, ?PrintRequest $printRequest = null ): string {
+		$linker = $this->getLinkerForColumn( $column );
+
+		// @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6305
+		$useLongText = $this->prefixParameterProcessor->useLongText( $printRequest, $dataValue );
+		$dataValueMethod = $useLongText ? 'getLongText' : 'getShortText';
+
+		if ( $dataValue instanceof WikiPageValue ) {
+			$dataValue->setOption(
+				$useLongText
+					? $dataValue::PREFIXED_FORM
+					: $dataValue::SHORT_FORM,
+				true
+			);
+		}
+
+		$text = $dataValue->$dataValueMethod( SMW_OUTPUT_WIKI, $linker );
 		return $this->sanitizeValueText( $text );
 	}
 

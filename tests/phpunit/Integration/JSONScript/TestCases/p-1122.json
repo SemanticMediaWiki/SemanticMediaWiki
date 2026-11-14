@@ -33,7 +33,7 @@
 		},
 		{
 			"page": "Example/P1122/Q.1",
-			"contents": "{{#ask: [[Category:P1122]] |format=ul }}"
+			"contents": "{{#ask: [[Category:P1122]] |format=ul |prefix=none }}"
 		},
 		{
 			"page": "Example/P1122/Q.2",
