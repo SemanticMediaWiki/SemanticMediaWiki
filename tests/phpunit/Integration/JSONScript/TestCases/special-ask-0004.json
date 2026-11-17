@@ -15,12 +15,17 @@
 			"namespace": "NS_MAIN",
 			"page": "Example/SA0004/2",
 			"contents": "[[Code::Test '''with text formatting''']] {{#set: Code=Link to [[Example/SA0004/1]]}} [[Category:SA0004]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "Example/SA0004/3",
+			"contents": "[[Has text::It's a \"quoted\" text & more]] [[Category:SA0004]]"
 		}
 	],
 	"tests": [
 		{
 			"type": "special",
-			"about": "#0 (`_txt` formatting, link)",
+			"about": "#0 (`_txt` formatting, link, plain text with quotes and an ampersand)",
 			"special-page": {
 				"page": "Ask",
 				"query-parameters": "-5B-5BCategory:SA0004-5D-5D-20-5B-5BHas text%3A%3A%2B-5D-5D/-3FHas text/mainlabel=-/offset=0/format=broadtable/link=all/headers=show",
@@ -30,7 +35,8 @@
 				"to-contain": [
 					"Test <b>with text formatting</b>",
 					"Link to <a",
-					"Example/SA0004/1\" title=\"Example/SA0004/1\">Example/SA0004/1</a>"
+					"Example/SA0004/1\" title=\"Example/SA0004/1\">Example/SA0004/1</a>",
+					">It's a \"quoted\" text &amp; more</td>"
 				]
 			}
 		},

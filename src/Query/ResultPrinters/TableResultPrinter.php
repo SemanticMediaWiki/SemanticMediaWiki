@@ -8,6 +8,7 @@ use SMW\DataItems\WikiPage;
 use SMW\DataValues\DataValue;
 use SMW\DataValues\TimeValue;
 use SMW\Localizer\Message;
+use SMW\Parser\PlainWikitext;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
 use SMW\Query\QueryStringifier;
@@ -39,6 +40,8 @@ class TableResultPrinter extends ResultPrinter {
 	private ?bool $isDataTable = null;
 
 	private ?PrefixParameterProcessor $prefixParameterProcessor = null;
+
+	private ?bool $hasDefaultParseMessage = null;
 
 	/**
 	 * @see ResultPrinter::getName
@@ -384,12 +387,7 @@ class TableResultPrinter extends ResultPrinter {
 			// - text formatting on string elements including italic, bold etc.
 			} elseif ( ( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof WikiPage && $dv->getDataItem()->getNamespace() === NS_FILE ) ||
 				( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof Blob ) ) {
-				// Too lazy to handle the Parser object and besides the Message
-				// parse does the job and ensures no other hook is executed
-				$value = Message::get(
-					[ 'smw-parse', $dv->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) ],
-					Message::PARSE
-				);
+				$value = $this->wikitextToHtml( $dv->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) );
 			} else {
 				$value = $dv->$dataValueMethod( $outputMode, $this->getLinker( $isSubject ) );
 			}
@@ -408,6 +406,24 @@ class TableResultPrinter extends ResultPrinter {
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Plain text skips the parser, which would render it as the escaped text,
+	 * unless the wiki changed `MediaWiki:Smw-parse` that wraps every cell.
+	 */
+	private function wikitextToHtml( string $wikitext ): string {
+		if ( PlainWikitext::isPlain( $wikitext ) && $this->hasDefaultParseMessage() ) {
+			return htmlspecialchars( $wikitext, ENT_NOQUOTES );
+		}
+
+		return Message::get( [ 'smw-parse', $wikitext ], Message::PARSE );
+	}
+
+	private function hasDefaultParseMessage(): bool {
+		$this->hasDefaultParseMessage ??= wfMessage( 'smw-parse' )->inContentLanguage()->plain() === '$1';
+
+		return $this->hasDefaultParseMessage;
 	}
 
 	/**
