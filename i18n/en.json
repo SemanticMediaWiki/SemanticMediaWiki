@@ -997,7 +997,7 @@
 	"apihelp-smwbrowse-example-14": "Example showing how to browse pages including full text and full URL output.",
 	"apihelp-smwbrowse-example-15": "Example showing how to browse a specific subject page including namespace and subobject support.",
 	"apihelp-smwinfo-example-1": "Example showing how to retrieve multiple Semantic MediaWiki statistics using the info parameter.",
-	"smw-apihelp-smwtask-example-update": "Example of running a update task for a particular subject:",
+	"smw-apihelp-smwtask-example-update": "Example of running an update task for a particular subject:",
 	"smw-api-invalid-parameters": "Invalid parameters, \"$1\"",
 	"smw-parser-recursion-level-exceeded": "The level of $1 recursions was exceeded during a parse process. It is suggested to validate the template structure, or if necessary to adjust the configuration parameter <code>$maxRecursionDepth</code>.",
 	"smw-property-page-list-count": "Showing $1 {{PLURAL:$1|page|pages}} using this property.",
