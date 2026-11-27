@@ -42,7 +42,7 @@
 			"subject": "FT0006/Q2",
 			"assert-output": {
 				"to-contain": [
-					"<a href=\".*Property:Modification_date\" title=\"Property:Modification date\">Modification date</a>",
+					"<a href=\".*Property:Modification_date\" title=\"Property:Modification date\">Property:Modification date</a>",
 					"<td class=\"Property-description smwtype&#95;mlt&#95;rec\">Some description (en)</td>"
 				]
 			}
